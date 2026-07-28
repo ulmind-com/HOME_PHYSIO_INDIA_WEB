@@ -1,6 +1,7 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowRight, ShieldCheck, HeartPulse, Clock, Star, Sparkles, Stethoscope } from "lucide-react";
+import { useState } from "react";
+import { ArrowRight, ShieldCheck, HeartPulse, Clock, Star, Calendar, Stethoscope, ChevronDown } from "lucide-react";
 import { motion } from "framer-motion";
 import {
   blogsQ,
@@ -11,7 +12,6 @@ import {
   testimonialsQ,
   videosQ,
 } from "@/lib/api/queries";
-import { HeroScene } from "@/components/site/HeroScene";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/site/Reveal";
 import { Section, SectionHeader, EmptyState } from "@/components/site/Section";
 import { ServiceCard } from "@/components/site/cards/ServiceCard";
@@ -21,6 +21,8 @@ import { VideoCard } from "@/components/site/cards/VideoCard";
 import { TestimonialCard } from "@/components/site/cards/TestimonialCard";
 import { FaqAccordion } from "@/components/site/FaqAccordion";
 import { GoogleReviews } from "@/components/site/GoogleReviews";
+import heroDoctor from "@/assets/hero-doctor.jpg";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -62,60 +64,148 @@ function Home() {
 }
 
 function Hero() {
+  const { data: servicesData } = useQuery(servicesQ({ limit: 24 }));
+  const services = servicesData?.items ?? [];
+  const navigate = useNavigate();
+  const [service, setService] = useState("");
+  const [careType, setCareType] = useState("");
+  const [date, setDate] = useState("");
+
+  const onBook = () => {
+    navigate({ to: "/booking", search: service ? { service } : {} });
+  };
+
   return (
-    <section className="relative overflow-hidden grid-bg">
-      <div className="container-x pt-16 pb-20 lg:pt-24 lg:pb-32 grid gap-14 lg:grid-cols-12 lg:items-center">
-        <div className="lg:col-span-7">
-          <Reveal>
-            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/70 px-3 py-1 text-xs font-medium text-muted-foreground">
-              <Sparkles className="h-3 w-3 text-primary" />
-              Trusted by 10,000+ families
+    <section className="relative pt-6 pb-32 lg:pb-40">
+      <div className="container-x">
+        <div
+          className="relative overflow-hidden rounded-[2.5rem] border border-primary/20 px-6 py-12 lg:px-14 lg:py-16"
+          style={{
+            background:
+              "linear-gradient(135deg, color-mix(in oklab, var(--primary) 22%, white), color-mix(in oklab, var(--primary) 10%, white) 60%, white)",
+          }}
+        >
+          <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
+            <div>
+              <Reveal>
+                <h1 className="font-sans text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.02] text-foreground">
+                  Your Health,
+                  <br />
+                  Our Priority
+                </h1>
+              </Reveal>
+              <Reveal delay={0.1}>
+                <p className="mt-6 max-w-md text-lg text-foreground/70 leading-relaxed">
+                  Compassionate care for you and your family — verified nurses, physiotherapists
+                  and hospital-grade equipment, delivered to your home.
+                </p>
+              </Reveal>
+              <Reveal delay={0.15}>
+                <div className="mt-8 flex flex-wrap items-center gap-3">
+                  <Link
+                    to="/booking"
+                    className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3.5 text-sm font-semibold hover:bg-accent transition-colors"
+                  >
+                    Book Appointment <ArrowRight className="h-4 w-4" />
+                  </Link>
+                  <Link
+                    to="/services"
+                    className="inline-flex items-center gap-2 rounded-full border border-foreground/15 bg-white/60 px-6 py-3.5 text-sm font-medium hover:border-primary"
+                  >
+                    Explore services
+                  </Link>
+                </div>
+              </Reveal>
             </div>
-          </Reveal>
-          <Reveal delay={0.05}>
-            <h1 className="mt-6 font-display text-5xl md:text-6xl lg:text-7xl tracking-tight leading-[1.02]">
-              Premium care,
-              <br />
-              <span className="text-gradient">delivered home.</span>
-            </h1>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <p className="mt-6 max-w-xl text-lg text-muted-foreground leading-relaxed">
-              Verified nurses, physiotherapists and hospital-grade equipment — booked in minutes,
-              at your door in hours. Medically supervised. Elegantly simple.
-            </p>
-          </Reveal>
-          <Reveal delay={0.15}>
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              <Link
-                to="/booking"
-                className="inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3.5 text-sm font-medium text-background hover-glow"
-              >
-                Book a caregiver <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                to="/services"
-                className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-6 py-3.5 text-sm font-medium hover:border-primary"
-              >
-                Explore services
-              </Link>
-            </div>
-          </Reveal>
-          <Reveal delay={0.2}>
-            <div className="mt-10 grid grid-cols-3 gap-6 max-w-lg">
-              <Stat label="Care visits" value="50k+" />
-              <Stat label="Rating" value="4.9★" />
-              <Stat label="Response" value="< 2 hrs" />
-            </div>
-          </Reveal>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="relative"
+            >
+              <div className="relative aspect-square w-full max-w-[520px] mx-auto overflow-hidden rounded-[2rem] shadow-[var(--shadow-elegant)]">
+                <img
+                  src={heroDoctor}
+                  alt="Nupun doctor consulting a patient"
+                  width={1200}
+                  height={1200}
+                  className="h-full w-full object-cover"
+                />
+              </div>
+            </motion.div>
+          </div>
         </div>
-        <div className="lg:col-span-5 flex justify-center lg:justify-end">
-          <HeroScene />
+
+        {/* Floating booking bar */}
+        <div className="relative -mt-14 lg:-mt-16 mx-2 lg:mx-10 z-10">
+          <div className="rounded-[1.75rem] bg-white border border-border shadow-[var(--shadow-elegant)] p-4 lg:p-5 grid gap-3 md:grid-cols-[1fr_1fr_1fr_auto] md:items-end">
+            <BookField label="Service">
+              <select
+                value={service}
+                onChange={(e) => setService(e.target.value)}
+                className="w-full appearance-none bg-transparent text-sm font-medium text-foreground focus:outline-none pr-6"
+              >
+                <option value="">Choose service</option>
+                {services.map((s) => (
+                  <option key={s.id} value={s.slug}>{s.title}</option>
+                ))}
+              </select>
+            </BookField>
+            <BookField label="Care type">
+              <select
+                value={careType}
+                onChange={(e) => setCareType(e.target.value)}
+                className="w-full appearance-none bg-transparent text-sm font-medium text-foreground focus:outline-none pr-6"
+              >
+                <option value="">Select type</option>
+                <option value="home">Home visit</option>
+                <option value="consult">Consultation</option>
+                <option value="equipment">Equipment rental</option>
+              </select>
+            </BookField>
+            <BookField label="Date" icon={<Calendar className="h-4 w-4 text-muted-foreground" />}>
+              <input
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                className="w-full bg-transparent text-sm font-medium text-foreground focus:outline-none"
+              />
+            </BookField>
+            <button
+              onClick={onBook}
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3.5 text-sm font-semibold hover:bg-accent transition-colors whitespace-nowrap"
+            >
+              Book Now <ArrowRight className="h-4 w-4" />
+            </button>
+          </div>
         </div>
       </div>
     </section>
   );
 }
+
+function BookField({
+  label,
+  icon,
+  children,
+}: {
+  label: string;
+  icon?: React.ReactNode;
+  children: React.ReactNode;
+}) {
+  return (
+    <label className="block rounded-2xl bg-primary-soft/60 px-4 py-3">
+      <div className="text-[11px] uppercase tracking-[0.15em] text-muted-foreground font-medium">{label}</div>
+      <div className="mt-1 flex items-center gap-2 relative">
+        {icon}
+        {children}
+        <ChevronDown className="h-4 w-4 text-muted-foreground absolute right-0 pointer-events-none opacity-60" />
+      </div>
+    </label>
+  );
+}
+
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
