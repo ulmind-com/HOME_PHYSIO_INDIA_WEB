@@ -78,26 +78,40 @@ function Hero() {
   return (
     <section className="relative pt-6 pb-32 lg:pb-40">
       <div className="container-x">
-        <div className="relative overflow-hidden rounded-[2.5rem] border border-primary/20 min-h-[560px] lg:min-h-[640px]">
-          {/* Full-bleed background image */}
+        <div
+          className="relative overflow-hidden rounded-[2.5rem] border border-primary/20 min-h-[560px] lg:min-h-[640px]"
+          style={{
+            background:
+              "linear-gradient(135deg, color-mix(in oklab, var(--primary) 22%, white), color-mix(in oklab, var(--primary) 10%, white) 55%, white)",
+          }}
+        >
+          {/* Doctor image, right half, feathered into the mint bg */}
           <img
             src={heroDoctor}
             alt="Nupun doctor consulting a patient"
-            className="absolute inset-0 h-full w-full object-cover"
-          />
-          {/* Readability overlay */}
-          <div
-            className="absolute inset-0"
+            className="hidden lg:block absolute right-0 top-0 h-full w-[58%] object-cover object-left"
             style={{
-              background:
-                "linear-gradient(90deg, color-mix(in oklab, var(--primary-soft) 96%, transparent) 0%, color-mix(in oklab, var(--primary-soft) 70%, transparent) 40%, color-mix(in oklab, var(--primary-soft) 10%, transparent) 70%, transparent 100%)",
+              WebkitMaskImage:
+                "linear-gradient(to right, transparent 0%, black 18%, black 100%)",
+              maskImage:
+                "linear-gradient(to right, transparent 0%, black 18%, black 100%)",
             }}
           />
-          <div className="absolute inset-0 lg:hidden bg-black/20" />
+          {/* Mobile: image below text */}
+          <img
+            src={heroDoctor}
+            alt=""
+            aria-hidden
+            className="lg:hidden absolute inset-x-0 bottom-0 h-1/2 w-full object-cover"
+            style={{
+              WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 40%)",
+              maskImage: "linear-gradient(to bottom, transparent 0%, black 40%)",
+            }}
+          />
 
           {/* Content layer */}
           <div className="relative px-6 py-14 lg:px-14 lg:py-20 min-h-[560px] lg:min-h-[640px] flex items-center">
-            <div className="max-w-xl">
+            <div className="max-w-md">
               <Reveal>
                 <h1 className="font-sans text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.02] text-foreground">
                   Your Health,
@@ -106,9 +120,8 @@ function Hero() {
                 </h1>
               </Reveal>
               <Reveal delay={0.1}>
-                <p className="mt-6 max-w-md text-lg text-foreground/75 leading-relaxed">
-                  Compassionate care for you and your family — verified nurses, physiotherapists
-                  and hospital-grade equipment, delivered to your home.
+                <p className="mt-6 max-w-sm text-lg text-foreground/75 leading-relaxed">
+                  Compassionate care for you and your family — verified nurses and hospital-grade equipment, delivered home.
                 </p>
               </Reveal>
               <Reveal delay={0.15}>
@@ -130,6 +143,7 @@ function Hero() {
             </div>
           </div>
         </div>
+
 
         {/* Floating booking bar */}
         <div className="relative -mt-14 lg:-mt-16 mx-2 lg:mx-10 z-10">
