@@ -27,6 +27,7 @@ import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as EquipmentSlugRouteImport } from './routes/equipment.$slug'
 import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as ApiPublicProxySplatRouteImport } from './routes/api/public/proxy.$'
 
 const VideosRoute = VideosRouteImport.update({
   id: '/videos',
@@ -118,6 +119,11 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicProxySplatRoute = ApiPublicProxySplatRouteImport.update({
+  id: '/api/public/proxy/$',
+  path: '/api/public/proxy/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -138,6 +144,7 @@ export interface FileRoutesByFullPath {
   '/careers/': typeof CareersIndexRoute
   '/equipment/': typeof EquipmentIndexRoute
   '/services/': typeof ServicesIndexRoute
+  '/api/public/proxy/$': typeof ApiPublicProxySplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -158,6 +165,7 @@ export interface FileRoutesByTo {
   '/careers': typeof CareersIndexRoute
   '/equipment': typeof EquipmentIndexRoute
   '/services': typeof ServicesIndexRoute
+  '/api/public/proxy/$': typeof ApiPublicProxySplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -179,6 +187,7 @@ export interface FileRoutesById {
   '/careers/': typeof CareersIndexRoute
   '/equipment/': typeof EquipmentIndexRoute
   '/services/': typeof ServicesIndexRoute
+  '/api/public/proxy/$': typeof ApiPublicProxySplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -201,6 +210,7 @@ export interface FileRouteTypes {
     | '/careers/'
     | '/equipment/'
     | '/services/'
+    | '/api/public/proxy/$'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -221,6 +231,7 @@ export interface FileRouteTypes {
     | '/careers'
     | '/equipment'
     | '/services'
+    | '/api/public/proxy/$'
   id:
     | '__root__'
     | '/'
@@ -241,6 +252,7 @@ export interface FileRouteTypes {
     | '/careers/'
     | '/equipment/'
     | '/services/'
+    | '/api/public/proxy/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -262,6 +274,7 @@ export interface RootRouteChildren {
   CareersIndexRoute: typeof CareersIndexRoute
   EquipmentIndexRoute: typeof EquipmentIndexRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
+  ApiPublicProxySplatRoute: typeof ApiPublicProxySplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -392,6 +405,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/proxy/$': {
+      id: '/api/public/proxy/$'
+      path: '/api/public/proxy/$'
+      fullPath: '/api/public/proxy/$'
+      preLoaderRoute: typeof ApiPublicProxySplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -414,7 +434,18 @@ const rootRouteChildren: RootRouteChildren = {
   CareersIndexRoute: CareersIndexRoute,
   EquipmentIndexRoute: EquipmentIndexRoute,
   ServicesIndexRoute: ServicesIndexRoute,
+  ApiPublicProxySplatRoute: ApiPublicProxySplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
