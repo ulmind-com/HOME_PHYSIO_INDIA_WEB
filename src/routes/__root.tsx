@@ -78,16 +78,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Nupun Home Health Care Services — Compassionate care, at home" },
+      { title: "Nupun Home Health Care Services — Premium care, delivered home" },
       {
         name: "description",
         content:
-          "Premium home nursing, physiotherapy, elder care and medical equipment rentals. Verified caregivers, transparent pricing, 24/7 support.",
+          "Verified nurses, physiotherapists and premium medical equipment — booked in minutes, delivered to your door. Rated 5-star by families across the region.",
       },
       { property: "og:site_name", content: "Nupun Home Health Care" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "theme-color", content: "#33C4C7" },
+      { property: "og:title", content: "Nupun Home Health Care Services — Premium care, delivered home" },
+      { name: "twitter:title", content: "Nupun Home Health Care Services — Premium care, delivered home" },
+      { property: "og:description", content: "Verified nurses, physiotherapists and premium medical equipment — booked in minutes, delivered to your door. Rated 5-star by families across the region." },
+      { name: "twitter:description", content: "Verified nurses, physiotherapists and premium medical equipment — booked in minutes, delivered to your door. Rated 5-star by families across the region." },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

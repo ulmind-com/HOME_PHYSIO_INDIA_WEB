@@ -31,10 +31,10 @@ export const Route = createFileRoute("/")({
         content:
           "Verified nurses, physiotherapists and premium medical equipment — booked in minutes, delivered to your door. Rated 5-star by families across the region.",
       },
-      { property: "og:title", content: "Nupun Home Health Care — Premium care, delivered home" },
+      { property: "og:title", content: "Nupun Home Health Care Services — Premium care, delivered home" },
       {
         property: "og:description",
-        content: "Compassionate, medically-supervised home health care and equipment rentals.",
+        content: "Verified nurses, physiotherapists and premium medical equipment — booked in minutes, delivered to your door. Rated 5-star by families across the region.",
       },
       { property: "og:url", content: "/" },
     ],
