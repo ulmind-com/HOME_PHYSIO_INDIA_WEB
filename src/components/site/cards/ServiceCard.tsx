@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, HeartPulse } from "lucide-react";
 import type { Service } from "@/lib/api/types";
 
 export function ServiceCard({ service }: { service: Service }) {
@@ -7,44 +7,64 @@ export function ServiceCard({ service }: { service: Service }) {
     <Link
       to="/services/$slug"
       params={{ slug: service.slug }}
-      className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-surface p-7 hover-glow transition-colors hover:border-primary/60"
+      className="group relative flex h-full flex-col overflow-hidden rounded-[2rem] border border-border/70 bg-surface shadow-[0_1px_0_rgba(0,0,0,0.02)] transition-all duration-500 ease-out hover:-translate-y-1 hover:border-primary/40 hover:shadow-[0_30px_60px_-30px_color-mix(in_oklab,var(--primary)_35%,transparent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none motion-reduce:hover:translate-y-0"
     >
-      {service.featured_image ? (
-        <div className="mb-6 aspect-[4/3] overflow-hidden rounded-2xl">
+      {/* Media block */}
+      <div className="relative aspect-[4/5] overflow-hidden">
+        {service.featured_image ? (
           <img
             src={service.featured_image}
             alt={service.title}
             loading="lazy"
             decoding="async"
-            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+            className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.06] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
           />
-        </div>
-      ) : (
-        <div className="mb-6 grid aspect-[4/3] place-items-center rounded-2xl bg-gradient-to-br from-primary-soft to-surface">
-          <svg viewBox="0 0 24 24" className="h-10 w-10 text-primary/80" fill="currentColor" aria-hidden>
-            <path d="M12 21s-7-4.35-9.5-8.5C.85 9.5 2.4 5.5 6 5c2.05-.28 3.7.9 6 3 2.3-2.1 3.95-3.28 6-3 3.6.5 5.15 4.5 3.5 7.5C19 16.65 12 21 12 21Z" />
-          </svg>
-        </div>
-      )}
-
-      {service.category_name && (
-        <div className="text-xs uppercase tracking-[0.18em] text-accent">{service.category_name}</div>
-      )}
-      <h3 className="mt-2 font-display text-2xl leading-tight">{service.title}</h3>
-      {service.short_description && (
-        <p className="mt-3 text-sm text-muted-foreground line-clamp-3">{service.short_description}</p>
-      )}
-
-      <div className="mt-auto pt-6 flex items-center justify-between">
-        {service.price ? (
-          <div className="text-sm">
-            <span className="font-display text-xl text-foreground">₹{service.price.toLocaleString()}</span>
-            {service.price_unit && <span className="text-muted-foreground"> / {service.price_unit}</span>}
+        ) : (
+          <div className="grid h-full w-full place-items-center bg-gradient-to-br from-primary-soft via-surface to-primary-soft/60">
+            <HeartPulse className="h-16 w-16 text-primary/40" strokeWidth={1.25} />
           </div>
-        ) : <span />}
-        <span className="grid h-9 w-9 place-items-center rounded-full bg-foreground text-background transition-transform group-hover:rotate-45">
-          <ArrowUpRight className="h-4 w-4" />
-        </span>
+        )}
+
+        {/* Bottom scrim for legibility of chips */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/25 to-transparent" />
+
+        {/* Category chip */}
+        {service.category_name && (
+          <div className="absolute left-4 top-4 rounded-full bg-white/75 backdrop-blur-md px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground/80 shadow-sm">
+            {service.category_name}
+          </div>
+        )}
+
+        {/* Price chip */}
+        {service.price ? (
+          <div className="absolute right-4 top-4 rounded-full bg-white/75 backdrop-blur-md px-3 py-1.5 text-xs font-medium text-foreground shadow-sm">
+            <span className="font-display text-sm">₹{service.price.toLocaleString()}</span>
+            {service.price_unit && (
+              <span className="text-muted-foreground"> / {service.price_unit}</span>
+            )}
+          </div>
+        ) : null}
+      </div>
+
+      {/* Content */}
+      <div className="flex flex-1 flex-col p-7">
+        <h3 className="font-display text-2xl leading-tight tracking-tight line-clamp-2">
+          {service.title}
+        </h3>
+        {service.short_description && (
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground line-clamp-2">
+            {service.short_description}
+          </p>
+        )}
+
+        <div className="mt-auto pt-6 border-t border-border/60 flex items-center justify-between">
+          <span className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">
+            Learn more
+          </span>
+          <span className="grid h-10 w-10 place-items-center rounded-full bg-foreground text-background transition-all duration-500 ease-out group-hover:rotate-45 group-hover:bg-primary group-hover:text-primary-foreground motion-reduce:transition-none motion-reduce:group-hover:rotate-0">
+            <ArrowUpRight className="h-4 w-4" />
+          </span>
+        </div>
       </div>
     </Link>
   );
