@@ -39,7 +39,8 @@ type FetchOpts = {
 };
 
 export async function apiFetch<T>(path: string, opts: FetchOpts = {}): Promise<T> {
-  const url = new URL(`${API_BASE}${path}`);
+  const base = typeof window !== "undefined" ? window.location.origin : "http://localhost";
+  const url = new URL(`${API_BASE}${path}`, base);
   if (opts.query) {
     for (const [k, v] of Object.entries(opts.query)) {
       if (v !== undefined && v !== null && v !== "") url.searchParams.set(k, String(v));
