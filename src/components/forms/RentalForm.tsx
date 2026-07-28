@@ -14,13 +14,14 @@ const schema = z.object({
   address: z.string().trim().min(5).max(500),
   start_date: z.string().min(1, "Pick a date"),
   end_date: z.string().optional().or(z.literal("").transform(() => undefined)),
-  quantity: z.coerce.number().int().min(1).max(20).default(1),
+  quantity: z.coerce.number().int().min(1).max(20).optional(),
 });
 type Values = z.infer<typeof schema>;
 
 export function RentalForm({ equipmentId }: { equipmentId: string }) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [done, setDone] = useState(false);
-  const form = useForm<Values>({ resolver: zodResolver(schema), defaultValues: { quantity: 1 } });
+  const form = useForm<Values>({ resolver: zodResolver(schema) as never, defaultValues: { quantity: 1 } });
 
   const mut = useMutation({
     mutationFn: (v: Values) => api.post("/equipment/rentals", { equipment_id: equipmentId, ...v }),

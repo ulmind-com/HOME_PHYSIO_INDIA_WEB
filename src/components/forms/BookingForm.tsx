@@ -8,20 +8,23 @@ import { servicesQ } from "@/lib/api/queries";
 import { toast } from "sonner";
 import { CheckCircle2, Loader2 } from "lucide-react";
 
+const emptyToUndef = <T extends z.ZodTypeAny>(schema: T) =>
+  z.preprocess((v) => (v === "" || v === null ? undefined : v), schema);
+
 const schema = z.object({
   patient_name: z.string().trim().min(2, "Please enter the patient's name").max(120),
-  patient_age: z.coerce.number().int().min(0).max(120).optional().or(z.literal("").transform(() => undefined)),
-  patient_gender: z.enum(["male", "female", "other"]).optional().or(z.literal("").transform(() => undefined)),
+  patient_age: emptyToUndef(z.coerce.number().int().min(0).max(120).optional()),
+  patient_gender: emptyToUndef(z.enum(["male", "female", "other"]).optional()),
   contact_phone: z.string().trim().min(7, "Enter a valid phone").max(20),
-  contact_email: z.string().trim().email("Enter a valid email").optional().or(z.literal("").transform(() => undefined)),
+  contact_email: emptyToUndef(z.string().trim().email("Enter a valid email").optional()),
   service_name: z.string().trim().min(2, "Please choose a service"),
-  service_id: z.string().optional(),
+  service_id: emptyToUndef(z.string().optional()),
   preferred_date: z.string().min(1, "Pick a date"),
-  preferred_time: z.string().optional().or(z.literal("").transform(() => undefined)),
+  preferred_time: emptyToUndef(z.string().optional()),
   address: z.string().trim().min(5, "Enter the full address").max(500),
-  city: z.string().optional().or(z.literal("").transform(() => undefined)),
-  pincode: z.string().optional().or(z.literal("").transform(() => undefined)),
-  message: z.string().max(1000).optional().or(z.literal("").transform(() => undefined)),
+  city: emptyToUndef(z.string().optional()),
+  pincode: emptyToUndef(z.string().optional()),
+  message: emptyToUndef(z.string().max(1000).optional()),
 });
 type Values = z.infer<typeof schema>;
 
@@ -32,7 +35,7 @@ export function BookingForm({ presetServiceSlug }: { presetServiceSlug?: string 
   const preset = presetServiceSlug ? options.find((s) => s.slug === presetServiceSlug) : undefined;
 
   const form = useForm<Values>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema) as never,
     defaultValues: {
       service_name: preset?.title ?? "",
       service_id: preset?.id ?? "",
