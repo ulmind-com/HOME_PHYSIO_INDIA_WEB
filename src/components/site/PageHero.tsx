@@ -20,7 +20,6 @@ export function PageHero({
             {crumbs.map((c, i) => (
               <span key={i} className="flex items-center gap-2">
                 {c.to ? (
-                  // @ts-expect-error dynamic path
                   <Link to={c.to} className="hover:text-foreground">{c.label}</Link>
                 ) : (
                   <span className="text-foreground/70">{c.label}</span>

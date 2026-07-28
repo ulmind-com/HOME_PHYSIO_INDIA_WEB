@@ -109,7 +109,6 @@ function FooterCol({ title, children, className }: { title: string; children: Re
 
 function FooterLink({ to, children }: { to: string; children: React.ReactNode }) {
   return (
-    // @ts-expect-error dynamic path
     <Link to={to} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
       {children}
     </Link>
