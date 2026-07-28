@@ -1,13 +1,22 @@
 ## Goal
-Make the hero image cover the entire hero section as a full-width background, with the heading, subheading, buttons, and booking bar layered on top (matching the CarePlus reference).
+Match the reference hero exactly: a rounded hero card with a soft mint/teal ambient background, the doctor photo positioned on the RIGHT side of the card (not full-bleed), bold "Your Health, Our Priority" heading + short subtitle on the LEFT, and a white pill booking bar (Department / Doctor / Date / Book Now) overlapping the bottom of the card.
 
-## Changes
-**`src/routes/index.tsx` — Hero section only**
-- Replace the current two-column grid (text left / image right) with a single full-bleed hero container.
-- Doctor image becomes an absolutely-positioned background `<img>` covering the full hero (`absolute inset-0 h-full w-full object-cover`), with a soft left-to-right gradient overlay (`bg-gradient-to-r from-primary-soft/95 via-primary-soft/70 to-transparent`) so the left-side text stays readable.
-- Text block (eyebrow, "Your Health, Our Priority" heading, subheading, Book Appointment + Explore services buttons) moves into a relative content layer, left-aligned, vertically centered, constrained to ~max-w-xl.
-- Keep the floating glassmorphism booking bar (Service / Care type / Date / Book Now) pinned at the bottom of the hero, full width — unchanged fields and wiring to `/booking` and live services query.
-- Preserve rounded hero card, mint tint edges, framer-motion reveals, and responsive stacking (on mobile: overlay darkens more, text stays on top of image).
+## Changes — `src/routes/index.tsx` (Hero only)
+
+**Card structure**
+- Rounded `rounded-[2.5rem]` card with mint gradient background (current `--primary-soft` tones), min-height ~620px, `overflow-hidden`.
+- Doctor image absolutely positioned to the RIGHT half only: `absolute right-0 top-0 h-full w-[55%] object-cover object-left`, with a left-edge fade mask (`mask-image: linear-gradient(to right, transparent, black 15%)`) so it blends into the mint background — matching how the reference photo dissolves into the teal on its left edge.
+- On mobile (`<lg`): image drops to bottom half, text stacks on top.
+
+**Text block (left)**
+- Positioned in a relative content layer, left-aligned, vertically centered, `max-w-md`.
+- Heading: "Your Health,<br/>Our Priority" — same bold sans, `text-5xl md:text-6xl lg:text-7xl`.
+- Short subtitle (2 lines): "Compassionate care for you and your family — verified nurses and hospital-grade equipment, delivered home."
+- Keep Book Appointment (filled teal pill) + Explore services (outline pill) buttons below.
+
+**Booking bar**
+- Keep the existing white rounded pill bar overlapping the card's bottom edge (`-mt-14`), full width inside container.
+- Same 3 fields (Service / Care type / Date) + teal "Book Now" pill — already wired to `/booking` and live services query.
 
 ## Out of scope
-- Header, other sections, backend, styles.css tokens — no changes.
+Header, other sections, styles.css, backend — no changes.
