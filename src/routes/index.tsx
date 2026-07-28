@@ -21,7 +21,7 @@ import { VideoCard } from "@/components/site/cards/VideoCard";
 import { TestimonialCard } from "@/components/site/cards/TestimonialCard";
 import { FaqAccordion } from "@/components/site/FaqAccordion";
 import { GoogleReviews } from "@/components/site/GoogleReviews";
-import heroDoctor from "@/assets/hero-doctor.jpg";
+const heroDoctor = "/assets/hero-doctor.jpg";
 
 
 export const Route = createFileRoute("/")({
