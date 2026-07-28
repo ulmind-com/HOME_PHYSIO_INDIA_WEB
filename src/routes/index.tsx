@@ -206,7 +206,7 @@ function BookField({
   children: React.ReactNode;
 }) {
   return (
-    <label className="block rounded-2xl bg-primary-soft/60 px-4 py-3">
+    <label className="block rounded-2xl bg-white/40 border border-white/60 backdrop-blur px-4 py-3">
       <div className="text-[11px] uppercase tracking-[0.15em] text-muted-foreground font-medium">{label}</div>
       <div className="mt-1 flex items-center gap-2 relative">
         {icon}
