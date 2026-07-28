@@ -76,7 +76,7 @@ function Hero() {
   };
 
   return (
-    <section className="relative pb-32 lg:pb-40">
+    <section className="relative">
       <div
         className="relative overflow-hidden border-b border-primary/20 min-h-[100svh]"
         style={{
@@ -109,7 +109,7 @@ function Hero() {
         />
 
         {/* Content layer */}
-        <div className="relative px-6 pt-32 pb-14 lg:px-16 lg:pt-40 lg:pb-24 min-h-[100svh] flex items-center">
+        <div className="relative px-6 pt-32 pb-48 lg:px-16 lg:pt-40 lg:pb-40 min-h-[100svh] flex items-center">
           <div className="max-w-md lg:max-w-lg lg:ml-8 xl:ml-20">
             <Reveal>
               <h1 className="font-sans text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.02] text-foreground">
@@ -141,56 +141,59 @@ function Hero() {
             </Reveal>
           </div>
         </div>
-      </div>
 
-      {/* Floating booking bar */}
-      <div className="container-x">
-        <div className="relative -mt-14 lg:-mt-16 z-10">
-          <div className="rounded-[1.75rem] bg-white border border-border shadow-[var(--shadow-elegant)] p-4 lg:p-5 grid gap-3 md:grid-cols-[1fr_1fr_1fr_auto] md:items-end">
-            <BookField label="Service">
-              <select
-                value={service}
-                onChange={(e) => setService(e.target.value)}
-                className="w-full appearance-none bg-transparent text-sm font-medium text-foreground focus:outline-none pr-6"
+        {/* Liquid-glass booking bar — pinned inside hero */}
+        <div className="absolute inset-x-0 bottom-6 lg:bottom-10 z-20 px-4 lg:px-10">
+          <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[1.75rem] border border-white/50 bg-white/25 backdrop-blur-2xl backdrop-saturate-150 shadow-[0_25px_70px_-25px_rgba(15,60,60,0.45)]">
+            {/* top sheen */}
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/50 to-transparent" />
+            <div className="relative p-4 lg:p-5 grid gap-3 md:grid-cols-[1fr_1fr_1fr_auto] md:items-end">
+              <BookField label="Service">
+                <select
+                  value={service}
+                  onChange={(e) => setService(e.target.value)}
+                  className="w-full appearance-none bg-transparent text-sm font-medium text-foreground focus:outline-none pr-6"
+                >
+                  <option value="">Choose service</option>
+                  {services.map((s) => (
+                    <option key={s.id} value={s.slug}>{s.title}</option>
+                  ))}
+                </select>
+              </BookField>
+              <BookField label="Care type">
+                <select
+                  value={careType}
+                  onChange={(e) => setCareType(e.target.value)}
+                  className="w-full appearance-none bg-transparent text-sm font-medium text-foreground focus:outline-none pr-6"
+                >
+                  <option value="">Select type</option>
+                  <option value="home">Home visit</option>
+                  <option value="consult">Consultation</option>
+                  <option value="equipment">Equipment rental</option>
+                </select>
+              </BookField>
+              <BookField label="Date" icon={<Calendar className="h-4 w-4 text-muted-foreground" />}>
+                <input
+                  type="date"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  className="w-full bg-transparent text-sm font-medium text-foreground focus:outline-none"
+                />
+              </BookField>
+              <button
+                onClick={onBook}
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3.5 text-sm font-semibold hover:bg-accent transition-colors whitespace-nowrap shadow-[0_10px_25px_-8px_color-mix(in_oklab,var(--primary)_55%,transparent)]"
               >
-                <option value="">Choose service</option>
-                {services.map((s) => (
-                  <option key={s.id} value={s.slug}>{s.title}</option>
-                ))}
-              </select>
-            </BookField>
-            <BookField label="Care type">
-              <select
-                value={careType}
-                onChange={(e) => setCareType(e.target.value)}
-                className="w-full appearance-none bg-transparent text-sm font-medium text-foreground focus:outline-none pr-6"
-              >
-                <option value="">Select type</option>
-                <option value="home">Home visit</option>
-                <option value="consult">Consultation</option>
-                <option value="equipment">Equipment rental</option>
-              </select>
-            </BookField>
-            <BookField label="Date" icon={<Calendar className="h-4 w-4 text-muted-foreground" />}>
-              <input
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                className="w-full bg-transparent text-sm font-medium text-foreground focus:outline-none"
-              />
-            </BookField>
-            <button
-              onClick={onBook}
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3.5 text-sm font-semibold hover:bg-accent transition-colors whitespace-nowrap"
-            >
-              Book Now <ArrowRight className="h-4 w-4" />
-            </button>
+                Book Now <ArrowRight className="h-4 w-4" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </section>
   );
 }
+
 
 
 function BookField({
