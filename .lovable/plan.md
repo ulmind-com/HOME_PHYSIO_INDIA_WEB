@@ -1,30 +1,42 @@
 ## Goal
-Lift the booking bar up so it sits inside the hero (not clipped below the fold), and restyle both the navbar and the booking bar as premium "liquid glass" (frosted, translucent, layered highlights).
+Redesign the service cards in the "Care that meets you where you are." section (and reused elsewhere) to feel ultra-premium, image-forward, and editorial — while staying fully wired to the admin panel via the existing `servicesQ` API and `service.featured_image`.
 
-## Changes
+## Scope
+- File: `src/components/site/cards/ServiceCard.tsx` (only)
+- No API, no route, no data changes. Cards keep pulling `title`, `slug`, `featured_image`, `category_name`, `short_description`, `price`, `price_unit` from the backend exactly as today.
 
-**`src/routes/index.tsx` — Hero booking bar**
-- Move the booking bar OUT of its current position below the hero card. Place it inside the hero as an absolutely-positioned element pinned to the bottom (`absolute bottom-8 lg:bottom-10 inset-x-0`) so it's visible within the viewport.
-- Reduce hero min-height slightly (`min-h-[92svh]`) so nav + hero + booking bar all fit above the fold on a laptop.
-- Restyle bar as liquid glass:
-  - `bg-white/25 backdrop-blur-2xl backdrop-saturate-150`
-  - `border border-white/40`
-  - Inner top highlight: pseudo-gradient overlay `bg-gradient-to-b from-white/40 to-transparent` at ~30% height
-  - `shadow-[0_20px_60px_-20px_rgba(0,0,0,0.25)]`
-  - Field pills switch from `bg-primary-soft/60` → `bg-white/35 backdrop-blur border border-white/50`
-  - Book Now button keeps solid teal for contrast.
+## New card design (image-forward, luxury medical)
+Layout: tall rounded card (`rounded-[2rem]`), full-bleed image top, editorial content block below, refined footer.
 
-**`src/components/site/Header.tsx` — Liquid-glass nav**
-- Replace solid `bg-white` with:
-  - `bg-white/30 backdrop-blur-2xl backdrop-saturate-150`
-  - `border border-white/50`
-  - `shadow-[0_20px_50px_-20px_rgba(20,80,80,0.35)]`
-  - Add a subtle inner highlight via `before:` pseudo (top gradient sheen).
-- Keep the pill shape, logo, and links. Ensure text stays readable — bump inactive links to `text-foreground/80`.
-- Mobile menu panel also gets the same glass treatment.
+1. Media block (top, ~aspect 4/5)
+   - Full-bleed `featured_image` with slow zoom on hover (scale 1.06, 900ms ease).
+   - Subtle gradient scrim from bottom for legibility.
+   - Floating category chip top-left: frosted glass pill (`bg-white/70 backdrop-blur-md`), tiny uppercase tracked label.
+   - Floating price chip top-right when `price` exists: glass pill with `₹{price}` and unit in muted tone.
+   - Fallback (no image): soft mint gradient with a large mono-line heart/stethoscope glyph and faint grain — still feels premium.
 
-**Tailwind v4 note**
-- Use only standard `backdrop-filter` utilities (no hand-written `-webkit-` prefixes) per the build-time dedup rule.
+2. Content block (below image, generous padding `p-7`)
+   - `h3` title in display serif, tighter tracking, 2-line clamp.
+   - `short_description` in muted tone, 2-line clamp, refined leading.
+   - Thin hairline divider (`border-t border-border/60`) before footer.
 
-## Out of scope
-Hero image, headline copy, buttons in text block, other sections, backend wiring.
+3. Footer row
+   - Left: "Learn more" micro-label in accent color.
+   - Right: circular arrow button that rotates 45° and shifts to primary on hover (kept from current design but refined size 10x10, primary bg on hover).
+
+4. Card shell polish
+   - Base: `bg-surface`, `border border-border/70`, `shadow-[0_1px_0_rgba(0,0,0,0.02)]`.
+   - Hover: lift (`-translate-y-1`), softer premium shadow (`0_30px_60px_-30px_color-mix(in_oklab,var(--primary)_35%,transparent)`), border shifts to `primary/40`.
+   - Focus-visible ring using `--ring`.
+   - Motion: all transitions 500-700ms `ease-out`; respects `prefers-reduced-motion` (Tailwind's `motion-reduce:` variants disable transform/scale).
+
+## Where it applies (automatically, no other edits)
+- Home "Care that meets you where you are." grid (uses `ServiceCard`).
+- `/services` index grid (same component).
+
+## Non-goals
+- Not touching Equipment/Blog/Video cards.
+- Not adding new data fields or image generation — real admin-uploaded `featured_image` drives the look.
+
+## Verification
+- Read updated file, curl `/` and `/services` for HTTP 200, screenshot home services grid at desktop and mobile via Playwright to confirm image-forward layout and hover polish render correctly with live data.
