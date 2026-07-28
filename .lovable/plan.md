@@ -1,22 +1,30 @@
 ## Goal
-Make the hero fill the full viewport width (no left/right gaps) and float the navbar on top of the hero instead of sitting above it.
+Lift the booking bar up so it sits inside the hero (not clipped below the fold), and restyle both the navbar and the booking bar as premium "liquid glass" (frosted, translucent, layered highlights).
 
 ## Changes
 
-**`src/routes/index.tsx` — Hero only**
-- Remove the `container-x` wrapper and outer rounded card border-radius on large screens so the hero spans edge-to-edge (`w-full`, no horizontal padding, no rounded corners at top).
-- Give the hero section a real height (`min-h-screen` on desktop, ~90vh on mobile) so it fills the visible screen under the overlaid navbar.
-- Keep the doctor image full-bleed (right-aligned, feathering into mint on the left) and the text block on the left, but shift the content down (`pt-32`) so it clears the overlaid navbar.
-- Keep the floating booking bar at the bottom, but constrain it to a centered `max-w-6xl` with side padding so it doesn't touch the edges.
-- Add top padding to the following section (`TrustBar`) so nothing tucks under the hero.
+**`src/routes/index.tsx` — Hero booking bar**
+- Move the booking bar OUT of its current position below the hero card. Place it inside the hero as an absolutely-positioned element pinned to the bottom (`absolute bottom-8 lg:bottom-10 inset-x-0`) so it's visible within the viewport.
+- Reduce hero min-height slightly (`min-h-[92svh]`) so nav + hero + booking bar all fit above the fold on a laptop.
+- Restyle bar as liquid glass:
+  - `bg-white/25 backdrop-blur-2xl backdrop-saturate-150`
+  - `border border-white/40`
+  - Inner top highlight: pseudo-gradient overlay `bg-gradient-to-b from-white/40 to-transparent` at ~30% height
+  - `shadow-[0_20px_60px_-20px_rgba(0,0,0,0.25)]`
+  - Field pills switch from `bg-primary-soft/60` → `bg-white/35 backdrop-blur border border-white/50`
+  - Book Now button keeps solid teal for contrast.
 
-**`src/components/site/Header.tsx` — Overlay nav**
-- Make the header `absolute top-0 inset-x-0 z-50` (over the hero) instead of sitting in normal flow.
-- Keep the floating pill style; add a subtle backdrop so it stays readable over the image.
-- Only overlay on the home route — on other routes keep it as a normal sticky header. Use `useRouterState` to detect `pathname === "/"` and toggle the positioning class.
+**`src/components/site/Header.tsx` — Liquid-glass nav**
+- Replace solid `bg-white` with:
+  - `bg-white/30 backdrop-blur-2xl backdrop-saturate-150`
+  - `border border-white/50`
+  - `shadow-[0_20px_50px_-20px_rgba(20,80,80,0.35)]`
+  - Add a subtle inner highlight via `before:` pseudo (top gradient sheen).
+- Keep the pill shape, logo, and links. Ensure text stays readable — bump inactive links to `text-foreground/80`.
+- Mobile menu panel also gets the same glass treatment.
 
-**`src/routes/__root.tsx`**
-- Remove any top padding/margin that would push the hero below the header on `/`, so the hero truly starts at viewport top.
+**Tailwind v4 note**
+- Use only standard `backdrop-filter` utilities (no hand-written `-webkit-` prefixes) per the build-time dedup rule.
 
 ## Out of scope
-Header links, booking bar fields, backend wiring, other pages, styles.css tokens.
+Hero image, headline copy, buttons in text block, other sections, backend wiring.
