@@ -64,7 +64,7 @@ export function Header() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-2">
+          <div className="relative flex items-center gap-2">
             <Link
               to="/booking"
               className="hidden sm:inline-flex items-center rounded-full bg-primary text-primary-foreground px-5 py-2.5 text-sm font-semibold hover:bg-accent transition-colors"
