@@ -76,77 +76,76 @@ function Hero() {
   };
 
   return (
-    <section className="relative pt-6 pb-32 lg:pb-40">
-      <div className="container-x">
-        <div
-          className="relative overflow-hidden rounded-[2.5rem] border border-primary/20 min-h-[560px] lg:min-h-[640px]"
+    <section className="relative pb-32 lg:pb-40">
+      <div
+        className="relative overflow-hidden border-b border-primary/20 min-h-[100svh]"
+        style={{
+          background:
+            "linear-gradient(135deg, color-mix(in oklab, var(--primary) 22%, white), color-mix(in oklab, var(--primary) 10%, white) 55%, white)",
+        }}
+      >
+        {/* Doctor image, right half, feathered into the mint bg */}
+        <img
+          src={heroDoctor}
+          alt="Nupun doctor consulting a patient"
+          className="hidden lg:block absolute right-0 top-0 h-full w-[62%] object-cover object-left"
           style={{
-            background:
-              "linear-gradient(135deg, color-mix(in oklab, var(--primary) 22%, white), color-mix(in oklab, var(--primary) 10%, white) 55%, white)",
+            WebkitMaskImage:
+              "linear-gradient(to right, transparent 0%, black 18%, black 100%)",
+            maskImage:
+              "linear-gradient(to right, transparent 0%, black 18%, black 100%)",
           }}
-        >
-          {/* Doctor image, right half, feathered into the mint bg */}
-          <img
-            src={heroDoctor}
-            alt="Nupun doctor consulting a patient"
-            className="hidden lg:block absolute right-0 top-0 h-full w-[58%] object-cover object-left"
-            style={{
-              WebkitMaskImage:
-                "linear-gradient(to right, transparent 0%, black 18%, black 100%)",
-              maskImage:
-                "linear-gradient(to right, transparent 0%, black 18%, black 100%)",
-            }}
-          />
-          {/* Mobile: image below text */}
-          <img
-            src={heroDoctor}
-            alt=""
-            aria-hidden
-            className="lg:hidden absolute inset-x-0 bottom-0 h-1/2 w-full object-cover"
-            style={{
-              WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 40%)",
-              maskImage: "linear-gradient(to bottom, transparent 0%, black 40%)",
-            }}
-          />
+        />
+        {/* Mobile: image below text */}
+        <img
+          src={heroDoctor}
+          alt=""
+          aria-hidden
+          className="lg:hidden absolute inset-x-0 bottom-0 h-1/2 w-full object-cover"
+          style={{
+            WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 40%)",
+            maskImage: "linear-gradient(to bottom, transparent 0%, black 40%)",
+          }}
+        />
 
-          {/* Content layer */}
-          <div className="relative px-6 py-14 lg:px-14 lg:py-20 min-h-[560px] lg:min-h-[640px] flex items-center">
-            <div className="max-w-md">
-              <Reveal>
-                <h1 className="font-sans text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.02] text-foreground">
-                  Your Health,
-                  <br />
-                  Our Priority
-                </h1>
-              </Reveal>
-              <Reveal delay={0.1}>
-                <p className="mt-6 max-w-sm text-lg text-foreground/75 leading-relaxed">
-                  Compassionate care for you and your family — verified nurses and hospital-grade equipment, delivered home.
-                </p>
-              </Reveal>
-              <Reveal delay={0.15}>
-                <div className="mt-8 flex flex-wrap items-center gap-3">
-                  <Link
-                    to="/booking"
-                    className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3.5 text-sm font-semibold hover:bg-accent transition-colors"
-                  >
-                    Book Appointment <ArrowRight className="h-4 w-4" />
-                  </Link>
-                  <Link
-                    to="/services"
-                    className="inline-flex items-center gap-2 rounded-full border border-foreground/15 bg-white/70 backdrop-blur px-6 py-3.5 text-sm font-medium hover:border-primary"
-                  >
-                    Explore services
-                  </Link>
-                </div>
-              </Reveal>
-            </div>
+        {/* Content layer */}
+        <div className="relative px-6 pt-32 pb-14 lg:px-16 lg:pt-40 lg:pb-24 min-h-[100svh] flex items-center">
+          <div className="max-w-md lg:max-w-lg lg:ml-8 xl:ml-20">
+            <Reveal>
+              <h1 className="font-sans text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.02] text-foreground">
+                Your Health,
+                <br />
+                Our Priority
+              </h1>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <p className="mt-6 max-w-sm text-lg text-foreground/75 leading-relaxed">
+                Compassionate care for you and your family — verified nurses and hospital-grade equipment, delivered home.
+              </p>
+            </Reveal>
+            <Reveal delay={0.15}>
+              <div className="mt-8 flex flex-wrap items-center gap-3">
+                <Link
+                  to="/booking"
+                  className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3.5 text-sm font-semibold hover:bg-accent transition-colors"
+                >
+                  Book Appointment <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link
+                  to="/services"
+                  className="inline-flex items-center gap-2 rounded-full border border-foreground/15 bg-white/70 backdrop-blur px-6 py-3.5 text-sm font-medium hover:border-primary"
+                >
+                  Explore services
+                </Link>
+              </div>
+            </Reveal>
           </div>
         </div>
+      </div>
 
-
-        {/* Floating booking bar */}
-        <div className="relative -mt-14 lg:-mt-16 mx-2 lg:mx-10 z-10">
+      {/* Floating booking bar */}
+      <div className="container-x">
+        <div className="relative -mt-14 lg:-mt-16 z-10">
           <div className="rounded-[1.75rem] bg-white border border-border shadow-[var(--shadow-elegant)] p-4 lg:p-5 grid gap-3 md:grid-cols-[1fr_1fr_1fr_auto] md:items-end">
             <BookField label="Service">
               <select

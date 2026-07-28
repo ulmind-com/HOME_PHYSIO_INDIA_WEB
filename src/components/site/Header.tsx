@@ -22,8 +22,10 @@ export function Header() {
 
   useEffect(() => setOpen(false), [pathname]);
 
+  const isHome = pathname === "/";
+
   return (
-    <header className="sticky top-4 z-50">
+    <header className={cn(isHome ? "absolute top-4 inset-x-0 z-50" : "sticky top-4 z-50")}>
       <div className="container-x">
         <div
           className={cn(
