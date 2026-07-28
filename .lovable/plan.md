@@ -1,42 +1,52 @@
-## Goal
-Redesign the service cards in the "Care that meets you where you are." section (and reused elsewhere) to feel ultra-premium, image-forward, and editorial — while staying fully wired to the admin panel via the existing `servicesQ` API and `service.featured_image`.
+# Services Page — Ultra Premium Redesign
 
-## Scope
-- File: `src/components/site/cards/ServiceCard.tsx` (only)
-- No API, no route, no data changes. Cards keep pulling `title`, `slug`, `featured_image`, `category_name`, `short_description`, `price`, `price_unit` from the backend exactly as today.
+Reference direction (Aroha) noted, but we go **different**: editorial + luxury-medical, not stat-block + card-grid. Backend/admin data (`servicesQ`) stays the source of truth — nothing hardcoded.
 
-## New card design (image-forward, luxury medical)
-Layout: tall rounded card (`rounded-[2rem]`), full-bleed image top, editorial content block below, refined footer.
+## Visual direction
 
-1. Media block (top, ~aspect 4/5)
-   - Full-bleed `featured_image` with slow zoom on hover (scale 1.06, 900ms ease).
-   - Subtle gradient scrim from bottom for legibility.
-   - Floating category chip top-left: frosted glass pill (`bg-white/70 backdrop-blur-md`), tiny uppercase tracked label.
-   - Floating price chip top-right when `price` exists: glass pill with `₹{price}` and unit in muted tone.
-   - Fallback (no image): soft mint gradient with a large mono-line heart/stethoscope glyph and faint grain — still feels premium.
+- **Split editorial hero** (replaces `PageHero`): left = huge serif headline "Care, engineered around your life.", eyebrow, short paragraph, twin CTAs (Book a consult / Talk to advisor). Right = a stacked "proof column" with three micro-cards (24/7 · Verified · 2‑hr replacement) as glass tiles — lifted, not the flat peach blocks in the reference.
+- **Mint→ivory gradient background** with soft radial glows; a thin hairline divider marks section transitions (no heavy peach bands).
+- **Sticky category rail** just under hero: pill filters generated from distinct `service.category` values coming from the API. Clicking filters the grid in place with Framer Motion layout animation.
 
-2. Content block (below image, generous padding `p-7`)
-   - `h3` title in display serif, tighter tracking, 2-line clamp.
-   - `short_description` in muted tone, 2-line clamp, refined leading.
-   - Thin hairline divider (`border-t border-border/60`) before footer.
+## Services showcase (the hero of the page)
 
-3. Footer row
-   - Left: "Learn more" micro-label in accent color.
-   - Right: circular arrow button that rotates 45° and shifts to primary on hover (kept from current design but refined size 10x10, primary bg on hover).
+Replace the uniform 3-col grid with a **bento/asymmetric layout**:
 
-4. Card shell polish
-   - Base: `bg-surface`, `border border-border/70`, `shadow-[0_1px_0_rgba(0,0,0,0.02)]`.
-   - Hover: lift (`-translate-y-1`), softer premium shadow (`0_30px_60px_-30px_color-mix(in_oklab,var(--primary)_35%,transparent)`), border shifts to `primary/40`.
-   - Focus-visible ring using `--ring`.
-   - Motion: all transitions 500-700ms `ease-out`; respects `prefers-reduced-motion` (Tailwind's `motion-reduce:` variants disable transform/scale).
+```text
+┌─────────────────┬───────────┐
+│  FEATURED (2x)  │  standard │
+│  large image    ├───────────┤
+│  overlay title  │  standard │
+├───────┬─────────┴───────────┤
+│ std   │  WIDE (2 cols)      │
+├───────┼─────────┬───────────┤
+│ std   │  std    │  std      │
+└───────┴─────────┴───────────┘
+```
 
-## Where it applies (automatically, no other edits)
-- Home "Care that meets you where you are." grid (uses `ServiceCard`).
-- `/services` index grid (same component).
+- First item = large featured tile (image full-bleed, gradient scrim, title + 2-line desc + price chip overlaid).
+- Every 5th item = wide 2-col tile (image left, content right).
+- Rest = compact tiles reusing existing `ServiceCard` (already redesigned, compact).
+- Hover: image `scale-[1.04]`, glass chip lifts, arrow slides — motion-safe.
 
-## Non-goals
-- Not touching Equipment/Blog/Video cards.
-- Not adding new data fields or image generation — real admin-uploaded `featured_image` drives the look.
+## New sections below the grid
 
-## Verification
-- Read updated file, curl `/` and `/services` for HTTP 200, screenshot home services grid at desktop and mobile via Playwright to confirm image-forward layout and hover polish render correctly with live data.
+1. **"How care arrives" — 4-step horizontal timeline** (Enquire → Assess → Match → Care) with numbered serif numerals, hairline connector, no boxes. Static copy.
+2. **"Trusted by families across India" — testimonial marquee** pulling from `testimonialsQ` if available, otherwise hidden (no fake data).
+3. **CTA band** — dark teal, serif headline "Not sure which service fits?", inline advisor form → posts to existing contact endpoint (reuse `ContactForm` in compact mode). No new backend.
+
+## Technical
+
+- Edit `src/routes/services.index.tsx` only; add a small `src/components/site/services/ServicesBento.tsx` for the asymmetric layout logic (takes `items[]`, decides tile size by index).
+- Category filter = `useMemo` over `items.map(i => i.category)`, `useState` for active filter, `AnimatePresence` + `layout` on the bento container.
+- Reuse existing `ServiceCard` for standard tiles; create inline `FeaturedServiceTile` + `WideServiceTile` variants in the same new file (all consume the same `Service` type).
+- Colors/typography via existing tokens (`--color-primary`, `--color-accent`, Fraunces/Inter). No hardcoded hexes.
+- Loading = shimmer tiles matching the bento shape (not a plain 3-col grid).
+- Empty state kept, restyled to match.
+- Admin/backend connection unchanged — all content comes from `servicesQ`, including `featured_image`, `title`, `short_description`, `category`, `price`, `slug`.
+
+## Out of scope
+
+- No changes to `ServiceCard.tsx` (already compact per your last request).
+- No changes to header, home, or other routes.
+- No new API endpoints; no mock data.
