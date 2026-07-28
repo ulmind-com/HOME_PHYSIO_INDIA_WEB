@@ -18,14 +18,23 @@ const MOBILE_EXTRA = [
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   useEffect(() => setOpen(false), [pathname]);
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   const isHome = pathname === "/";
+  const overlay = isHome && !scrolled;
 
   return (
-    <header className={cn(isHome ? "absolute top-4 inset-x-0 z-50" : "sticky top-4 z-50")}>
+    <header className={cn("z-50 inset-x-0", overlay ? "absolute top-4" : "fixed top-4")}>
       <div className="container-x">
         <div
           className={cn(
