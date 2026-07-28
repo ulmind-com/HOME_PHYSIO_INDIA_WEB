@@ -82,7 +82,7 @@ export function Header() {
         </div>
 
         {open && (
-          <div className="lg:hidden mt-2 rounded-3xl bg-white border border-border shadow-[var(--shadow-soft)]">
+          <div className="lg:hidden mt-2 rounded-3xl bg-white/30 backdrop-blur-2xl backdrop-saturate-150 border border-white/50 shadow-[0_20px_50px_-20px_rgba(15,80,80,0.35)]">
             <div className="py-3 px-3 grid gap-1">
               {[...NAV, ...MOBILE_EXTRA].map((item) => (
                 <Link
