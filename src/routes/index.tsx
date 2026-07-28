@@ -78,15 +78,26 @@ function Hero() {
   return (
     <section className="relative pt-6 pb-32 lg:pb-40">
       <div className="container-x">
-        <div
-          className="relative overflow-hidden rounded-[2.5rem] border border-primary/20 px-6 py-12 lg:px-14 lg:py-16"
-          style={{
-            background:
-              "linear-gradient(135deg, color-mix(in oklab, var(--primary) 22%, white), color-mix(in oklab, var(--primary) 10%, white) 60%, white)",
-          }}
-        >
-          <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
-            <div>
+        <div className="relative overflow-hidden rounded-[2.5rem] border border-primary/20 min-h-[560px] lg:min-h-[640px]">
+          {/* Full-bleed background image */}
+          <img
+            src={heroDoctor}
+            alt="Nupun doctor consulting a patient"
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+          {/* Readability overlay */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(90deg, color-mix(in oklab, var(--primary-soft) 96%, transparent) 0%, color-mix(in oklab, var(--primary-soft) 70%, transparent) 40%, color-mix(in oklab, var(--primary-soft) 10%, transparent) 70%, transparent 100%)",
+            }}
+          />
+          <div className="absolute inset-0 lg:hidden bg-black/20" />
+
+          {/* Content layer */}
+          <div className="relative px-6 py-14 lg:px-14 lg:py-20 min-h-[560px] lg:min-h-[640px] flex items-center">
+            <div className="max-w-xl">
               <Reveal>
                 <h1 className="font-sans text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.02] text-foreground">
                   Your Health,
@@ -95,7 +106,7 @@ function Hero() {
                 </h1>
               </Reveal>
               <Reveal delay={0.1}>
-                <p className="mt-6 max-w-md text-lg text-foreground/70 leading-relaxed">
+                <p className="mt-6 max-w-md text-lg text-foreground/75 leading-relaxed">
                   Compassionate care for you and your family — verified nurses, physiotherapists
                   and hospital-grade equipment, delivered to your home.
                 </p>
@@ -110,30 +121,13 @@ function Hero() {
                   </Link>
                   <Link
                     to="/services"
-                    className="inline-flex items-center gap-2 rounded-full border border-foreground/15 bg-white/60 px-6 py-3.5 text-sm font-medium hover:border-primary"
+                    className="inline-flex items-center gap-2 rounded-full border border-foreground/15 bg-white/70 backdrop-blur px-6 py-3.5 text-sm font-medium hover:border-primary"
                   >
                     Explore services
                   </Link>
                 </div>
               </Reveal>
             </div>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="relative"
-            >
-              <div className="relative aspect-square w-full max-w-[520px] mx-auto overflow-hidden rounded-[2rem] shadow-[var(--shadow-elegant)]">
-                <img
-                  src={heroDoctor}
-                  alt="Nupun doctor consulting a patient"
-                  width={1200}
-                  height={1200}
-                  className="h-full w-full object-cover"
-                />
-              </div>
-            </motion.div>
           </div>
         </div>
 
@@ -184,6 +178,7 @@ function Hero() {
     </section>
   );
 }
+
 
 function BookField({
   label,
