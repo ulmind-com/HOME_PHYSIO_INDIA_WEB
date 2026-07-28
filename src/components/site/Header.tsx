@@ -29,10 +29,12 @@ export function Header() {
       <div className="container-x">
         <div
           className={cn(
-            "flex h-16 items-center justify-between gap-4 rounded-full bg-white pl-3 pr-3 lg:h-[68px] lg:pl-6 lg:pr-2",
-            "shadow-[0_10px_40px_-18px_color-mix(in_oklab,var(--accent)_35%,transparent)] border border-border/60",
+            "relative overflow-hidden flex h-16 items-center justify-between gap-4 rounded-full pl-3 pr-3 lg:h-[68px] lg:pl-6 lg:pr-2",
+            "bg-white/30 backdrop-blur-2xl backdrop-saturate-150 border border-white/50",
+            "shadow-[0_20px_50px_-20px_rgba(15,80,80,0.35)]",
           )}
         >
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/50 to-transparent rounded-full" />
           <Link to="/" className="flex items-center gap-2.5 shrink-0">
             <div className="relative h-9 w-9 rounded-xl bg-gradient-to-br from-primary to-accent grid place-items-center">
               <svg viewBox="0 0 24 24" className="h-5 w-5 text-white" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden>
