@@ -1,4 +1,4 @@
-export const API_BASE = "https://nupun-health-backend.onrender.com/api/v1";
+export const API_BASE = "/api/public/proxy";
 
 export type Envelope<T> = {
   success: boolean;
