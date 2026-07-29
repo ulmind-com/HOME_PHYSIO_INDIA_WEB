@@ -368,16 +368,12 @@ function FaqSection() {
     <Section className="bg-[#F8F9FA]">
       <div className="grid gap-12 lg:grid-cols-2 items-start">
         {/* Left Side: Illustration (No Animation) */}
-        <div className="relative">
-          {/* Decorative background blob/arch behind image */}
-          <div className="absolute -inset-4 bg-[#E8E1DF] rounded-[4rem] rounded-tr-[10rem] -z-10 transform -rotate-2"></div>
-          <div className="relative rounded-[3rem] rounded-tr-[8rem] overflow-hidden aspect-[4/5] shadow-xl">
-            <img 
-              src="/assets/faq-illustration.jpeg" 
-              alt="Telemedicine Consultation" 
-              className="w-full h-full object-cover"
-            />
-          </div>
+        <div className="flex items-center justify-center lg:justify-end pr-0 lg:pr-8">
+          <img 
+            src="/assets/faq-illustration.jpeg" 
+            alt="Telemedicine Consultation" 
+            className="w-[85%] md:w-[70%] lg:w-[85%] max-w-md h-auto mix-blend-multiply"
+          />
         </div>
 
         {/* Right Side: FAQs (Animated) */}
