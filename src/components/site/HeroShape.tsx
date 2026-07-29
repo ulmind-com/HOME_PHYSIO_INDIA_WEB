@@ -19,10 +19,11 @@ export function HeroShape({ imageUrl, className, alt = "" }: HeroShapeProps) {
   const uid = useId().replace(/:/g, "");
   const clipId = `heroClip-${uid}`;
 
-  // viewBox 0 0 600 600 — leaning trapezoid with softly rounded corners (r≈24)
-  // Corners: TL(60,0) TR(600,0) BR(600,520) BL(0,600)
+  // Reference-matched: soft TL, big TR (~40), straight right, small BR (~20),
+  // diagonal bottom, large sweeping BL (~60), near-vertical leaning left edge.
   const shapePath =
-    "M84 0 H576 A24 24 0 0 1 600 24 V496 A24 24 0 0 1 578.4 519.9 L21.6 599.5 A24 24 0 0 1 0 575.7 V84 A24 24 0 0 1 22.6 60.1 Z";
+    "M40 24 A24 24 0 0 1 64 0 H560 A40 40 0 0 1 600 40 V500 A20 20 0 0 1 582 519.9 L80 599 A60 60 0 0 1 16 543 V84 Q16 60 40 48 Z";
+
 
 
   return (
