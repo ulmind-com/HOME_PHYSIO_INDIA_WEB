@@ -22,6 +22,7 @@ import { Section, SectionHeader } from "@/components/site/Section";
 import { Reveal } from "@/components/site/Reveal";
 import { FaqAccordion } from "@/components/site/FaqAccordion";
 import { ServiceCardPro } from "@/components/site/cards/ServiceCardPro";
+import { VideoTestimonialsSection } from "@/components/site/VideoTestimonialsSection";
 
 export const Route = createFileRoute("/services/")({
   head: () => ({
