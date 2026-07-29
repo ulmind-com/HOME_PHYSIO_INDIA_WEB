@@ -59,6 +59,7 @@ export function VideoCard({ v, onPlay, aspect, variant = "default" }: Props) {
         </>
       ) : src ? (
         <video
+          ref={videoRef}
           src={src}
           preload="metadata"
           muted
