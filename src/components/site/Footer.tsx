@@ -10,18 +10,21 @@ export function Footer() {
   const name = settings?.website_name ?? "Nupun Home Health Care";
 
   return (
-    <footer className="relative mt-24 overflow-hidden bg-[#F4F4F5] pt-24 pb-8 sm:pt-32">
-      {/* Background Image with Gradient Overlay */}
-      <div className="absolute inset-0 z-0">
+    <footer className="relative mt-24 bg-[#F2F0EC] pt-24 pb-0 sm:pt-32 flex flex-col">
+      {/* Background Image at the bottom half */}
+      <div className="absolute inset-x-0 bottom-0 h-[70%] z-0 pointer-events-none">
         <img 
           src="/assets/hero-slide-2.jpeg" 
           alt="" 
-          className="w-full h-full object-cover object-[center_30%] opacity-[0.35] mix-blend-luminosity"
+          className="w-full h-full object-cover object-[center_30%]"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#F4F4F5] via-[#F4F4F5]/60 to-[#F4F4F5]"></div>
+        {/* Fade out the top of the image to blend into the solid background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#F2F0EC] via-[#F2F0EC]/60 to-transparent h-[40%]"></div>
+        {/* Darken/tint the image slightly so white text pops */}
+        <div className="absolute inset-0 bg-black/10 mix-blend-multiply"></div>
       </div>
 
-      <div className="container-x relative z-10 flex flex-col justify-between">
+      <div className="container-x relative z-10 flex flex-col justify-between flex-grow">
         <div className="grid gap-16 lg:grid-cols-12">
           
           {/* Left Column (Brand & CTA) */}
@@ -45,13 +48,17 @@ export function Footer() {
 
             <Link
               to="/booking"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-black px-6 py-3.5 text-sm font-medium text-white shadow-xl shadow-black/10 hover:bg-black/80 hover:-translate-y-0.5 transition-all duration-300"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-black px-6 py-3.5 text-sm font-semibold text-white shadow-xl shadow-black/10 hover:bg-black/80 hover:-translate-y-0.5 transition-all duration-300"
             >
               Book an Appointment
             </Link>
 
-            <div className="mt-16 text-sm text-muted-foreground flex items-center gap-1.5">
-              Built with <Heart className="h-4 w-4 text-rose-500 fill-rose-500" /> by Ulmind
+            <div className="mt-12 text-[13px] text-muted-foreground/80 font-medium">
+              © {new Date().getFullYear()} {name} - All rights reserved
+            </div>
+
+            <div className="mt-4 text-[13px] text-muted-foreground flex items-center gap-1.5 font-medium">
+              Built with <Heart className="h-3.5 w-3.5 text-rose-500 fill-rose-500" /> by Ulmind
             </div>
           </div>
 
@@ -82,24 +89,15 @@ export function Footer() {
             </FooterCol>
           </div>
         </div>
-
-        <div className="mt-20 border-t border-black/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
-          <div>© {new Date().getFullYear()} {name} - All rights reserved</div>
-          <div className="flex gap-6">
-            {social?.facebook && <a href={social.facebook} className="hover:text-primary transition-colors">Facebook</a>}
-            {social?.instagram && <a href={social.instagram} className="hover:text-primary transition-colors">Instagram</a>}
-            {social?.linkedin && <a href={social.linkedin} className="hover:text-primary transition-colors">LinkedIn</a>}
-          </div>
-        </div>
       </div>
 
-      {/* Massive Brand Typography at the Bottom */}
-      <div className="pointer-events-none absolute bottom-0 left-0 right-0 overflow-hidden flex justify-center translate-y-[20%] z-0">
-        <h1 className="font-display text-[25vw] leading-none font-bold tracking-tighter text-black/[0.05] select-none whitespace-nowrap">
+      {/* Massive Brand Typography at the Bottom over the image */}
+      <div className="relative z-10 w-full overflow-hidden flex justify-center pt-32 pb-4 pointer-events-none">
+        <h1 className="font-display text-[26vw] leading-[0.75] font-bold tracking-tighter text-white drop-shadow-2xl select-none whitespace-nowrap opacity-90">
           Nupun
         </h1>
-        {/* Gradient fade to seamlessly blend with the bottom edge */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#F4F4F5]/30 to-[#F4F4F5]"></div>
+        {/* Gradient fade at the absolute bottom to blend everything out */}
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#EAEAEA] to-transparent"></div>
       </div>
     </footer>
   );
