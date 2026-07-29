@@ -61,7 +61,7 @@ export function AboutWelcomeSection() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: "-100px" }}
-            className="order-2 lg:order-1"
+            className="order-2"
           >
             <motion.div
               variants={fadeUp}
@@ -129,11 +129,11 @@ export function AboutWelcomeSection() {
 
           {/* Image card */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.96, x: 40 }}
+            initial={{ opacity: 0, scale: 0.96, x: -40 }}
             whileInView={{ opacity: 1, scale: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            className="relative order-1 lg:order-2"
+            className="relative order-1"
           >
             <div className="relative aspect-[4/3] overflow-hidden rounded-[2.5rem] shadow-float lg:aspect-[4/3.2]">
               <img
@@ -152,7 +152,7 @@ export function AboutWelcomeSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.4, duration: 0.6 }}
-              className="glass absolute -bottom-6 -left-6 max-w-[200px] rounded-2xl p-4 shadow-soft lg:-left-10"
+              className="glass absolute -bottom-6 -right-6 max-w-[200px] rounded-2xl p-4 shadow-soft lg:-right-10"
             >
               <div className="flex items-center gap-3">
                 <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
@@ -171,7 +171,7 @@ export function AboutWelcomeSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.55, duration: 0.6 }}
-              className="glass absolute -right-2 -top-4 rounded-2xl p-3 shadow-soft lg:-right-6"
+              className="glass absolute -left-2 -top-4 rounded-2xl p-3 shadow-soft lg:-left-6"
             >
               <div className="flex items-center gap-2.5">
                 <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-accent text-accent-foreground">
@@ -185,7 +185,7 @@ export function AboutWelcomeSection() {
             </motion.div>
 
             {/* Floating ring decoration */}
-            <div className="absolute -right-4 -top-4 h-20 w-20 animate-pulse-ring rounded-full border-2 border-primary/20" />
+            <div className="absolute -left-4 -top-4 h-20 w-20 animate-pulse-ring rounded-full border-2 border-primary/20" />
           </motion.div>
         </div>
       </div>
