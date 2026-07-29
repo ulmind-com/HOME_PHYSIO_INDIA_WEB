@@ -1,17 +1,52 @@
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Section } from "@/components/site/Section";
 import { settingsQ } from "@/lib/api/queries";
 
-const DEFAULT_MAIN = "/assets/categories/elder.jpg";
-const DEFAULT_INSET = "/assets/categories/nursing.jpg";
+type PeopleTile = {
+  image: string;
+  count: string;
+  title: string;
+  desc: string;
+  ctaLabel: string;
+  ctaHref: string;
+};
 
-const DEFAULT_HOURS = [
-  { day: "Mon – Fri", hours: "09:30 – 19:30" },
-  { day: "Saturday", hours: "10:30 – 17:00" },
-  { day: "Sunday", hours: "Closed" },
+const DEFAULT_TILES: PeopleTile[] = [
+  {
+    image: "/assets/equipment/ultrasound.jpeg",
+    count: "120+",
+    title: "Registered Nurses",
+    desc: "Round-the-clock bedside care",
+    ctaLabel: "Meet the nurses",
+    ctaHref: "/about",
+  },
+  {
+    image: "/assets/equipment/monitoring-1.jpeg",
+    count: "45",
+    title: "Physiotherapists",
+    desc: "In-home rehab & recovery",
+    ctaLabel: "Book a session",
+    ctaHref: "/booking",
+  },
+  {
+    image: "/assets/equipment/anesthesiology.jpeg",
+    count: "30",
+    title: "Doctors on panel",
+    desc: "Specialist consults on call",
+    ctaLabel: "Consult a doctor",
+    ctaHref: "/booking",
+  },
+  {
+    image: "/assets/equipment/monitoring-2.jpeg",
+    count: "200+",
+    title: "Care attendants",
+    desc: "Daily-living support at home",
+    ctaLabel: "Get an attendant",
+    ctaHref: "/booking",
+  },
 ];
 
 const FEATURES = [
@@ -32,15 +67,42 @@ const FEATURES = [
   },
 ];
 
+// Grid order: TR, TL, BR, BL — sweep reads right → left
+const REVEAL_ORDER = [1, 0, 3, 2];
+
+const gridVariants: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.18 } },
+};
+
+const tileVariants: Variants = {
+  hidden: { opacity: 0, x: 80 },
+  show: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+const overlayVariants: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08, delayChildren: 0.25 } },
+};
+
+const overlayItem: Variants = {
+  hidden: { opacity: 0, y: 12 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
+};
+
 export function ProfessionalsSection() {
   const { data: settings } = useQuery(settingsQ());
-  const hours = settings?.working_hours?.length ? settings.working_hours : DEFAULT_HOURS;
+  const tiles: PeopleTile[] =
+    (settings as unknown as { people_tiles?: PeopleTile[] })?.people_tiles?.length
+      ? (settings as unknown as { people_tiles: PeopleTile[] }).people_tiles
+      : DEFAULT_TILES;
 
   return (
     <Section className="relative overflow-hidden">
-      {/* Decorative background */}
-      <DecorBackdrop />
-
       <div className="relative grid gap-14 lg:grid-cols-2 lg:gap-20 items-center">
         {/* LEFT — copy + features */}
         <div>
@@ -116,111 +178,76 @@ export function ProfessionalsSection() {
           </motion.div>
         </div>
 
-        {/* RIGHT — layered images */}
-        <div className="relative mx-auto w-full max-w-[560px] lg:mx-0">
-          <div className="relative aspect-[4/5]">
-            {/* Main tall image (right, bottom) */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7 }}
-              className="absolute right-0 bottom-0 w-[72%] h-[86%] overflow-hidden rounded-[2.5rem] border border-primary/10 shadow-[var(--shadow-elegant)]"
-            >
-              <img
-                src={DEFAULT_MAIN}
-                alt="Nupun caregiver attending an elderly patient"
-                className="h-full w-full object-cover"
-                loading="lazy"
-              />
-              <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/20 rounded-[2.5rem]" />
-            </motion.div>
-
-            {/* Inset card top-left */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.15 }}
-              className="absolute left-0 top-0 w-[54%] rounded-[2rem] overflow-hidden shadow-[var(--shadow-elegant)] border border-primary/10 bg-surface"
-            >
-              <div className="aspect-[4/5]">
-                <img
-                  src={DEFAULT_INSET}
-                  alt="Nupun nurse ready for a home visit"
-                  className="h-full w-full object-cover"
-                  loading="lazy"
-                />
-              </div>
-              <div className="bg-dark text-white text-center py-3 text-[11px] tracking-[0.28em] uppercase font-medium">
-                Video Call Support
-              </div>
-            </motion.div>
-
-            {/* Opening hours floating card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="absolute -right-2 -bottom-4 w-[60%] max-w-[300px]"
-            >
-              <motion.div
-                animate={{ y: [0, -6, 0] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                className="relative rounded-3xl p-6 text-white shadow-[var(--shadow-elegant)]"
-                style={{ background: "linear-gradient(135deg, var(--primary), var(--accent))" }}
+        {/* RIGHT — 2×2 image tiles */}
+        <motion.div
+          variants={gridVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.3 }}
+          className="grid grid-cols-2 gap-4 sm:gap-5"
+        >
+          {REVEAL_ORDER.map((idx, position) => {
+            const t = tiles[idx];
+            if (!t) return null;
+            // Give bottom row a slight vertical offset for editorial feel
+            const offset = position >= 2 ? "sm:mt-6" : "";
+            return (
+              <motion.article
+                key={t.title}
+                variants={tileVariants}
+                className={`group relative overflow-hidden rounded-3xl border border-primary/10 shadow-[var(--shadow-elegant)] ${offset}`}
+                style={{ order: idx }}
               >
-                <div className="absolute -top-5 right-5 grid h-11 w-11 place-items-center rounded-full bg-dark text-white shadow-lg">
-                  <ClockGlyph className="h-5 w-5" />
+                <div className="aspect-[4/5] w-full">
+                  <img
+                    src={t.image}
+                    alt={t.title}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
                 </div>
-                <div className="font-display text-xl mb-4">Opening Hours</div>
-                <ul className="space-y-2 text-sm">
-                {hours.slice(0, 3).map((h) => (
-                  <li key={h.day} className="flex items-center justify-between gap-4">
-                    <span className="text-white/80">{h.day}</span>
-                    <span className="font-medium">{h.hours}</span>
-                  </li>
-                ))}
-              </ul>
-              </motion.div>
-            </motion.div>
-          </div>
-        </div>
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent" />
+                <motion.div
+                  variants={overlayVariants}
+                  className="absolute inset-x-0 bottom-0 p-4 sm:p-5 text-white"
+                >
+                  <motion.div variants={overlayItem}>
+                    <span className="inline-flex items-center rounded-full bg-white/15 backdrop-blur-md border border-white/25 px-2.5 py-0.5 text-[11px] font-medium tracking-wide">
+                      {t.count}
+                    </span>
+                  </motion.div>
+                  <motion.h3
+                    variants={overlayItem}
+                    className="mt-2 font-display text-lg leading-tight"
+                  >
+                    {t.title}
+                  </motion.h3>
+                  <motion.p
+                    variants={overlayItem}
+                    className="mt-1 text-[11px] text-white/85 leading-snug"
+                  >
+                    {t.desc}
+                  </motion.p>
+                  <motion.div variants={overlayItem} className="mt-3 pointer-events-auto">
+                    <Link
+                      to={t.ctaHref}
+                      className="inline-flex items-center gap-1.5 rounded-full bg-white/95 text-foreground px-3 py-1.5 text-[11px] font-medium hover:bg-primary hover:text-primary-foreground transition-colors"
+                    >
+                      {t.ctaLabel}
+                      <ArrowRight className="h-3 w-3" />
+                    </Link>
+                  </motion.div>
+                </motion.div>
+              </motion.article>
+            );
+          })}
+        </motion.div>
       </div>
     </Section>
   );
 }
 
-/* ---------- Decorative backdrop ---------- */
-function DecorBackdrop() {
-  return (
-    <svg
-      aria-hidden
-      className="pointer-events-none absolute -right-24 top-10 w-[720px] max-w-[70%] opacity-[0.35]"
-      viewBox="0 0 600 600"
-      fill="none"
-    >
-      <defs>
-        <radialGradient id="proBlob" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.35" />
-          <stop offset="100%" stopColor="var(--primary)" stopOpacity="0" />
-        </radialGradient>
-      </defs>
-      <path
-        d="M420 90c70 30 130 100 130 190s-40 170-120 220-190 40-260-20-100-160-60-250S250 30 340 40s80 50 80 50z"
-        fill="url(#proBlob)"
-      />
-      <g stroke="var(--primary)" strokeOpacity="0.25" fill="none">
-        <circle cx="300" cy="300" r="120" />
-        <circle cx="300" cy="300" r="180" strokeDasharray="2 8" />
-        <circle cx="300" cy="300" r="240" strokeDasharray="1 12" />
-      </g>
-    </svg>
-  );
-}
-
-/* ---------- Custom SVG icons (hand-crafted, unique) ---------- */
+/* ---------- Custom SVG icons ---------- */
 function HeartPulseIcon({ className = "" }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -245,14 +272,6 @@ function ClockShieldIcon({ className = "" }: { className?: string }) {
       <path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5l-8-3Z" />
       <circle cx="12" cy="12" r="3.5" />
       <path d="M12 10v2.5l1.5 1" />
-    </svg>
-  );
-}
-function ClockGlyph({ className = "" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="9" />
-      <path d="M12 7v5l3 2" />
     </svg>
   );
 }
