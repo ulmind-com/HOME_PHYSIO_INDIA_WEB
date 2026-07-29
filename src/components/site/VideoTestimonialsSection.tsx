@@ -66,7 +66,7 @@ export function VideoTestimonialsSection() {
                 className={"grid gap-5 " + (perPage === 2 ? "sm:grid-cols-2" : "grid-cols-1")}
               >
                 {current.map((v) => (
-                  <VideoCard key={v.id} v={v} onPlay={setPlaying} variant="testimonial" aspect="16/9" />
+                  <VideoCard key={v.id} v={v} onPlay={setPlaying} variant="testimonial" aspect="9/16" />
                 ))}
               </motion.div>
             </AnimatePresence>
