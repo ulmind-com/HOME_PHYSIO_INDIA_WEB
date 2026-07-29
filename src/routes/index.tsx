@@ -12,7 +12,7 @@ import {
 } from "@/lib/api/queries";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/site/Reveal";
 import { Section, SectionHeader, EmptyState } from "@/components/site/Section";
-import { ServiceCard } from "@/components/site/cards/ServiceCard";
+import { ServicesMarquee } from "@/components/site/ServicesMarquee";
 import { EquipmentCard } from "@/components/site/cards/EquipmentCard";
 import { BlogCard } from "@/components/site/cards/BlogCard";
 import { VideoTestimonialsSection } from "@/components/site/VideoTestimonialsSection";
