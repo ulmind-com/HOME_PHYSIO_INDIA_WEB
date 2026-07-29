@@ -117,62 +117,65 @@ export function ProfessionalsSection() {
         </div>
 
         {/* RIGHT — layered images */}
-        <div className="relative min-h-[560px] lg:min-h-[640px]">
-          {/* Main tall image */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className="absolute right-0 top-6 w-[78%] h-[92%] overflow-hidden rounded-[2.5rem] border border-primary/10 shadow-[var(--shadow-elegant)]"
-          >
-            <img
-              src={DEFAULT_MAIN}
-              alt="Nupun caregiver attending an elderly patient"
-              className="h-full w-full object-cover"
-              loading="lazy"
-            />
-            <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/20 rounded-[2.5rem]" />
-          </motion.div>
-
-          {/* Inset card top-left */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.15 }}
-            className="absolute left-0 top-0 w-[52%] rounded-[2rem] overflow-hidden shadow-[var(--shadow-elegant)] border border-primary/10"
-          >
-            <img
-              src={DEFAULT_INSET}
-              alt="Nupun nurse ready for a home visit"
-              className="h-[280px] w-full object-cover"
-              loading="lazy"
-            />
-            <div className="bg-dark text-white text-center py-3 text-[11px] tracking-[0.28em] uppercase font-medium">
-              Video Call Support
-            </div>
-          </motion.div>
-
-          {/* Opening hours floating card */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="absolute right-2 bottom-4 w-[62%] max-w-[320px]"
-          >
+        <div className="relative mx-auto w-full max-w-[560px] lg:mx-0">
+          <div className="relative aspect-[4/5]">
+            {/* Main tall image (right, bottom) */}
             <motion.div
-              animate={{ y: [0, -6, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="relative rounded-3xl p-6 text-white shadow-[var(--shadow-elegant)]"
-              style={{ background: "linear-gradient(135deg, var(--primary), var(--accent))" }}
+              initial={{ opacity: 0, scale: 0.96 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+              className="absolute right-0 bottom-0 w-[72%] h-[86%] overflow-hidden rounded-[2.5rem] border border-primary/10 shadow-[var(--shadow-elegant)]"
             >
-              <div className="absolute -top-5 right-5 grid h-11 w-11 place-items-center rounded-full bg-dark text-white shadow-lg">
-                <ClockGlyph className="h-5 w-5" />
+              <img
+                src={DEFAULT_MAIN}
+                alt="Nupun caregiver attending an elderly patient"
+                className="h-full w-full object-cover"
+                loading="lazy"
+              />
+              <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/20 rounded-[2.5rem]" />
+            </motion.div>
+
+            {/* Inset card top-left */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+              className="absolute left-0 top-0 w-[54%] rounded-[2rem] overflow-hidden shadow-[var(--shadow-elegant)] border border-primary/10 bg-surface"
+            >
+              <div className="aspect-[4/5]">
+                <img
+                  src={DEFAULT_INSET}
+                  alt="Nupun nurse ready for a home visit"
+                  className="h-full w-full object-cover"
+                  loading="lazy"
+                />
               </div>
-              <div className="font-display text-xl mb-4">Opening Hours</div>
-              <ul className="space-y-2 text-sm">
+              <div className="bg-dark text-white text-center py-3 text-[11px] tracking-[0.28em] uppercase font-medium">
+                Video Call Support
+              </div>
+            </motion.div>
+
+            {/* Opening hours floating card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="absolute -right-2 -bottom-4 w-[60%] max-w-[300px]"
+            >
+              <motion.div
+                animate={{ y: [0, -6, 0] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                className="relative rounded-3xl p-6 text-white shadow-[var(--shadow-elegant)]"
+                style={{ background: "linear-gradient(135deg, var(--primary), var(--accent))" }}
+              >
+                <div className="absolute -top-5 right-5 grid h-11 w-11 place-items-center rounded-full bg-dark text-white shadow-lg">
+                  <ClockGlyph className="h-5 w-5" />
+                </div>
+                <div className="font-display text-xl mb-4">Opening Hours</div>
+                <ul className="space-y-2 text-sm">
                 {hours.slice(0, 3).map((h) => (
                   <li key={h.day} className="flex items-center justify-between gap-4">
                     <span className="text-white/80">{h.day}</span>
@@ -180,8 +183,9 @@ export function ProfessionalsSection() {
                   </li>
                 ))}
               </ul>
+              </motion.div>
             </motion.div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </Section>
