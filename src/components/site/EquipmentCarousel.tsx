@@ -1,5 +1,5 @@
 import * as React from "react";
-import { motion } from "framer-motion";
+import { PerspectiveCarousel } from "@/components/ui/perspective-carousel";
 
 const ITEMS = [
   { src: "/assets/equipment/ultrasound.jpeg", title: "Siemens X700 Ultrasound", alt: "Siemens X700 ultrasound system" },
@@ -9,40 +9,68 @@ const ITEMS = [
   { src: "/assets/equipment/stethoscope.jpeg", title: "Clinical Stethoscope", alt: "Professional clinical stethoscope" },
 ];
 
+const AUTO_SCROLL_MS = 3500;
+const INTERACTION_PAUSE_MS = 2500;
+
 export function EquipmentCarousel() {
-  // Duplicate items enough times to fill the screen twice for seamless infinite scroll
-  const duplicatedItems = [...ITEMS, ...ITEMS, ...ITEMS];
+  const [active, setActive] = React.useState(0);
+  const [hovered, setHovered] = React.useState(false);
+  const [hidden, setHidden] = React.useState(false);
+  const [interacted, setInteracted] = React.useState(false);
+  const interactionTimeoutRef = React.useRef<number | null>(null);
+
+  const paused = hovered || hidden || interacted;
+
+  React.useEffect(() => {
+    if (paused) return;
+    const id = window.setInterval(() => {
+      setActive((i) => (i + 1) % ITEMS.length);
+    }, AUTO_SCROLL_MS);
+    return () => window.clearInterval(id);
+  }, [paused]);
+
+  React.useEffect(() => {
+    const onVis = () => setHidden(document.hidden);
+    document.addEventListener("visibilitychange", onVis);
+    return () => document.removeEventListener("visibilitychange", onVis);
+  }, []);
+
+  React.useEffect(() => {
+    return () => {
+      if (interactionTimeoutRef.current) {
+        window.clearTimeout(interactionTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const selectSlide = React.useCallback((index: number) => {
+    setActive(index);
+    setInteracted(true);
+    if (interactionTimeoutRef.current) window.clearTimeout(interactionTimeoutRef.current);
+    interactionTimeoutRef.current = window.setTimeout(() => {
+      setInteracted(false);
+      interactionTimeoutRef.current = null;
+    }, INTERACTION_PAUSE_MS);
+  }, []);
 
   return (
-    <div className="relative overflow-hidden py-4 -mx-4 lg:-mx-10 w-[calc(100%+2rem)] lg:w-[calc(100%+5rem)]">
-      {/* Edge gradient masks for smooth fade in/out effect */}
-      <div className="absolute inset-y-0 left-0 w-16 sm:w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none"></div>
-      <div className="absolute inset-y-0 right-0 w-16 sm:w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none"></div>
-      
-      <motion.div
-        className="flex gap-6 w-max"
-        animate={{ x: ["0%", "-33.333333%"] }}
-        transition={{ ease: "linear", duration: 30, repeat: Infinity }}
-      >
-        {duplicatedItems.map((item, idx) => (
-          <div 
-            key={idx} 
-            className="relative group w-[280px] sm:w-[360px] aspect-[4/3] rounded-3xl overflow-hidden shrink-0 shadow-lg"
-          >
-            <img 
-              src={item.src} 
-              alt={item.alt} 
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
-            />
-            {/* Dark gradient overlay for text readability */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"></div>
-            
-            <div className="absolute bottom-6 left-6 right-6">
-              <h4 className="text-white font-display text-lg sm:text-xl font-bold tracking-tight">{item.title}</h4>
-            </div>
-          </div>
-        ))}
-      </motion.div>
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="relative"
+    >
+      <PerspectiveCarousel
+        items={ITEMS}
+        activeIndex={active}
+        onActiveIndexChange={selectSlide}
+        loop
+        slideWidth={300}
+        rotationStep={48}
+        inactiveScale={0.78}
+        showControls
+        showDots
+        className="h-[640px] bg-gradient-to-br from-primary-soft/40 to-surface"
+      />
     </div>
   );
 }
