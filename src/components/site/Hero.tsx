@@ -169,17 +169,17 @@ export function Hero() {
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="relative lg:w-[54%] flex items-end justify-center self-end"
+          className="relative lg:w-[54%] flex items-end justify-center self-end overflow-visible"
         >
           <img
             src={heroTeam.url}
             alt="Nupun Home Health Care — Expert medical team"
-            className="relative z-10 w-full max-w-[600px] object-contain object-bottom"
+            className="relative z-10 w-full max-w-[620px] object-contain object-bottom -mb-16 lg:-mb-24"
             loading="eager"
             fetchPriority="high"
-            style={{ mixBlendMode: "multiply" }}
           />
         </motion.div>
+
       </div>
     </section>
   );
