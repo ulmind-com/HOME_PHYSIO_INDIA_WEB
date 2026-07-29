@@ -58,10 +58,6 @@ export function VideoTestimonialsSection() {
       </div>
 
       <VideoPlayerModal video={playing} onClose={() => setPlaying(null)} />
-
-      <style>{`
-        .group:hover > div > div[style*="will-change"] { animation-play-state: paused; }
-      `}</style>
     </section>
   );
 }
