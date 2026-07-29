@@ -20,7 +20,16 @@ export function getYouTubeId(url?: string | null): { id: string; isShort: boolea
 export function inferAspect(v: Video): "9/16" | "16/9" {
   const yt = getYouTubeId(v.youtube_url);
   if (yt?.isShort) return "9/16";
+  if (v.video_file?.url || v.video_url) return "9/16";
   return "16/9";
+}
+
+export function resolveVideoSource(v: Video): string | null {
+  const uploaded = v.video_file?.url?.trim();
+  if (uploaded) return uploaded;
+  const direct = v.video_url?.trim();
+  if (direct) return direct;
+  return null;
 }
 
 export function VideoPlayerModal({ video, onClose }: { video: Video | null; onClose: () => void }) {
@@ -37,9 +46,13 @@ export function VideoPlayerModal({ video, onClose }: { video: Video | null; onCl
   }, [video, onClose]);
 
   const [detected, setDetected] = useState<"9/16" | "16/9" | null>(null);
+  useEffect(() => {
+    setDetected(null);
+  }, [video?.id]);
+
   if (!video) return null;
   const yt = getYouTubeId(video.youtube_url);
-  const src = video.video_url || video.video_file?.url || null;
+  const src = resolveVideoSource(video);
   const aspect = detected ?? inferAspect(video);
 
   return (
