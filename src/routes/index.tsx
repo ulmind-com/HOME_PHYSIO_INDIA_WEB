@@ -201,7 +201,7 @@ function CareTeamSection() {
           <img
             src={slide.image}
             alt=""
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover object-top"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/55 to-black/30" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" />
@@ -209,7 +209,7 @@ function CareTeamSection() {
       </AnimatePresence>
 
       {/* Content overlay */}
-      <div className="relative z-10 container-x py-24 lg:py-32 min-h-[70vh] flex flex-col justify-center">
+      <div className="relative z-10 container-x py-8 lg:py-10 flex flex-col justify-center">
         <AnimatePresence mode="wait">
           <motion.div
             key={slide.image}
@@ -222,7 +222,7 @@ function CareTeamSection() {
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-sm uppercase tracking-[0.2em] text-primary mb-4"
+              className="text-sm uppercase tracking-[0.2em] text-primary mb-2"
             >
               {slide.eyebrow}
             </motion.div>
@@ -240,7 +240,7 @@ function CareTeamSection() {
             <motion.p
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0, transition: { delay: 0.1 } }}
-              className="mt-5 max-w-lg text-[15px] md:text-base leading-relaxed text-white/75"
+              className="mt-3 max-w-lg text-[15px] md:text-base leading-relaxed text-white/75"
             >
               {slide.description}
             </motion.p>
@@ -249,7 +249,7 @@ function CareTeamSection() {
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0, transition: { delay: 0.15 } }}
-              className="mt-8"
+              className="mt-5"
             >
               <Link
                 to={slide.buttonLink}
@@ -264,7 +264,7 @@ function CareTeamSection() {
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0, transition: { delay: 0.2 } }}
-              className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-3"
+              className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3"
             >
               {slide.stats.map((s) => (
                 <div
@@ -282,7 +282,7 @@ function CareTeamSection() {
         </AnimatePresence>
 
         {/* Slider controls — bottom */}
-        <div className="mt-12 flex items-center gap-4">
+        <div className="mt-8 flex items-center gap-4">
           <button
             onClick={prev}
             className="grid h-10 w-10 place-items-center rounded-full bg-white/15 backdrop-blur-sm text-white ring-1 ring-white/25 hover:bg-white/25 transition-colors"
