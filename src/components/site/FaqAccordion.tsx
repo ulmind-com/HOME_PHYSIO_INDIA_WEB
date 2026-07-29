@@ -19,7 +19,7 @@ export function FaqAccordion({ items }: { items: Faq[] }) {
           <motion.div
             variants={itemVariants}
             key={f.id}
-            className={`overflow-hidden rounded-2xl border transition-all duration-300 ${
+            className={`overflow-hidden rounded-xl border transition-all duration-300 ${
               isOpen
                 ? "bg-white border-primary/20 shadow-[0_8px_30px_rgb(0,0,0,0.04)]"
                 : "bg-white/60 border-border hover:bg-white hover:border-primary/10 hover:shadow-sm"
@@ -27,16 +27,16 @@ export function FaqAccordion({ items }: { items: Faq[] }) {
           >
             <button
               onClick={() => setOpenId(isOpen ? null : f.id)}
-              className="flex w-full items-center justify-between px-6 py-5 text-left"
+              className="flex w-full items-center justify-between px-5 py-4 text-left"
             >
-              <span className={`font-semibold md:text-lg transition-colors ${isOpen ? "text-primary" : "text-foreground"}`}>
+              <span className={`font-semibold text-[15px] transition-colors ${isOpen ? "text-primary" : "text-foreground"}`}>
                 {f.question}
               </span>
               <span className={`ml-4 shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}>
                 {isOpen ? (
-                  <Minus className="h-5 w-5 text-primary" />
+                  <Minus className="h-4 w-4 text-primary" />
                 ) : (
-                  <Plus className="h-5 w-5 text-muted-foreground" />
+                  <Plus className="h-4 w-4 text-muted-foreground" />
                 )}
               </span>
             </button>
@@ -49,7 +49,7 @@ export function FaqAccordion({ items }: { items: Faq[] }) {
                   exit={{ height: 0, opacity: 0 }}
                   transition={{ duration: 0.3, ease: "easeInOut" }}
                 >
-                  <div className="px-6 pb-6 text-muted-foreground leading-relaxed">
+                  <div className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed">
                     {f.answer}
                   </div>
                 </motion.div>

@@ -392,7 +392,7 @@ function FaqSection() {
               hidden: { opacity: 0, y: 20 },
               show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
             }}
-            className="font-display text-4xl md:text-5xl lg:text-[3.5rem] font-bold text-foreground mb-8 leading-tight"
+            className="font-display text-3xl md:text-4xl lg:text-[2.75rem] font-bold text-foreground mb-6 leading-tight tracking-tight"
           >
             Frequently Asked<br/>
             <span className="text-primary">Questions</span>
