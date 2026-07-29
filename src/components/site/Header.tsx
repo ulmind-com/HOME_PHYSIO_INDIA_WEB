@@ -46,6 +46,10 @@ export function Header() {
   const onDarkHero = !isHome && !scrolled;
   const overlay = isHome && !scrolled;
 
+  if (overlay) {
+    return null;
+  }
+
   return (
     <header className={cn("z-50 inset-x-0", overlay ? "absolute top-4" : "fixed top-4")}>
       <div className="container-x">
