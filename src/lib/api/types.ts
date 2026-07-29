@@ -72,6 +72,7 @@ export type Video = {
   description?: string | null;
   thumbnail?: string | null;
   video_url?: string | null;
+  video_file?: { url?: string | null } | null;
   youtube_url?: string | null;
   duration?: string | null;
   category?: string | null;
