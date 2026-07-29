@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import type { Video } from "@/lib/api/types";
 
@@ -36,10 +36,11 @@ export function VideoPlayerModal({ video, onClose }: { video: Video | null; onCl
     };
   }, [video, onClose]);
 
+  const [detected, setDetected] = useState<"9/16" | "16/9" | null>(null);
   if (!video) return null;
-  const aspect = inferAspect(video);
   const yt = getYouTubeId(video.youtube_url);
   const src = video.video_url || video.video_file?.url || null;
+  const aspect = detected ?? inferAspect(video);
 
   return (
     <div
@@ -77,6 +78,12 @@ export function VideoPlayerModal({ video, onClose }: { video: Video | null; onCl
             controls
             autoPlay
             playsInline
+            onLoadedMetadata={(e) => {
+              const el = e.currentTarget;
+              if (el.videoWidth && el.videoHeight) {
+                setDetected(el.videoHeight > el.videoWidth ? "9/16" : "16/9");
+              }
+            }}
             className="h-full w-full object-contain bg-black"
           />
         ) : (
