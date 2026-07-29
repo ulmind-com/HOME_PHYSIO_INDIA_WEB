@@ -13,11 +13,8 @@ import {
   BellRing,
   Zap,
   Star,
-  Play,
-  Quote,
 } from "lucide-react";
-import { servicesQ, testimonialsQ, faqsQ, settingsQ, videosQ } from "@/lib/api/queries";
-import type { Video } from "@/lib/api/types";
+import { servicesQ, testimonialsQ, faqsQ, settingsQ } from "@/lib/api/queries";
 import { Section, SectionHeader } from "@/components/site/Section";
 import { Reveal } from "@/components/site/Reveal";
 import { FaqAccordion } from "@/components/site/FaqAccordion";
@@ -73,13 +70,11 @@ function ServicesIndex() {
   const { data, isLoading } = useQuery(servicesQ({ limit: 60 }));
   const { data: tData } = useQuery(testimonialsQ({ limit: 8 }));
   const { data: fData } = useQuery(faqsQ({ limit: 8 }));
-  const { data: vData } = useQuery(videosQ({ limit: 8 }));
   const { data: settings } = useQuery(settingsQ());
 
   const items = data?.items ?? [];
   const testimonials = tData?.items ?? [];
   const faqs = fData?.items ?? [];
-  const videos = vData?.items ?? [];
 
   const [active, setActive] = useState<string>("all");
 
@@ -374,64 +369,6 @@ function ServicesIndex() {
         </section>
       )}
 
-      {/* ── Video stories (live data only) ───────────────────── */}
-      {videos.length > 0 && (
-        <Section>
-          <div className="grid gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-stretch lg:gap-12">
-            {/* Decorative panel */}
-            <div
-              className="relative flex min-h-[380px] flex-col justify-end overflow-hidden rounded-[2.5rem] p-9 text-white lg:p-10"
-              style={{
-                background:
-                  "radial-gradient(70% 60% at 25% 20%, color-mix(in oklab, var(--primary) 45%, transparent), transparent 70%), linear-gradient(155deg, var(--accent), color-mix(in oklab, var(--primary) 80%, black 12%))",
-              }}
-            >
-              <div className="pointer-events-none absolute inset-0 opacity-30 mix-blend-overlay bg-[radial-gradient(circle_at_80%_15%,white,transparent_45%)]" />
-              <Quote className="absolute right-8 top-8 h-16 w-16 text-white/15" />
-              <div className="relative">
-                <div className="grid h-12 w-12 place-items-center rounded-2xl bg-white/15 backdrop-blur">
-                  <HeartHandshake className="h-6 w-6" />
-                </div>
-                <div className="mt-5 font-display text-3xl leading-tight tracking-tight md:text-4xl">
-                  Real families.
-                  <br />
-                  Real recoveries.
-                </div>
-                <p className="mt-3 max-w-xs text-sm text-white/80">
-                  The peace of mind a Nupun caregiver brings — told by the people who lived it.
-                </p>
-              </div>
-            </div>
-
-            {/* Heading + video cards */}
-            <div className="flex flex-col justify-center">
-              <SectionHeader
-                eyebrow="Video stories"
-                title={
-                  <>
-                    What They Say About <span className="text-primary">Nupun</span>
-                  </>
-                }
-                description="Our members value the peace of mind our caregivers provide. Hear their stories below."
-              />
-              <div className="grid gap-6 sm:grid-cols-2">
-                {videos.slice(0, 4).map((v, i) => (
-                  <motion.div
-                    key={v.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-40px" }}
-                    transition={{ duration: 0.5, delay: (i % 2) * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    <VideoStoryCard v={v} />
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </Section>
-      )}
-
       {/* ── FAQ (live data only) ─────────────────────────────── */}
       {faqs.length > 0 && (
         <Section>
@@ -487,47 +424,5 @@ function ServicesIndex() {
         </div>
       </section>
     </>
-  );
-}
-
-function VideoStoryCard({ v }: { v: Video }) {
-  const url = v.youtube_url ?? v.video_url ?? "#";
-  return (
-    <a
-      href={url}
-      target="_blank"
-      rel="noreferrer noopener"
-      className="group flex flex-col overflow-hidden rounded-3xl border border-border/70 bg-background shadow-[0_24px_60px_-45px_rgba(0,0,0,0.4)] transition-colors hover:border-primary/50"
-    >
-      <div className="relative aspect-[4/3] overflow-hidden bg-dark">
-        {v.thumbnail ? (
-          <img
-            src={v.thumbnail}
-            alt={v.title}
-            loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-          />
-        ) : (
-          <div className="h-full w-full bg-gradient-to-br from-accent to-primary" />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-        <div className="absolute inset-0 grid place-items-center">
-          <div className="grid h-14 w-14 place-items-center rounded-full bg-white/95 text-primary shadow-[var(--shadow-elegant)] transition-transform group-hover:scale-110">
-            <Play className="h-6 w-6" fill="currentColor" />
-          </div>
-        </div>
-        {v.duration && (
-          <div className="absolute bottom-3 right-3 rounded-full bg-black/60 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur">
-            {v.duration}
-          </div>
-        )}
-      </div>
-      <div className="p-5">
-        <div className="font-display text-lg leading-tight line-clamp-1">{v.title}</div>
-        {v.category && (
-          <div className="mt-1 text-sm italic text-muted-foreground">{v.category}</div>
-        )}
-      </div>
-    </a>
   );
 }
