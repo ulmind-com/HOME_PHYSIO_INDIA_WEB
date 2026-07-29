@@ -1,9 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { videosQ } from "@/lib/api/queries";
 import { PageHero } from "@/components/site/PageHero";
 import { VideoCard } from "@/components/site/cards/VideoCard";
+import { VideoPlayerModal } from "@/components/site/VideoPlayerModal";
 import { EmptyState, Section } from "@/components/site/Section";
+import type { Video } from "@/lib/api/types";
 
 export const Route = createFileRoute("/videos")({
   head: () => ({
@@ -22,6 +25,7 @@ export const Route = createFileRoute("/videos")({
 function VideosPage() {
   const { data, isLoading } = useQuery(videosQ({ limit: 60 }));
   const items = data?.items ?? [];
+  const [playing, setPlaying] = useState<Video | null>(null);
   return (
     <>
       <PageHero
@@ -39,12 +43,13 @@ function VideosPage() {
           </div>
         ) : items.length ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {items.map((v) => <VideoCard key={v.id} v={v} />)}
+            {items.map((v) => <VideoCard key={v.id} v={v} onPlay={setPlaying} />)}
           </div>
         ) : (
           <EmptyState title="Videos coming soon" />
         )}
       </Section>
+      <VideoPlayerModal video={playing} onClose={() => setPlaying(null)} />
     </>
   );
 }

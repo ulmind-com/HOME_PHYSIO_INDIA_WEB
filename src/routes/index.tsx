@@ -18,6 +18,7 @@ import { ServiceCard } from "@/components/site/cards/ServiceCard";
 import { EquipmentCard } from "@/components/site/cards/EquipmentCard";
 import { BlogCard } from "@/components/site/cards/BlogCard";
 import { VideoCard } from "@/components/site/cards/VideoCard";
+import { VideoTestimonialsSection } from "@/components/site/VideoTestimonialsSection";
 import { TestimonialCard } from "@/components/site/cards/TestimonialCard";
 import { FaqAccordion } from "@/components/site/FaqAccordion";
 import { GoogleReviews } from "@/components/site/GoogleReviews";
@@ -55,7 +56,9 @@ function Home() {
       <EquipmentSection />
       <CareTeamSection />
       <TestimonialsSection />
+      <VideoTestimonialsSection />
       <BlogVideosSection />
+
       <FaqSection />
       <ReviewsSection />
       <ContactCta />
