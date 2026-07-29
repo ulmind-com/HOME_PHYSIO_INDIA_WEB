@@ -30,6 +30,10 @@ export interface PerspectiveCarouselProps
   labelClassName?: string;
   controlsClassName?: string;
   onSlideClick?: (index: number) => void;
+  continuous?: boolean;
+  continuousSpeed?: number;
+  isPaused?: boolean;
+  slideGap?: number;
 }
 
 const DEFAULT_TRANSITION: Transition = {
@@ -62,6 +66,10 @@ export function PerspectiveCarousel({
   onKeyDown,
   onSlideClick,
   tabIndex,
+  continuous = false,
+  continuousSpeed = 25,
+  isPaused = false,
+  slideGap = 32,
   ...props
 }: PerspectiveCarouselProps) {
   const maxIndex = Math.max(0, items.length - 1);
@@ -71,6 +79,7 @@ export function PerspectiveCarousel({
   const currentIndex = clamp(activeIndex ?? uncontrolledIndex, 0, maxIndex);
   const safeSlideWidth = Math.max(96, slideWidth);
   const safeInactiveScale = clamp(inactiveScale, 0.5, 1);
+  const safeGap = Math.max(0, slideGap);
 
   const selectSlide = React.useCallback(
     (nextIndex: number) => {
@@ -84,7 +93,96 @@ export function PerspectiveCarousel({
     [activeIndex, items.length, loop, maxIndex, onActiveIndexChange],
   );
 
+  const [hoveredTitle, setHoveredTitle] = React.useState<string | null>(null);
+  const uniqueId = React.useId().replace(/:/g, "");
+  const keyframesName = `pc-scroll-${uniqueId}`;
+  const setWidth = items.length * (safeSlideWidth + safeGap);
+
   if (!items.length) return null;
+
+  // Continuous right-to-left marquee mode
+  if (continuous) {
+    const displayedTitle = hoveredTitle ?? items[0]?.title ?? "";
+    return (
+      <div
+        {...props}
+        className={cn(
+          "relative flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-3xl outline-none",
+          className,
+        )}
+      >
+        <style>{`
+          @keyframes ${keyframesName} {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-${setWidth}px); }
+          }
+        `}</style>
+        <div
+          className={cn(
+            "relative flex w-full flex-1 items-center overflow-hidden",
+            viewportClassName,
+          )}
+          style={{ perspective: "1200px" }}
+        >
+          <div
+            className="flex will-change-transform"
+            style={{
+              width: setWidth * 2,
+              animation: `${keyframesName} ${continuousSpeed}s linear infinite`,
+              animationPlayState: isPaused ? "paused" : "running",
+            }}
+          >
+            {[...items, ...items].map((item, index) => (
+              <div
+                key={`${item.src}-${index}`}
+                className="flex shrink-0 items-center justify-center"
+                style={{ width: safeSlideWidth + safeGap }}
+                onMouseEnter={() => setHoveredTitle(item.title)}
+                onMouseLeave={() => setHoveredTitle(null)}
+              >
+                <button
+                  type="button"
+                  aria-label={item.alt ?? item.title}
+                  onClick={() => onSlideClick?.(index % items.length)}
+                  className={cn(
+                    "group relative block overflow-hidden rounded-2xl border border-border bg-surface shadow-[0_20px_60px_-30px_rgba(0,0,0,0.35)] transition-all duration-500 hover:scale-[1.03] hover:shadow-[0_40px_90px_-30px_rgba(0,0,0,0.45)]",
+                    slideClassName,
+                  )}
+                  style={{
+                    width: safeSlideWidth,
+                    height: safeSlideWidth * 1.35,
+                  }}
+                >
+                  <img
+                    src={item.src}
+                    alt={item.alt ?? item.title}
+                    loading="lazy"
+                    decoding="async"
+                    draggable={false}
+                    className={cn(
+                      "h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.05]",
+                      imageClassName,
+                    )}
+                  />
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {displayedTitle && (
+          <div
+            className={cn(
+              "pointer-events-none mt-4 text-center text-sm font-medium tracking-wide text-foreground",
+              labelClassName,
+            )}
+          >
+            {displayedTitle}
+          </div>
+        )}
+      </div>
+    );
+  }
 
   const isPreviousDisabled = !loop && currentIndex === 0;
   const isNextDisabled = !loop && currentIndex === maxIndex;
