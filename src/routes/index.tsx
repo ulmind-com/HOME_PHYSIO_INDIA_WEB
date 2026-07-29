@@ -111,124 +111,215 @@ function EquipmentSection() {
 
 function CareTeamSection() {
   const [active, setActive] = useState(0);
-  const slides = [
-    { image: "/assets/hero-slide-1.jpeg", count: "120+", role: "Registered Nurse" },
-    { image: "/assets/hero-slide-2.jpeg", count: "45", role: "Physiotherapists" },
-    { image: "/assets/hero-slide-3.jpeg", count: "30", role: "Doctors on panel" },
-    { image: "/assets/hero-slide-4.jpeg", count: "200+", role: "Care attendants" },
-  ];
-  const total = slides.length;
 
+  const slides = [
+    {
+      image: "/assets/hero-slide-1.jpeg",
+      eyebrow: "Physiotherapy",
+      title: "Expert physiotherapists\nbringing recovery home.",
+      description:
+        "Our certified physios deliver hospital-grade rehabilitation at your doorstep — from post-surgery recovery to chronic pain management.",
+      buttonText: "Book Physiotherapy",
+      buttonLink: "/booking",
+      stats: [
+        { count: "45+", label: "Physiotherapists" },
+        { count: "10K+", label: "Sessions Done" },
+        { count: "98%", label: "Recovery Rate" },
+        { count: "2hr", label: "Avg Response" },
+      ],
+    },
+    {
+      image: "/assets/hero-slide-2.jpeg",
+      eyebrow: "Elder Care",
+      title: "Compassionate senior\ncare — with dignity.",
+      description:
+        "Dedicated attendants and nurses providing 24/7 elder care — medication, mobility support and emotional companionship your loved ones deserve.",
+      buttonText: "Explore Elder Care",
+      buttonLink: "/services",
+      stats: [
+        { count: "200+", label: "Care Attendants" },
+        { count: "50K+", label: "Families Served" },
+        { count: "24/7", label: "Available" },
+        { count: "4.9★", label: "Google Rating" },
+      ],
+    },
+    {
+      image: "/assets/hero-slide-3.jpeg",
+      eyebrow: "Skilled Nursing",
+      title: "Nurses, trained and\nverified — handpicked.",
+      description:
+        "From wound dressing and IV therapy to post-operative care — our nurses deliver clinical precision with a gentle, caring touch. Only 4% make the cut.",
+      buttonText: "Get Nursing Care",
+      buttonLink: "/booking",
+      stats: [
+        { count: "120+", label: "Registered Nurses" },
+        { count: "30+", label: "Doctors on Panel" },
+        { count: "5-step", label: "Vetting Process" },
+        { count: "4%", label: "Selection Rate" },
+      ],
+    },
+    {
+      image: "/assets/hero-slide-4.jpeg",
+      eyebrow: "Rehabilitation",
+      title: "Rehabilitation that\nrestores confidence.",
+      description:
+        "Advanced physical therapy for stroke recovery, joint replacement and neurological conditions — guided by experts who truly care.",
+      buttonText: "Start Rehab Plan",
+      buttonLink: "/booking",
+      stats: [
+        { count: "95%", label: "Improvement Rate" },
+        { count: "30+", label: "Specializations" },
+        { count: "5K+", label: "Patients Helped" },
+        { count: "1hr", label: "First Session" },
+      ],
+    },
+  ];
+
+  const total = slides.length;
   const next = useCallback(() => setActive((p) => (p + 1) % total), [total]);
   const prev = useCallback(() => setActive((p) => (p - 1 + total) % total), [total]);
 
-  // Auto-play
   useEffect(() => {
-    const id = setInterval(next, 4000);
+    const id = setInterval(next, 6000);
     return () => clearInterval(id);
   }, [next, active]);
 
-  return (
-    <Section className="bg-dark text-white/90 rounded-[3rem] mx-4 lg:mx-10">
-      <div className="grid gap-12 lg:grid-cols-2 items-center">
-        {/* Left — Text */}
-        <div>
-          <div className="text-sm uppercase tracking-[0.2em] text-primary mb-4">Our people</div>
-          <h2 className="font-display text-4xl md:text-5xl text-white">
-            Nurses, physios and doctors — <span className="text-gradient">handpicked</span>.
-          </h2>
-          <p className="mt-5 text-white/70 max-w-lg">
-            Our team is selected through a five-step vetting process: credentials, background,
-            clinical assessment, communication and empathy. Only 4% make the cut.
-          </p>
-          <Link
-            to="/about"
-            className="mt-8 inline-flex items-center gap-2 rounded-full bg-white text-dark px-5 py-3 text-sm font-medium"
-          >
-            Meet the team <ArrowRight className="h-4 w-4" />
-          </Link>
+  const slide = slides[active];
 
-          {/* Stats row below text */}
-          <div className="mt-10 grid grid-cols-2 gap-3">
-            {slides.map((s, i) => (
-              <button
-                key={s.role}
-                onClick={() => setActive(i)}
-                className={`rounded-2xl border p-4 text-left transition-all duration-300 ${
-                  i === active
-                    ? "bg-white/10 border-primary/50 ring-1 ring-primary/30"
-                    : "bg-white/5 border-white/10 hover:bg-white/8"
-                }`}
+  return (
+    <section className="relative isolate overflow-hidden w-full">
+      {/* Full-width background image */}
+      <AnimatePresence mode="sync">
+        <motion.div
+          key={slide.image}
+          initial={{ opacity: 0, scale: 1.06 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+          className="absolute inset-0 -z-10"
+        >
+          <img
+            src={slide.image}
+            alt=""
+            className="h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/55 to-black/30" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" />
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Content overlay */}
+      <div className="relative z-10 container-x py-24 lg:py-32 min-h-[70vh] flex flex-col justify-center">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={slide.image}
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const, staggerChildren: 0.07 } }}
+            exit={{ opacity: 0, y: -15, transition: { duration: 0.3 } }}
+            className="max-w-2xl"
+          >
+            {/* Eyebrow */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-sm uppercase tracking-[0.2em] text-primary mb-4"
+            >
+              {slide.eyebrow}
+            </motion.div>
+
+            {/* Title */}
+            <motion.h2
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0, transition: { delay: 0.05 } }}
+              className="font-display text-4xl md:text-5xl lg:text-[3.5rem] font-semibold leading-[1.1] text-white whitespace-pre-line"
+            >
+              {slide.title}
+            </motion.h2>
+
+            {/* Description */}
+            <motion.p
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0, transition: { delay: 0.1 } }}
+              className="mt-5 max-w-lg text-[15px] md:text-base leading-relaxed text-white/75"
+            >
+              {slide.description}
+            </motion.p>
+
+            {/* Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0, transition: { delay: 0.15 } }}
+              className="mt-8"
+            >
+              <Link
+                to={slide.buttonLink}
+                className="group inline-flex items-center gap-2 rounded-full bg-[#43D4B0] px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-[#43D4B0]/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#43D4B0]/40"
               >
-                <div className="font-display text-3xl text-white">{s.count}</div>
-                <div className="text-sm text-white/60 mt-1">{s.role}</div>
-              </button>
+                {slide.buttonText}
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </Link>
+            </motion.div>
+
+            {/* Stats — 4 glass cards */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0, transition: { delay: 0.2 } }}
+              className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-3"
+            >
+              {slide.stats.map((s) => (
+                <div
+                  key={s.label}
+                  className="rounded-2xl bg-white/10 backdrop-blur-md ring-1 ring-white/15 px-4 py-4"
+                >
+                  <div className="font-display text-2xl sm:text-[26px] font-bold text-white leading-none">
+                    {s.count}
+                  </div>
+                  <div className="mt-1.5 text-xs text-white/55">{s.label}</div>
+                </div>
+              ))}
+            </motion.div>
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Slider controls — bottom */}
+        <div className="mt-12 flex items-center gap-4">
+          <button
+            onClick={prev}
+            className="grid h-10 w-10 place-items-center rounded-full bg-white/15 backdrop-blur-sm text-white ring-1 ring-white/25 hover:bg-white/25 transition-colors"
+            aria-label="Previous slide"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+
+          <div className="flex items-center gap-2">
+            {slides.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setActive(i)}
+                aria-label={`Go to slide ${i + 1}`}
+                className={`transition-all duration-300 rounded-full ${
+                  i === active
+                    ? "w-8 h-2.5 bg-[#43D4B0]"
+                    : "w-2.5 h-2.5 bg-white/40 hover:bg-white/60"
+                }`}
+              />
             ))}
           </div>
-        </div>
 
-        {/* Right — Image Slider */}
-        <div className="relative rounded-3xl overflow-hidden aspect-[4/3]">
-          {/* Images */}
-          <AnimatePresence mode="sync">
-            <motion.img
-              key={slides[active].image}
-              src={slides[active].image}
-              alt={slides[active].role}
-              initial={{ opacity: 0, scale: 1.05 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="absolute inset-0 h-full w-full object-cover"
-            />
-          </AnimatePresence>
+          <button
+            onClick={next}
+            className="grid h-10 w-10 place-items-center rounded-full bg-white/15 backdrop-blur-sm text-white ring-1 ring-white/25 hover:bg-white/25 transition-colors"
+            aria-label="Next slide"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </button>
 
-          {/* Gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/10" />
-
-          {/* Bottom overlay — active stat + controls */}
-          <div className="absolute bottom-0 inset-x-0 p-5 flex items-end justify-between">
-            <div>
-              <div className="font-display text-4xl text-white font-bold">
-                {slides[active].count}
-              </div>
-              <div className="text-sm text-white/80">{slides[active].role}</div>
-            </div>
-
-            {/* Controls */}
-            <div className="flex items-center gap-2">
-              <button
-                onClick={prev}
-                className="grid h-9 w-9 place-items-center rounded-full bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-colors"
-                aria-label="Previous"
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </button>
-              {/* Dots */}
-              <div className="flex gap-1.5">
-                {slides.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setActive(i)}
-                    aria-label={`Slide ${i + 1}`}
-                    className={`rounded-full transition-all duration-300 ${
-                      i === active ? "w-6 h-2 bg-primary" : "w-2 h-2 bg-white/40 hover:bg-white/60"
-                    }`}
-                  />
-                ))}
-              </div>
-              <button
-                onClick={next}
-                className="grid h-9 w-9 place-items-center rounded-full bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-colors"
-                aria-label="Next"
-              >
-                <ChevronRight className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
+          <span className="ml-2 text-sm font-medium text-white/40 tabular-nums">
+            {String(active + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+          </span>
         </div>
       </div>
-    </Section>
+    </section>
   );
 }
 
