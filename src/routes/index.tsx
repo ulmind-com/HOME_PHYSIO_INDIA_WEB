@@ -21,6 +21,7 @@ import { FaqAccordion } from "@/components/site/FaqAccordion";
 import { GoogleReviews } from "@/components/site/GoogleReviews";
 import { Hero } from "@/components/site/Hero";
 import { AboutWelcomeSection } from "@/components/site/AboutWelcomeSection";
+import { HowItWorksSection } from "@/components/site/HowItWorksSection";
 
 
 
