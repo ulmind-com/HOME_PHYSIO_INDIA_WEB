@@ -1,52 +1,53 @@
-# Services Page — Ultra Premium Redesign
+## Goal
+Rebuild the video/testimonial section on the Home page to mirror the "What They Say About Aroha Cares" block from arohacares.com/services — decorative left panel + carousel of playable video cards on the right — driven entirely by the existing admin `videosQ` API, supporting both 9:16 (portrait/Shorts) and 16:9 (landscape) videos.
 
-Reference direction (Aroha) noted, but we go **different**: editorial + luxury-medical, not stat-block + card-grid. Backend/admin data (`servicesQ`) stays the source of truth — nothing hardcoded.
-
-## Visual direction
-
-- **Split editorial hero** (replaces `PageHero`): left = huge serif headline "Care, engineered around your life.", eyebrow, short paragraph, twin CTAs (Book a consult / Talk to advisor). Right = a stacked "proof column" with three micro-cards (24/7 · Verified · 2‑hr replacement) as glass tiles — lifted, not the flat peach blocks in the reference.
-- **Mint→ivory gradient background** with soft radial glows; a thin hairline divider marks section transitions (no heavy peach bands).
-- **Sticky category rail** just under hero: pill filters generated from distinct `service.category` values coming from the API. Clicking filters the grid in place with Framer Motion layout animation.
-
-## Services showcase (the hero of the page)
-
-Replace the uniform 3-col grid with a **bento/asymmetric layout**:
-
-```text
-┌─────────────────┬───────────┐
-│  FEATURED (2x)  │  standard │
-│  large image    ├───────────┤
-│  overlay title  │  standard │
-├───────┬─────────┴───────────┤
-│ std   │  WIDE (2 cols)      │
-├───────┼─────────┬───────────┤
-│ std   │  std    │  std      │
-└───────┴─────────┴───────────┘
+## Layout (matches reference)
 ```
+┌─────────────────────┬──────────────────────────────────────┐
+│                     │  What They Say About                 │
+│   Decorative        │  Nupun Home Care                     │
+│   image panel       │  (subtext, 2 lines)                  │
+│   (tall rounded     │                                      │
+│    card, ~4:5)      │  ┌──────────┐  ┌──────────┐          │
+│                     │  │ video 1  │  │ video 2  │  ← cards │
+│                     │  │  [▶]     │  │  [▶]     │          │
+│                     │  │ name     │  │ name     │          │
+│                     │  │ category │  │ category │          │
+│                     │  └──────────┘  └──────────┘          │
+│                     │       •  ○  ○  ○   (pager dots)      │
+└─────────────────────┴──────────────────────────────────────┘
+```
+- Desktop: 5/7 or 5/12–7/12 split. Mobile: image on top, carousel below.
+- Carousel: 2 visible cards on desktop, 1 on mobile, arrow + dot navigation, Framer Motion slide transitions.
 
-- First item = large featured tile (image full-bleed, gradient scrim, title + 2-line desc + price chip overlaid).
-- Every 5th item = wide 2-col tile (image left, content right).
-- Rest = compact tiles reusing existing `ServiceCard` (already redesigned, compact).
-- Hover: image `scale-[1.04]`, glass chip lifts, arrow slides — motion-safe.
+## Aspect-ratio handling (9:16 + 16:9)
+Video type has no aspect field, so infer per card:
+- If `youtube_url` matches `/shorts/` → 9:16.
+- Else if the raw `video_url` is a portrait file → measure `videoWidth/videoHeight` on `loadedmetadata` and cache.
+- Else default → 16:9.
+- Card container uses `aspect-[9/16]` or `aspect-video` based on that flag; grid keeps a uniform card **height** so mixed ratios sit neatly (portrait card is narrower/centered with soft blurred backdrop of the thumbnail filling the sides — same trick Aroha uses).
 
-## New sections below the grid
+## Playback
+- Click card → opens a full-screen modal (`Dialog`) with the correct aspect wrapper:
+  - YouTube → `<iframe>` with `autoplay=1`, `youtube.com/embed/{id}` (handles both regular and Shorts IDs).
+  - MP4 → native `<video autoplay controls playsInline>`.
+- Close on backdrop / Esc.
+- Preview thumbnail: use `v.thumbnail` if present, else derive from YouTube ID (`hqdefault.jpg`).
 
-1. **"How care arrives" — 4-step horizontal timeline** (Enquire → Assess → Match → Care) with numbered serif numerals, hairline connector, no boxes. Static copy.
-2. **"Trusted by families across India" — testimonial marquee** pulling from `testimonialsQ` if available, otherwise hidden (no fake data).
-3. **CTA band** — dark teal, serif headline "Not sure which service fits?", inline advisor form → posts to existing contact endpoint (reuse `ContactForm` in compact mode). No new backend.
+## Files to change
+1. **New** `src/components/site/VideoTestimonialsSection.tsx` — the whole section: decorative image panel, header text, carousel state, pager dots, aspect detection, opens player modal.
+2. **New** `src/components/site/VideoPlayerModal.tsx` — reusable modal with YouTube/MP4 branching + aspect wrapper.
+3. **Update** `src/components/site/cards/VideoCard.tsx` — accept an `aspect` prop (`"9/16" | "16/9"`), render title + category overlay like the reference, no external link (click handled by parent).
+4. **Update** `src/routes/index.tsx` — replace the current inline videos grid inside `BlogVideosSection` with `<VideoTestimonialsSection />`. Blog block stays untouched.
+5. **Update** `src/routes/videos.tsx` — apply the same aspect-aware card + modal player so the dedicated Videos page also supports 9:16 and 16:9 playback (grid layout preserved).
 
-## Technical
+## Data / admin connection
+- Continues to read from `videosQ()` → `/api/public/proxy/videos` (existing FastAPI endpoint). No new endpoints, no mocks.
+- Admin-uploaded fields consumed: `title`, `category`, `thumbnail`, `youtube_url`, `video_url`, `duration`.
+- Nothing hardcoded — if admin uploads 0 videos the section renders an `EmptyState`; if admin uploads a Short (9:16), the card and modal switch automatically.
 
-- Edit `src/routes/services.index.tsx` only; add a small `src/components/site/services/ServicesBento.tsx` for the asymmetric layout logic (takes `items[]`, decides tile size by index).
-- Category filter = `useMemo` over `items.map(i => i.category)`, `useState` for active filter, `AnimatePresence` + `layout` on the bento container.
-- Reuse existing `ServiceCard` for standard tiles; create inline `FeaturedServiceTile` + `WideServiceTile` variants in the same new file (all consume the same `Service` type).
-- Colors/typography via existing tokens (`--color-primary`, `--color-accent`, Fraunces/Inter). No hardcoded hexes.
-- Loading = shimmer tiles matching the bento shape (not a plain 3-col grid).
-- Empty state kept, restyled to match.
-- Admin/backend connection unchanged — all content comes from `servicesQ`, including `featured_image`, `title`, `short_description`, `category`, `price`, `slug`.
+## Decorative left image
+- Reuse an existing asset (e.g. a warm care-moments image) placed at `public/assets/testimonials-wall.jpg`. If none suits, generate one (soft photo collage feel, warm tones, portrait crop). Rounded `2rem`, subtle shadow — matches the reference's "photo wall" energy without copying their exact artwork.
 
 ## Out of scope
-
-- No changes to `ServiceCard.tsx` (already compact per your last request).
-- No changes to header, home, or other routes.
-- No new API endpoints; no mock data.
+- No backend changes, no new admin fields, no changes to header/hero, no changes to service cards.
