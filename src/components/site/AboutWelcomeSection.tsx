@@ -165,6 +165,25 @@ export function AboutWelcomeSection() {
               </div>
             </motion.div>
 
+            {/* Floating support badge */}
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.55, duration: 0.6 }}
+              className="glass absolute -right-2 -top-4 rounded-2xl p-3 shadow-soft lg:-right-6"
+            >
+              <div className="flex items-center gap-2.5">
+                <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-accent text-accent-foreground">
+                  <Headphones className="h-4 w-4" />
+                </div>
+                <div>
+                  <div className="font-display text-sm font-semibold leading-none">24/7</div>
+                  <div className="mt-0.5 text-[10px] text-muted-foreground">Care support</div>
+                </div>
+              </div>
+            </motion.div>
+
             {/* Floating ring decoration */}
             <div className="absolute -right-4 -top-4 h-20 w-20 animate-pulse-ring rounded-full border-2 border-primary/20" />
           </motion.div>
