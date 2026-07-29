@@ -58,11 +58,11 @@ export function Footer() {
             </Link>
 
             <div className="mt-12 flex flex-col gap-2.5">
-              <div className="text-[13px] text-black font-semibold">
+              <div className="text-[13px] text-white font-semibold drop-shadow-md">
                 © {new Date().getFullYear()} {name} - All rights reserved
               </div>
 
-              <div className="flex items-center gap-1.5 text-[13px] text-black font-semibold">
+              <div className="flex items-center gap-1.5 text-[13px] text-white font-semibold drop-shadow-md">
                 Built with <Heart className="h-3.5 w-3.5 text-rose-500 fill-rose-500" /> by Ulmind
               </div>
             </div>
