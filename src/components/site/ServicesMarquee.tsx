@@ -4,12 +4,12 @@ import { ArrowRight, CalendarCheck } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { servicesQ } from "@/lib/api/queries";
 import type { Service } from "@/lib/api/types";
-import nurseElder from "@/assets/services/nurse-elder.jpg.asset.json";
-import nurseCompanion from "@/assets/services/nurse-companion.jpg.asset.json";
-import physio from "@/assets/services/physio.jpg.asset.json";
-import mobility from "@/assets/services/mobility.jpg.asset.json";
-
-const FALLBACK_IMAGES = [nurseElder.url, nurseCompanion.url, physio.url, mobility.url];
+const FALLBACK_IMAGES = [
+  "/assets/services/nurse-elder.jpg",
+  "/assets/services/nurse-companion.jpg",
+  "/assets/services/physio.jpg",
+  "/assets/services/mobility.jpg",
+];
 
 export function ServicesMarquee() {
   const { data } = useQuery(servicesQ({ limit: 12 }));
