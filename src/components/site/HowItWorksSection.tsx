@@ -150,7 +150,7 @@ export function HowItWorksSection({ illustration }: { illustration?: string }) {
             whileInView={{ opacity: 1, scale: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            className="relative order-1 lg:order-2"
+            className="relative order-1 mx-auto flex w-full max-w-[340px] items-center justify-center lg:order-2 lg:max-w-[360px]"
           >
             {/* Sculptural SVG backdrop */}
             <svg
@@ -170,11 +170,11 @@ export function HowItWorksSection({ illustration }: { illustration?: string }) {
               />
             </svg>
 
-            <div className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-primary-soft via-surface to-background p-3 shadow-float ring-1 ring-black/5">
+            <div className="relative w-full overflow-hidden rounded-[2rem] bg-gradient-to-br from-primary-soft via-surface to-background p-2.5 shadow-float ring-1 ring-black/5">
               <motion.div
-                animate={{ y: [0, -8, 0] }}
+                animate={{ y: [0, -6, 0] }}
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                className="relative aspect-[4/5] overflow-hidden rounded-[2rem]"
+                className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem]"
               >
                 <img
                   src={image}
