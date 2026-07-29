@@ -23,20 +23,21 @@ export function Hero() {
   return (
     <section className="relative isolate overflow-hidden w-full bg-white min-h-[100svh]">
 
-      {/* ── TEAL BACKGROUND SHAPE (right ~55%, curved left edge) ── */}
+      {/* ── TEAL BACKGROUND SHAPE (tilted parallelogram with bottom-right notch) ── */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden>
         <svg
           className="absolute top-0 right-0 h-full"
-          viewBox="0 0 900 900"
+          viewBox="0 0 1000 1000"
           preserveAspectRatio="none"
           style={{ width: "58%", height: "100%" }}
         >
           <path
-            d="M120,0 L900,0 L900,900 L80,900 Q0,700 60,450 Q120,200 120,0 Z"
+            d="M180,0 L1000,0 L1000,950 Q1000,1000 950,1000 L920,1000 A40,40 0 0 1 880,970 L60,920 L180,0 Z"
             fill="#43D4B0"
           />
         </svg>
       </div>
+
 
       {/* ── DECORATIVE SVG CIRCLES on teal side ── */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden>
@@ -168,17 +169,17 @@ export function Hero() {
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="relative lg:w-[54%] flex items-end justify-center self-end"
+          className="relative lg:w-[54%] flex items-end justify-center self-end overflow-visible"
         >
           <img
             src={heroTeam.url}
             alt="Nupun Home Health Care — Expert medical team"
-            className="relative z-10 w-full max-w-[600px] object-contain object-bottom"
+            className="relative z-10 w-full max-w-[620px] object-contain object-bottom -mb-16 lg:-mb-24"
             loading="eager"
             fetchPriority="high"
-            style={{ mixBlendMode: "multiply" }}
           />
         </motion.div>
+
       </div>
     </section>
   );
