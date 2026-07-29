@@ -13,7 +13,7 @@ import {
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/site/Reveal";
 import { Section, SectionHeader, EmptyState } from "@/components/site/Section";
 import { ServicesMarquee } from "@/components/site/ServicesMarquee";
-import { EquipmentCard } from "@/components/site/cards/EquipmentCard";
+import { EquipmentCarousel } from "@/components/site/EquipmentCarousel";
 import { BlogCard } from "@/components/site/cards/BlogCard";
 import { VideoTestimonialsSection } from "@/components/site/VideoTestimonialsSection";
 import { TestimonialCard } from "@/components/site/cards/TestimonialCard";
@@ -92,8 +92,9 @@ function TrustBar() {
 
 
 function EquipmentSection() {
-  const { data, isLoading } = useQuery(equipmentQ({ limit: 4 }));
+  const { data, isLoading } = useQuery(equipmentQ({ limit: 12 }));
   const items = data?.items ?? [];
+  const hasItems = items.some((e) => e.featured_image);
   return (
     <Section>
       <div className="flex items-end justify-between gap-6 mb-12 flex-wrap">
@@ -107,11 +108,9 @@ function EquipmentSection() {
         </Link>
       </div>
       {isLoading ? (
-        <SkeletonGrid count={4} />
-      ) : items.length ? (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {items.map((e) => (<EquipmentCard key={e.id} equipment={e} />))}
-        </div>
+        <div className="h-[560px] rounded-3xl border border-border bg-surface animate-pulse" />
+      ) : hasItems ? (
+        <EquipmentCarousel />
       ) : (
         <EquipmentTeaser />
       )}
