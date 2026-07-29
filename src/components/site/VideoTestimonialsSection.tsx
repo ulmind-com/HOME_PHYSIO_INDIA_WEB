@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { videosQ } from "@/lib/api/queries";
 import { VideoCard } from "@/components/site/cards/VideoCard";
 import { VideoPlayerModal } from "@/components/site/VideoPlayerModal";
@@ -32,9 +31,9 @@ export function VideoTestimonialsSection() {
   return (
     <Section>
       <div className="grid gap-10 lg:grid-cols-12 lg:gap-14 items-center">
-        {/* Left: decorative wall */}
+        {/* Left: decorative wall image */}
         <div className="lg:col-span-5">
-          <div className="relative overflow-hidden rounded-[2rem] shadow-[var(--shadow-elegant)]">
+          <div className="overflow-hidden rounded-[2rem] shadow-[var(--shadow-elegant)]">
             <img
               src={WALL}
               alt="Wall of family photos and thank-you notes"
@@ -48,16 +47,15 @@ export function VideoTestimonialsSection() {
 
         {/* Right: header + carousel */}
         <div className="lg:col-span-7">
-          <div className="text-xs uppercase tracking-[0.2em] text-accent">Testimonials</div>
-          <h2 className="mt-3 font-display text-4xl md:text-5xl leading-[1.05]">
+          <h2 className="font-display text-4xl md:text-5xl font-bold leading-[1.1]">
             What They Say About<br />
             <span className="text-primary">Nupun Home Care</span>
           </h2>
           <p className="mt-4 max-w-lg text-muted-foreground">
-            Families across the region share how our caregivers made a difference at home — in their own words.
+            Our members value the peace of mind our caregivers provide. Hear their stories below.
           </p>
 
-          <div className="mt-8 relative">
+          <div className="mt-8">
             <AnimatePresence mode="wait">
               <motion.div
                 key={safePage}
@@ -68,42 +66,24 @@ export function VideoTestimonialsSection() {
                 className={"grid gap-5 " + (perPage === 2 ? "sm:grid-cols-2" : "grid-cols-1")}
               >
                 {current.map((v) => (
-                  <VideoCard key={v.id} v={v} onPlay={setPlaying} />
+                  <VideoCard key={v.id} v={v} onPlay={setPlaying} variant="testimonial" aspect="16/9" />
                 ))}
               </motion.div>
             </AnimatePresence>
 
             {pages.length > 1 && (
-              <div className="mt-8 flex items-center gap-4">
-                <button
-                  onClick={() => setPage((p) => Math.max(0, p - 1))}
-                  disabled={safePage === 0}
-                  aria-label="Previous"
-                  className="grid h-11 w-11 place-items-center rounded-full border border-border bg-surface hover:border-primary disabled:opacity-40"
-                >
-                  <ChevronLeft className="h-5 w-5" />
-                </button>
-                <div className="flex items-center gap-2">
-                  {pages.map((_, i) => (
-                    <button
-                      key={i}
-                      aria-label={`Go to slide ${i + 1}`}
-                      onClick={() => setPage(i)}
-                      className={
-                        "h-2.5 rounded-full transition-all " +
-                        (i === safePage ? "w-8 bg-primary" : "w-2.5 bg-border hover:bg-muted-foreground/50")
-                      }
-                    />
-                  ))}
-                </div>
-                <button
-                  onClick={() => setPage((p) => Math.min(pages.length - 1, p + 1))}
-                  disabled={safePage >= pages.length - 1}
-                  aria-label="Next"
-                  className="grid h-11 w-11 place-items-center rounded-full border border-border bg-surface hover:border-primary disabled:opacity-40"
-                >
-                  <ChevronRight className="h-5 w-5" />
-                </button>
+              <div className="mt-8 flex items-center justify-center gap-2">
+                {pages.map((_, i) => (
+                  <button
+                    key={i}
+                    aria-label={`Go to slide ${i + 1}`}
+                    onClick={() => setPage(i)}
+                    className={
+                      "h-2.5 rounded-full transition-all " +
+                      (i === safePage ? "w-8 bg-primary" : "w-2.5 bg-border hover:bg-muted-foreground/50")
+                    }
+                  />
+                ))}
               </div>
             )}
           </div>
