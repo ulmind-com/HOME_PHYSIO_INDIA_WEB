@@ -87,32 +87,7 @@ function TrustBar() {
 }
 
 
-function WhyUs() {
-  const pillars = [
-    { icon: ShieldCheck, title: "Verified & trained", body: "Every caregiver is background-checked, licensed and continuously trained." },
-    { icon: HeartPulse, title: "Medically supervised", body: "Care plans are reviewed by qualified physicians and senior nurses." },
-    { icon: Clock, title: "Always on-call", body: "24/7 support and rapid response for urgent needs across the city." },
-    { icon: Star, title: "Loved by families", body: "Rated 4.9 across thousands of visits — care you can feel from the first minute." },
-  ];
-  return (
-    <Section className="bg-primary-soft/40">
-      <SectionHeader eyebrow="Why Nupun" title="Care built on trust, not tricks." align="center" />
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {pillars.map((p, i) => (
-          <Reveal key={p.title} delay={i * 0.06}>
-            <div className="h-full rounded-3xl border border-border bg-surface p-7 hover-glow">
-              <div className="h-12 w-12 rounded-2xl bg-primary-soft grid place-items-center text-accent">
-                <p.icon className="h-5 w-5" />
-              </div>
-              <div className="mt-5 font-display text-xl">{p.title}</div>
-              <div className="mt-2 text-sm text-muted-foreground leading-relaxed">{p.body}</div>
-            </div>
-          </Reveal>
-        ))}
-      </div>
-    </Section>
-  );
-}
+
 
 function EquipmentSection() {
   const { data, isLoading } = useQuery(equipmentQ({ limit: 4 }));
