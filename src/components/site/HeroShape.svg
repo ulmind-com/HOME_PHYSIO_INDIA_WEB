@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" preserveAspectRatio="none">
+  <defs>
+    <clipPath id="heroClip" clipPathUnits="userSpaceOnUse">
+      <path d="M87.4771 0H600V492.035L147.253 600H125.577C55.3147 600 0 544.6885 0 476.423V87.4771Z" />
+    </clipPath>
+    <linearGradient id="heroGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#5FE0C0" />
+      <stop offset="100%" stop-color="#43D4B0" />
+    </linearGradient>
+  </defs>
+  <path d="M87.4771 0H600V492.035L147.253 600H125.577C55.3147 600 0 544.6885 0 476.423V87.4771Z" fill="url(#heroGrad)" />
+  <image href="/assets/hero-doctors-team.png" width="600" height="600" clip-path="url(#heroClip)" preserveAspectRatio="xMidYMid slice" />
+</svg>
