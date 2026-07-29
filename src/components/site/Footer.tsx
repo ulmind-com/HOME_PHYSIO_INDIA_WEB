@@ -98,7 +98,7 @@ export function Footer() {
                 <img 
                   src="/assets/ulmind.png" 
                   alt="Ulmind" 
-                  className="h-4 sm:h-5 w-auto object-contain drop-shadow-lg opacity-90 transition-all group-hover:opacity-100 group-hover:scale-105" 
+                  className="h-7 sm:h-8 w-auto object-contain drop-shadow-lg opacity-100 transition-all group-hover:scale-105" 
                 />
               </div>
             </div>
