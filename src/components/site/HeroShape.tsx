@@ -19,10 +19,11 @@ export function HeroShape({ imageUrl, className, alt = "" }: HeroShapeProps) {
   const uid = useId().replace(/:/g, "");
   const clipId = `heroClip-${uid}`;
 
-  // MediWise-reference: slightly clockwise-tilted rounded rectangle.
-  // Right edge extends off-canvas (bleed). Visible rounded corners: TL, BL, small BR.
+  // Reference: tilted panel — top-left inset, left edge slants out to bottom-left,
+  // straight top, right edge bleeds vertically, small diagonal cut at bottom-right.
   const shapePath =
-    "M28 60 A28 28 0 0 1 60 28 L600 0 V560 A20 20 0 0 1 578 580 L60 600 A28 28 0 0 1 28 568 Z";
+    "M80 0 L600 0 L600 540 L540 600 L0 600 Z";
+
 
 
 
