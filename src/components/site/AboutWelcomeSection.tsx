@@ -185,7 +185,7 @@ export function AboutWelcomeSection() {
             </motion.div>
 
             {/* Floating ring decoration */}
-            <div className="absolute -right-4 -top-4 h-20 w-20 animate-pulse-ring rounded-full border-2 border-primary/20" />
+            <div className="absolute -left-4 -top-4 h-20 w-20 animate-pulse-ring rounded-full border-2 border-primary/20" />
           </motion.div>
         </div>
       </div>
