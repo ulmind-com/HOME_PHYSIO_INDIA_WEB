@@ -61,7 +61,7 @@ export function AboutWelcomeSection() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: "-100px" }}
-            className="order-2 lg:order-1"
+            className="order-2"
           >
             <motion.div
               variants={fadeUp}
