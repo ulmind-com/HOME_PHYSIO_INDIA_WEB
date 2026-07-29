@@ -23,6 +23,7 @@ export function EquipmentCarousel() {
   const [focused, setFocused] = React.useState(false);
   const [hidden, setHidden] = React.useState(false);
   const [interacted, setInteracted] = React.useState(false);
+  const interactionTimeoutRef = React.useRef<number | null>(null);
 
   const paused = hovered || focused || hidden || interacted;
 
@@ -40,10 +41,22 @@ export function EquipmentCarousel() {
     return () => document.removeEventListener("visibilitychange", onVis);
   }, []);
 
+  React.useEffect(() => {
+    return () => {
+      if (interactionTimeoutRef.current) {
+        window.clearTimeout(interactionTimeoutRef.current);
+      }
+    };
+  }, []);
+
   const selectSlide = React.useCallback((index: number) => {
     setActive(index);
     setInteracted(true);
-    window.setTimeout(() => setInteracted(false), INTERACTION_PAUSE_MS);
+    if (interactionTimeoutRef.current) window.clearTimeout(interactionTimeoutRef.current);
+    interactionTimeoutRef.current = window.setTimeout(() => {
+      setInteracted(false);
+      interactionTimeoutRef.current = null;
+    }, INTERACTION_PAUSE_MS);
   }, []);
 
   return (
