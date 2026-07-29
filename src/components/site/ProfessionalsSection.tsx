@@ -102,11 +102,34 @@ export function ProfessionalsSection() {
       ? (settings as unknown as { people_tiles: PeopleTile[] }).people_tiles
       : DEFAULT_TILES;
 
+  const backdrop =
+    (settings as unknown as { professionals_backdrop?: string })?.professionals_backdrop ||
+    backdropAsset.url;
+
   return (
     <Section className="relative overflow-hidden">
       <div className="relative grid gap-14 lg:grid-cols-2 lg:gap-20 items-center">
-        {/* LEFT — copy + features */}
-        <div>
+        {/* LEFT — copy + features (with photo backdrop) */}
+        <div className="relative isolate rounded-[2rem] p-6 md:p-10">
+          {/* Decorative backdrop */}
+          <motion.div
+            initial={{ opacity: 0, scale: 1.04 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            className="pointer-events-none absolute inset-0 -z-10 overflow-hidden rounded-[2rem] border border-primary/10 shadow-[var(--shadow-elegant)]"
+            aria-hidden
+          >
+            <img
+              src={backdrop}
+              alt=""
+              loading="lazy"
+              className="h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/40" />
+            <div className="absolute inset-0 bg-[radial-gradient(120%_80%_at_0%_50%,color-mix(in_oklab,var(--primary)_18%,transparent),transparent_60%)]" />
+          </motion.div>
+
           <motion.div
             initial={{ opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
