@@ -253,10 +253,9 @@ function TestimonialsSection() {
 
 function BlogVideosSection() {
   const { data: blogs } = useQuery(blogsQ({ limit: 3 }));
-  const { data: videos } = useQuery(videosQ({ limit: 3 }));
   const bItems = blogs?.items ?? [];
-  const vItems = videos?.items ?? [];
-  if (!bItems.length && !vItems.length) return null;
+  if (!bItems.length) return null;
+
   return (
     <Section>
       {!!bItems.length && (
