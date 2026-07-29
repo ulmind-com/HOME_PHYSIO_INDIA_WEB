@@ -1,10 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { ArrowRight, Stethoscope } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import {
   blogsQ,
-  equipmentQ,
   faqsQ,
   reviewSummaryQ,
   servicesQ,
@@ -92,60 +91,20 @@ function TrustBar() {
 
 
 function EquipmentSection() {
-  const { data, isLoading } = useQuery(equipmentQ({ limit: 12 }));
-  const items = data?.items ?? [];
-  const hasItems = items.some((e) => e.featured_image);
   return (
     <Section>
       <div className="flex items-end justify-between gap-6 mb-12 flex-wrap">
         <SectionHeader
-          eyebrow="Equipment rental"
-          title="Hospital-grade equipment, without the hospital."
-          description="Rent oxygen concentrators, beds, wheelchairs and more — sanitised, insured and delivered."
+          eyebrow="Equipment"
+          title="Hospital-grade equipment, at home."
+          description="Ultrasound, monitoring, anesthesiology and clinical kits — sanitised, insured and delivered."
         />
         <Link to="/equipment" className="inline-flex items-center gap-1 text-sm font-medium text-accent hover:gap-2 transition-all">
           Browse equipment <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
-      {isLoading ? (
-        <div className="h-[560px] rounded-3xl border border-border bg-surface animate-pulse" />
-      ) : hasItems ? (
-        <EquipmentCarousel />
-      ) : (
-        <EquipmentTeaser />
-      )}
+      <EquipmentCarousel />
     </Section>
-  );
-}
-
-function EquipmentTeaser() {
-  const teasers = ["Oxygen concentrators", "Hospital beds", "Wheelchairs", "BiPAP / CPAP"];
-  return (
-    <div className="rounded-[2rem] border border-border bg-gradient-to-br from-surface to-primary-soft/60 p-10 lg:p-14">
-      <div className="grid gap-8 lg:grid-cols-2 items-center">
-        <div>
-          <div className="text-sm uppercase tracking-[0.2em] text-accent mb-3">Coming to the catalogue</div>
-          <h3 className="font-display text-3xl md:text-4xl">
-            Rent premium medical equipment on demand
-          </h3>
-          <p className="mt-4 text-muted-foreground max-w-md">
-            Same-day delivery, flexible durations, and hospital-grade sanitisation on every unit.
-          </p>
-          <Link to="/contact" className="mt-6 inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm font-medium text-background">
-            Request equipment <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-        <div className="grid grid-cols-2 gap-4">
-          {teasers.map((t) => (
-            <div key={t} className="glass rounded-2xl p-5">
-              <Stethoscope className="h-5 w-5 text-primary" />
-              <div className="mt-3 font-medium">{t}</div>
-              <div className="text-xs text-muted-foreground mt-1">Available soon</div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
   );
 }
 
