@@ -14,41 +14,70 @@ const ITEMS = [
   { src: stethoscope.url, title: "Clinical Stethoscope", alt: "Professional clinical stethoscope" },
 ];
 
+const AUTO_SCROLL_MS = 3500;
+const INTERACTION_PAUSE_MS = 2500;
+
 export function EquipmentCarousel() {
   const [active, setActive] = React.useState(0);
-  const [paused, setPaused] = React.useState(false);
+  const [hovered, setHovered] = React.useState(false);
+  const [focused, setFocused] = React.useState(false);
+  const [hidden, setHidden] = React.useState(false);
+  const [interacted, setInteracted] = React.useState(false);
+  const interactionTimeoutRef = React.useRef<number | null>(null);
+
+  const paused = hovered || focused || hidden || interacted;
 
   React.useEffect(() => {
     if (paused) return;
     const id = window.setInterval(() => {
       setActive((i) => (i + 1) % ITEMS.length);
-    }, 3500);
+    }, AUTO_SCROLL_MS);
     return () => window.clearInterval(id);
-  }, [paused]);
+  }, [paused, active]);
 
   React.useEffect(() => {
-    const onVis = () => setPaused(document.hidden);
+    const onVis = () => setHidden(document.hidden);
     document.addEventListener("visibilitychange", onVis);
     return () => document.removeEventListener("visibilitychange", onVis);
   }, []);
 
+  React.useEffect(() => {
+    return () => {
+      if (interactionTimeoutRef.current) {
+        window.clearTimeout(interactionTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const selectSlide = React.useCallback((index: number) => {
+    setActive(index);
+    setInteracted(true);
+    if (interactionTimeoutRef.current) window.clearTimeout(interactionTimeoutRef.current);
+    interactionTimeoutRef.current = window.setTimeout(() => {
+      setInteracted(false);
+      interactionTimeoutRef.current = null;
+    }, INTERACTION_PAUSE_MS);
+  }, []);
+
   return (
     <div
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocus={() => setPaused(true)}
-      onBlur={() => setPaused(false)}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
       className="relative"
     >
       <PerspectiveCarousel
         items={ITEMS}
         activeIndex={active}
-        onActiveIndexChange={setActive}
+        onActiveIndexChange={selectSlide}
         loop
-        slideWidth={230}
-        rotationStep={55}
-        inactiveScale={0.82}
-        className="h-[560px] bg-gradient-to-br from-primary-soft/40 to-surface"
+        slideWidth={300}
+        rotationStep={48}
+        inactiveScale={0.78}
+        showControls
+        showDots
+        className="h-[640px] bg-gradient-to-br from-primary-soft/40 to-surface"
       />
     </div>
   );
