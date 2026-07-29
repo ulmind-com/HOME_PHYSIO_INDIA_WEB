@@ -121,11 +121,11 @@ export function ProfessionalsSection() {
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
           className="pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover"
         />
-        {/* Readability overlays */}
-        <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-r from-black/80 via-black/55 to-black/25" />
-        <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(120%_80%_at_0%_50%,color-mix(in_oklab,var(--primary)_22%,transparent),transparent_65%)]" />
+        {/* Soft light wash — no dark shape, just enough contrast for text on the left */}
+        <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-r from-white/85 via-white/55 to-transparent" />
 
-        <div className="relative grid gap-14 lg:grid-cols-2 lg:gap-20 items-center p-6 md:p-12 lg:p-16 text-white">
+        <div className="relative grid gap-14 lg:grid-cols-2 lg:gap-20 items-center p-6 md:p-12 lg:p-16 text-foreground">
+
         {/* LEFT — copy + features */}
         <div className="relative">
 
