@@ -20,6 +20,7 @@ import { TestimonialCard } from "@/components/site/cards/TestimonialCard";
 import { FaqAccordion } from "@/components/site/FaqAccordion";
 import { GoogleReviews } from "@/components/site/GoogleReviews";
 import { Hero } from "@/components/site/Hero";
+import { AboutWelcomeSection } from "@/components/site/AboutWelcomeSection";
 
 
 
@@ -48,6 +49,7 @@ function Home() {
   return (
     <>
       <Hero />
+      <AboutWelcomeSection />
       <TrustBar />
       <ServicesSection />
       <WhyUs />
