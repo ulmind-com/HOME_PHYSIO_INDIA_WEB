@@ -1,13 +1,10 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
-import { ArrowRight, ShieldCheck, HeartPulse, Clock, Star, Calendar, Stethoscope, ChevronDown } from "lucide-react";
-import { motion } from "framer-motion";
+import { ArrowRight, ShieldCheck, HeartPulse, Clock, Star, Stethoscope } from "lucide-react";
 import {
   blogsQ,
   equipmentQ,
   faqsQ,
-  reviewSummaryQ,
   servicesQ,
   testimonialsQ,
   videosQ,
@@ -17,27 +14,26 @@ import { Section, SectionHeader, EmptyState } from "@/components/site/Section";
 import { ServiceCard } from "@/components/site/cards/ServiceCard";
 import { EquipmentCard } from "@/components/site/cards/EquipmentCard";
 import { BlogCard } from "@/components/site/cards/BlogCard";
-import { VideoCard } from "@/components/site/cards/VideoCard";
 import { VideoTestimonialsSection } from "@/components/site/VideoTestimonialsSection";
 import { TestimonialCard } from "@/components/site/cards/TestimonialCard";
 import { FaqAccordion } from "@/components/site/FaqAccordion";
 import { GoogleReviews } from "@/components/site/GoogleReviews";
-const heroDoctor = "/assets/hero-doctor.jpg";
+import { Hero } from "@/components/site/Hero";
 
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Nupun Home Health Care Services — Premium care, delivered home" },
+      { title: "Nupun Home Health Care — Hospital-grade care, at home" },
       {
         name: "description",
         content:
-          "Verified nurses, physiotherapists and premium medical equipment — booked in minutes, delivered to your door. Rated 5-star by families across the region.",
+          "Verified nurses, physiotherapists and premium medical equipment — orchestrated by a dedicated advisor and delivered to your door in hours.",
       },
-      { property: "og:title", content: "Nupun Home Health Care Services — Premium care, delivered home" },
+      { property: "og:title", content: "Nupun Home Health Care — Hospital-grade care, at home" },
       {
         property: "og:description",
-        content: "Verified nurses, physiotherapists and premium medical equipment — booked in minutes, delivered to your door. Rated 5-star by families across the region.",
+        content: "Verified nurses, physiotherapists and premium medical equipment — delivered home.",
       },
       { property: "og:url", content: "/" },
     ],
@@ -66,159 +62,16 @@ function Home() {
   );
 }
 
-function Hero() {
-  const { data: servicesData } = useQuery(servicesQ({ limit: 24 }));
-  const services = servicesData?.items ?? [];
-  const navigate = useNavigate();
-  const [service, setService] = useState("");
-  const [careType, setCareType] = useState("");
-  const [date, setDate] = useState("");
 
-  const onBook = () => {
-    navigate({ to: "/booking", search: service ? { service } : {} });
-  };
-
+function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <section className="relative">
-      <div
-        className="relative overflow-hidden border-b border-primary/20 min-h-[100svh]"
-        style={{
-          background:
-            "linear-gradient(135deg, color-mix(in oklab, var(--primary) 22%, white), color-mix(in oklab, var(--primary) 10%, white) 55%, white)",
-        }}
-      >
-        {/* Doctor image, right half, feathered into the mint bg */}
-        <img
-          src={heroDoctor}
-          alt="Nupun doctor consulting a patient"
-          className="hidden lg:block absolute right-0 top-0 h-full w-[62%] object-cover object-left"
-          style={{
-            WebkitMaskImage:
-              "linear-gradient(to right, transparent 0%, black 18%, black 100%)",
-            maskImage:
-              "linear-gradient(to right, transparent 0%, black 18%, black 100%)",
-          }}
-        />
-        {/* Mobile: image below text */}
-        <img
-          src={heroDoctor}
-          alt=""
-          aria-hidden
-          className="lg:hidden absolute inset-x-0 bottom-0 h-1/2 w-full object-cover"
-          style={{
-            WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 40%)",
-            maskImage: "linear-gradient(to bottom, transparent 0%, black 40%)",
-          }}
-        />
-
-        {/* Content layer */}
-        <div className="relative px-6 pt-32 pb-48 lg:px-16 lg:pt-40 lg:pb-40 min-h-[100svh] flex items-center">
-          <div className="max-w-md lg:max-w-lg lg:ml-8 xl:ml-20">
-            <Reveal>
-              <h1 className="font-sans text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.02] text-foreground">
-                Your Health,
-                <br />
-                Our Priority
-              </h1>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <p className="mt-6 max-w-sm text-lg text-foreground/75 leading-relaxed">
-                Compassionate care for you and your family — verified nurses and hospital-grade equipment, delivered home.
-              </p>
-            </Reveal>
-            <Reveal delay={0.15}>
-              <div className="mt-8 flex flex-wrap items-center gap-3">
-                <Link
-                  to="/booking"
-                  className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3.5 text-sm font-semibold hover:bg-accent transition-colors"
-                >
-                  Book Appointment <ArrowRight className="h-4 w-4" />
-                </Link>
-                <Link
-                  to="/services"
-                  className="inline-flex items-center gap-2 rounded-full border border-foreground/15 bg-white/70 backdrop-blur px-6 py-3.5 text-sm font-medium hover:border-primary"
-                >
-                  Explore services
-                </Link>
-              </div>
-            </Reveal>
-          </div>
-        </div>
-
-        {/* Liquid-glass booking bar — pinned inside hero */}
-        <div className="absolute inset-x-0 bottom-6 lg:bottom-10 z-20 px-4 lg:px-10">
-          <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[1.75rem] border border-white/50 bg-white/25 backdrop-blur-2xl backdrop-saturate-150 shadow-[0_25px_70px_-25px_rgba(15,60,60,0.45)]">
-            {/* top sheen */}
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/50 to-transparent" />
-            <div className="relative p-4 lg:p-5 grid gap-3 md:grid-cols-[1fr_1fr_1fr_auto] md:items-end">
-              <BookField label="Service">
-                <select
-                  value={service}
-                  onChange={(e) => setService(e.target.value)}
-                  className="w-full appearance-none bg-transparent text-sm font-medium text-foreground focus:outline-none pr-6"
-                >
-                  <option value="">Choose service</option>
-                  {services.map((s) => (
-                    <option key={s.id} value={s.slug}>{s.title}</option>
-                  ))}
-                </select>
-              </BookField>
-              <BookField label="Care type">
-                <select
-                  value={careType}
-                  onChange={(e) => setCareType(e.target.value)}
-                  className="w-full appearance-none bg-transparent text-sm font-medium text-foreground focus:outline-none pr-6"
-                >
-                  <option value="">Select type</option>
-                  <option value="home">Home visit</option>
-                  <option value="consult">Consultation</option>
-                  <option value="equipment">Equipment rental</option>
-                </select>
-              </BookField>
-              <BookField label="Date" icon={<Calendar className="h-4 w-4 text-muted-foreground" />}>
-                <input
-                  type="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                  className="w-full bg-transparent text-sm font-medium text-foreground focus:outline-none"
-                />
-              </BookField>
-              <button
-                onClick={onBook}
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3.5 text-sm font-semibold hover:bg-accent transition-colors whitespace-nowrap shadow-[0_10px_25px_-8px_color-mix(in_oklab,var(--primary)_55%,transparent)]"
-              >
-                Book Now <ArrowRight className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <div>
+      <div className="font-display text-3xl md:text-4xl tracking-tight">{value}</div>
+      <div className="text-xs uppercase tracking-widest text-muted-foreground mt-1">{label}</div>
+    </div>
   );
 }
 
-
-
-function BookField({
-  label,
-  icon,
-  children,
-}: {
-  label: string;
-  icon?: React.ReactNode;
-  children: React.ReactNode;
-}) {
-  return (
-    <label className="block rounded-2xl bg-white/40 border border-white/60 backdrop-blur px-4 py-3">
-      <div className="text-[11px] uppercase tracking-[0.15em] text-muted-foreground font-medium">{label}</div>
-      <div className="mt-1 flex items-center gap-2 relative">
-        {icon}
-        {children}
-        <ChevronDown className="h-4 w-4 text-muted-foreground absolute right-0 pointer-events-none opacity-60" />
-      </div>
-    </label>
-  );
-}
 
 
 function Stat({ label, value }: { label: string; value: string }) {
