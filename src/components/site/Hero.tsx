@@ -39,11 +39,11 @@ export function Hero() {
         </svg>
       </div>
 
-      {/* ── MAIN CONTENT GRID ── */}
-      <div className="relative z-10 container-x min-h-[100svh] flex flex-col lg:flex-row items-center">
+      {/* ── MAIN CONTENT GRID (full-bleed) ── */}
+      <div className="relative z-10 min-h-[100svh] flex flex-col lg:flex-row items-center">
 
-        {/* ─── LEFT: Text Content ─── */}
-        <div className="relative z-20 flex flex-col justify-center pt-28 pb-10 lg:pt-0 lg:pb-0 lg:w-[46%] lg:pr-8">
+        {/* ─── LEFT: Text Content (constrained) ─── */}
+        <div className="relative z-20 flex flex-col justify-center pt-28 pb-10 lg:pt-0 lg:pb-0 lg:w-[46%] px-6 sm:px-10 lg:pl-[max(2.5rem,calc((100vw-1280px)/2+2.5rem))] lg:pr-8">
 
           <motion.h1
             variants={fadeUp}
@@ -123,21 +123,22 @@ export function Hero() {
           </motion.div>
         </div>
 
-        {/* ─── RIGHT: Doctors Image inside hand-crafted SVG shape ─── */}
+        {/* ─── RIGHT: Doctors Image inside hand-crafted SVG shape (full-bleed to right edge) ─── */}
         <motion.div
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="relative lg:w-[54%] w-full self-stretch flex items-center justify-center py-10 lg:py-16"
+          className="relative lg:w-[54%] w-full self-stretch flex items-stretch justify-end py-6 lg:py-10"
         >
           <HeroShape
             imageUrl={heroTeam.url}
             alt="Nupun Home Health Care — Compassionate nurse with elderly patient"
-            className="w-full h-full max-h-[640px]"
+            className="w-full h-full max-h-[720px]"
           />
         </motion.div>
 
       </div>
+
     </section>
   );
 }
