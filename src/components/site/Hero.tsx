@@ -132,7 +132,7 @@ export function Hero() {
         >
           <HeroShape
             imageUrl={heroTeam.url}
-            alt="Nupun Home Health Care — Expert medical team"
+            alt="Nupun Home Health Care — Compassionate nurse with elderly patient"
             className="w-full h-full max-h-[640px]"
           />
         </motion.div>
