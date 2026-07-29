@@ -78,6 +78,12 @@ export function VideoPlayerModal({ video, onClose }: { video: Video | null; onCl
             controls
             autoPlay
             playsInline
+            onLoadedMetadata={(e) => {
+              const el = e.currentTarget;
+              if (el.videoWidth && el.videoHeight) {
+                setDetected(el.videoHeight > el.videoWidth ? "9/16" : "16/9");
+              }
+            }}
             className="h-full w-full object-contain bg-black"
           />
         ) : (
