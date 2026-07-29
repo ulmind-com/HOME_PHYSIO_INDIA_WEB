@@ -21,7 +21,7 @@ import { GoogleReviews } from "@/components/site/GoogleReviews";
 import { Hero } from "@/components/site/Hero";
 import { AboutWelcomeSection } from "@/components/site/AboutWelcomeSection";
 import { HowItWorksSection } from "@/components/site/HowItWorksSection";
-import { ProfessionalsSection } from "@/components/site/ProfessionalsSection";
+import { settingsQ } from "@/lib/api/queries";
 
 
 
