@@ -191,7 +191,7 @@ export function AboutWelcomeSection() {
       </div>
 
       {/* Categories zone */}
-      <CategoryShowcase services={servicesData?.items ?? []} />
+      <CategoryShowcasePremium services={servicesData?.items ?? []} />
     </section>
   );
 }
