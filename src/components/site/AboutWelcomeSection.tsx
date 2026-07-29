@@ -5,7 +5,7 @@ import { ArrowRight, Award, Users, Clock, ShieldCheck } from "lucide-react";
 import { servicesQ, settingsQ } from "@/lib/api/queries";
 import { CategoryShowcase } from "./CategoryShowcase";
 
-const INTRO_IMAGE = "https://images.unsplash.com/photo-1576765607924-3f7b8410a787?w=1200&q=80";
+const INTRO_IMAGE = "/assets/hero-nurse-patient.png";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
