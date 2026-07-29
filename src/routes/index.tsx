@@ -51,7 +51,7 @@ function Home() {
       <Hero />
       <AboutWelcomeSection />
       <TrustBar />
-      <ServicesSection />
+      <ServicesMarquee />
       <WhyUs />
       <EquipmentSection />
       <CareTeamSection />
