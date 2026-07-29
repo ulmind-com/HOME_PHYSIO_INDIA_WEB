@@ -133,7 +133,7 @@ export function Hero() {
           className="relative lg:w-[54%] w-full self-stretch flex items-stretch justify-end py-6 lg:py-10 lg:-mr-6 xl:-mr-10"
         >
           <HeroShape
-            imageUrl={heroTeam.url}
+            imageUrl={HERO_NURSE_PATIENT_IMAGE}
             alt="Nupun Home Health Care — Compassionate nurse with elderly patient"
             className="w-full h-full max-h-[720px]"
           />
