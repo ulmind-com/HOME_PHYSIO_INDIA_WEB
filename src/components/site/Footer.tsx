@@ -61,38 +61,42 @@ export function Footer() {
               <div className="text-[13px] text-white font-semibold drop-shadow-md">
                 © {new Date().getFullYear()} {name} - All rights reserved
               </div>
-
-              <div className="flex items-center gap-1.5 text-[13px] text-white font-semibold drop-shadow-md">
-                Built with <Heart className="h-3.5 w-3.5 text-rose-500 fill-rose-500" /> by Ulmind
-              </div>
             </div>
           </div>
 
           {/* Right Column (Links) */}
-          <div className="lg:col-span-6 lg:col-start-7 grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-12">
-            <FooterCol title="Menu">
-              <FooterLink to="/">Home</FooterLink>
-              <FooterLink to="/about">About Us</FooterLink>
-              <FooterLink to="/equipment">Equipment</FooterLink>
-              <FooterLink to="/testimonials">Testimonials</FooterLink>
-              <FooterLink to="/blog">Care Blog</FooterLink>
-            </FooterCol>
+          <div className="lg:col-span-6 lg:col-start-7 flex flex-col justify-between h-full">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-12">
+              <FooterCol title="Menu">
+                <FooterLink to="/">Home</FooterLink>
+                <FooterLink to="/about">About Us</FooterLink>
+                <FooterLink to="/equipment">Equipment</FooterLink>
+                <FooterLink to="/testimonials">Testimonials</FooterLink>
+                <FooterLink to="/blog">Care Blog</FooterLink>
+              </FooterCol>
 
-            <FooterCol title="Services">
-              <FooterLink to="/services">Elder Care</FooterLink>
-              <FooterLink to="/services">Physiotherapy</FooterLink>
-              <FooterLink to="/services">Skilled Nursing</FooterLink>
-              <FooterLink to="/services">Rehabilitation</FooterLink>
-              <FooterLink to="/services">Medical Equipment</FooterLink>
-            </FooterCol>
+              <FooterCol title="Services">
+                <FooterLink to="/services">Elder Care</FooterLink>
+                <FooterLink to="/services">Physiotherapy</FooterLink>
+                <FooterLink to="/services">Skilled Nursing</FooterLink>
+                <FooterLink to="/services">Rehabilitation</FooterLink>
+                <FooterLink to="/services">Medical Equipment</FooterLink>
+              </FooterCol>
 
-            <FooterCol title="Support">
-              <FooterLink to="/contact">Contact Us</FooterLink>
-              <FooterLink to="/faq">FAQ</FooterLink>
-              <FooterLink to="/privacy">Privacy Policy</FooterLink>
-              <FooterLink to="/terms">Terms of Service</FooterLink>
-              <FooterLink to="/refund-policy">Refund Policy</FooterLink>
-            </FooterCol>
+              <FooterCol title="Support">
+                <FooterLink to="/contact">Contact Us</FooterLink>
+                <FooterLink to="/faq">FAQ</FooterLink>
+                <FooterLink to="/privacy">Privacy Policy</FooterLink>
+                <FooterLink to="/terms">Terms of Service</FooterLink>
+                <FooterLink to="/refund-policy">Refund Policy</FooterLink>
+              </FooterCol>
+            </div>
+
+            <div className="flex justify-start sm:justify-end mt-12 sm:mt-auto">
+              <div className="flex items-center gap-1.5 text-[13px] text-white font-semibold drop-shadow-md">
+                Built with <Heart className="h-3.5 w-3.5 text-rose-500 fill-rose-500" /> by Ulmind
+              </div>
+            </div>
           </div>
         </div>
       </div>
