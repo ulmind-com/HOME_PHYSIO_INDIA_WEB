@@ -19,7 +19,7 @@ const fadeUp = {
 export function Hero() {
   return (
     <section className="relative isolate min-h-[100svh] overflow-hidden bg-primary p-3 sm:p-5 lg:p-6">
-      <div className="relative mx-auto min-h-[calc(100svh-1.5rem)] max-w-[1180px] overflow-hidden rounded-[2rem] bg-surface shadow-float sm:min-h-[calc(100svh-2.5rem)] lg:min-h-[calc(100svh-3rem)]">
+      <div className="relative mx-auto min-h-[calc(100svh-1.5rem)] max-w-[1180px] overflow-hidden rounded-[2rem] bg-surface shadow-float sm:min-h-[calc(100svh-2.5rem)] lg:min-h-0 lg:aspect-[1.56/1] lg:max-h-[calc(100svh-3rem)]">
         <HeroCardNav />
 
         <div className="pointer-events-none absolute inset-0 text-primary" aria-hidden>
@@ -28,14 +28,14 @@ export function Hero() {
           <Ring className="absolute bottom-[15%] right-[4.5%] h-11 w-11 opacity-20" />
         </div>
 
-        <div className="relative z-10 grid min-h-[calc(100svh-1.5rem)] grid-cols-1 lg:min-h-[calc(100svh-3rem)] lg:grid-cols-[45%_55%]">
-          <div className="flex flex-col justify-center px-8 pb-10 pt-28 sm:px-12 lg:px-[72px] lg:pb-16 lg:pt-24">
+        <div className="relative z-10 grid min-h-[calc(100svh-1.5rem)] grid-cols-1 lg:min-h-0 lg:aspect-[1.56/1] lg:grid-cols-[45%_55%]">
+          <div className="flex flex-col justify-center px-8 pb-10 pt-28 sm:px-12 lg:px-[72px] lg:pb-12 lg:pt-24 xl:px-[76px]">
             <motion.h1
               variants={fadeUp}
               initial="hidden"
               animate="show"
               custom={0}
-              className="max-w-[460px] font-display text-[clamp(2.55rem,5vw,4.15rem)] font-semibold leading-[1.08] text-foreground"
+              className="max-w-[500px] font-display text-[clamp(2.45rem,4.6vw,3.65rem)] font-semibold leading-[1.12] text-foreground"
             >
               Putting your
               <br />
@@ -85,7 +85,7 @@ export function Hero() {
               initial="hidden"
               animate="show"
               custom={3}
-              className="mt-16 grid max-w-[520px] grid-cols-1 gap-5 sm:grid-cols-3 lg:gap-8"
+              className="mt-12 grid max-w-[520px] grid-cols-1 gap-5 sm:grid-cols-3 lg:gap-7"
             >
               <StatItem icon={<ClinicIcon />} value={<><Counter value={50} />+</>} label="Clinics" />
               <StatItem icon={<DoctorIcon />} value={<><Counter value={2} />K+</>} label="Doctors" />

@@ -17,7 +17,7 @@ export function HeroShape({ imageUrl, className, alt = "" }: HeroShapeProps) {
 
   // Tuned from the screenshot: inset top-left, leaning left edge, diagonal base,
   // and a broad rounded sweep where the lower-left corner meets the bottom cut.
-  const shapePath = "M76 0 H620 V466 L168 584 C104 598 55 558 48 496 Z";
+  const shapePath = "M76 0 H620 V468 L166 584 C106 597 58 558 48 498 Z";
 
   return (
     <svg
@@ -45,10 +45,10 @@ export function HeroShape({ imageUrl, className, alt = "" }: HeroShapeProps) {
 
       <image
         href={imageUrl}
-        x="72"
-        y="70"
-        width="470"
-        height="500"
+        x="96"
+        y="118"
+        width="444"
+        height="452"
         clipPath={`url(#${clipId})`}
         preserveAspectRatio="xMidYMax meet"
       />
