@@ -53,7 +53,7 @@ function Home() {
       <AboutWelcomeSection />
       <TrustBar />
       <ServicesMarquee />
-      <WhyUs />
+      <HowItWorksSection />
       <EquipmentSection />
       <CareTeamSection />
       <TestimonialsSection />
