@@ -446,6 +446,9 @@ function ServicesIndex() {
         </Section>
       )}
 
+      {/* ── Video testimonials ───────────────────────────────── */}
+      <VideoTestimonialsSection />
+
       {/* ── CTA band ─────────────────────────────────────────── */}
       <section className="relative overflow-hidden">
         <div
