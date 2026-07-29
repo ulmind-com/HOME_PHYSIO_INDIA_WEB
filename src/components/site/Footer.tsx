@@ -93,14 +93,19 @@ export function Footer() {
             </div>
 
             <div className="flex justify-start sm:justify-end mt-12 sm:mt-auto">
-              <div className="flex items-center gap-2.5 text-[13px] text-white/90 font-medium drop-shadow-md group">
+              <a 
+                href="https://www.ulmind.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-2.5 text-[13px] text-white/90 font-medium drop-shadow-md group cursor-pointer"
+              >
                 <span className="opacity-80 transition-opacity group-hover:opacity-100">Designed and Developed by</span>
                 <img 
                   src="/assets/ulmind.png" 
                   alt="Ulmind" 
                   className="h-10 sm:h-12 w-auto object-contain drop-shadow-lg opacity-100 transition-all group-hover:scale-105" 
                 />
-              </div>
+              </a>
             </div>
           </div>
         </div>
