@@ -193,14 +193,14 @@ export function HowItWorksSection({ illustration }: { illustration?: string }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.5, duration: 0.6 }}
-              className="glass absolute -bottom-6 -left-6 flex items-center gap-3 rounded-2xl p-4 shadow-soft lg:-left-10"
+              className="glass absolute -bottom-5 -left-5 flex items-center gap-2.5 rounded-2xl p-3 shadow-soft lg:-left-8"
             >
-              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
-                <ShieldCheck className="h-5 w-5" />
+              <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
+                <ShieldCheck className="h-4 w-4" />
               </div>
               <div>
-                <div className="font-display text-sm font-semibold leading-none">Verified caregivers</div>
-                <div className="mt-1 text-[11px] text-muted-foreground">Background-checked & trained</div>
+                <div className="font-display text-xs font-semibold leading-none">Verified caregivers</div>
+                <div className="mt-1 text-[10px] text-muted-foreground">Background-checked & trained</div>
               </div>
             </motion.div>
 
@@ -210,19 +210,19 @@ export function HowItWorksSection({ illustration }: { illustration?: string }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.65, duration: 0.6 }}
-              className="glass absolute -top-4 -right-4 flex items-center gap-2.5 rounded-2xl p-3 shadow-soft lg:-right-8"
+              className="glass absolute -top-3 -right-3 flex items-center gap-2 rounded-2xl p-2.5 shadow-soft lg:-right-6"
             >
-              <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-accent text-accent-foreground">
-                <Sparkles className="h-4 w-4" />
+              <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-accent text-accent-foreground">
+                <Sparkles className="h-3.5 w-3.5" />
               </div>
               <div>
-                <div className="font-display text-sm font-semibold leading-none">Matched in 24h</div>
+                <div className="font-display text-xs font-semibold leading-none">Matched in 24h</div>
                 <div className="mt-0.5 text-[10px] text-muted-foreground">Fast, personal care</div>
               </div>
             </motion.div>
 
             {/* Pulse ring decoration */}
-            <div className="absolute -right-4 top-1/3 h-24 w-24 animate-pulse-ring rounded-full border-2 border-primary/20" />
+            <div className="absolute -right-3 top-1/3 h-20 w-20 animate-pulse-ring rounded-full border-2 border-primary/20" />
           </motion.div>
         </div>
       </div>
