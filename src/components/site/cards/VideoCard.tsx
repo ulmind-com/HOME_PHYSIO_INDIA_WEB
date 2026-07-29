@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Play } from "lucide-react";
 import type { Video } from "@/lib/api/types";
-import { getYouTubeId, inferAspect } from "@/components/site/VideoPlayerModal";
+import { getYouTubeId, inferAspect, resolveVideoSource } from "@/components/site/VideoPlayerModal";
 
 type Props = {
   v: Video;
@@ -12,11 +12,11 @@ type Props = {
 
 export function VideoCard({ v, onPlay, aspect, variant = "default" }: Props) {
   const yt = getYouTubeId(v.youtube_url);
-  const src = v.video_url || v.video_file?.url || null;
-  const thumb = v.thumbnail ?? (yt ? `https://i.ytimg.com/vi/${yt.id}/hqdefault.jpg` : null);
+  const src = resolveVideoSource(v);
+  const thumb = v.thumbnail?.trim() || (yt ? `https://i.ytimg.com/vi/${yt.id}/hqdefault.jpg` : null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [detected, setDetected] = useState<"9/16" | "16/9" | null>(null);
-  const a = aspect ?? detected ?? inferAspect(v);
+  const a = aspect ?? detected ?? (variant === "testimonial" ? "9/16" : inferAspect(v));
 
   useEffect(() => {
     const el = videoRef.current;
@@ -27,6 +27,7 @@ export function VideoCard({ v, onPlay, aspect, variant = "default" }: Props) {
       }
     };
     el.addEventListener("loadedmetadata", onMeta);
+    if (el.readyState >= 1) onMeta();
     return () => el.removeEventListener("loadedmetadata", onMeta);
   }, [src, aspect]);
 
@@ -62,6 +63,8 @@ export function VideoCard({ v, onPlay, aspect, variant = "default" }: Props) {
           ref={videoRef}
           src={src}
           preload="metadata"
+          autoPlay={variant === "testimonial"}
+          loop={variant === "testimonial"}
           muted
           playsInline
           disablePictureInPicture
