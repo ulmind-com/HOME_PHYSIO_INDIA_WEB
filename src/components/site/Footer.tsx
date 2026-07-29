@@ -93,8 +93,13 @@ export function Footer() {
             </div>
 
             <div className="flex justify-start sm:justify-end mt-12 sm:mt-auto">
-              <div className="flex items-center gap-1.5 text-[13px] text-white font-semibold drop-shadow-md">
-                Built with <Heart className="h-3.5 w-3.5 text-rose-500 fill-rose-500" /> by Ulmind
+              <div className="flex items-center gap-2.5 text-[13px] text-white/90 font-medium drop-shadow-md group">
+                <span className="opacity-80 transition-opacity group-hover:opacity-100">Designed and Developed by</span>
+                <img 
+                  src="/assets/ulmind.png" 
+                  alt="Ulmind" 
+                  className="h-4 sm:h-5 w-auto object-contain drop-shadow-lg opacity-90 transition-all group-hover:opacity-100 group-hover:scale-105" 
+                />
               </div>
             </div>
           </div>
