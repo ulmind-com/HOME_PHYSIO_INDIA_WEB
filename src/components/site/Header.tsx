@@ -5,9 +5,9 @@ import { cn } from "@/lib/utils";
 
 const NAV = [
   { to: "/", label: "Home" },
+  { to: "/about", label: "About" },
   { to: "/services", label: "Services" },
   { to: "/equipment", label: "Equipment" },
-  { to: "/about", label: "About" },
   { to: "/contact", label: "Contact" },
 ] as const;
 
@@ -23,14 +23,27 @@ export function Header() {
 
   useEffect(() => setOpen(false), [pathname]);
 
+  // "scrolled" flips once the header has scrolled past the page's hero, so the
+  // pill can switch from floating-over-hero styling to solid-on-content styling.
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    const compute = () => {
+      const hero = document.querySelector<HTMLElement>("main section");
+      const threshold = hero ? hero.offsetHeight - 96 : window.innerHeight * 0.7;
+      setScrolled(window.scrollY > threshold);
+    };
+    compute();
+    window.addEventListener("scroll", compute, { passive: true });
+    window.addEventListener("resize", compute);
+    return () => {
+      window.removeEventListener("scroll", compute);
+      window.removeEventListener("resize", compute);
+    };
+  }, [pathname]);
 
   const isHome = pathname === "/";
+  // Every route except the home page has a dark full-bleed hero; while the pill
+  // floats over it (before scrolling past), it needs light text to stay legible.
+  const onDarkHero = !isHome && !scrolled;
   const overlay = isHome && !scrolled;
 
   return (
@@ -39,11 +52,17 @@ export function Header() {
         <div
           className={cn(
             "relative overflow-hidden flex h-16 items-center justify-between gap-4 rounded-full pl-3 pr-3 lg:h-[68px] lg:pl-6 lg:pr-2",
-            "bg-white/30 backdrop-blur-2xl backdrop-saturate-150 border border-white/50",
+            "backdrop-blur-2xl backdrop-saturate-150 transition-colors duration-300",
             "shadow-[0_20px_50px_-20px_rgba(15,80,80,0.35)]",
+            onDarkHero ? "bg-white/10 border border-white/25" : "bg-white/30 border border-white/50",
           )}
         >
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/50 to-transparent rounded-full" />
+          <div
+            className={cn(
+              "pointer-events-none absolute inset-x-0 top-0 h-1/2 rounded-full bg-gradient-to-b to-transparent",
+              onDarkHero ? "from-white/15" : "from-white/50",
+            )}
+          />
           <Link to="/" className="relative flex items-center gap-2.5 shrink-0">
             <div className="relative h-9 w-9 rounded-xl bg-gradient-to-br from-primary to-accent grid place-items-center">
               <svg viewBox="0 0 24 24" className="h-5 w-5 text-white" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden>
@@ -51,8 +70,20 @@ export function Header() {
               </svg>
             </div>
             <div className="leading-tight hidden sm:block">
-              <div className="font-display text-[15px] font-semibold tracking-tight uppercase">Nupun</div>
-              <div className="text-[9px] uppercase tracking-[0.22em] text-muted-foreground -mt-0.5">
+              <div
+                className={cn(
+                  "font-display text-[15px] font-semibold tracking-tight uppercase",
+                  onDarkHero && "text-white",
+                )}
+              >
+                Nupun
+              </div>
+              <div
+                className={cn(
+                  "text-[9px] uppercase tracking-[0.22em] -mt-0.5",
+                  onDarkHero ? "text-white/70" : "text-muted-foreground",
+                )}
+              >
                 Home Health Care
               </div>
             </div>
@@ -64,9 +95,12 @@ export function Header() {
                 key={item.to}
                 to={item.to}
                 activeOptions={{ exact: item.to === "/" }}
-                activeProps={{ className: "text-accent font-semibold" }}
-                inactiveProps={{ className: "text-foreground/70" }}
-                className="text-sm font-medium transition-colors hover:text-accent"
+                activeProps={{ className: onDarkHero ? "text-white font-semibold" : "text-accent font-semibold" }}
+                inactiveProps={{ className: onDarkHero ? "text-white/75" : "text-foreground/70" }}
+                className={cn(
+                  "text-sm font-medium transition-colors",
+                  onDarkHero ? "hover:text-white" : "hover:text-accent",
+                )}
               >
                 {item.label}
               </Link>

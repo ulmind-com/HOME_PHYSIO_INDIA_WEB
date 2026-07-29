@@ -1,6 +1,7 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { blogBySlugQ } from "@/lib/api/queries";
+import { imgUrl } from "@/lib/utils";
 import { Section } from "@/components/site/Section";
 import { PageHero } from "@/components/site/PageHero";
 
@@ -8,7 +9,7 @@ export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ params, context }) => {
     try {
       const b = await context.queryClient.ensureQueryData(blogBySlugQ(params.slug));
-      return { title: b.title, description: b.excerpt ?? undefined, image: b.featured_image ?? undefined };
+      return { title: b.title, description: b.excerpt ?? undefined, image: imgUrl(b.featured_image) };
     } catch {
       throw notFound();
     }
@@ -63,9 +64,9 @@ function BlogDetail() {
               {b.read_time && <span>· {b.read_time} min read</span>}
             </div>
           )}
-          {b.featured_image && (
+          {imgUrl(b.featured_image) && (
             <div className="mb-10 overflow-hidden rounded-3xl border border-border">
-              <img src={b.featured_image} alt={b.title} className="w-full h-auto" />
+              <img src={imgUrl(b.featured_image)} alt={b.title} className="w-full h-auto" />
             </div>
           )}
           {b.content && (

@@ -1,8 +1,10 @@
 import { Link } from "@tanstack/react-router";
 import type { Blog } from "@/lib/api/types";
+import { imgUrl } from "@/lib/utils";
 
 export function BlogCard({ blog }: { blog: Blog }) {
   const date = blog.published_at ?? blog.created_at;
+  const cover = imgUrl(blog.featured_image);
   return (
     <Link
       to="/blog/$slug"
@@ -10,9 +12,9 @@ export function BlogCard({ blog }: { blog: Blog }) {
       className="group flex flex-col overflow-hidden rounded-3xl border border-border bg-surface hover-glow hover:border-primary/60"
     >
       <div className="aspect-[16/10] overflow-hidden bg-primary-soft">
-        {blog.featured_image ? (
+        {cover ? (
           <img
-            src={blog.featured_image}
+            src={cover}
             alt={blog.title}
             loading="lazy"
             decoding="async"

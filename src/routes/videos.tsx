@@ -27,9 +27,10 @@ function VideosPage() {
       <PageHero
         eyebrow="Watch"
         title="Care, on screen."
+        description="Short films, guides and family stories — a look at how Nupun's care actually feels."
         crumbs={[{ label: "Home", to: "/" }, { label: "Videos" }]}
       />
-      <Section className="pt-4">
+      <Section className="pt-16 lg:pt-20">
         {isLoading ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {Array.from({ length: 6 }).map((_, i) => (

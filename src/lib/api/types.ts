@@ -53,7 +53,7 @@ export type Blog = {
   slug: string;
   excerpt?: string | null;
   content?: string | null;
-  featured_image?: string | null;
+  featured_image?: string | ImageAsset | null;
   author?: string | null;
   author_name?: string | null;
   category_id?: string | null;
@@ -117,6 +117,27 @@ export type Career = {
   created_at?: string;
 };
 
+export type ImageAsset = {
+  url: string;
+  public_id?: string | null;
+  width?: number | null;
+  height?: number | null;
+  format?: string | null;
+  alt?: string | null;
+};
+
+export type HeroStat = {
+  value: string;
+  label: string;
+};
+
+export type ServicesHero = {
+  title?: string | null;
+  subtitle?: string | null;
+  background_image?: ImageAsset | null;
+  stats?: HeroStat[];
+};
+
 export type Settings = {
   website_name?: string | null;
   tagline?: string | null;
@@ -129,6 +150,7 @@ export type Settings = {
   google_map_embed?: string | null;
   google_reviews_link?: string | null;
   working_hours?: { day: string; hours: string }[];
+  services_hero?: ServicesHero | null;
 };
 
 export type SocialLinks = {
