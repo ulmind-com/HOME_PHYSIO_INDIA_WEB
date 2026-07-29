@@ -11,10 +11,24 @@ type Props = {
 };
 
 export function VideoCard({ v, onPlay, aspect, variant = "default" }: Props) {
-  const a = aspect ?? inferAspect(v);
   const yt = getYouTubeId(v.youtube_url);
   const src = v.video_url || v.video_file?.url || null;
   const thumb = v.thumbnail ?? (yt ? `https://i.ytimg.com/vi/${yt.id}/hqdefault.jpg` : null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [detected, setDetected] = useState<"9/16" | "16/9" | null>(null);
+  const a = aspect ?? detected ?? inferAspect(v);
+
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el || aspect) return;
+    const onMeta = () => {
+      if (el.videoWidth && el.videoHeight) {
+        setDetected(el.videoHeight > el.videoWidth ? "9/16" : "16/9");
+      }
+    };
+    el.addEventListener("loadedmetadata", onMeta);
+    return () => el.removeEventListener("loadedmetadata", onMeta);
+  }, [src, aspect]);
 
   const media = (
     <div
@@ -25,6 +39,7 @@ export function VideoCard({ v, onPlay, aspect, variant = "default" }: Props) {
         (a === "9/16" ? "aspect-[9/16]" : "aspect-video")
       }
     >
+
       {thumb ? (
         <>
           {a === "9/16" && (
