@@ -3,10 +3,10 @@ import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import type { Service } from "@/lib/api/types";
 import { CategoryCardShape } from "./CategoryCardShape";
-import nursingAsset from "@/assets/categories/nursing.jpg.asset.json";
-import elderAsset from "@/assets/categories/elder.jpg.asset.json";
-import physioAsset from "@/assets/categories/physio.jpg.asset.json";
-import equipmentAsset from "@/assets/categories/equipment.jpg.asset.json";
+const nursingAsset = { url: "/assets/categories/nursing.jpg" };
+const elderAsset = { url: "/assets/categories/elder.jpg" };
+const physioAsset = { url: "/assets/categories/physio.jpg" };
+const equipmentAsset = { url: "/assets/categories/equipment.jpg" };
 
 type Variant = "a" | "b" | "c" | "d";
 
