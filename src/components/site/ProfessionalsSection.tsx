@@ -4,6 +4,7 @@ import { motion, type Variants } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Section } from "@/components/site/Section";
 import { settingsQ } from "@/lib/api/queries";
+import backdropAsset from "@/assets/professionals-backdrop.jpeg.asset.json";
 
 type PeopleTile = {
   image: string;
