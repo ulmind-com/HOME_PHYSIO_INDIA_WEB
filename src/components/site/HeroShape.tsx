@@ -42,8 +42,10 @@ export function HeroShape({ imageUrl, className, alt = "" }: HeroShapeProps) {
         </clipPath>
       </defs>
 
-      {/* mint fill */}
-      <path d={shapePath} fill="#4ED9B8" />
+      {/* mint fill — uses theme primary token */}
+      <path d={shapePath} fill="var(--primary)" />
+
+
 
       {/* decorative outline rings inside the mint panel */}
       <g clipPath={`url(#${clipId})`} fill="none" stroke="#ffffff" strokeOpacity="0.35" strokeWidth="2">
