@@ -19,13 +19,11 @@ export function HeroShape({ imageUrl, className, alt = "" }: HeroShapeProps) {
   const uid = useId().replace(/:/g, "");
   const clipId = `heroClip-${uid}`;
 
-  // viewBox 0 0 600 600
-  // M 60 0  -> top-left, inset from the left
-  // H 600   -> straight top edge
-  // V 520   -> straight right edge (stops above the bottom)
-  // L 0 600 -> diagonal bottom edge (right corner higher than left)
-  // Z       -> straight diagonal left edge back to (60,0)
-  const shapePath = "M60 0 H600 V520 L0 600 Z";
+  // viewBox 0 0 600 600 — leaning trapezoid with softly rounded corners (r≈24)
+  // Corners: TL(60,0) TR(600,0) BR(600,520) BL(0,600)
+  const shapePath =
+    "M84 0 H576 A24 24 0 0 1 600 24 V496 A24 24 0 0 1 578.4 519.9 L21.6 599.5 A24 24 0 0 1 0 575.7 V84 A24 24 0 0 1 22.6 60.1 Z";
+
 
   return (
     <svg
