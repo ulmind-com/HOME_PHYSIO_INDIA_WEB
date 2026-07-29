@@ -19,10 +19,11 @@ export function HeroShape({ imageUrl, className, alt = "" }: HeroShapeProps) {
   const uid = useId().replace(/:/g, "");
   const clipId = `heroClip-${uid}`;
 
-  // Reference-matched: soft TL, big TR (~40), straight right, small BR (~20),
-  // diagonal bottom, large sweeping BL (~60), near-vertical leaning left edge.
+  // MediWise-reference: slightly clockwise-tilted rounded rectangle.
+  // Right edge extends off-canvas (bleed). Visible rounded corners: TL, BL, small BR.
   const shapePath =
-    "M40 24 A24 24 0 0 1 64 0 H560 A40 40 0 0 1 600 40 V500 A20 20 0 0 1 582 519.9 L80 599 A60 60 0 0 1 16 543 V84 Q16 60 40 48 Z";
+    "M28 60 A28 28 0 0 1 60 28 L600 0 V560 A20 20 0 0 1 578 580 L60 600 A28 28 0 0 1 28 568 Z";
+
 
 
 
@@ -53,7 +54,7 @@ export function HeroShape({ imageUrl, className, alt = "" }: HeroShapeProps) {
         <circle cx="545" cy="330" r="22" />
       </g>
 
-      {/* clipped photo — anchored to the bottom of the panel */}
+      {/* clipped photo — centered inside the panel */}
       <image
         href={imageUrl}
         x="0"
@@ -61,8 +62,9 @@ export function HeroShape({ imageUrl, className, alt = "" }: HeroShapeProps) {
         width="600"
         height="600"
         clipPath={`url(#${clipId})`}
-        preserveAspectRatio="xMidYMax slice"
+        preserveAspectRatio="xMidYMid slice"
       />
+
     </svg>
   );
 }
