@@ -71,9 +71,9 @@ export function VideoPlayerModal({ video, onClose }: { video: Video | null; onCl
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
           />
-        ) : video.video_url ? (
+        ) : src ? (
           <video
-            src={video.video_url}
+            src={src}
             controls
             autoPlay
             playsInline
