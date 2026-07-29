@@ -11,10 +11,14 @@ export function Footer() {
 
   return (
     <footer className="relative mt-24 overflow-hidden bg-[#F4F4F5] pt-24 pb-8 sm:pt-32">
-      {/* Subtle background blur/mesh to simulate a serene environment */}
-      <div className="absolute inset-0 z-0 opacity-40">
-        <div className="absolute -top-40 -left-40 h-96 w-96 rounded-full bg-[#43D4B0] blur-[120px] mix-blend-multiply"></div>
-        <div className="absolute top-40 right-20 h-[30rem] w-[30rem] rounded-full bg-accent/60 blur-[150px] mix-blend-multiply"></div>
+      {/* Background Image with Gradient Overlay */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="/assets/hero-slide-2.jpeg" 
+          alt="" 
+          className="w-full h-full object-cover object-[center_30%] opacity-[0.35] mix-blend-luminosity"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#F4F4F5] via-[#F4F4F5]/60 to-[#F4F4F5]"></div>
       </div>
 
       <div className="container-x relative z-10 flex flex-col justify-between">
@@ -90,8 +94,8 @@ export function Footer() {
       </div>
 
       {/* Massive Brand Typography at the Bottom */}
-      <div className="pointer-events-none absolute bottom-0 left-0 right-0 overflow-hidden flex justify-center translate-y-[20%]">
-        <h1 className="font-display text-[25vw] leading-none font-bold tracking-tighter text-black/[0.03] select-none whitespace-nowrap">
+      <div className="pointer-events-none absolute bottom-0 left-0 right-0 overflow-hidden flex justify-center translate-y-[20%] z-0">
+        <h1 className="font-display text-[25vw] leading-none font-bold tracking-tighter text-black/[0.05] select-none whitespace-nowrap">
           Nupun
         </h1>
         {/* Gradient fade to seamlessly blend with the bottom edge */}
