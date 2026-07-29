@@ -108,27 +108,27 @@ export function ProfessionalsSection() {
 
   return (
     <Section className="relative overflow-hidden">
-      <div className="relative grid gap-14 lg:grid-cols-2 lg:gap-20 items-center">
-        {/* LEFT — copy + features (with photo backdrop) */}
-        <div className="relative isolate rounded-[2rem] p-6 md:p-10">
-          {/* Decorative backdrop */}
-          <motion.div
-            initial={{ opacity: 0, scale: 1.04 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            className="pointer-events-none absolute inset-0 -z-10 overflow-hidden rounded-[2rem] border border-primary/10 shadow-[var(--shadow-elegant)]"
-            aria-hidden
-          >
-            <img
-              src={backdrop}
-              alt=""
-              loading="lazy"
-              className="h-full w-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/40" />
-            <div className="absolute inset-0 bg-[radial-gradient(120%_80%_at_0%_50%,color-mix(in_oklab,var(--primary)_18%,transparent),transparent_60%)]" />
-          </motion.div>
+      <div className="relative isolate overflow-hidden rounded-[2rem] border border-primary/10 shadow-[var(--shadow-elegant)]">
+        {/* Full-section photo backdrop (replaces the dark shape) */}
+        <motion.img
+          src={backdrop}
+          alt=""
+          aria-hidden
+          loading="lazy"
+          initial={{ opacity: 0, scale: 1.06 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          className="pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover"
+        />
+        {/* Readability overlays */}
+        <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-r from-black/80 via-black/55 to-black/25" />
+        <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(120%_80%_at_0%_50%,color-mix(in_oklab,var(--primary)_22%,transparent),transparent_65%)]" />
+
+        <div className="relative grid gap-14 lg:grid-cols-2 lg:gap-20 items-center p-6 md:p-12 lg:p-16 text-white">
+        {/* LEFT — copy + features */}
+        <div className="relative">
+
 
           <motion.div
             initial={{ opacity: 0, y: 14 }}
