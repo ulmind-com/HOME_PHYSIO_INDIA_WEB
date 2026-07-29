@@ -39,11 +39,12 @@ export function Hero() {
         </svg>
       </div>
 
-      {/* ── MAIN CONTENT GRID (full-bleed) ── */}
-      <div className="relative z-10 min-h-[100svh] flex flex-col lg:flex-row items-center">
+      {/* ── MAIN CONTENT GRID ── */}
+      <div className="relative z-10 container-x min-h-[100svh] flex flex-col lg:flex-row items-center">
 
-        {/* ─── LEFT: Text Content (constrained) ─── */}
-        <div className="relative z-20 flex flex-col justify-center pt-28 pb-10 lg:pt-0 lg:pb-0 lg:w-[46%] px-6 sm:px-10 lg:pl-[max(2.5rem,calc((100vw-1280px)/2+2.5rem))] lg:pr-8">
+        {/* ─── LEFT: Text Content ─── */}
+        <div className="relative z-20 flex flex-col justify-center pt-28 pb-10 lg:pt-0 lg:pb-0 lg:w-[46%] lg:pr-8">
+
 
           <motion.h1
             variants={fadeUp}
