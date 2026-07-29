@@ -5,7 +5,7 @@ import { useState } from "react";
 import { ArrowRight, ArrowUpRight, ShieldCheck, Star } from "lucide-react";
 import { servicesQ, reviewSummaryQ } from "@/lib/api/queries";
 import { Counter } from "@/components/site/ui/Counter";
-import heroCare from "@/assets/hero-care.jpg.asset.json";
+const heroCare = { url: "/assets/hero-care.jpg" };
 
 export function Hero() {
   const navigate = useNavigate();
