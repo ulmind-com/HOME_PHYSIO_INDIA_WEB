@@ -9,8 +9,8 @@ const ITEMS = [
   { src: "/assets/equipment/stethoscope.jpeg", title: "Clinical Stethoscope", alt: "Professional clinical stethoscope" },
 ];
 
-const AUTO_SCROLL_MS = 3500;
-const INTERACTION_PAUSE_MS = 2500;
+const AUTO_SCROLL_MS = 2500;
+const INTERACTION_PAUSE_MS = 4000;
 
 export function EquipmentCarousel() {
   const [active, setActive] = React.useState(0);
@@ -19,7 +19,8 @@ export function EquipmentCarousel() {
   const [interacted, setInteracted] = React.useState(false);
   const interactionTimeoutRef = React.useRef<number | null>(null);
 
-  const paused = hovered || hidden || interacted;
+  // Do not pause on hover, only when the user explicitly clicks/interacts or switches tabs
+  const paused = hidden || interacted;
 
   React.useEffect(() => {
     if (paused) return;
