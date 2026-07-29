@@ -12,14 +12,18 @@ export function Footer() {
   return (
     <footer className="relative mt-24 bg-[#F2F0EC] pt-24 pb-0 sm:pt-32 flex flex-col">
       {/* Background Image at the bottom half */}
-      <div className="absolute inset-x-0 bottom-0 h-[70%] z-0 pointer-events-none">
+      <div 
+        className="absolute inset-x-0 bottom-0 h-[80%] z-0 pointer-events-none"
+        style={{ 
+          WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 35%)', 
+          maskImage: 'linear-gradient(to bottom, transparent, black 35%)' 
+        }}
+      >
         <img 
           src="/assets/hero-slide-2.jpeg" 
           alt="" 
           className="w-full h-full object-cover object-[center_30%]"
         />
-        {/* Fade out the top of the image to blend into the solid background */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#F2F0EC] via-[#F2F0EC]/60 to-transparent h-[40%]"></div>
         {/* Darken/tint the image slightly so white text pops */}
         <div className="absolute inset-0 bg-black/10 mix-blend-multiply"></div>
       </div>
