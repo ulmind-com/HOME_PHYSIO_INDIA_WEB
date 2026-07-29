@@ -431,17 +431,6 @@ function BlogVideosSection() {
           </div>
         </>
       )}
-      {!!vItems.length && (
-        <div className="mt-20">
-          <div className="flex items-end justify-between mb-10">
-            <SectionHeader eyebrow="Watch" title="Care, on screen" />
-            <Link to="/videos" className="text-sm font-medium text-accent">All videos →</Link>
-          </div>
-          <div className="grid gap-6 md:grid-cols-3">
-            {vItems.map((v) => (<VideoCard key={v.id} v={v} />))}
-          </div>
-        </div>
-      )}
     </Section>
   );
 }
