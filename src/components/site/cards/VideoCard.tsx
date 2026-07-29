@@ -38,6 +38,15 @@ export function VideoCard({ v, onPlay, aspect }: Props) {
             className="relative h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
         </>
+      ) : v.video_url ? (
+        <video
+          src={v.video_url}
+          preload="metadata"
+          muted
+          playsInline
+          disablePictureInPicture
+          className="h-full w-full object-cover bg-black pointer-events-none"
+        />
       ) : (
         <div className="h-full w-full bg-gradient-to-br from-accent to-primary" />
       )}
