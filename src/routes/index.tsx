@@ -1,7 +1,8 @@
+import { useState, useEffect, useCallback } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import {
   blogsQ,
   faqsQ,
@@ -109,9 +110,28 @@ function EquipmentSection() {
 }
 
 function CareTeamSection() {
+  const [active, setActive] = useState(0);
+  const slides = [
+    { image: "/assets/hero-slide-1.jpeg", count: "120+", role: "Registered Nurse" },
+    { image: "/assets/hero-slide-2.jpeg", count: "45", role: "Physiotherapists" },
+    { image: "/assets/hero-slide-3.jpeg", count: "30", role: "Doctors on panel" },
+    { image: "/assets/hero-slide-4.jpeg", count: "200+", role: "Care attendants" },
+  ];
+  const total = slides.length;
+
+  const next = useCallback(() => setActive((p) => (p + 1) % total), [total]);
+  const prev = useCallback(() => setActive((p) => (p - 1 + total) % total), [total]);
+
+  // Auto-play
+  useEffect(() => {
+    const id = setInterval(next, 4000);
+    return () => clearInterval(id);
+  }, [next, active]);
+
   return (
     <Section className="bg-dark text-white/90 rounded-[3rem] mx-4 lg:mx-10">
       <div className="grid gap-12 lg:grid-cols-2 items-center">
+        {/* Left — Text */}
         <div>
           <div className="text-sm uppercase tracking-[0.2em] text-primary mb-4">Our people</div>
           <h2 className="font-display text-4xl md:text-5xl text-white">
@@ -127,19 +147,85 @@ function CareTeamSection() {
           >
             Meet the team <ArrowRight className="h-4 w-4" />
           </Link>
+
+          {/* Stats row below text */}
+          <div className="mt-10 grid grid-cols-2 gap-3">
+            {slides.map((s, i) => (
+              <button
+                key={s.role}
+                onClick={() => setActive(i)}
+                className={`rounded-2xl border p-4 text-left transition-all duration-300 ${
+                  i === active
+                    ? "bg-white/10 border-primary/50 ring-1 ring-primary/30"
+                    : "bg-white/5 border-white/10 hover:bg-white/8"
+                }`}
+              >
+                <div className="font-display text-3xl text-white">{s.count}</div>
+                <div className="text-sm text-white/60 mt-1">{s.role}</div>
+              </button>
+            ))}
+          </div>
         </div>
-        <div className="grid grid-cols-2 gap-4">
-          {[
-            { role: "Registered Nurse", count: "120+" },
-            { role: "Physiotherapists", count: "45" },
-            { role: "Doctors on panel", count: "30" },
-            { role: "Care attendants", count: "200+" },
-          ].map((c) => (
-            <div key={c.role} className="rounded-3xl bg-white/5 border border-white/10 p-6 backdrop-blur">
-              <div className="font-display text-4xl text-white">{c.count}</div>
-              <div className="text-sm text-white/60 mt-1">{c.role}</div>
+
+        {/* Right — Image Slider */}
+        <div className="relative rounded-3xl overflow-hidden aspect-[4/3]">
+          {/* Images */}
+          <AnimatePresence mode="sync">
+            <motion.img
+              key={slides[active].image}
+              src={slides[active].image}
+              alt={slides[active].role}
+              initial={{ opacity: 0, scale: 1.05 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          </AnimatePresence>
+
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/10" />
+
+          {/* Bottom overlay — active stat + controls */}
+          <div className="absolute bottom-0 inset-x-0 p-5 flex items-end justify-between">
+            <div>
+              <div className="font-display text-4xl text-white font-bold">
+                {slides[active].count}
+              </div>
+              <div className="text-sm text-white/80">{slides[active].role}</div>
             </div>
-          ))}
+
+            {/* Controls */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={prev}
+                className="grid h-9 w-9 place-items-center rounded-full bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-colors"
+                aria-label="Previous"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              {/* Dots */}
+              <div className="flex gap-1.5">
+                {slides.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setActive(i)}
+                    aria-label={`Slide ${i + 1}`}
+                    className={`rounded-full transition-all duration-300 ${
+                      i === active ? "w-6 h-2 bg-primary" : "w-2 h-2 bg-white/40 hover:bg-white/60"
+                    }`}
+                  />
+                ))}
+              </div>
+              <button
+                onClick={next}
+                className="grid h-9 w-9 place-items-center rounded-full bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-colors"
+                aria-label="Next"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </Section>
