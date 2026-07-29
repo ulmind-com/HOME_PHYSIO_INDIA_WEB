@@ -5,8 +5,7 @@ import { ArrowRight, Phone, Building2, Stethoscope, Users } from "lucide-react";
 import { reviewSummaryQ } from "@/lib/api/queries";
 import { Counter } from "@/components/site/ui/Counter";
 import { HeroShape } from "@/components/site/HeroShape";
-
-const heroTeam = { url: "/assets/hero-doctors-team.png" };
+import heroTeam from "@/assets/hero-nurse-patient.png.asset.json";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
