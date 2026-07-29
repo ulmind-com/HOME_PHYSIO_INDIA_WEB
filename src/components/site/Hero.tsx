@@ -19,34 +19,84 @@ const fadeUp = {
 export function Hero() {
   const navigate = useNavigate();
   const { data: reviews } = useQuery(reviewSummaryQ());
-  const totalReviews = reviews?.total_reviews ?? 320;
 
   return (
-    <section className="relative isolate overflow-hidden w-full bg-white">
-      {/* ── MAIN SPLIT LAYOUT ── */}
-      <div className="relative min-h-[100svh] flex flex-col lg:flex-row">
+    <section className="relative isolate overflow-hidden w-full bg-white min-h-[100svh]">
 
-        {/* ─── LEFT SIDE: WHITE CONTENT ─── */}
-        <div className="relative z-10 flex flex-col justify-center px-6 sm:px-10 lg:px-16 xl:px-24 pt-28 pb-10 lg:pt-0 lg:pb-0 lg:w-[52%]">
+      {/* ── TEAL BACKGROUND SHAPE (right ~55%, curved left edge) ── */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden>
+        <svg
+          className="absolute top-0 right-0 h-full"
+          viewBox="0 0 900 900"
+          preserveAspectRatio="none"
+          style={{ width: "58%", height: "100%" }}
+        >
+          <path
+            d="M120,0 L900,0 L900,900 L80,900 Q0,700 60,450 Q120,200 120,0 Z"
+            fill="#43D4B0"
+          />
+        </svg>
+      </div>
+
+      {/* ── DECORATIVE SVG CIRCLES on teal side ── */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden>
+        {/* Top-right: large double concentric ring, partially off-screen */}
+        <svg className="absolute -top-8 -right-8 w-[180px] h-[180px] opacity-25" viewBox="0 0 180 180">
+          <circle cx="90" cy="90" r="80" fill="none" stroke="white" strokeWidth="2" />
+          <circle cx="90" cy="90" r="55" fill="none" stroke="white" strokeWidth="2" />
+        </svg>
+
+        {/* Mid-right: small filled dot */}
+        <svg className="absolute top-[28%] right-[6%] w-3 h-3 opacity-30" viewBox="0 0 12 12">
+          <circle cx="6" cy="6" r="6" fill="white" />
+        </svg>
+
+        {/* Center-right: medium concentric ring */}
+        <svg className="absolute top-[38%] right-[18%] w-[90px] h-[90px] opacity-15" viewBox="0 0 90 90">
+          <circle cx="45" cy="45" r="40" fill="none" stroke="white" strokeWidth="2" />
+          <circle cx="45" cy="45" r="25" fill="none" stroke="white" strokeWidth="2" />
+        </svg>
+
+        {/* Bottom-left of teal: double concentric ring */}
+        <svg className="absolute bottom-[12%] right-[42%] w-[120px] h-[120px] opacity-20" viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="52" fill="none" stroke="white" strokeWidth="2" />
+          <circle cx="60" cy="60" r="32" fill="none" stroke="white" strokeWidth="2" />
+        </svg>
+
+        {/* Bottom edge: half-circle ring poking up */}
+        <svg className="absolute -bottom-6 right-[20%] w-[100px] h-[50px] opacity-25" viewBox="0 0 100 50">
+          <circle cx="50" cy="50" r="40" fill="none" stroke="white" strokeWidth="2" />
+        </svg>
+
+        {/* Small dot near top-left of teal */}
+        <svg className="absolute top-[16%] right-[46%] w-2 h-2 opacity-35" viewBox="0 0 8 8">
+          <circle cx="4" cy="4" r="4" fill="white" />
+        </svg>
+
+        {/* Small ring bottom-right */}
+        <svg className="absolute bottom-[5%] right-[5%] w-[60px] h-[60px] opacity-20" viewBox="0 0 60 60">
+          <circle cx="30" cy="30" r="24" fill="none" stroke="white" strokeWidth="2" />
+        </svg>
+      </div>
+
+      {/* ── MAIN CONTENT GRID ── */}
+      <div className="relative z-10 container-x min-h-[100svh] flex flex-col lg:flex-row items-center">
+
+        {/* ─── LEFT: Text Content ─── */}
+        <div className="relative z-20 flex flex-col justify-center pt-28 pb-10 lg:pt-0 lg:pb-0 lg:w-[46%] lg:pr-8">
 
           <motion.h1
             variants={fadeUp}
             initial="hidden"
             animate="show"
             custom={0}
-            className="font-display text-[clamp(2.2rem,4.5vw,3.8rem)] font-semibold leading-[1.08] tracking-[-0.03em] text-foreground"
+            className="font-display text-[clamp(2.4rem,4.8vw,4rem)] font-semibold leading-[1.1] tracking-[-0.02em] text-foreground"
           >
-            Putting your{" "}
-            <span className="relative inline-block">
-              <span className="relative z-10">health</span>
-              <span
-                aria-hidden
-                className="absolute inset-x-0 bottom-1 h-3 -z-0 rounded-full"
-                style={{ background: "color-mix(in oklab, var(--primary) 40%, transparent)" }}
-              />
-            </span>{" "}
-            first with empathy and{" "}
-            <span className="italic text-accent">skill</span>
+            Putting your
+            <br />
+            health first with
+            <br />
+            empathy and skill
           </motion.h1>
 
           <motion.p
@@ -54,11 +104,10 @@ export function Hero() {
             initial="hidden"
             animate="show"
             custom={1}
-            className="mt-6 max-w-lg text-base md:text-[17px] leading-relaxed text-muted-foreground"
+            className="mt-6 max-w-[420px] text-[15px] leading-relaxed text-muted-foreground"
           >
-            We are a leading home healthcare provider across Delhi NCR,
-            dedicated to providing exceptional and compassionate care for all
-            patients right at their doorstep.
+            We are a leading home healthcare facility across Delhi NCR,
+            dedicated to providing exceptional service for all patients
           </motion.p>
 
           {/* CTA Buttons */}
@@ -67,11 +116,11 @@ export function Hero() {
             initial="hidden"
             animate="show"
             custom={2}
-            className="mt-8 flex flex-wrap items-center gap-3"
+            className="mt-8 flex items-center gap-4"
           >
             <button
               onClick={() => navigate({ to: "/booking" })}
-              className="group relative inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-accent to-primary px-7 py-3.5 text-sm font-semibold text-white shadow-[0_14px_34px_-10px_color-mix(in_oklab,var(--accent)_70%,transparent)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_20px_50px_-14px_color-mix(in_oklab,var(--accent)_80%,transparent)]"
+              className="group inline-flex items-center gap-2 rounded-full bg-[#43D4B0] px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-[#43D4B0]/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#43D4B0]/40"
             >
               Get Started
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -79,10 +128,10 @@ export function Hero() {
 
             <Link
               to="/contact"
-              className="group inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-foreground ring-1 ring-border/70 hover:bg-gray-50 transition-all"
+              className="group inline-flex items-center gap-2.5 text-sm font-medium text-foreground hover:text-accent transition-colors"
             >
-              <span className="grid h-8 w-8 place-items-center rounded-full bg-primary-soft text-accent">
-                <Phone className="h-3.5 w-3.5" />
+              <span className="grid h-10 w-10 place-items-center rounded-full bg-[#E8F8F5] text-[#43D4B0] ring-1 ring-[#43D4B0]/20">
+                <Phone className="h-4 w-4" />
               </span>
               Call us now!
             </Link>
@@ -94,80 +143,64 @@ export function Hero() {
             initial="hidden"
             animate="show"
             custom={3}
-            className="mt-12 flex flex-wrap items-center gap-8 sm:gap-12"
+            className="mt-14 flex items-center gap-10"
           >
             <StatItem
-              icon={Building2}
+              icon={<ClinicIcon />}
               value={<><Counter value={50} />+</>}
               label="Clinics"
             />
             <StatItem
-              icon={Stethoscope}
+              icon={<DoctorIcon />}
               value={<><Counter value={2} />K+</>}
               label="Doctors"
             />
             <StatItem
-              icon={Users}
+              icon={<PatientIcon />}
               value={<><Counter value={50} />K+</>}
               label="Patients"
             />
           </motion.div>
         </div>
 
-        {/* ─── RIGHT SIDE: TEAL BACKGROUND + DOCTORS ─── */}
-        <div className="relative lg:w-[48%] min-h-[340px] lg:min-h-full">
-
-          {/* Teal background fill */}
-          <div
-            aria-hidden
-            className="absolute inset-0"
-            style={{
-              background: "linear-gradient(160deg, #3DD1C4 0%, #33C4C7 40%, #2BB8B0 100%)",
-            }}
+        {/* ─── RIGHT: Doctors Image ─── */}
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+          className="relative lg:w-[54%] flex items-end justify-center self-end"
+        >
+          <img
+            src={heroTeam.url}
+            alt="Nupun Home Health Care — Expert medical team"
+            className="relative z-10 w-full max-w-[600px] object-contain object-bottom"
+            loading="eager"
+            fetchPriority="high"
+            style={{ mixBlendMode: "multiply" }}
           />
-
-          {/* Decorative SVG circles */}
-          <DecorativeCircles />
-
-          {/* Doctors image — positioned to overlap slightly into white area */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="relative h-full flex items-end justify-center lg:justify-start"
-          >
-            <img
-              src={heroTeam.url}
-              alt="Nupun Home Health Care — Expert medical team of doctors and nurses"
-              className="relative z-10 w-full max-w-[520px] lg:max-w-none lg:w-[110%] lg:-ml-[10%] object-contain object-bottom drop-shadow-2xl"
-              loading="eager"
-              fetchPriority="high"
-              style={{ mixBlendMode: "normal" }}
-            />
-          </motion.div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
 }
 
-/* ── Stat Item (bottom-left) ── */
+/* ── Stat Item ── */
 function StatItem({
-  icon: Icon,
+  icon,
   value,
   label,
 }: {
-  icon: React.ComponentType<{ className?: string }>;
+  icon: React.ReactNode;
   value: React.ReactNode;
   label: string;
 }) {
   return (
     <div className="flex items-center gap-3">
-      <span className="grid h-11 w-11 place-items-center rounded-2xl bg-primary-soft text-accent">
-        <Icon className="h-5 w-5" />
+      <span className="grid h-12 w-12 place-items-center rounded-full bg-[#E8F8F5] text-[#43D4B0]">
+        {icon}
       </span>
       <div>
-        <div className="font-display text-2xl sm:text-[28px] font-semibold text-foreground leading-none">
+        <div className="font-display text-[26px] font-bold text-foreground leading-none">
           {value}
         </div>
         <div className="mt-0.5 text-xs text-muted-foreground">{label}</div>
@@ -176,66 +209,33 @@ function StatItem({
   );
 }
 
-/* ── Decorative concentric circles on the teal side ── */
-function DecorativeCircles() {
+/* ── Custom SVG icons matching the MediWise stat icons ── */
+function ClinicIcon() {
   return (
-    <>
-      {/* Top-right large concentric */}
-      <svg
-        aria-hidden
-        className="absolute -top-10 -right-10 h-52 w-52 text-white/20 animate-float-slow"
-        viewBox="0 0 200 200"
-      >
-        <circle cx="100" cy="100" r="90" fill="none" stroke="currentColor" strokeWidth="1.5" />
-        <circle cx="100" cy="100" r="60" fill="none" stroke="currentColor" strokeWidth="1.5" />
-      </svg>
+    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <path d="M3 21h18M5 21V7l7-4 7 4v14" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M9 21v-4h6v4M12 11v-2M11 10h2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
 
-      {/* Middle-right small solid dot */}
-      <svg
-        aria-hidden
-        className="absolute top-[30%] right-[8%] h-10 w-10 text-white/25"
-        viewBox="0 0 40 40"
-      >
-        <circle cx="20" cy="20" r="8" fill="currentColor" />
-      </svg>
+function DoctorIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <circle cx="12" cy="8" r="4" />
+      <path d="M6 21v-2a6 6 0 0 1 12 0v2" strokeLinecap="round" />
+      <path d="M12 14v3M10 16h4" strokeLinecap="round" />
+    </svg>
+  );
+}
 
-      {/* Bottom-left concentric */}
-      <svg
-        aria-hidden
-        className="absolute bottom-20 left-6 h-36 w-36 text-white/15 animate-float-slower"
-        viewBox="0 0 140 140"
-      >
-        <circle cx="70" cy="70" r="60" fill="none" stroke="currentColor" strokeWidth="1.5" />
-        <circle cx="70" cy="70" r="38" fill="none" stroke="currentColor" strokeWidth="1.5" />
-      </svg>
-
-      {/* Top-left small ring */}
-      <svg
-        aria-hidden
-        className="absolute top-[15%] left-[12%] h-14 w-14 text-white/20"
-        viewBox="0 0 56 56"
-      >
-        <circle cx="28" cy="28" r="22" fill="none" stroke="currentColor" strokeWidth="1.5" />
-      </svg>
-
-      {/* Bottom-right partial ring */}
-      <svg
-        aria-hidden
-        className="absolute -bottom-8 -right-8 h-40 w-40 text-white/15"
-        viewBox="0 0 160 160"
-      >
-        <circle cx="80" cy="80" r="70" fill="none" stroke="currentColor" strokeWidth="2" />
-        <circle cx="80" cy="80" r="45" fill="none" stroke="currentColor" strokeWidth="1.5" />
-      </svg>
-
-      {/* Small filled dot top-center */}
-      <svg
-        aria-hidden
-        className="absolute top-[10%] left-[45%] h-6 w-6 text-white/30"
-        viewBox="0 0 24 24"
-      >
-        <circle cx="12" cy="12" r="5" fill="currentColor" />
-      </svg>
-    </>
+function PatientIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <circle cx="9" cy="7" r="3.5" />
+      <path d="M3 21v-2a6 6 0 0 1 12 0v2" strokeLinecap="round" />
+      <circle cx="18" cy="9" r="2.5" />
+      <path d="M21 21v-1.5a4.5 4.5 0 0 0-4-4.47" strokeLinecap="round" />
+    </svg>
   );
 }
