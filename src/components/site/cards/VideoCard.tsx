@@ -41,9 +41,9 @@ export function VideoCard({ v, onPlay, aspect, variant = "default" }: Props) {
             className="relative h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
         </>
-      ) : v.video_url ? (
+      ) : src ? (
         <video
-          src={v.video_url}
+          src={src}
           preload="metadata"
           muted
           playsInline
