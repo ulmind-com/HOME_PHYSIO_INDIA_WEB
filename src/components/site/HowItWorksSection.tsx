@@ -25,7 +25,7 @@ const steps = [
 ];
 
 export function HowItWorksSection({ illustration }: { illustration?: string }) {
-  const image = illustration || nurseCompanion.url;
+  const image = illustration || communityCare.url;
 
   return (
     <section className="relative isolate overflow-hidden bg-background py-24 lg:py-32">
