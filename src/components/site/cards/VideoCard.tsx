@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { Play } from "lucide-react";
 import type { Video } from "@/lib/api/types";
 import { getYouTubeId, inferAspect } from "@/components/site/VideoPlayerModal";
