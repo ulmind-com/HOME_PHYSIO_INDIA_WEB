@@ -54,7 +54,6 @@ function Home() {
       <TrustBar />
       <ServicesMarquee />
       <HowItWorksSection />
-      <ProfessionalsSection />
       <EquipmentSection />
       <CareTeamSection />
       <TestimonialsSection />
