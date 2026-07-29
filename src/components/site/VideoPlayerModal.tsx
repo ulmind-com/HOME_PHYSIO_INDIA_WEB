@@ -32,6 +32,24 @@ export function resolveVideoSource(v: Video): string | null {
   return null;
 }
 
+export function resolveVideoPoster(v: Video): string | null {
+  const thumbnail = v.thumbnail?.trim();
+  if (thumbnail) return thumbnail;
+  const src = resolveVideoSource(v);
+  if (!src) return null;
+  try {
+    const url = new URL(src);
+    if (!url.hostname.includes("res.cloudinary.com") || !url.pathname.includes("/video/upload/")) {
+      return null;
+    }
+    const [prefix, rest] = url.pathname.split("/video/upload/");
+    const withoutExt = rest.replace(/\.[^/.]+$/, "");
+    return `${url.origin}${prefix}/video/upload/so_0.5,f_jpg/${withoutExt}.jpg`;
+  } catch {
+    return null;
+  }
+}
+
 export function VideoPlayerModal({ video, onClose }: { video: Video | null; onClose: () => void }) {
   useEffect(() => {
     if (!video) return;
@@ -53,6 +71,7 @@ export function VideoPlayerModal({ video, onClose }: { video: Video | null; onCl
   if (!video) return null;
   const yt = getYouTubeId(video.youtube_url);
   const src = resolveVideoSource(video);
+  const poster = resolveVideoPoster(video);
   const aspect = detected ?? inferAspect(video);
 
   return (
@@ -88,6 +107,7 @@ export function VideoPlayerModal({ video, onClose }: { video: Video | null; onCl
         ) : src ? (
           <video
             src={src}
+            poster={poster ?? undefined}
             controls
             autoPlay
             playsInline
