@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Phone, Building2, Stethoscope, Users } from "lucide-react";
 import { reviewSummaryQ } from "@/lib/api/queries";
 import { Counter } from "@/components/site/ui/Counter";
+import { HeroShape } from "@/components/site/HeroShape";
 
 const heroTeam = { url: "/assets/hero-doctors-team.png" };
 
@@ -23,60 +24,19 @@ export function Hero() {
   return (
     <section className="relative isolate overflow-hidden w-full bg-white min-h-[100svh]">
 
-      {/* ── TEAL BACKGROUND SHAPE (tilted parallelogram with bottom-right notch) ── */}
+      {/* ── Decorative outline rings scattered around the section ── */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden>
-        <svg
-          className="absolute top-0 right-0 h-full"
-          viewBox="0 0 1000 1000"
-          preserveAspectRatio="none"
-          style={{ width: "58%", height: "100%" }}
-        >
-          <path
-            d="M180,0 L1000,0 L1000,950 Q1000,1000 950,1000 L920,1000 A40,40 0 0 1 880,970 L60,920 L180,0 Z"
-            fill="#43D4B0"
-          />
+        <svg className="absolute top-[8%] left-[6%] w-[70px] h-[70px] opacity-30" viewBox="0 0 70 70">
+          <circle cx="35" cy="35" r="30" fill="none" stroke="#43D4B0" strokeWidth="2" />
         </svg>
-      </div>
-
-
-      {/* ── DECORATIVE SVG CIRCLES on teal side ── */}
-      <div className="absolute inset-0 pointer-events-none" aria-hidden>
-        {/* Top-right: large double concentric ring, partially off-screen */}
-        <svg className="absolute -top-8 -right-8 w-[180px] h-[180px] opacity-25" viewBox="0 0 180 180">
-          <circle cx="90" cy="90" r="80" fill="none" stroke="white" strokeWidth="2" />
-          <circle cx="90" cy="90" r="55" fill="none" stroke="white" strokeWidth="2" />
+        <svg className="absolute top-[20%] left-[14%] w-[38px] h-[38px] opacity-25" viewBox="0 0 38 38">
+          <circle cx="19" cy="19" r="16" fill="none" stroke="#43D4B0" strokeWidth="2" />
         </svg>
-
-        {/* Mid-right: small filled dot */}
-        <svg className="absolute top-[28%] right-[6%] w-3 h-3 opacity-30" viewBox="0 0 12 12">
-          <circle cx="6" cy="6" r="6" fill="white" />
+        <svg className="absolute bottom-[10%] left-[3%] w-[54px] h-[54px] opacity-25" viewBox="0 0 54 54">
+          <circle cx="27" cy="27" r="23" fill="none" stroke="#43D4B0" strokeWidth="2" />
         </svg>
-
-        {/* Center-right: medium concentric ring */}
-        <svg className="absolute top-[38%] right-[18%] w-[90px] h-[90px] opacity-15" viewBox="0 0 90 90">
-          <circle cx="45" cy="45" r="40" fill="none" stroke="white" strokeWidth="2" />
-          <circle cx="45" cy="45" r="25" fill="none" stroke="white" strokeWidth="2" />
-        </svg>
-
-        {/* Bottom-left of teal: double concentric ring */}
-        <svg className="absolute bottom-[12%] right-[42%] w-[120px] h-[120px] opacity-20" viewBox="0 0 120 120">
-          <circle cx="60" cy="60" r="52" fill="none" stroke="white" strokeWidth="2" />
-          <circle cx="60" cy="60" r="32" fill="none" stroke="white" strokeWidth="2" />
-        </svg>
-
-        {/* Bottom edge: half-circle ring poking up */}
-        <svg className="absolute -bottom-6 right-[20%] w-[100px] h-[50px] opacity-25" viewBox="0 0 100 50">
-          <circle cx="50" cy="50" r="40" fill="none" stroke="white" strokeWidth="2" />
-        </svg>
-
-        {/* Small dot near top-left of teal */}
-        <svg className="absolute top-[16%] right-[46%] w-2 h-2 opacity-35" viewBox="0 0 8 8">
-          <circle cx="4" cy="4" r="4" fill="white" />
-        </svg>
-
-        {/* Small ring bottom-right */}
-        <svg className="absolute bottom-[5%] right-[5%] w-[60px] h-[60px] opacity-20" viewBox="0 0 60 60">
-          <circle cx="30" cy="30" r="24" fill="none" stroke="white" strokeWidth="2" />
+        <svg className="absolute bottom-[6%] right-[4%] w-[60px] h-[60px] opacity-25" viewBox="0 0 60 60">
+          <circle cx="30" cy="30" r="26" fill="none" stroke="#43D4B0" strokeWidth="2" />
         </svg>
       </div>
 
@@ -164,19 +124,17 @@ export function Hero() {
           </motion.div>
         </div>
 
-        {/* ─── RIGHT: Doctors Image ─── */}
+        {/* ─── RIGHT: Doctors Image inside hand-crafted SVG shape ─── */}
         <motion.div
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="relative lg:w-[54%] flex items-end justify-center self-end overflow-visible"
+          className="relative lg:w-[54%] w-full self-stretch flex items-center justify-center py-10 lg:py-16"
         >
-          <img
-            src={heroTeam.url}
+          <HeroShape
+            imageUrl={heroTeam.url}
             alt="Nupun Home Health Care — Expert medical team"
-            className="relative z-10 w-full max-w-[620px] object-contain object-bottom -mb-16 lg:-mb-24"
-            loading="eager"
-            fetchPriority="high"
+            className="w-full h-full max-h-[640px]"
           />
         </motion.div>
 
