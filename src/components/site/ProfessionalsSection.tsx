@@ -183,8 +183,9 @@ export function ProfessionalsSection() {
                   </li>
                 ))}
               </ul>
+              </motion.div>
             </motion.div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </Section>
