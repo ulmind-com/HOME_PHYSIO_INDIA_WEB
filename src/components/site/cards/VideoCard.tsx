@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Play } from "lucide-react";
 import type { Video } from "@/lib/api/types";
-import { getYouTubeId, inferAspect, resolveVideoSource } from "@/components/site/VideoPlayerModal";
+import { getYouTubeId, inferAspect, resolveVideoPoster, resolveVideoSource } from "@/components/site/VideoPlayerModal";
 
 type Props = {
   v: Video;
@@ -13,7 +13,7 @@ type Props = {
 export function VideoCard({ v, onPlay, aspect, variant = "default" }: Props) {
   const yt = getYouTubeId(v.youtube_url);
   const src = resolveVideoSource(v);
-  const thumb = v.thumbnail?.trim() || (yt ? `https://i.ytimg.com/vi/${yt.id}/hqdefault.jpg` : null);
+  const thumb = resolveVideoPoster(v) || (yt ? `https://i.ytimg.com/vi/${yt.id}/hqdefault.jpg` : null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [detected, setDetected] = useState<"9/16" | "16/9" | null>(null);
   const a = aspect ?? detected ?? (variant === "testimonial" ? "9/16" : inferAspect(v));
@@ -62,6 +62,7 @@ export function VideoCard({ v, onPlay, aspect, variant = "default" }: Props) {
         <video
           ref={videoRef}
           src={src}
+          poster={thumb ?? undefined}
           preload="metadata"
           autoPlay={variant === "testimonial"}
           loop={variant === "testimonial"}
