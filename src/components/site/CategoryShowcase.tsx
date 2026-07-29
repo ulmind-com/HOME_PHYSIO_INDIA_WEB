@@ -41,16 +41,22 @@ const iconMap: Record<string, React.ElementType> = {
 };
 
 export function CategoryShowcase({ services }: { services: Service[] }) {
-  const items = services.length
-    ? services.slice(0, 6).map((s, i) => ({
-        title: s.title,
-        description: s.short_description || "Professional care tailored to your needs.",
-        image: s.featured_image,
-        icon: iconMap[s.title] || fallbackCategories[i % fallbackCategories.length].icon,
-        slug: s.slug,
-        color: fallbackCategories[i % fallbackCategories.length].color,
-      }))
-    : fallbackCategories.map((c, i) => ({ ...c, image: null, slug: "", color: fallbackCategories[i].color }));
+  // Build a premium 4-card grid: real services first, then fallback placeholders.
+  const realItems = services.slice(0, 6).map((s, i) => ({
+    title: s.title,
+    description: s.short_description || "Professional care tailored to your needs.",
+    image: s.featured_image,
+    icon: iconMap[s.title] || fallbackCategories[i % fallbackCategories.length].icon,
+    slug: s.slug,
+    color: fallbackCategories[i % fallbackCategories.length].color,
+  }));
+
+  const fallbackItems = fallbackCategories
+    .filter((c) => !realItems.some((r) => r.title === c.title))
+    .slice(0, Math.max(0, 4 - realItems.length))
+    .map((c, i) => ({ ...c, image: null, slug: "", color: fallbackCategories[(realItems.length + i) % fallbackCategories.length].color }));
+
+  const items = [...realItems, ...fallbackItems].slice(0, 4);
 
   return (
     <div className="relative z-10 container-x pb-24 lg:pb-32">
