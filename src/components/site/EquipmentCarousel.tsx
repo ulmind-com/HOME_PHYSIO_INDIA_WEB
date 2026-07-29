@@ -14,9 +14,11 @@ const ITEMS = [
   { src: stethoscope.url, title: "Clinical Stethoscope", alt: "Professional clinical stethoscope" },
 ];
 
+const AUTO_SCROLL_MS = 3500;
 const INTERACTION_PAUSE_MS = 2500;
 
 export function EquipmentCarousel() {
+  const [active, setActive] = React.useState(0);
   const [hovered, setHovered] = React.useState(false);
   const [focused, setFocused] = React.useState(false);
   const [hidden, setHidden] = React.useState(false);
@@ -24,6 +26,14 @@ export function EquipmentCarousel() {
   const interactionTimeoutRef = React.useRef<number | null>(null);
 
   const paused = hovered || focused || hidden || interacted;
+
+  React.useEffect(() => {
+    if (paused) return;
+    const id = window.setInterval(() => {
+      setActive((i) => (i + 1) % ITEMS.length);
+    }, AUTO_SCROLL_MS);
+    return () => window.clearInterval(id);
+  }, [paused, active]);
 
   React.useEffect(() => {
     const onVis = () => setHidden(document.hidden);
@@ -39,7 +49,8 @@ export function EquipmentCarousel() {
     };
   }, []);
 
-  const handleInteraction = React.useCallback(() => {
+  const selectSlide = React.useCallback((index: number) => {
+    setActive(index);
     setInteracted(true);
     if (interactionTimeoutRef.current) window.clearTimeout(interactionTimeoutRef.current);
     interactionTimeoutRef.current = window.setTimeout(() => {
@@ -58,11 +69,14 @@ export function EquipmentCarousel() {
     >
       <PerspectiveCarousel
         items={ITEMS}
-        continuous
-        continuousSpeed={28}
-        isPaused={paused}
+        activeIndex={active}
+        onActiveIndexChange={selectSlide}
+        loop
         slideWidth={300}
-        slideGap={40}
+        rotationStep={48}
+        inactiveScale={0.78}
+        showControls
+        showDots
         className="h-[640px] bg-gradient-to-br from-primary-soft/40 to-surface"
       />
     </div>
