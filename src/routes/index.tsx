@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { ArrowRight, ShieldCheck, HeartPulse, Clock, Star, Stethoscope } from "lucide-react";
+import { ArrowRight, Stethoscope } from "lucide-react";
 import {
   blogsQ,
   equipmentQ,
