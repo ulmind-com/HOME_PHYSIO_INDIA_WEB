@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { ShieldCheck, Sparkles } from "lucide-react";
 import { HowItWorksBadge } from "./HowItWorksBadge";
-import communityCare from "@/assets/community-care.jpeg.asset.json";
+const communityCare = { url: "/assets/community-care.jpeg" };
 
 const steps = [
   {
