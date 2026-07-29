@@ -129,7 +129,7 @@ export function Hero() {
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="relative lg:w-[54%] w-full self-stretch flex items-stretch justify-end py-6 lg:py-10"
+          className="relative lg:w-[54%] w-full self-stretch flex items-stretch justify-end py-6 lg:py-10 pr-4 sm:pr-6 lg:pr-10"
         >
           <HeroShape
             imageUrl={heroTeam.url}
