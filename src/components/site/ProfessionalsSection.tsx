@@ -5,35 +5,13 @@ import { ArrowRight } from "lucide-react";
 import { Section } from "@/components/site/Section";
 import { settingsQ } from "@/lib/api/queries";
 
-type PersonCard = {
-  image: string;
-  title: string;
-  subtitle: string;
-  cta_label?: string;
-  cta_href?: string;
-};
+const DEFAULT_MAIN = "/assets/categories/elder.jpg";
+const DEFAULT_INSET = "/assets/categories/nursing.jpg";
 
-const DEFAULT_PEOPLE: PersonCard[] = [
-  {
-    image: "/assets/people/skilled-nursing.jpg",
-    title: "Skilled Nursing",
-    subtitle: "Trained nurses at home",
-  },
-  {
-    image: "/assets/people/senior-care.jpg",
-    title: "Senior Care",
-    subtitle: "Companionship & mobility",
-  },
-  {
-    image: "/assets/people/physiotherapy.jpg",
-    title: "Physiotherapy",
-    subtitle: "Movement & recovery",
-  },
-  {
-    image: "/assets/people/specialist-doctor.jpg",
-    title: "Specialist Doctors",
-    subtitle: "Consult at home",
-  },
+const DEFAULT_HOURS = [
+  { day: "Mon – Fri", hours: "09:30 – 19:30" },
+  { day: "Saturday", hours: "10:30 – 17:00" },
+  { day: "Sunday", hours: "Closed" },
 ];
 
 const FEATURES = [
@@ -44,7 +22,7 @@ const FEATURES = [
   },
   {
     title: "Specialist Doctors",
-    desc: "On-panel physicians and physiotherapists just a call away.",
+    desc: "On-panel physicians and physiotherapists just a call away, day or night.",
     Icon: StethoIcon,
   },
   {
@@ -56,19 +34,14 @@ const FEATURES = [
 
 export function ProfessionalsSection() {
   const { data: settings } = useQuery(settingsQ());
-  const adminPeople = (settings as unknown as { professionals?: PersonCard[]; people?: PersonCard[] } | undefined);
-  const source =
-    adminPeople?.professionals?.length ? adminPeople.professionals :
-    adminPeople?.people?.length ? adminPeople.people :
-    DEFAULT_PEOPLE;
-
-  const items = source;
-  const loop = [...items, ...items];
-  const duration = Math.max(28, items.length * 7);
+  const hours = settings?.working_hours?.length ? settings.working_hours : DEFAULT_HOURS;
 
   return (
-    <Section className="relative overflow-hidden py-14 md:py-20">
-      <div className="relative grid gap-10 lg:grid-cols-2 lg:gap-16 items-center">
+    <Section className="relative overflow-hidden">
+      {/* Decorative background */}
+      <DecorBackdrop />
+
+      <div className="relative grid gap-14 lg:grid-cols-2 lg:gap-20 items-center">
         {/* LEFT — copy + features */}
         <div>
           <motion.div
@@ -87,7 +60,7 @@ export function ProfessionalsSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.55, delay: 0.05 }}
-            className="mt-5 font-display text-3xl md:text-4xl lg:text-5xl leading-[1.05] tracking-tight"
+            className="mt-5 font-display text-4xl md:text-5xl lg:text-6xl leading-[1.05] tracking-tight"
           >
             Professionals <span className="text-gradient">dedicated</span> to your health
           </motion.h2>
@@ -97,13 +70,13 @@ export function ProfessionalsSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.15 }}
-            className="mt-4 max-w-lg text-sm md:text-base text-muted-foreground"
+            className="mt-5 max-w-lg text-muted-foreground"
           >
-            Nurses, physios and doctors — handpicked, background-checked and trained to deliver
-            hospital-grade care inside your home.
+            Our team of skilled nurses, physiotherapists and doctors is committed to compassionate,
+            personalised care — hospital-grade standards, delivered inside your home.
           </motion.p>
 
-          <ul className="mt-8 space-y-5">
+          <ul className="mt-10 space-y-6">
             {FEATURES.map((f, i) => (
               <motion.li
                 key={f.title}
@@ -111,17 +84,17 @@ export function ProfessionalsSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.45, delay: 0.1 + i * 0.08 }}
-                className="flex items-start gap-4"
+                className="flex items-start gap-5"
               >
                 <div className="relative shrink-0">
                   <div className="absolute inset-0 rounded-2xl bg-primary/15 blur-md" />
-                  <div className="relative grid h-12 w-12 place-items-center rounded-2xl glass border border-primary/20">
-                    <f.Icon className="h-5 w-5 text-primary" />
+                  <div className="relative grid h-14 w-14 place-items-center rounded-2xl glass border border-primary/20">
+                    <f.Icon className="h-6 w-6 text-primary" />
                   </div>
                 </div>
                 <div>
-                  <div className="font-display text-lg">{f.title}</div>
-                  <p className="mt-0.5 text-sm text-muted-foreground max-w-md">{f.desc}</p>
+                  <div className="font-display text-xl">{f.title}</div>
+                  <p className="mt-1 text-sm text-muted-foreground max-w-md">{f.desc}</p>
                 </div>
               </motion.li>
             ))}
@@ -132,34 +105,85 @@ export function ProfessionalsSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="mt-8"
+            className="mt-10"
           >
             <Link
               to="/about"
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground shadow-[var(--shadow-elegant)] hover:gap-3 transition-all"
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-medium text-primary-foreground shadow-[var(--shadow-elegant)] hover:gap-3 transition-all"
             >
               View More About Us <ArrowRight className="h-4 w-4" />
             </Link>
           </motion.div>
         </div>
 
-        {/* RIGHT — auto-scrolling people marquee */}
-        <div className="relative">
-          <div className="relative overflow-hidden group">
-            {/* edge fade masks */}
-            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 md:w-16 bg-gradient-to-r from-background to-transparent" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 md:w-16 bg-gradient-to-l from-background to-transparent" />
-
+        {/* RIGHT — layered images */}
+        <div className="relative mx-auto w-full max-w-[560px] lg:mx-0">
+          <div className="relative aspect-[4/5]">
+            {/* Main tall image (right, bottom) */}
             <motion.div
-              className="flex gap-4 w-max py-2 [--play-state:running] group-hover:[--play-state:paused]"
-              animate={{ x: ["0%", "-50%"] }}
-              transition={{ duration, ease: "linear", repeat: Infinity }}
-              style={{ willChange: "transform", animationPlayState: "var(--play-state)" as unknown as string }}
-              whileHover={{}}
+              initial={{ opacity: 0, scale: 0.96 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+              className="absolute right-0 bottom-0 w-[72%] h-[86%] overflow-hidden rounded-[2.5rem] border border-primary/10 shadow-[var(--shadow-elegant)]"
             >
-              {loop.map((p, i) => (
-                <PeopleCard key={`${p.title}-${i}`} card={p} />
-              ))}
+              <img
+                src={DEFAULT_MAIN}
+                alt="Nupun caregiver attending an elderly patient"
+                className="h-full w-full object-cover"
+                loading="lazy"
+              />
+              <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/20 rounded-[2.5rem]" />
+            </motion.div>
+
+            {/* Inset card top-left */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+              className="absolute left-0 top-0 w-[54%] rounded-[2rem] overflow-hidden shadow-[var(--shadow-elegant)] border border-primary/10 bg-surface"
+            >
+              <div className="aspect-[4/5]">
+                <img
+                  src={DEFAULT_INSET}
+                  alt="Nupun nurse ready for a home visit"
+                  className="h-full w-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+              <div className="bg-dark text-white text-center py-3 text-[11px] tracking-[0.28em] uppercase font-medium">
+                Video Call Support
+              </div>
+            </motion.div>
+
+            {/* Opening hours floating card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="absolute -right-2 -bottom-4 w-[60%] max-w-[300px]"
+            >
+              <motion.div
+                animate={{ y: [0, -6, 0] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                className="relative rounded-3xl p-6 text-white shadow-[var(--shadow-elegant)]"
+                style={{ background: "linear-gradient(135deg, var(--primary), var(--accent))" }}
+              >
+                <div className="absolute -top-5 right-5 grid h-11 w-11 place-items-center rounded-full bg-dark text-white shadow-lg">
+                  <ClockGlyph className="h-5 w-5" />
+                </div>
+                <div className="font-display text-xl mb-4">Opening Hours</div>
+                <ul className="space-y-2 text-sm">
+                {hours.slice(0, 3).map((h) => (
+                  <li key={h.day} className="flex items-center justify-between gap-4">
+                    <span className="text-white/80">{h.day}</span>
+                    <span className="font-medium">{h.hours}</span>
+                  </li>
+                ))}
+              </ul>
+              </motion.div>
             </motion.div>
           </div>
         </div>
@@ -168,49 +192,35 @@ export function ProfessionalsSection() {
   );
 }
 
-/* ---------- Person card ---------- */
-function PeopleCard({ card }: { card: PersonCard }) {
-  const href = card.cta_href ?? "/booking";
-  const ctaLabel = card.cta_label ?? "Book Now";
-
+/* ---------- Decorative backdrop ---------- */
+function DecorBackdrop() {
   return (
-    <div className="w-[200px] md:w-[230px] shrink-0">
-      <div className="relative aspect-[4/5] overflow-hidden rounded-[1.75rem] border border-primary/10 shadow-[var(--shadow-elegant)] bg-surface">
-        <img
-          src={card.image}
-          alt={card.title}
-          loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-[1400ms] ease-out hover:scale-[1.06]"
-        />
-        {/* bottom scrim */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-
-        {/* overlay content — animates in each time it enters view */}
-        <motion.div
-          initial={{ opacity: 0, y: 14, filter: "blur(6px)" }}
-          whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          viewport={{ once: false, amount: 0.6 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-          className="absolute inset-x-3 bottom-3 flex flex-col gap-2 text-white"
-        >
-          <div>
-            <div className="font-display text-base leading-tight">{card.title}</div>
-            <p className="text-[11px] text-white/80 leading-snug line-clamp-2">{card.subtitle}</p>
-          </div>
-          <Link
-            to={href}
-            className="inline-flex w-fit items-center gap-1.5 rounded-full border border-white/40 bg-white/20 backdrop-blur-xl px-3 py-1.5 text-[11px] font-medium text-white hover:bg-white/30 transition-colors"
-          >
-            {ctaLabel}
-            <ArrowRight className="h-3 w-3" />
-          </Link>
-        </motion.div>
-      </div>
-    </div>
+    <svg
+      aria-hidden
+      className="pointer-events-none absolute -right-24 top-10 w-[720px] max-w-[70%] opacity-[0.35]"
+      viewBox="0 0 600 600"
+      fill="none"
+    >
+      <defs>
+        <radialGradient id="proBlob" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.35" />
+          <stop offset="100%" stopColor="var(--primary)" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      <path
+        d="M420 90c70 30 130 100 130 190s-40 170-120 220-190 40-260-20-100-160-60-250S250 30 340 40s80 50 80 50z"
+        fill="url(#proBlob)"
+      />
+      <g stroke="var(--primary)" strokeOpacity="0.25" fill="none">
+        <circle cx="300" cy="300" r="120" />
+        <circle cx="300" cy="300" r="180" strokeDasharray="2 8" />
+        <circle cx="300" cy="300" r="240" strokeDasharray="1 12" />
+      </g>
+    </svg>
   );
 }
 
-/* ---------- Custom SVG icons ---------- */
+/* ---------- Custom SVG icons (hand-crafted, unique) ---------- */
 function HeartPulseIcon({ className = "" }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -235,6 +245,14 @@ function ClockShieldIcon({ className = "" }: { className?: string }) {
       <path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5l-8-3Z" />
       <circle cx="12" cy="12" r="3.5" />
       <path d="M12 10v2.5l1.5 1" />
+    </svg>
+  );
+}
+function ClockGlyph({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 2" />
     </svg>
   );
 }
