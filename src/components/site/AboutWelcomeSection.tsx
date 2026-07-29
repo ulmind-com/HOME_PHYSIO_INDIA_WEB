@@ -152,7 +152,7 @@ export function AboutWelcomeSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.4, duration: 0.6 }}
-              className="glass absolute -bottom-6 -left-6 max-w-[200px] rounded-2xl p-4 shadow-soft lg:-left-10"
+              className="glass absolute -bottom-6 -right-6 max-w-[200px] rounded-2xl p-4 shadow-soft lg:-right-10"
             >
               <div className="flex items-center gap-3">
                 <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
