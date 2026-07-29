@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { ShieldCheck, Sparkles } from "lucide-react";
 import { HowItWorksBadge } from "./HowItWorksBadge";
-import nurseCompanion from "@/assets/services/nurse-companion.jpg.asset.json";
+import communityCare from "@/assets/community-care.jpeg.asset.json";
 
 const steps = [
   {
@@ -25,7 +25,7 @@ const steps = [
 ];
 
 export function HowItWorksSection({ illustration }: { illustration?: string }) {
-  const image = illustration || nurseCompanion.url;
+  const image = illustration || communityCare.url;
 
   return (
     <section className="relative isolate overflow-hidden bg-background py-24 lg:py-32">
