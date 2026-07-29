@@ -39,6 +39,7 @@ export function VideoPlayerModal({ video, onClose }: { video: Video | null; onCl
   if (!video) return null;
   const aspect = inferAspect(video);
   const yt = getYouTubeId(video.youtube_url);
+  const src = video.video_url || video.video_file?.url || null;
 
   return (
     <div
