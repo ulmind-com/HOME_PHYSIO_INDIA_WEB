@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { ArrowRight, Award, Users, Clock, ShieldCheck, Headphones } from "lucide-react";
 import { servicesQ, settingsQ } from "@/lib/api/queries";
-import { CategoryShowcase } from "./CategoryShowcase";
+import { CategoryShowcasePremium } from "./CategoryShowcasePremium";
 
 const INTRO_IMAGE = "/assets/hero-nurse-patient.png";
 
