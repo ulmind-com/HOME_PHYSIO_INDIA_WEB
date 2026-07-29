@@ -9,64 +9,29 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AboutRouteImport } from './routes/about'
-import { Route as BookingRouteImport } from './routes/booking'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as FaqRouteImport } from './routes/faq'
-import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as RefundPolicyRouteImport } from './routes/refund-policy'
-import { Route as TermsRouteImport } from './routes/terms'
-import { Route as TestimonialsRouteImport } from './routes/testimonials'
 import { Route as VideosRouteImport } from './routes/videos'
-import { Route as BlogIndexRouteImport } from './routes/blog.index'
-import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
-import { Route as CareersIndexRouteImport } from './routes/careers.index'
-import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
-import { Route as EquipmentIndexRouteImport } from './routes/equipment.index'
-import { Route as EquipmentSlugRouteImport } from './routes/equipment.$slug'
+import { Route as TestimonialsRouteImport } from './routes/testimonials'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as RefundPolicyRouteImport } from './routes/refund-policy'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as BookingRouteImport } from './routes/booking'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
+import { Route as EquipmentIndexRouteImport } from './routes/equipment.index'
+import { Route as CareersIndexRouteImport } from './routes/careers.index'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
+import { Route as EquipmentSlugRouteImport } from './routes/equipment.$slug'
+import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as ApiPublicProxySplatRouteImport } from './routes/api/public/proxy.$'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BookingRoute = BookingRouteImport.update({
-  id: '/booking',
-  path: '/booking',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FaqRoute = FaqRouteImport.update({
-  id: '/faq',
-  path: '/faq',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacyRoute = PrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RefundPolicyRoute = RefundPolicyRouteImport.update({
-  id: '/refund-policy',
-  path: '/refund-policy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TermsRoute = TermsRouteImport.update({
-  id: '/terms',
-  path: '/terms',
+const VideosRoute = VideosRouteImport.update({
+  id: '/videos',
+  path: '/videos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TestimonialsRoute = TestimonialsRouteImport.update({
@@ -74,39 +39,44 @@ const TestimonialsRoute = TestimonialsRouteImport.update({
   path: '/testimonials',
   getParentRoute: () => rootRouteImport,
 } as any)
-const VideosRoute = VideosRouteImport.update({
-  id: '/videos',
-  path: '/videos',
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BlogIndexRoute = BlogIndexRouteImport.update({
-  id: '/blog/',
-  path: '/blog/',
+const RefundPolicyRoute = RefundPolicyRouteImport.update({
+  id: '/refund-policy',
+  path: '/refund-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BlogSlugRoute = BlogSlugRouteImport.update({
-  id: '/blog/$slug',
-  path: '/blog/$slug',
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CareersIndexRoute = CareersIndexRouteImport.update({
-  id: '/careers/',
-  path: '/careers/',
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CareersSlugRoute = CareersSlugRouteImport.update({
-  id: '/careers/$slug',
-  path: '/careers/$slug',
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
-const EquipmentIndexRoute = EquipmentIndexRouteImport.update({
-  id: '/equipment/',
-  path: '/equipment/',
+const BookingRoute = BookingRouteImport.update({
+  id: '/booking',
+  path: '/booking',
   getParentRoute: () => rootRouteImport,
 } as any)
-const EquipmentSlugRoute = EquipmentSlugRouteImport.update({
-  id: '/equipment/$slug',
-  path: '/equipment/$slug',
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesIndexRoute = ServicesIndexRouteImport.update({
@@ -114,9 +84,39 @@ const ServicesIndexRoute = ServicesIndexRouteImport.update({
   path: '/services/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EquipmentIndexRoute = EquipmentIndexRouteImport.update({
+  id: '/equipment/',
+  path: '/equipment/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CareersIndexRoute = CareersIndexRouteImport.update({
+  id: '/careers/',
+  path: '/careers/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesSlugRoute = ServicesSlugRouteImport.update({
   id: '/services/$slug',
   path: '/services/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EquipmentSlugRoute = EquipmentSlugRouteImport.update({
+  id: '/equipment/$slug',
+  path: '/equipment/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CareersSlugRoute = CareersSlugRouteImport.update({
+  id: '/careers/$slug',
+  path: '/careers/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicProxySplatRoute = ApiPublicProxySplatRouteImport.update({
@@ -279,60 +279,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/booking': {
-      id: '/booking'
-      path: '/booking'
-      fullPath: '/booking'
-      preLoaderRoute: typeof BookingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/faq': {
-      id: '/faq'
-      path: '/faq'
-      fullPath: '/faq'
-      preLoaderRoute: typeof FaqRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy': {
-      id: '/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/refund-policy': {
-      id: '/refund-policy'
-      path: '/refund-policy'
-      fullPath: '/refund-policy'
-      preLoaderRoute: typeof RefundPolicyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/terms': {
-      id: '/terms'
-      path: '/terms'
-      fullPath: '/terms'
-      preLoaderRoute: typeof TermsRouteImport
+    '/videos': {
+      id: '/videos'
+      path: '/videos'
+      fullPath: '/videos'
+      preLoaderRoute: typeof VideosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/testimonials': {
@@ -342,53 +293,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TestimonialsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/videos': {
-      id: '/videos'
-      path: '/videos'
-      fullPath: '/videos'
-      preLoaderRoute: typeof VideosRouteImport
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/blog/': {
-      id: '/blog/'
-      path: '/blog'
-      fullPath: '/blog/'
-      preLoaderRoute: typeof BlogIndexRouteImport
+    '/refund-policy': {
+      id: '/refund-policy'
+      path: '/refund-policy'
+      fullPath: '/refund-policy'
+      preLoaderRoute: typeof RefundPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/blog/$slug': {
-      id: '/blog/$slug'
-      path: '/blog/$slug'
-      fullPath: '/blog/$slug'
-      preLoaderRoute: typeof BlogSlugRouteImport
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/careers/': {
-      id: '/careers/'
-      path: '/careers'
-      fullPath: '/careers/'
-      preLoaderRoute: typeof CareersIndexRouteImport
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/careers/$slug': {
-      id: '/careers/$slug'
-      path: '/careers/$slug'
-      fullPath: '/careers/$slug'
-      preLoaderRoute: typeof CareersSlugRouteImport
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/equipment/': {
-      id: '/equipment/'
-      path: '/equipment'
-      fullPath: '/equipment/'
-      preLoaderRoute: typeof EquipmentIndexRouteImport
+    '/booking': {
+      id: '/booking'
+      path: '/booking'
+      fullPath: '/booking'
+      preLoaderRoute: typeof BookingRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/equipment/$slug': {
-      id: '/equipment/$slug'
-      path: '/equipment/$slug'
-      fullPath: '/equipment/$slug'
-      preLoaderRoute: typeof EquipmentSlugRouteImport
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services/': {
@@ -398,11 +356,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/equipment/': {
+      id: '/equipment/'
+      path: '/equipment'
+      fullPath: '/equipment/'
+      preLoaderRoute: typeof EquipmentIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/careers/': {
+      id: '/careers/'
+      path: '/careers'
+      fullPath: '/careers/'
+      preLoaderRoute: typeof CareersIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/services/$slug': {
       id: '/services/$slug'
       path: '/services/$slug'
       fullPath: '/services/$slug'
       preLoaderRoute: typeof ServicesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/equipment/$slug': {
+      id: '/equipment/$slug'
+      path: '/equipment/$slug'
+      fullPath: '/equipment/$slug'
+      preLoaderRoute: typeof EquipmentSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/careers/$slug': {
+      id: '/careers/$slug'
+      path: '/careers/$slug'
+      fullPath: '/careers/$slug'
+      preLoaderRoute: typeof CareersSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/proxy/$': {
