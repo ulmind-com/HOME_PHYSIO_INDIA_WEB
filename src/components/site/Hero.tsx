@@ -1,226 +1,227 @@
-import { Link, useNavigate } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
-import { ArrowRight, ShieldCheck, Sparkles, Star, PhoneCall } from "lucide-react";
+import { useNavigate } from "@tanstack/react-router";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { motion } from "framer-motion";
+import { useState } from "react";
+import { ArrowUpRight, CheckCircle2, Loader2, MessageCircle, Star, ShieldCheck, Clock } from "lucide-react";
+import { toast } from "sonner";
 import { servicesQ, reviewSummaryQ, settingsQ } from "@/lib/api/queries";
-import { MagneticButton } from "@/components/site/ui/Magnetic";
-import { Counter } from "@/components/site/ui/Counter";
-
-const heroDoctor = "/assets/hero-doctor.jpg";
+import { api } from "@/lib/api/client";
+import heroCare from "@/assets/hero-care.jpg.asset.json";
 
 export function Hero() {
-  const reduce = useReducedMotion();
-  const { data: servicesData } = useQuery(servicesQ({ limit: 6, featured: true }));
+  const navigate = useNavigate();
+  const { data: servicesData } = useQuery(servicesQ({ limit: 30 }));
   const { data: reviews } = useQuery(reviewSummaryQ());
   const { data: settings } = useQuery(settingsQ());
   const services = servicesData?.items ?? [];
 
   const rating = reviews?.average_rating ?? 4.9;
-  const totalReviews = reviews?.total_reviews ?? 1240;
-  const phone = settings?.phone?.replace(/[^\d+]/g, "");
+  const phoneRaw = settings?.phone?.replace(/[^\d+]/g, "");
+  const waRaw = (settings?.whatsapp || settings?.phone || "").replace(/[^\d]/g, "");
 
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const y1 = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : -80]);
-  const y2 = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : -40]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, reduce ? 1 : 1.06]);
+  const [name, setName] = useState("");
+  const [mobile, setMobile] = useState("");
+  const [serviceName, setServiceName] = useState("");
+  const [city, setCity] = useState("");
+  const [area, setArea] = useState("");
+  const [done, setDone] = useState(false);
 
-  const navigate = useNavigate();
+  const mut = useMutation({
+    mutationFn: () =>
+      api.post("/contact", {
+        name,
+        email: `${(name || "lead").toLowerCase().replace(/\s+/g, ".")}@lead.nupun`,
+        phone: mobile,
+        subject: `Consultation request — ${serviceName || "General"}`,
+        message: `Name: ${name}\nMobile: ${mobile}\nService: ${serviceName || "—"}\nCity: ${city || "—"}\nArea: ${area || "—"}`,
+      }),
+    onSuccess: () => {
+      setDone(true);
+      toast.success("Our expert will call you within 10 minutes.");
+    },
+    onError: (e: Error) => toast.error(e.message || "Could not submit. Please try again."),
+  });
+
+  function submit(e: React.FormEvent) {
+    e.preventDefault();
+    if (name.trim().length < 2) return toast.error("Please enter your name");
+    if (mobile.replace(/\D/g, "").length < 7) return toast.error("Enter a valid mobile number");
+    mut.mutate();
+  }
 
   return (
-    <section
-      ref={ref}
-      className="relative isolate overflow-hidden min-h-[100svh] mesh-bg noise"
-    >
-      {/* Animated gradient orbs */}
-      <motion.div
+    <section className="relative isolate overflow-hidden min-h-[100svh] w-full">
+      {/* Full-bleed background image */}
+      <img
+        src={heroCare.url}
+        alt="Compassionate home healthcare — nurse with elderly patient"
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+      {/* Warm readability overlays */}
+      <div
         aria-hidden
-        className="absolute -top-40 -right-40 h-[36rem] w-[36rem] rounded-full opacity-70 blur-3xl animate-mesh-drift"
+        className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(circle, color-mix(in oklab, var(--primary) 55%, transparent), transparent 65%)",
+            "linear-gradient(90deg, rgba(10,20,20,0.55) 0%, rgba(10,20,20,0.35) 40%, rgba(10,20,20,0.15) 65%, rgba(10,20,20,0) 100%)",
         }}
       />
-      <motion.div
+      <div
         aria-hidden
-        className="absolute -bottom-52 -left-40 h-[40rem] w-[40rem] rounded-full opacity-60 blur-3xl animate-mesh-drift"
-        style={{
-          background:
-            "radial-gradient(circle, color-mix(in oklab, var(--accent) 45%, transparent), transparent 60%)",
-          animationDelay: "-8s",
-        }}
+        className="absolute inset-0"
+        style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.25) 0%, transparent 30%, rgba(0,0,0,0.35) 100%)" }}
       />
 
       <div className="relative container-x pt-32 pb-16 lg:pt-40 lg:pb-24 min-h-[100svh] flex items-center">
-        <div className="grid w-full items-center gap-12 lg:grid-cols-12 lg:gap-8">
-          {/* LEFT — editorial copy */}
-          <motion.div style={{ y: y1 }} className="lg:col-span-6 relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2 rounded-full glass-strong px-4 py-1.5 text-xs font-medium text-accent"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inset-0 rounded-full bg-primary animate-pulse-ring" />
-                <span className="relative h-2 w-2 rounded-full bg-primary" />
+        <div className="grid w-full items-center gap-10 lg:grid-cols-12">
+          {/* LEFT — headline */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:col-span-7 text-white"
+          >
+            <h1 className="font-display text-[clamp(2.4rem,5.6vw,5rem)] font-bold leading-[1.02] tracking-[-0.02em] drop-shadow-[0_2px_20px_rgba(0,0,0,0.35)]">
+              Trusted Home Healthcare
+              <br />
+              Services at your door.
+            </h1>
+            <p className="mt-5 font-display text-2xl md:text-3xl italic text-primary drop-shadow">
+              Hospital-grade care with a human touch.
+            </p>
+            <p className="mt-5 max-w-xl text-base md:text-lg text-white/85 leading-relaxed">
+              Get expert nursing care, elder care, and patient attendants at home with
+              verified professionals.
+            </p>
+
+            <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-white/90">
+              <span className="inline-flex items-center gap-1.5">
+                <Star className="h-4 w-4 fill-primary text-primary" /> {rating.toFixed(1)}/5 Rated
               </span>
-              24/7 care desk — accepting new bookings
-            </motion.div>
+              <span className="opacity-40">|</span>
+              <span className="inline-flex items-center gap-1.5">
+                <ShieldCheck className="h-4 w-4 text-primary" /> Certified Staff
+              </span>
+              <span className="opacity-40">|</span>
+              <span className="inline-flex items-center gap-1.5">
+                <Clock className="h-4 w-4 text-primary" /> 24/7 Available
+              </span>
+            </div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
-              className="mt-6 font-display text-[clamp(2.6rem,6vw,5.25rem)] leading-[0.95] tracking-[-0.04em] text-foreground"
-            >
-              Hospital-grade care,{" "}
-              <span className="italic font-normal text-gradient">at home.</span>
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.15 }}
-              className="mt-6 max-w-lg text-lg text-muted-foreground leading-relaxed"
-            >
-              Verified nurses, physiotherapists and premium medical equipment —
-              orchestrated by a dedicated care advisor and delivered to your door
-              within hours.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.25 }}
-              className="mt-9 flex flex-wrap items-center gap-3"
-            >
-              <MagneticButton
+            <div className="mt-8 flex flex-wrap gap-3">
+              <button
                 onClick={() => navigate({ to: "/booking" })}
-                className="group rounded-full bg-foreground px-7 py-4 text-sm font-semibold text-background shadow-[var(--shadow-float)] hover:bg-accent transition-colors"
+                className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-[var(--shadow-float)] hover:bg-foreground transition-colors"
               >
-                Book a caregiver
-                <ArrowRight className="ml-2 inline h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-              </MagneticButton>
-              {phone && (
+                Book Trusted Care
+                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </button>
+              {waRaw && (
                 <a
-                  href={`tel:${phone}`}
-                  className="inline-flex items-center gap-2 rounded-full border border-foreground/15 bg-white/60 backdrop-blur px-6 py-4 text-sm font-medium hover:border-primary hover:text-accent transition-colors"
+                  href={`https://wa.me/${waRaw}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full bg-white/95 backdrop-blur px-6 py-4 text-sm font-semibold text-foreground hover:bg-white transition-colors"
                 >
-                  <PhoneCall className="h-4 w-4 text-primary" />
-                  {settings?.phone ?? "Call now"}
+                  WhatsApp
+                  <span className="grid h-6 w-6 place-items-center rounded-full bg-[#25D366] text-white">
+                    <MessageCircle className="h-3.5 w-3.5" />
+                  </span>
                 </a>
               )}
-            </motion.div>
-
-            {/* Editorial stats */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.4 }}
-              className="mt-14 grid max-w-lg grid-cols-3 gap-6 border-t border-border/70 pt-8"
-            >
-              <Stat value={<Counter value={10} suffix="k+" />} label="Families served" />
-              <Stat value={<Counter value={rating} suffix="★" />} label={`${totalReviews.toLocaleString()} reviews`} />
-              <Stat value={<Counter value={2} suffix="h" />} label="Response time" />
-            </motion.div>
+            </div>
           </motion.div>
 
-          {/* RIGHT — layered glass composition */}
-          <motion.div style={{ y: y2, scale }} className="lg:col-span-6 relative">
-            <div className="relative mx-auto aspect-[4/5] w-full max-w-xl">
-              {/* Backdrop image */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
-                className="absolute inset-0 overflow-hidden rounded-[2.5rem] shadow-[var(--shadow-float)]"
-              >
-                <img
-                  src={heroDoctor}
-                  alt="Verified Nupun caregiver attending to a patient at home"
-                  className="h-full w-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-tr from-dark/50 via-transparent to-transparent" />
-              </motion.div>
-
-              {/* Floating glass card — verification */}
-              <motion.div
-                initial={{ opacity: 0, y: 30, rotate: -3 }}
-                animate={{ opacity: 1, y: 0, rotate: -3 }}
-                transition={{ delay: 0.5, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                className="absolute -left-4 top-16 w-56 glass-strong rounded-2xl p-4 shadow-[var(--shadow-float)]"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="grid h-10 w-10 place-items-center rounded-xl bg-primary/15 text-accent">
-                    <ShieldCheck className="h-5 w-5" />
-                  </div>
+          {/* RIGHT — consultation card */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:col-span-5"
+          >
+            <div className="rounded-3xl bg-white/95 backdrop-blur-xl p-6 md:p-8 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.35)] ring-1 ring-white/60">
+              {done ? (
+                <div className="py-8 text-center">
+                  <CheckCircle2 className="mx-auto h-12 w-12 text-primary" />
+                  <h3 className="mt-4 font-display text-2xl font-semibold text-foreground">Thank you!</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    Our care expert will call you within 10 minutes.
+                  </p>
+                  <button
+                    onClick={() => setDone(false)}
+                    className="mt-6 rounded-full border border-border px-5 py-2.5 text-sm font-medium"
+                  >
+                    Send another
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={submit} className="space-y-4">
                   <div>
-                    <div className="text-[11px] uppercase tracking-[0.15em] text-muted-foreground">
-                      Verified
-                    </div>
-                    <div className="text-sm font-semibold">Background-checked</div>
+                    <h3 className="font-display text-2xl md:text-3xl font-bold text-accent">
+                      Get Free Consultation
+                    </h3>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      Our expert will call you within 10 minutes
+                    </p>
                   </div>
-                </div>
-              </motion.div>
 
-              {/* Floating glass card — rating */}
-              <motion.div
-                initial={{ opacity: 0, y: 30, rotate: 4 }}
-                animate={{ opacity: 1, y: 0, rotate: 4 }}
-                transition={{ delay: 0.7, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                className="absolute -right-2 top-40 w-52 glass-strong rounded-2xl p-4 shadow-[var(--shadow-float)]"
-              >
-                <div className="flex items-center gap-1 text-primary">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="h-3.5 w-3.5" fill="currentColor" />
-                  ))}
-                </div>
-                <div className="mt-1.5 text-lg font-semibold">{rating.toFixed(1)} rating</div>
-                <div className="text-[11px] text-muted-foreground">
-                  {totalReviews.toLocaleString()} Google reviews
-                </div>
-              </motion.div>
-
-              {/* Floating glass card — quick-book services */}
-              <motion.div
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.9, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                className="absolute -bottom-6 left-1/2 w-[90%] -translate-x-1/2 glass-strong rounded-3xl p-5 shadow-[var(--shadow-float)]"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.15em] text-accent">
-                    <Sparkles className="h-3.5 w-3.5" /> Quick book
-                  </div>
-                  <Link to="/booking" className="text-[11px] font-semibold text-accent hover:underline">
-                    All services →
-                  </Link>
-                </div>
-                <div className="mt-3 grid grid-cols-2 gap-2">
-                  {services.slice(0, 4).map((s) => (
-                    <Link
-                      key={s.id}
-                      to="/booking"
-                      search={{ service: s.slug }}
-                      className="group flex items-center justify-between rounded-xl bg-white/50 border border-white/60 px-3 py-2.5 text-xs font-medium text-foreground hover:border-primary hover:bg-white/80 transition-all"
-                    >
-                      <span className="truncate">{s.title}</span>
-                      <ArrowRight className="h-3 w-3 shrink-0 opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
-                    </Link>
-                  ))}
-                  {services.length === 0 &&
-                    ["Home Nursing", "Physiotherapy", "Elder care", "Equipment"].map((s) => (
-                      <div
-                        key={s}
-                        className="rounded-xl bg-white/50 border border-white/60 px-3 py-2.5 text-xs font-medium text-muted-foreground"
-                      >
-                        {s}
-                      </div>
+                  <input
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Your Name"
+                    className={inputCls}
+                  />
+                  <input
+                    value={mobile}
+                    onChange={(e) => setMobile(e.target.value)}
+                    placeholder="Mobile Number"
+                    inputMode="tel"
+                    className={inputCls}
+                  />
+                  <select
+                    value={serviceName}
+                    onChange={(e) => setServiceName(e.target.value)}
+                    className={inputCls}
+                  >
+                    <option value="">Select Needed Service</option>
+                    {services.map((s) => (
+                      <option key={s.id} value={s.title}>
+                        {s.title}
+                      </option>
                     ))}
-                </div>
-              </motion.div>
+                  </select>
+                  <div className="grid grid-cols-2 gap-3">
+                    <input
+                      value={city}
+                      onChange={(e) => setCity(e.target.value)}
+                      placeholder="City"
+                      className={inputCls}
+                    />
+                    <input
+                      value={area}
+                      onChange={(e) => setArea(e.target.value)}
+                      placeholder="Search Area"
+                      className={inputCls}
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    disabled={mut.isPending}
+                    className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-accent py-4 text-sm font-semibold text-white shadow-[var(--shadow-float)] hover:bg-foreground transition-colors disabled:opacity-60"
+                  >
+                    {mut.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
+                    Get Expert Guidance
+                  </button>
+                  {phoneRaw && (
+                    <p className="text-center text-xs text-muted-foreground">
+                      or call{" "}
+                      <a href={`tel:${phoneRaw}`} className="font-semibold text-accent hover:underline">
+                        {settings?.phone}
+                      </a>
+                    </p>
+                  )}
+                </form>
+              )}
             </div>
           </motion.div>
         </div>
@@ -229,11 +230,5 @@ export function Hero() {
   );
 }
 
-function Stat({ value, label }: { value: React.ReactNode; label: string }) {
-  return (
-    <div>
-      <div className="font-display text-4xl tracking-[-0.03em] text-foreground">{value}</div>
-      <div className="mt-1 text-[11px] uppercase tracking-[0.18em] text-muted-foreground">{label}</div>
-    </div>
-  );
-}
+const inputCls =
+  "w-full rounded-xl border border-border/80 bg-white px-4 py-3.5 text-sm outline-none transition placeholder:text-muted-foreground/70 focus:border-primary focus:ring-2 focus:ring-primary/20";
