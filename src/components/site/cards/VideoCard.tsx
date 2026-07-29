@@ -12,6 +12,7 @@ type Props = {
 export function VideoCard({ v, onPlay, aspect, variant = "default" }: Props) {
   const a = aspect ?? inferAspect(v);
   const yt = getYouTubeId(v.youtube_url);
+  const src = v.video_url || v.video_file?.url || null;
   const thumb = v.thumbnail ?? (yt ? `https://i.ytimg.com/vi/${yt.id}/hqdefault.jpg` : null);
 
   const media = (
@@ -40,9 +41,9 @@ export function VideoCard({ v, onPlay, aspect, variant = "default" }: Props) {
             className="relative h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
         </>
-      ) : v.video_url ? (
+      ) : src ? (
         <video
-          src={v.video_url}
+          src={src}
           preload="metadata"
           muted
           playsInline

@@ -39,6 +39,7 @@ export function VideoPlayerModal({ video, onClose }: { video: Video | null; onCl
   if (!video) return null;
   const aspect = inferAspect(video);
   const yt = getYouTubeId(video.youtube_url);
+  const src = video.video_url || video.video_file?.url || null;
 
   return (
     <div
@@ -70,9 +71,9 @@ export function VideoPlayerModal({ video, onClose }: { video: Video | null; onCl
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
           />
-        ) : video.video_url ? (
+        ) : src ? (
           <video
-            src={video.video_url}
+            src={src}
             controls
             autoPlay
             playsInline
