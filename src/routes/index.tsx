@@ -18,6 +18,7 @@ import { ServiceCard } from "@/components/site/cards/ServiceCard";
 import { EquipmentCard } from "@/components/site/cards/EquipmentCard";
 import { BlogCard } from "@/components/site/cards/BlogCard";
 import { VideoCard } from "@/components/site/cards/VideoCard";
+import { VideoTestimonialsSection } from "@/components/site/VideoTestimonialsSection";
 import { TestimonialCard } from "@/components/site/cards/TestimonialCard";
 import { FaqAccordion } from "@/components/site/FaqAccordion";
 import { GoogleReviews } from "@/components/site/GoogleReviews";
@@ -55,7 +56,9 @@ function Home() {
       <EquipmentSection />
       <CareTeamSection />
       <TestimonialsSection />
+      <VideoTestimonialsSection />
       <BlogVideosSection />
+
       <FaqSection />
       <ReviewsSection />
       <ContactCta />
@@ -430,17 +433,6 @@ function BlogVideosSection() {
             {bItems.map((b) => (<BlogCard key={b.id} blog={b} />))}
           </div>
         </>
-      )}
-      {!!vItems.length && (
-        <div className="mt-20">
-          <div className="flex items-end justify-between mb-10">
-            <SectionHeader eyebrow="Watch" title="Care, on screen" />
-            <Link to="/videos" className="text-sm font-medium text-accent">All videos →</Link>
-          </div>
-          <div className="grid gap-6 md:grid-cols-3">
-            {vItems.map((v) => (<VideoCard key={v.id} v={v} />))}
-          </div>
-        </div>
       )}
     </Section>
   );
