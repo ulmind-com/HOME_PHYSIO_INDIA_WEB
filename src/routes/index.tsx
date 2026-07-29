@@ -92,7 +92,7 @@ function TrustBar() {
 
 function EquipmentSection() {
   return (
-    <Section>
+    <Section className="py-24 lg:py-32">
       <div className="flex items-end justify-between gap-6 mb-12 flex-wrap">
         <SectionHeader
           eyebrow="Equipment"
