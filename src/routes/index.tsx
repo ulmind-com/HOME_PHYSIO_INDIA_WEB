@@ -1,13 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { motion } from "framer-motion";
 import { ArrowRight, ShieldCheck, HeartPulse, Clock, Star, Stethoscope } from "lucide-react";
 import {
   blogsQ,
   equipmentQ,
   faqsQ,
+  reviewSummaryQ,
   servicesQ,
   testimonialsQ,
-  videosQ,
 } from "@/lib/api/queries";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/site/Reveal";
 import { Section, SectionHeader, EmptyState } from "@/components/site/Section";
@@ -19,6 +20,7 @@ import { TestimonialCard } from "@/components/site/cards/TestimonialCard";
 import { FaqAccordion } from "@/components/site/FaqAccordion";
 import { GoogleReviews } from "@/components/site/GoogleReviews";
 import { Hero } from "@/components/site/Hero";
+
 
 
 export const Route = createFileRoute("/")({
@@ -63,25 +65,6 @@ function Home() {
 }
 
 
-function Stat({ label, value }: { label: string; value: string }) {
-  return (
-    <div>
-      <div className="font-display text-3xl md:text-4xl tracking-tight">{value}</div>
-      <div className="text-xs uppercase tracking-widest text-muted-foreground mt-1">{label}</div>
-    </div>
-  );
-}
-
-
-
-function Stat({ label, value }: { label: string; value: string }) {
-  return (
-    <div>
-      <div className="font-display text-3xl md:text-4xl tracking-tight">{value}</div>
-      <div className="text-xs uppercase tracking-widest text-muted-foreground mt-1">{label}</div>
-    </div>
-  );
-}
 
 function TrustBar() {
   const items = ["Licensed nurses", "24/7 helpline", "Insurance-friendly", "Transparent pricing", "Background-checked"];
