@@ -12,7 +12,7 @@ import {
 } from "@/lib/api/queries";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/site/Reveal";
 import { Section, SectionHeader, EmptyState } from "@/components/site/Section";
-import { ServiceCard } from "@/components/site/cards/ServiceCard";
+import { ServicesMarquee } from "@/components/site/ServicesMarquee";
 import { EquipmentCard } from "@/components/site/cards/EquipmentCard";
 import { BlogCard } from "@/components/site/cards/BlogCard";
 import { VideoTestimonialsSection } from "@/components/site/VideoTestimonialsSection";
@@ -51,7 +51,7 @@ function Home() {
       <Hero />
       <AboutWelcomeSection />
       <TrustBar />
-      <ServicesSection />
+      <ServicesMarquee />
       <WhyUs />
       <EquipmentSection />
       <CareTeamSection />
@@ -85,35 +85,6 @@ function TrustBar() {
   );
 }
 
-function ServicesSection() {
-  const { data, isLoading } = useQuery(servicesQ({ limit: 6 }));
-  const items = data?.items ?? [];
-  return (
-    <Section>
-      <div className="flex items-end justify-between gap-6 mb-12 flex-wrap">
-        <SectionHeader
-          eyebrow="Our services"
-          title={<>Care that meets you<br />where you are.</>}
-          description="From short recovery care to long-term support, our services are designed around your family."
-        />
-        <Link to="/services" className="inline-flex items-center gap-1 text-sm font-medium text-accent hover:gap-2 transition-all">
-          View all <ArrowRight className="h-4 w-4" />
-        </Link>
-      </div>
-      {isLoading ? (
-        <SkeletonGrid />
-      ) : items.length ? (
-        <StaggerGroup className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {items.map((s) => (
-            <StaggerItem key={s.id}><ServiceCard service={s} /></StaggerItem>
-          ))}
-        </StaggerGroup>
-      ) : (
-        <EmptyState title="Services coming soon" description="Our care team is preparing this section." />
-      )}
-    </Section>
-  );
-}
 
 function WhyUs() {
   const pillars = [
