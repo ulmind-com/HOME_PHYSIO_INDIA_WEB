@@ -129,11 +129,11 @@ export function AboutWelcomeSection() {
 
           {/* Image card */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.96, x: 40 }}
+            initial={{ opacity: 0, scale: 0.96, x: -40 }}
             whileInView={{ opacity: 1, scale: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            className="relative order-1 lg:order-2"
+            className="relative order-1"
           >
             <div className="relative aspect-[4/3] overflow-hidden rounded-[2.5rem] shadow-float lg:aspect-[4/3.2]">
               <img
