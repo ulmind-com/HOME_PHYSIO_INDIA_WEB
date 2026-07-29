@@ -43,7 +43,8 @@ export function HeroShape({ imageUrl, className, alt = "" }: HeroShapeProps) {
       </defs>
 
       {/* mint fill — uses theme primary token */}
-      <path d={shapePath} fill="hsl(var(--primary))" />
+      <path d={shapePath} fill="var(--primary)" />
+
 
 
       {/* decorative outline rings inside the mint panel */}
