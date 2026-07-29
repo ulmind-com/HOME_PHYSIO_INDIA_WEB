@@ -150,7 +150,7 @@ export function AboutWelcomeSection() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              -viewport={{ once: true }}
+              viewport={{ once: true }}
               transition={{ delay: 0.4, duration: 0.6 }}
               className="glass absolute -bottom-6 -left-6 max-w-[200px] rounded-2xl p-4 shadow-soft lg:-left-10"
             >
