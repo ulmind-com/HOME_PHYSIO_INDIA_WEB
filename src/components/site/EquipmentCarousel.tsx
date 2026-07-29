@@ -1,17 +1,12 @@
 import * as React from "react";
 import { PerspectiveCarousel } from "@/components/ui/perspective-carousel";
-import ultrasound from "@/assets/equipment/ultrasound.jpeg.asset.json";
-import monitoring1 from "@/assets/equipment/monitoring-1.jpeg.asset.json";
-import monitoring2 from "@/assets/equipment/monitoring-2.jpeg.asset.json";
-import anesthesiology from "@/assets/equipment/anesthesiology.jpeg.asset.json";
-import stethoscope from "@/assets/equipment/stethoscope.jpeg.asset.json";
 
 const ITEMS = [
-  { src: ultrasound.url, title: "Siemens X700 Ultrasound", alt: "Siemens X700 ultrasound system" },
-  { src: monitoring1.url, title: "At-Home Health Monitoring", alt: "Home BP, glucose and pulse oximeter kit" },
-  { src: anesthesiology.url, title: "Anesthesiology Equipment", alt: "Hospital anesthesiology station" },
-  { src: monitoring2.url, title: "Vitals Testing Kit", alt: "Home vitals and testing kit" },
-  { src: stethoscope.url, title: "Clinical Stethoscope", alt: "Professional clinical stethoscope" },
+  { src: "/assets/equipment/ultrasound.jpeg", title: "Siemens X700 Ultrasound", alt: "Siemens X700 ultrasound system" },
+  { src: "/assets/equipment/monitoring-1.jpeg", title: "At-Home Health Monitoring", alt: "Home BP, glucose and pulse oximeter kit" },
+  { src: "/assets/equipment/anesthesiology.jpeg", title: "Anesthesiology Equipment", alt: "Hospital anesthesiology station" },
+  { src: "/assets/equipment/monitoring-2.jpeg", title: "Vitals Testing Kit", alt: "Home vitals and testing kit" },
+  { src: "/assets/equipment/stethoscope.jpeg", title: "Clinical Stethoscope", alt: "Professional clinical stethoscope" },
 ];
 
 const AUTO_SCROLL_MS = 3500;
