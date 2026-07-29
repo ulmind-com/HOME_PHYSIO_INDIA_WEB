@@ -36,10 +36,11 @@ export function VideoPlayerModal({ video, onClose }: { video: Video | null; onCl
     };
   }, [video, onClose]);
 
+  const [detected, setDetected] = useState<"9/16" | "16/9" | null>(null);
   if (!video) return null;
-  const aspect = inferAspect(video);
   const yt = getYouTubeId(video.youtube_url);
   const src = video.video_url || video.video_file?.url || null;
+  const aspect = detected ?? inferAspect(video);
 
   return (
     <div
