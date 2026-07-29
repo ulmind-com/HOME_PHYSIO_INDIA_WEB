@@ -57,12 +57,12 @@ export function Footer() {
               Book an Appointment
             </Link>
 
-            <div className="mt-12 flex flex-col gap-3">
-              <div className="inline-flex w-fit items-center text-[13px] text-foreground font-medium bg-white/60 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/40 shadow-sm">
+            <div className="mt-12 flex flex-col gap-2.5">
+              <div className="text-[13px] text-black font-semibold">
                 © {new Date().getFullYear()} {name} - All rights reserved
               </div>
 
-              <div className="inline-flex w-fit items-center gap-1.5 text-[13px] text-foreground font-medium bg-white/60 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/40 shadow-sm">
+              <div className="flex items-center gap-1.5 text-[13px] text-black font-semibold">
                 Built with <Heart className="h-3.5 w-3.5 text-rose-500 fill-rose-500" /> by Ulmind
               </div>
             </div>
