@@ -363,18 +363,62 @@ function FaqSection() {
   const { data } = useQuery(faqsQ({ limit: 6 }));
   const items = data?.items ?? [];
   if (!items.length) return null;
+
   return (
-    <Section className="bg-primary-soft/40">
-      <div className="grid gap-12 lg:grid-cols-12">
-        <div className="lg:col-span-5">
-          <SectionHeader eyebrow="FAQ" title="Answers, before you ask." description="Common questions from families like yours." />
-          <Link to="/faq" className="inline-flex items-center gap-1 text-sm font-medium text-accent">
-            All questions <ArrowRight className="h-4 w-4" />
-          </Link>
+    <Section className="bg-[#F8F9FA]">
+      <div className="grid gap-12 lg:grid-cols-2 items-start">
+        {/* Left Side: Illustration (No Animation) */}
+        <div className="relative">
+          {/* Decorative background blob/arch behind image */}
+          <div className="absolute -inset-4 bg-[#E8E1DF] rounded-[4rem] rounded-tr-[10rem] -z-10 transform -rotate-2"></div>
+          <div className="relative rounded-[3rem] rounded-tr-[8rem] overflow-hidden aspect-[4/5] shadow-xl">
+            <img 
+              src="/assets/faq-illustration.jpeg" 
+              alt="Telemedicine Consultation" 
+              className="w-full h-full object-cover"
+            />
+          </div>
         </div>
-        <div className="lg:col-span-7">
+
+        {/* Right Side: FAQs (Animated) */}
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={{
+            hidden: {},
+            show: { transition: { staggerChildren: 0.1 } }
+          }}
+          className="flex flex-col justify-center"
+        >
+          <motion.h2 
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
+            }}
+            className="font-display text-4xl md:text-5xl lg:text-[3.5rem] font-bold text-foreground mb-8 leading-tight"
+          >
+            Frequently Asked<br/>
+            <span className="text-primary">Questions</span>
+          </motion.h2>
+
           <FaqAccordion items={items.slice(0, 6)} />
-        </div>
+          
+          <motion.div 
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
+            }}
+            className="mt-8 text-center sm:text-left"
+          >
+            <Link 
+              to="/faq" 
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-primary/10 text-primary px-8 py-3.5 font-semibold hover:bg-primary hover:text-white transition-colors duration-300"
+            >
+              Read More...
+            </Link>
+          </motion.div>
+        </motion.div>
       </div>
     </Section>
   );
