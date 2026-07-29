@@ -95,11 +95,13 @@ export function Footer() {
             <div className="flex justify-start sm:justify-end mt-12 sm:mt-auto">
               <div className="flex items-center gap-2.5 text-[13px] text-white/90 font-medium drop-shadow-md group">
                 <span className="opacity-80 transition-opacity group-hover:opacity-100">Designed and Developed by</span>
-                <img 
-                  src="/assets/ulmind.png" 
-                  alt="Ulmind" 
-                  className="h-7 sm:h-8 w-auto object-contain drop-shadow-lg opacity-100 transition-all group-hover:scale-105" 
-                />
+                <div className="bg-white/95 px-2 py-1 rounded-md shadow-sm transition-all group-hover:scale-105 group-hover:shadow-md">
+                  <img 
+                    src="/assets/ulmind.png" 
+                    alt="Ulmind" 
+                    className="h-5 sm:h-6 w-auto object-contain" 
+                  />
+                </div>
               </div>
             </div>
           </div>
