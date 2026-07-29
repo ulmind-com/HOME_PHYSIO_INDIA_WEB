@@ -33,15 +33,8 @@ export const Route = createFileRoute("/")({
           "Verified nurses, physiotherapists and premium medical equipment — orchestrated by a dedicated advisor and delivered to your door in hours.",
       },
       { property: "og:title", content: "Nupun Home Health Care — Hospital-grade care, at home" },
-      { property: "og:type", content: "website" },
       {
         property: "og:description",
-        content: "Verified nurses, physiotherapists and premium medical equipment — delivered home.",
-      },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Nupun Home Health Care — Hospital-grade care, at home" },
-      {
-        name: "twitter:description",
         content: "Verified nurses, physiotherapists and premium medical equipment — delivered home.",
       },
       { property: "og:url", content: "/" },
