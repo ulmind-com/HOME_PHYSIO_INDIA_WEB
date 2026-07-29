@@ -107,7 +107,31 @@ function EquipmentSection() {
   );
 }
 
+type PersonCard = {
+  image: string;
+  title: string;
+  subtitle: string;
+  cta_label?: string;
+  cta_href?: string;
+};
+
+const DEFAULT_PEOPLE: PersonCard[] = [
+  { image: "/assets/people/skilled-nursing.jpg", title: "Skilled Nursing", subtitle: "Trained nurses at home" },
+  { image: "/assets/people/senior-care.jpg", title: "Senior Care", subtitle: "Companionship & mobility" },
+  { image: "/assets/people/physiotherapy.jpg", title: "Physiotherapy", subtitle: "Movement & recovery" },
+  { image: "/assets/people/specialist-doctor.jpg", title: "Specialist Doctors", subtitle: "Consult at home" },
+];
+
 function CareTeamSection() {
+  const { data: settings } = useQuery(settingsQ());
+  const admin = settings as unknown as { professionals?: PersonCard[]; people?: PersonCard[] } | undefined;
+  const items =
+    admin?.professionals?.length ? admin.professionals :
+    admin?.people?.length ? admin.people :
+    DEFAULT_PEOPLE;
+  const loop = [...items, ...items];
+  const duration = Math.max(28, items.length * 7);
+
   return (
     <Section className="bg-dark text-white/90 rounded-[3rem] mx-4 lg:mx-10">
       <div className="grid gap-12 lg:grid-cols-2 items-center">
@@ -127,21 +151,61 @@ function CareTeamSection() {
             Meet the team <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
-        <div className="grid grid-cols-2 gap-4">
-          {[
-            { role: "Registered Nurse", count: "120+" },
-            { role: "Physiotherapists", count: "45" },
-            { role: "Doctors on panel", count: "30" },
-            { role: "Care attendants", count: "200+" },
-          ].map((c) => (
-            <div key={c.role} className="rounded-3xl bg-white/5 border border-white/10 p-6 backdrop-blur">
-              <div className="font-display text-4xl text-white">{c.count}</div>
-              <div className="text-sm text-white/60 mt-1">{c.role}</div>
-            </div>
-          ))}
+
+        {/* RIGHT — auto-scrolling people marquee */}
+        <div className="relative overflow-hidden group">
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 md:w-16 bg-gradient-to-r from-dark to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 md:w-16 bg-gradient-to-l from-dark to-transparent" />
+          <motion.div
+            className="flex gap-4 w-max py-2"
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{ duration, ease: "linear", repeat: Infinity }}
+            style={{ willChange: "transform" }}
+          >
+            {loop.map((p, i) => (
+              <PeopleMarqueeCard key={`${p.title}-${i}`} card={p} />
+            ))}
+          </motion.div>
         </div>
       </div>
     </Section>
+  );
+}
+
+function PeopleMarqueeCard({ card }: { card: PersonCard }) {
+  const href = card.cta_href ?? "/booking";
+  const ctaLabel = card.cta_label ?? "Book Now";
+  return (
+    <div className="w-[180px] md:w-[220px] shrink-0">
+      <div className="relative aspect-[4/5] overflow-hidden rounded-[1.75rem] border border-white/10 shadow-[var(--shadow-elegant)] bg-white/5">
+        <img
+          src={card.image}
+          alt={card.title}
+          loading="lazy"
+          className="h-full w-full object-cover transition-transform duration-[1400ms] ease-out hover:scale-[1.06]"
+        />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+        <motion.div
+          initial={{ opacity: 0, y: 14, filter: "blur(6px)" }}
+          whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          viewport={{ once: false, amount: 0.6 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="absolute inset-x-3 bottom-3 flex flex-col gap-2 text-white"
+        >
+          <div>
+            <div className="font-display text-base leading-tight">{card.title}</div>
+            <p className="text-[11px] text-white/80 leading-snug line-clamp-2">{card.subtitle}</p>
+          </div>
+          <Link
+            to={href}
+            className="inline-flex w-fit items-center gap-1.5 rounded-full border border-white/40 bg-white/20 backdrop-blur-xl px-3 py-1.5 text-[11px] font-medium text-white hover:bg-white/30 transition-colors"
+          >
+            {ctaLabel}
+            <ArrowRight className="h-3 w-3" />
+          </Link>
+        </motion.div>
+      </div>
+    </div>
   );
 }
 
