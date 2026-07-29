@@ -45,10 +45,10 @@ export function HeroShape({ imageUrl, className, alt = "" }: HeroShapeProps) {
 
       <image
         href={imageUrl}
-        x="96"
-        y="118"
-        width="444"
-        height="452"
+        x="0"
+        y="58"
+        width="590"
+        height="532"
         clipPath={`url(#${clipId})`}
         preserveAspectRatio="xMidYMax meet"
       />
