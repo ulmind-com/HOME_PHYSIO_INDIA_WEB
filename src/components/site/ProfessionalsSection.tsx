@@ -266,8 +266,10 @@ export function ProfessionalsSection() {
             );
           })}
         </motion.div>
+        </div>
       </div>
     </Section>
+
   );
 }
 
