@@ -20,12 +20,11 @@ const INTERACTION_PAUSE_MS = 2500;
 export function EquipmentCarousel() {
   const [active, setActive] = React.useState(0);
   const [hovered, setHovered] = React.useState(false);
-  const [focused, setFocused] = React.useState(false);
   const [hidden, setHidden] = React.useState(false);
   const [interacted, setInteracted] = React.useState(false);
   const interactionTimeoutRef = React.useRef<number | null>(null);
 
-  const paused = hovered || focused || hidden || interacted;
+  const paused = hovered || hidden || interacted;
 
   React.useEffect(() => {
     if (paused) return;
@@ -33,7 +32,7 @@ export function EquipmentCarousel() {
       setActive((i) => (i + 1) % ITEMS.length);
     }, AUTO_SCROLL_MS);
     return () => window.clearInterval(id);
-  }, [paused, active]);
+  }, [paused]);
 
   React.useEffect(() => {
     const onVis = () => setHidden(document.hidden);
@@ -63,8 +62,6 @@ export function EquipmentCarousel() {
     <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      onFocus={() => setFocused(true)}
-      onBlur={() => setFocused(false)}
       className="relative"
     >
       <PerspectiveCarousel
