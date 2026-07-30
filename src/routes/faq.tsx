@@ -105,7 +105,7 @@ function FaqPage() {
                     onClick={() => setActive(c)}
                     className={`rounded-full px-5 py-2.5 text-[15px] font-medium transition-all duration-300 shadow-sm ${
                       isActive
-                        ? "bg-[#007BFF] text-white border border-[#007BFF] shadow-[0_4px_14px_rgba(0,123,255,0.3)] hover:-translate-y-0.5"
+                        ? "bg-primary text-white border border-primary shadow-[0_4px_14px_var(--color-primary),0.3)] hover:-translate-y-0.5"
                         : "bg-white text-foreground border border-black/5 hover:border-black/10 hover:shadow-md hover:-translate-y-0.5"
                     }`}
                   >

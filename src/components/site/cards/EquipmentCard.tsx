@@ -8,7 +8,7 @@ export function EquipmentCard({ equipment }: { equipment: Equipment }) {
     <Link
       to="/equipment/$slug"
       params={{ slug: equipment.slug }}
-      className="group relative flex h-full flex-col overflow-hidden rounded-[2.5rem] border border-white/60 bg-white/40 p-3 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.04),inset_0_0_0_1px_rgba(255,255,255,0.4)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(26,130,118,0.15)] hover:border-primary/40 hover:bg-white/60"
+      className="group relative flex h-full flex-col overflow-hidden rounded-[2.5rem] border border-white/60 bg-white/40 p-3 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.04),inset_0_0_0_1px_rgba(255,255,255,0.4)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_50px_var(--color-primary),0.15)] hover:border-primary/40 hover:bg-white/60"
     >
       {/* Top Glossy Highlight */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-80" />
@@ -78,7 +78,7 @@ export function EquipmentCard({ equipment }: { equipment: Equipment }) {
             <span className="text-sm font-medium text-muted-foreground">Contact for pricing</span>
           )}
 
-          <div className="grid h-12 w-12 place-items-center rounded-full bg-white shadow-md border border-black/5 text-foreground transition-all duration-500 group-hover:scale-110 group-hover:bg-primary group-hover:text-white group-hover:shadow-[0_10px_20px_rgba(26,130,118,0.3)] group-hover:border-primary">
+          <div className="grid h-12 w-12 place-items-center rounded-full bg-white shadow-md border border-black/5 text-foreground transition-all duration-500 group-hover:scale-110 group-hover:bg-primary group-hover:text-white group-hover:shadow-[0_10px_20px_var(--color-primary),0.3)] group-hover:border-primary">
             <ArrowUpRight className="h-5 w-5 transition-transform duration-500 group-hover:rotate-12" />
           </div>
         </div>

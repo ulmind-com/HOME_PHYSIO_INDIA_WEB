@@ -257,7 +257,7 @@ function StackedCard({
         <div className="relative z-10 h-full p-8 md:p-14 lg:p-20 flex flex-col justify-center">
           <div className="max-w-2xl mt-4 md:mt-0">
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 backdrop-blur-md mb-5 md:mb-6">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#43D4B0] animate-pulse" />
+              <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
               <span className="text-[11px] md:text-xs uppercase tracking-[0.2em] font-semibold text-white/90">
                 {slide.eyebrow}
               </span>
@@ -273,7 +273,7 @@ function StackedCard({
             <div className="mt-8 md:mt-10">
               <Link
                 to={slide.buttonLink}
-                className="group inline-flex items-center gap-2 rounded-full bg-[#43D4B0] px-6 md:px-8 py-3.5 md:py-4 text-[14px] md:text-[15px] font-semibold text-white shadow-[0_15px_40px_-10px_rgba(67,212,176,0.5)] transition-all duration-300 hover:bg-[#3bc3a0] hover:-translate-y-0.5 hover:shadow-[0_20px_50px_-10px_rgba(67,212,176,0.6)]"
+                className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 md:px-8 py-3.5 md:py-4 text-[14px] md:text-[15px] font-semibold text-white shadow-[0_15px_40px_-10px_var(--color-primary),0.5)] transition-all duration-300 hover:bg-primary/90 hover:-translate-y-0.5 hover:shadow-[0_20px_50px_-10px_var(--color-primary),0.6)]"
               >
                 {slide.buttonText}
                 <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />

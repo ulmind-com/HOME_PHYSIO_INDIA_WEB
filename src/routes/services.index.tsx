@@ -297,7 +297,7 @@ function ServicesIndex() {
                 className="group cursor-pointer h-full"
               >
                 {/* Individual Glassmorphism Card */}
-                <div className="relative h-full overflow-hidden rounded-[1.5rem] border border-white/60 bg-white/40 p-6 flex items-center justify-center text-center backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.04),inset_0_0_0_1px_rgba(255,255,255,0.3)] transition-all duration-300 group-hover:scale-105 group-hover:-translate-y-1 group-hover:bg-primary group-hover:border-primary group-hover:shadow-[0_15px_30px_-10px_rgba(26,130,118,0.4)]">
+                <div className="relative h-full overflow-hidden rounded-[1.5rem] border border-white/60 bg-white/40 p-6 flex items-center justify-center text-center backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.04),inset_0_0_0_1px_rgba(255,255,255,0.3)] transition-all duration-300 group-hover:scale-105 group-hover:-translate-y-1 group-hover:bg-primary group-hover:border-primary group-hover:shadow-[0_15px_30px_-10px_var(--color-primary),0.4)]">
                   {/* Top Glossy Highlight */}
                   <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-80" />
                   {/* Inner glossy reflection on hover */}

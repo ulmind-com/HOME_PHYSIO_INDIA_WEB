@@ -211,7 +211,7 @@ export function ServicesHeroSlider({ slides: dynamicSlides }: { slides?: HeroSli
               variants={textChild}
               className="mb-5 inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-md px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/80"
             >
-              <span className="h-1.5 w-1.5 rounded-full bg-[#43D4B0] animate-pulse" />
+              <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
               Nupun Home Health Care
             </motion.div>
 
@@ -239,7 +239,7 @@ export function ServicesHeroSlider({ slides: dynamicSlides }: { slides?: HeroSli
             <motion.div variants={buttonVariant} className="mt-9 flex flex-wrap items-center gap-4">
               <Link
                 to={slide.button_link || "/booking"}
-                className="group relative inline-flex items-center gap-2.5 overflow-hidden rounded-full bg-[#43D4B0] px-8 py-4 text-sm font-semibold text-white shadow-[0_20px_50px_-20px_rgba(67,212,176,0.5)] transition-all duration-500 hover:-translate-y-0.5 hover:shadow-[0_25px_60px_-15px_rgba(67,212,176,0.6)]"
+                className="group relative inline-flex items-center gap-2.5 overflow-hidden rounded-full bg-primary px-8 py-4 text-sm font-semibold text-white shadow-[0_20px_50px_-20px_var(--color-primary),0.5)] transition-all duration-500 hover:-translate-y-0.5 hover:shadow-[0_25px_60px_-15px_var(--color-primary),0.6)]"
               >
                 <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
                 <span className="relative">{slide.button_text || "Get Started"}</span>
@@ -288,14 +288,17 @@ export function ServicesHeroSlider({ slides: dynamicSlides }: { slides?: HeroSli
                 <span className="absolute inset-0 rounded-full bg-white/25" />
                 {i === current && (
                   <motion.span
-                    className="absolute inset-0 rounded-full bg-[#43D4B0]"
+                    className="absolute inset-0 rounded-full bg-primary"
                     initial={{ scaleX: 0 }}
                     animate={{ scaleX: 1 }}
                     transition={{
                       duration: SLIDE_DURATION / 1000,
                       ease: "linear",
                     }}
-                    style={{ transformOrigin: "left", boxShadow: "0 0 12px rgba(67,212,176,0.6)" }}
+                    style={{
+                      transformOrigin: "left",
+                      boxShadow: "0 0 12px var(--color-primary),0.6)",
+                    }}
                   />
                 )}
               </button>

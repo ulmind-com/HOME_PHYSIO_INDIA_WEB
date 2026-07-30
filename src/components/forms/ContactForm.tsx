@@ -99,7 +99,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={mut.isPending}
-        className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 text-[15px] font-semibold text-primary-foreground shadow-[0_4px_14px_rgba(0,123,255,0.15)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(0,123,255,0.25)] hover:bg-accent hover:text-accent-foreground transition-all disabled:opacity-60"
+        className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 text-[15px] font-semibold text-primary-foreground shadow-[0_4px_14px_var(--color-primary),0.15)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_var(--color-primary),0.25)] hover:bg-accent hover:text-accent-foreground transition-all disabled:opacity-60"
       >
         {mut.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
         Send

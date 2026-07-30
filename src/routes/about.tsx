@@ -164,7 +164,7 @@ function AboutPage() {
             </p>
 
             {/* Search Bar */}
-            <div className="relative max-w-lg flex items-center bg-white rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-black/5 overflow-hidden p-1.5 transition-shadow focus-within:shadow-[0_8px_30px_rgba(67,212,176,0.15)] focus-within:border-primary/20">
+            <div className="relative max-w-lg flex items-center bg-white rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-black/5 overflow-hidden p-1.5 transition-shadow focus-within:shadow-[0_8px_30px_var(--color-primary),0.15)] focus-within:border-primary/20">
               <div className="pl-4 pr-2 text-muted-foreground">
                 <Search className="h-5 w-5 text-primary" strokeWidth={2.5} />
               </div>
@@ -257,7 +257,7 @@ function AboutPage() {
           className="absolute inset-0 z-0 pointer-events-none overflow-hidden"
           aria-hidden="true"
         >
-          <div className="absolute top-[10%] left-[20%] w-[500px] h-[500px] bg-[#43D4B0]/30 rounded-full mix-blend-multiply filter blur-[100px] opacity-70 animate-float-slow" />
+          <div className="absolute top-[10%] left-[20%] w-[500px] h-[500px] bg-primary/30 rounded-full mix-blend-multiply filter blur-[100px] opacity-70 animate-float-slow" />
           <div
             className="absolute bottom-[10%] right-[10%] w-[600px] h-[600px] bg-[#2E9296]/20 rounded-full mix-blend-multiply filter blur-[120px] opacity-60 animate-float-slower"
             style={{ animationDelay: "2s" }}
