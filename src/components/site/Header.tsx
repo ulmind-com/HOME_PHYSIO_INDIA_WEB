@@ -1,6 +1,6 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -120,7 +120,9 @@ export function Header() {
                 onDarkHero ? "bg-white text-primary hover:bg-white/90" : "bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-sm hover:opacity-90",
               )}
             >
-              <span className="sm:hidden">Book Trusted Care</span>
+              <span className="flex items-center gap-1.5 sm:hidden">
+                Book Trusted Care <ArrowRight className="h-3 w-3" />
+              </span>
               <span className="hidden sm:inline">Book Appointment</span>
             </Link>
             
