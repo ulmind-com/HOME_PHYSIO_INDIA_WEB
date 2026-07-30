@@ -5,7 +5,7 @@ import { ArrowRight, Award, Users, Clock, ShieldCheck, Headphones } from "lucide
 import { servicesQ, settingsQ } from "@/lib/api/queries";
 import { CategoryShowcasePremium } from "./CategoryShowcasePremium";
 
-const INTRO_IMAGE = "/assets/hero-nurse-patient.png";
+const DEFAULT_INTRO_IMAGE = "/assets/hero-nurse-patient.png";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -19,6 +19,8 @@ const fadeUp = {
 export function AboutWelcomeSection() {
   const { data: settings } = useQuery(settingsQ());
   const { data: servicesData } = useQuery(servicesQ({ limit: 8 }));
+  const websiteName = settings?.website_name || "Nupun";
+  const introImage = (typeof settings?.about_welcome_image === 'string' ? settings.about_welcome_image : (settings?.about_welcome_image as any)?.url) || DEFAULT_INTRO_IMAGE;
 
   return (
     <section className="relative isolate overflow-hidden bg-background">
@@ -69,7 +71,7 @@ export function AboutWelcomeSection() {
               className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-accent backdrop-blur"
             >
               <span className="h-2 w-2 animate-pulse rounded-full bg-primary" />
-              About Nupun
+              About {websiteName}
             </motion.div>
 
             <motion.h2
@@ -77,8 +79,8 @@ export function AboutWelcomeSection() {
               custom={1}
               className="font-display text-[clamp(2rem,4.5vw,3.5rem)] leading-[1.08] tracking-tight text-foreground"
             >
-              Professional Home Care Services for Your Loved Ones with{" "}
-              <span className="text-gradient">{settings?.website_name || "Nupun"}</span>
+              {settings?.about_welcome_title || `Professional Home Care Services for Your Loved Ones with`}{" "}
+              <span className="text-gradient">{websiteName}</span>
             </motion.h2>
 
             <motion.p
@@ -87,7 +89,7 @@ export function AboutWelcomeSection() {
               className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg"
             >
               {settings?.tagline ||
-                "Nupun is a trusted provider of patient and elder care services with trained caregivers, attendants and qualified nurses at your home in Delhi NCR and across the country."}
+                `${websiteName} is a trusted provider of patient and elder care services with trained caregivers, attendants and qualified nurses at your home in Delhi NCR and across the country.`}
             </motion.p>
 
             <motion.p
@@ -95,12 +97,7 @@ export function AboutWelcomeSection() {
               custom={3}
               className="mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground md:text-base"
             >
-              Our services include{" "}
-              <span className="font-semibold text-foreground">
-                home nursing care, elder care services, physiotherapy, ICU setup at home and medical equipment rental
-              </span>
-              . Whether you need short-term recovery support or long-term care, our team ensures dependable,
-              personalized care in the comfort of your home.
+              {settings?.about_welcome_description || `Our services include home nursing care, elder care services, physiotherapy, ICU setup at home and medical equipment rental. Whether you need short-term recovery support or long-term care, our team ensures dependable, personalized care in the comfort of your home.`}
             </motion.p>
 
             <motion.div variants={fadeUp} custom={4} className="mt-8 flex flex-wrap items-center gap-4">
@@ -137,8 +134,8 @@ export function AboutWelcomeSection() {
           >
             <div className="relative aspect-[4/3] overflow-hidden rounded-[2.5rem] shadow-float lg:aspect-[4/3.2]">
               <img
-                src={INTRO_IMAGE}
-                alt="Nupun care team"
+                src={introImage}
+                alt={`${websiteName} care team`}
                 className="h-full w-full object-cover"
                 loading="lazy"
                 decoding="async"

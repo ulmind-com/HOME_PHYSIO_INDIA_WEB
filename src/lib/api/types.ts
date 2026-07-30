@@ -132,11 +132,21 @@ export type HeroStat = {
   label: string;
 };
 
+export type HeroSlide = {
+  title?: string | null;
+  subtitle?: string | null;
+  button_text?: string | null;
+  button_link?: string | null;
+  background_image?: ImageAsset | null;
+  order?: number;
+};
+
 export type ServicesHero = {
   title?: string | null;
   subtitle?: string | null;
   background_image?: ImageAsset | null;
   stats?: HeroStat[];
+  slides?: HeroSlide[];
 };
 
 export type Settings = {
@@ -152,6 +162,58 @@ export type Settings = {
   google_reviews_link?: string | null;
   working_hours?: { day: string; hours: string }[];
   services_hero?: ServicesHero | null;
+
+  // Hero section
+  hero_headline?: string | null;
+  hero_subtitle?: string | null;
+  hero_description?: string | null;
+  hero_image?: string | ImageAsset | null;
+  hero_stats?: { value: string; label: string }[];
+
+  // About page
+  about_hero_badge?: string | null;
+  about_hero_title?: string | null;
+  about_hero_description?: string | null;
+  about_hero_image?: string | ImageAsset | null;
+  about_story_title?: string | null;
+  about_story_text?: string | null;
+  about_stats?: { value: string; label: string }[];
+  about_values?: { title: string; body: string }[];
+  about_commitments?: string[];
+
+  // How It Works
+  how_it_works_steps?: { title: string; body: string }[];
+
+  // Professionals / Team
+  team_tiles?: { image: string; count: string; title: string; desc: string }[];
+
+  // CareTeam Slider (Home Page)
+  care_team_slides?: {
+    image: string;
+    eyebrow: string;
+    title: string;
+    description: string;
+    button_text: string;
+    button_link: string;
+    stats: { count: string; label: string }[];
+  }[];
+
+  // Trust bar items
+  trust_bar_items?: string[];
+
+  // Footer
+  footer_tagline?: string | null;
+  footer_description?: string | null;
+  footer_image?: string | null;
+
+  // Contact CTA
+  cta_title?: string | null;
+  cta_description?: string | null;
+
+  // About Welcome Section
+  about_welcome_title?: string | null;
+  about_welcome_description?: string | null;
+  about_welcome_image?: string | ImageAsset | null;
 };
 
 export type SocialLinks = {

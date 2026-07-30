@@ -21,12 +21,19 @@ export const Route = createFileRoute("/faq")({
   component: FaqPage,
 });
 
+const DUMMY_FAQS = [
+  { id: "1", question: "Do you provide elder care at home?", answer: "Yes, we provide comprehensive elder care services right at your home, ensuring comfort and professional medical attention.", category: "Elder Care" },
+  { id: "2", question: "I live outside my home town. Can I still arrange care for my parents there?", answer: "Absolutely. You can coordinate and monitor the care plan remotely through our care desk.", category: "Support" },
+  { id: "3", question: "Can I book a caregiver for only a few hours a day?", answer: "Yes, we offer flexible durations. You can book a caregiver for as little as 4 hours a day or opt for 24/7 care.", category: "Services" },
+  { id: "4", question: "What's the difference between a caregiver and a nurse at home?", answer: "A caregiver assists with daily living activities (bathing, feeding, mobility), while a registered nurse provides medical care (injections, wound care, monitoring).", category: "Medical Care" },
+  { id: "5", question: "Can you help after a hospital discharge or surgery at home?", answer: "Yes, our post-operative care team ensures a smooth transition from hospital to home, including wound care and physiotherapy.", category: "Medical Care" },
+  { id: "6", question: "Do you provide 24-hour or overnight care if required?", answer: "Yes, we provide round-the-clock 24-hour care as well as dedicated overnight shifts based on your requirements.", category: "Elder Care" },
+];
+
 function FaqPage() {
   const { data, isLoading } = useQuery(faqsQ({ limit: 200 }));
-  const { data: settings } = useQuery(settingsQ());
-  const items = data?.items ?? [];
-  const phone = settings?.phone?.replace(/[^\d+]/g, "");
-  const whatsapp = (settings?.whatsapp ?? settings?.phone)?.replace(/\D/g, "");
+  const dbItems = data?.items ?? [];
+  const items = dbItems.length > 0 ? dbItems : DUMMY_FAQS;
 
   const [active, setActive] = useState("all");
 
@@ -42,85 +49,37 @@ function FaqPage() {
   );
 
   return (
-    <>
-      <PageHero
-        eyebrow="FAQ"
-        title="Frequently Asked Questions"
-        description="Everything families usually want to know about our caregivers, pricing and how care at home works."
-        crumbs={[{ label: "Home", to: "/" }, { label: "FAQ" }]}
-      />
-      <Section className="pt-16 lg:pt-20">
-        <div className="grid gap-12 lg:grid-cols-12">
-          {/* Sticky intro / CTA */}
-          <div className="lg:col-span-4">
-            <div className="lg:sticky lg:top-28">
-              <h2 className="font-display text-2xl tracking-tight md:text-3xl">Still have a question?</h2>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                Our care desk is available around the clock. Reach out and a real person will help you figure
-                out the right care.
-              </p>
-              <div className="mt-6 flex flex-wrap gap-3">
-                {phone && (
-                  <a
-                    href={`tel:${phone}`}
-                    className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-accent"
+    <main className="min-h-screen bg-[#fafafa] pt-32 pb-24">
+      <div className="container-x max-w-4xl mx-auto">
+        <div className="text-center mb-10">
+          <h1 className="font-display text-4xl md:text-[44px] font-bold tracking-tight text-foreground mb-8">
+            Frequently Asked Questions
+          </h1>
+          
+          {categories.length > 1 && (
+            <div className="flex flex-wrap justify-center gap-3 mb-10">
+              {categories.map((c) => {
+                const isActive = c === active;
+                return (
+                  <button
+                    key={c}
+                    onClick={() => setActive(c)}
+                    className={`rounded-full px-5 py-2.5 text-[15px] font-medium transition-all duration-300 shadow-sm ${
+                      isActive
+                        ? "bg-[#007BFF] text-white border border-[#007BFF] shadow-[0_4px_14px_rgba(0,123,255,0.3)] hover:-translate-y-0.5"
+                        : "bg-white text-foreground border border-black/5 hover:border-black/10 hover:shadow-md hover:-translate-y-0.5"
+                    }`}
                   >
-                    <Phone className="h-4 w-4" /> Call now
-                  </a>
-                )}
-                {whatsapp && (
-                  <a
-                    href={`https://wa.me/${whatsapp}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-2.5 text-sm font-semibold transition-colors hover:border-primary"
-                  >
-                    <MessageCircle className="h-4 w-4 text-primary" /> WhatsApp
-                  </a>
-                )}
-                <Link
-                  to="/contact"
-                  className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-2.5 text-sm font-semibold transition-colors hover:border-primary"
-                >
-                  Contact us
-                </Link>
-              </div>
+                    {c === "all" ? "All" : c}
+                  </button>
+                );
+              })}
             </div>
-          </div>
-
-          {/* Category pills + accordion */}
-          <div className="lg:col-span-8">
-            {categories.length > 1 && (
-              <div className="mb-6 flex flex-wrap gap-2.5">
-                {categories.map((c) => {
-                  const isActive = c === active;
-                  return (
-                    <button
-                      key={c}
-                      onClick={() => setActive(c)}
-                      className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                        isActive
-                          ? "bg-primary text-primary-foreground"
-                          : "border border-border bg-surface text-muted-foreground hover:border-primary hover:text-foreground"
-                      }`}
-                    >
-                      {c === "all" ? "All" : c}
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-
-            {isLoading ? (
-              <div className="h-96 rounded-3xl border border-border bg-surface animate-pulse" />
-            ) : filtered.length ? (
-              <FaqAccordion key={active} items={filtered} />
-            ) : (
-              <EmptyState title="FAQs coming soon" />
-            )}
-          </div>
+          )}
         </div>
-      </Section>
-    </>
+
+        <FaqAccordion key={active} items={filtered} />
+      </div>
+    </main>
   );
 }

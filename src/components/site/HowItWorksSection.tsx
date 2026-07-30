@@ -1,31 +1,33 @@
 import { motion } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
 import { ShieldCheck, Sparkles } from "lucide-react";
+import { settingsQ } from "@/lib/api/queries";
 import { HowItWorksBadge } from "./HowItWorksBadge";
 const communityCare = { url: "/assets/community-care.jpeg" };
 
-const steps = [
+const VARIANTS = ["primary", "accent", "glow"] as const;
+
+const DEFAULT_STEPS = [
   {
-    n: 1,
-    variant: "primary" as const,
     title: "Book Consultation",
     body: "Tell us your needs online or over the phone. Our care expert will guide you.",
   },
   {
-    n: 2,
-    variant: "accent" as const,
     title: "Get a Custom Plan",
     body: "We create a personalised care plan tailored to your specific requirements and schedule.",
   },
   {
-    n: 3,
-    variant: "glow" as const,
     title: "Meet Your Caregiver",
     body: "We match you with a verified, trained, and compassionate caregiver from our team.",
   },
 ];
 
 export function HowItWorksSection({ illustration }: { illustration?: string }) {
+  const { data: settings } = useQuery(settingsQ());
   const image = illustration || communityCare.url;
+
+  const rawSteps = settings?.how_it_works_steps?.length ? settings.how_it_works_steps : DEFAULT_STEPS;
+  const steps = rawSteps.map((s, i) => ({ n: i + 1, variant: VARIANTS[i % VARIANTS.length], title: s.title, body: s.body }));
 
   return (
     <section className="relative isolate overflow-hidden bg-background py-24 lg:py-32">

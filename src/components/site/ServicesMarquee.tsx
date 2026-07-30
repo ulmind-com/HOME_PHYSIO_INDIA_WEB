@@ -39,7 +39,7 @@ export function ServicesMarquee() {
   const track = [...base, ...base];
 
   return (
-    <section className="relative isolate overflow-hidden bg-background py-24 lg:py-32">
+    <section className="relative isolate overflow-hidden bg-background pt-24 pb-8 lg:pt-32 lg:pb-12">
       {/* Decorative background */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <div

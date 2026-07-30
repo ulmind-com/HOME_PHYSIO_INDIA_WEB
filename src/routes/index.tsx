@@ -8,6 +8,7 @@ import {
   faqsQ,
   reviewSummaryQ,
   servicesQ,
+  settingsQ,
   testimonialsQ,
 } from "@/lib/api/queries";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/site/Reveal";
@@ -72,7 +73,10 @@ function Home() {
 
 
 function TrustBar() {
-  const items = ["Licensed nurses", "24/7 helpline", "Insurance-friendly", "Transparent pricing", "Background-checked"];
+  const { data: settings } = useQuery(settingsQ());
+  const items = settings?.trust_bar_items?.length
+    ? settings.trust_bar_items
+    : ["Licensed nurses", "24/7 helpline", "Insurance-friendly", "Transparent pricing", "Background-checked"];
   return (
     <div className="border-y border-border/70 bg-surface/60 backdrop-blur">
       <div className="container-x py-4 overflow-hidden">
@@ -93,7 +97,7 @@ function TrustBar() {
 
 function EquipmentSection() {
   return (
-    <Section className="py-24 lg:py-32">
+    <Section className="pt-0 pb-20 lg:pt-0 lg:pb-28">
       <div className="flex items-end justify-between gap-6 mb-12 flex-wrap">
         <SectionHeader
           eyebrow="Equipment"
@@ -111,8 +115,9 @@ function EquipmentSection() {
 
 function CareTeamSection() {
   const [active, setActive] = useState(0);
+  const { data: settings } = useQuery(settingsQ());
 
-  const slides = [
+  const DEFAULT_SLIDES = [
     {
       image: "/assets/hero-slide-1.jpeg",
       eyebrow: "Physiotherapy",
@@ -174,6 +179,19 @@ function CareTeamSection() {
       ],
     },
   ];
+
+  // Use slides from admin panel if available, otherwise use defaults
+  const slides = settings?.care_team_slides?.length
+    ? settings.care_team_slides.map(s => ({
+        image: s.image,
+        eyebrow: s.eyebrow,
+        title: s.title,
+        description: s.description,
+        buttonText: s.button_text,
+        buttonLink: s.button_link,
+        stats: s.stats,
+      }))
+    : DEFAULT_SLIDES;
 
   const total = slides.length;
   const next = useCallback(() => setActive((p) => (p + 1) % total), [total]);
@@ -431,6 +449,7 @@ function ReviewsSection() {
 }
 
 function ContactCta() {
+  const { data: settings } = useQuery(settingsQ());
   return (
     <Section>
       <motion.div
@@ -445,10 +464,10 @@ function ContactCta() {
           <div>
             <div className="text-sm uppercase tracking-[0.2em] text-white/70 mb-3">Ready when you are</div>
             <h2 className="font-display text-4xl md:text-5xl text-white">
-              Talk to a care advisor.
+              {settings?.cta_title || "Talk to a care advisor."}
             </h2>
             <p className="mt-4 text-white/80 max-w-md">
-              Tell us what you need — we'll match the right nurse or equipment, usually within two hours.
+              {settings?.cta_description || "Tell us what you need — we'll match the right nurse or equipment, usually within two hours."}
             </p>
           </div>
           <div className="flex flex-wrap gap-3 lg:justify-end">

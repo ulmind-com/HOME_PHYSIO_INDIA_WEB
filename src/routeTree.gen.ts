@@ -21,6 +21,8 @@ import { Route as TestimonialsRouteImport } from './routes/testimonials'
 import { Route as VideosRouteImport } from './routes/videos'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as BlogsIndexRouteImport } from './routes/blogs.index'
+import { Route as BlogsSlugRouteImport } from './routes/blogs.$slug'
 import { Route as CareersIndexRouteImport } from './routes/careers.index'
 import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
 import { Route as EquipmentIndexRouteImport } from './routes/equipment.index'
@@ -89,6 +91,16 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogsIndexRoute = BlogsIndexRouteImport.update({
+  id: '/blogs/',
+  path: '/blogs/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogsSlugRoute = BlogsSlugRouteImport.update({
+  id: '/blogs/$slug',
+  path: '/blogs/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CareersIndexRoute = CareersIndexRouteImport.update({
   id: '/careers/',
   path: '/careers/',
@@ -137,10 +149,12 @@ export interface FileRoutesByFullPath {
   '/testimonials': typeof TestimonialsRoute
   '/videos': typeof VideosRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/blogs/$slug': typeof BlogsSlugRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/equipment/$slug': typeof EquipmentSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/blog/': typeof BlogIndexRoute
+  '/blogs/': typeof BlogsIndexRoute
   '/careers/': typeof CareersIndexRoute
   '/equipment/': typeof EquipmentIndexRoute
   '/services/': typeof ServicesIndexRoute
@@ -158,10 +172,12 @@ export interface FileRoutesByTo {
   '/testimonials': typeof TestimonialsRoute
   '/videos': typeof VideosRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/blogs/$slug': typeof BlogsSlugRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/equipment/$slug': typeof EquipmentSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/blog': typeof BlogIndexRoute
+  '/blogs': typeof BlogsIndexRoute
   '/careers': typeof CareersIndexRoute
   '/equipment': typeof EquipmentIndexRoute
   '/services': typeof ServicesIndexRoute
@@ -180,10 +196,12 @@ export interface FileRoutesById {
   '/testimonials': typeof TestimonialsRoute
   '/videos': typeof VideosRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/blogs/$slug': typeof BlogsSlugRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/equipment/$slug': typeof EquipmentSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/blog/': typeof BlogIndexRoute
+  '/blogs/': typeof BlogsIndexRoute
   '/careers/': typeof CareersIndexRoute
   '/equipment/': typeof EquipmentIndexRoute
   '/services/': typeof ServicesIndexRoute
@@ -203,10 +221,12 @@ export interface FileRouteTypes {
     | '/testimonials'
     | '/videos'
     | '/blog/$slug'
+    | '/blogs/$slug'
     | '/careers/$slug'
     | '/equipment/$slug'
     | '/services/$slug'
     | '/blog/'
+    | '/blogs/'
     | '/careers/'
     | '/equipment/'
     | '/services/'
@@ -224,10 +244,12 @@ export interface FileRouteTypes {
     | '/testimonials'
     | '/videos'
     | '/blog/$slug'
+    | '/blogs/$slug'
     | '/careers/$slug'
     | '/equipment/$slug'
     | '/services/$slug'
     | '/blog'
+    | '/blogs'
     | '/careers'
     | '/equipment'
     | '/services'
@@ -245,10 +267,12 @@ export interface FileRouteTypes {
     | '/testimonials'
     | '/videos'
     | '/blog/$slug'
+    | '/blogs/$slug'
     | '/careers/$slug'
     | '/equipment/$slug'
     | '/services/$slug'
     | '/blog/'
+    | '/blogs/'
     | '/careers/'
     | '/equipment/'
     | '/services/'
@@ -267,10 +291,12 @@ export interface RootRouteChildren {
   TestimonialsRoute: typeof TestimonialsRoute
   VideosRoute: typeof VideosRoute
   BlogSlugRoute: typeof BlogSlugRoute
+  BlogsSlugRoute: typeof BlogsSlugRoute
   CareersSlugRoute: typeof CareersSlugRoute
   EquipmentSlugRoute: typeof EquipmentSlugRoute
   ServicesSlugRoute: typeof ServicesSlugRoute
   BlogIndexRoute: typeof BlogIndexRoute
+  BlogsIndexRoute: typeof BlogsIndexRoute
   CareersIndexRoute: typeof CareersIndexRoute
   EquipmentIndexRoute: typeof EquipmentIndexRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
@@ -363,6 +389,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blogs/': {
+      id: '/blogs/'
+      path: '/blogs'
+      fullPath: '/blogs/'
+      preLoaderRoute: typeof BlogsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blogs/$slug': {
+      id: '/blogs/$slug'
+      path: '/blogs/$slug'
+      fullPath: '/blogs/$slug'
+      preLoaderRoute: typeof BlogsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/careers/': {
       id: '/careers/'
       path: '/careers'
@@ -427,10 +467,12 @@ const rootRouteChildren: RootRouteChildren = {
   TestimonialsRoute: TestimonialsRoute,
   VideosRoute: VideosRoute,
   BlogSlugRoute: BlogSlugRoute,
+  BlogsSlugRoute: BlogsSlugRoute,
   CareersSlugRoute: CareersSlugRoute,
   EquipmentSlugRoute: EquipmentSlugRoute,
   ServicesSlugRoute: ServicesSlugRoute,
   BlogIndexRoute: BlogIndexRoute,
+  BlogsIndexRoute: BlogsIndexRoute,
   CareersIndexRoute: CareersIndexRoute,
   EquipmentIndexRoute: EquipmentIndexRoute,
   ServicesIndexRoute: ServicesIndexRoute,

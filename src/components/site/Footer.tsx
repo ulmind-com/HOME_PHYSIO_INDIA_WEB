@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { settingsQ, socialQ } from "@/lib/api/queries";
-import { Heart } from "lucide-react";
+import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
 
 export function Footer() {
   const { data: settings } = useQuery(settingsQ());
@@ -10,7 +10,7 @@ export function Footer() {
   const name = settings?.website_name ?? "Nupun Home Health Care";
 
   return (
-    <footer className="relative mt-24 bg-[#F2F0EC] pt-24 pb-0 sm:pt-32 flex flex-col">
+    <footer className="relative mt-0 bg-[#F2F0EC] pt-16 pb-0 sm:pt-20 flex flex-col">
       {/* Background Image at the bottom half */}
       <div 
         className="absolute inset-x-0 bottom-0 h-[80%] z-0 pointer-events-none"
@@ -20,7 +20,7 @@ export function Footer() {
         }}
       >
         <img 
-          src="/assets/hero-slide-2.jpeg" 
+          src={settings?.footer_image || "/assets/hero-slide-2.jpeg"} 
           alt="" 
           className="w-full h-full object-cover object-[center_30%]"
         />
@@ -39,15 +39,15 @@ export function Footer() {
                   <path d="M12 21s-7-4.35-9.5-8.5C.85 9.5 2.4 5.5 6 5c2.05-.28 3.7.9 6 3 2.3-2.1 3.95-3.28 6-3 3.6.5 5.15 4.5 3.5 7.5C19 16.65 12 21 12 21Z" />
                 </svg>
               </div>
-              <div className="font-display text-xl font-bold tracking-tight text-foreground">{name}</div>
+              <div className="font-display text-xl tracking-tight text-foreground">{name}</div>
             </div>
 
-            <h3 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-foreground mb-4">
-              Your premium home healthcare partner
+            <h3 className="font-display text-2xl sm:text-3xl tracking-tight text-foreground mb-4 leading-[1.15]">
+              {settings?.tagline || "Your premium home healthcare partner"}
             </h3>
             
             <p className="text-[15px] leading-relaxed text-muted-foreground max-w-md mb-8">
-              Nupun brings expert doctors, compassionate nurses, and hospital-grade equipment directly to your doorstep. Verified professionals ensuring your loved ones get the care they deserve.
+              {settings?.footer_description || `${name} brings expert doctors, compassionate nurses, and hospital-grade equipment directly to your doorstep. Verified professionals ensuring your loved ones get the care they deserve.`}
             </p>
 
             <Link
@@ -56,6 +56,25 @@ export function Footer() {
             >
               Book an Appointment
             </Link>
+
+            <div className="mt-10">
+              <h4 className="text-[15px] font-semibold text-foreground mb-4">Follow our social media</h4>
+              <div className="flex gap-3">
+                {social?.facebook && <SocialIcon Icon={Facebook} href={social.facebook} />}
+                {social?.instagram && <SocialIcon Icon={Instagram} href={social.instagram} />}
+                {social?.twitter && <SocialIcon Icon={Twitter} href={social.twitter} />}
+                {social?.youtube && <SocialIcon Icon={Youtube} href={social.youtube} />}
+                {/* Fallback if no social links from API */}
+                {!social?.facebook && !social?.instagram && !social?.twitter && !social?.youtube && (
+                  <>
+                    <SocialIcon Icon={Facebook} href="#" />
+                    <SocialIcon Icon={Instagram} href="#" />
+                    <SocialIcon Icon={Twitter} href="#" />
+                    <SocialIcon Icon={Youtube} href="#" />
+                  </>
+                )}
+              </div>
+            </div>
 
             <div className="mt-12 flex flex-col gap-2.5">
               <div className="text-[13px] text-white font-semibold drop-shadow-md">
@@ -72,7 +91,7 @@ export function Footer() {
                 <FooterLink to="/about">About Us</FooterLink>
                 <FooterLink to="/equipment">Equipment</FooterLink>
                 <FooterLink to="/testimonials">Testimonials</FooterLink>
-                <FooterLink to="/blog">Care Blog</FooterLink>
+                <FooterLink to="/blogs">Care Blog</FooterLink>
               </FooterCol>
 
               <FooterCol title="Services">
@@ -137,5 +156,13 @@ function FooterLink({ to, children }: { to: string; children: React.ReactNode })
     <Link to={to} className="text-[15px] font-medium text-muted-foreground hover:text-primary transition-colors">
       {children}
     </Link>
+  );
+}
+
+function SocialIcon({ Icon, href }: { Icon: any; href: string }) {
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-accent hover:text-accent-foreground transition-colors shadow-sm">
+      <Icon className="w-4 h-4" fill="currentColor" />
+    </a>
   );
 }

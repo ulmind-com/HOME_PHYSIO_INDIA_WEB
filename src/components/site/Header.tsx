@@ -8,6 +8,8 @@ const NAV = [
   { to: "/about", label: "About" },
   { to: "/services", label: "Services" },
   { to: "/equipment", label: "Equipment" },
+  { to: "/faq", label: "FAQ's" },
+  { to: "/blogs", label: "Blogs" },
   { to: "/contact", label: "Contact" },
 ] as const;
 
@@ -41,9 +43,12 @@ export function Header() {
   }, [pathname]);
 
   const isHome = pathname === "/";
-  // Every route except the home page has a dark full-bleed hero; while the pill
-  // floats over it (before scrolling past), it needs light text to stay legible.
-  const onDarkHero = !isHome && !scrolled;
+  const isAbout = pathname === "/about";
+  const isEquipment = pathname === "/equipment";
+  const isFaq = pathname === "/faq";
+  const isBlogs = pathname.startsWith("/blogs");
+  const isBooking = pathname === "/booking";
+  const onDarkHero = !isHome && !isAbout && !isEquipment && !isFaq && !isBlogs && !isBooking && !scrolled;
   const overlay = isHome && !scrolled;
 
   return (
@@ -98,8 +103,7 @@ export function Header() {
                 activeProps={{ className: onDarkHero ? "text-white font-semibold" : "text-accent font-semibold" }}
                 inactiveProps={{ className: onDarkHero ? "text-white/75" : "text-foreground/70" }}
                 className={cn(
-                  "text-sm font-medium transition-colors",
-                  onDarkHero ? "hover:text-white" : "hover:text-accent",
+                  "text-sm uppercase tracking-wider transition-colors hover:text-primary",
                 )}
               >
                 {item.label}
@@ -110,14 +114,21 @@ export function Header() {
           <div className="relative flex items-center gap-2">
             <Link
               to="/booking"
-              className="hidden sm:inline-flex items-center rounded-full bg-primary text-primary-foreground px-5 py-2.5 text-sm font-semibold hover:bg-accent transition-colors"
+              className={cn(
+                "hidden sm:inline-flex h-10 items-center justify-center rounded-full px-5 text-sm font-semibold transition-all hover:scale-105",
+                onDarkHero ? "bg-white text-primary hover:bg-white/90" : "bg-primary text-primary-foreground shadow-sm hover:bg-accent",
+              )}
             >
               Book Appointment
             </Link>
+            
             <button
+              onClick={() => setOpen(true)}
+              className={cn(
+                "p-2 -mr-2 rounded-full lg:hidden",
+                onDarkHero ? "text-white hover:bg-white/10" : "text-foreground hover:bg-white/50",
+              )}
               aria-label="Open menu"
-              className="lg:hidden inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary-soft text-foreground"
-              onClick={() => setOpen((s) => !s)}
             >
               {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>

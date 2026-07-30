@@ -98,16 +98,21 @@ const overlayItem: Variants = {
 export function ProfessionalsSection() {
   const { data: settings } = useQuery(settingsQ());
   const tiles: PeopleTile[] =
-    (settings as unknown as { people_tiles?: PeopleTile[] })?.people_tiles?.length
-      ? (settings as unknown as { people_tiles: PeopleTile[] }).people_tiles
+    settings?.team_tiles?.length
+      ? settings.team_tiles.map(t => ({
+          image: t.image,
+          count: t.count,
+          title: t.title,
+          desc: t.desc,
+          ctaLabel: `View ${t.title.toLowerCase()}`,
+          ctaHref: "/about",
+        }))
       : DEFAULT_TILES;
 
-  const backdrop =
-    (settings as unknown as { professionals_backdrop?: string })?.professionals_backdrop ||
-    backdropAsset.url;
+  const backdrop = backdropAsset.url;
 
   return (
-    <Section className="relative overflow-hidden">
+    <Section className="relative overflow-hidden pt-20 pb-10 lg:pt-28 lg:pb-16">
       <div className="relative isolate overflow-hidden rounded-[2rem] border border-primary/10 shadow-[var(--shadow-elegant)]">
         {/* Full-section photo backdrop (replaces the dark shape) */}
         <motion.img

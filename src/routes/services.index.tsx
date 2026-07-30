@@ -8,7 +8,6 @@ import {
   ArrowRight,
   Search,
   Phone,
-  MessageCircle,
   HeartHandshake,
   BellRing,
   Zap,
@@ -16,10 +15,10 @@ import {
 } from "lucide-react";
 import { servicesQ, testimonialsQ, faqsQ, settingsQ } from "@/lib/api/queries";
 import { Section, SectionHeader } from "@/components/site/Section";
-import { Reveal } from "@/components/site/Reveal";
 import { FaqAccordion } from "@/components/site/FaqAccordion";
 import { ServiceCardPro } from "@/components/site/cards/ServiceCardPro";
 import { VideoTestimonialsSection } from "@/components/site/VideoTestimonialsSection";
+import { ServicesHeroSlider } from "@/components/site/ServicesHeroSlider";
 
 export const Route = createFileRoute("/services/")({
   head: () => ({
@@ -37,20 +36,32 @@ export const Route = createFileRoute("/services/")({
   component: ServicesIndex,
 });
 
-const HERO_FALLBACK_IMG = "/assets/hero-doctor.jpg";
-
-const STATS = [
-  { value: "24/7", label: "Patient Support" },
-  { value: "500+", label: "Patients Served" },
-  { value: "2 Hr", label: "Replacement SLA" },
-  { value: "100%", label: "Verified Staff" },
-];
 
 const WHY = [
-  { icon: ShieldCheck, title: "Verified Professionals", detail: "Background-verified and trained caregivers, nurses, and attendants." },
-  { icon: Clock3, title: "Flexible Hourly Care", detail: "Book care for a few hours, overnight, or as per your requirement." },
-  { icon: BellRing, title: "Medication Alerts", detail: "Timely reminders to help patients stay on track with medications." },
-  { icon: Zap, title: "Quick Service Support", detail: "Fast caregiver deployment and responsive assistance when you need it most." },
+  { 
+    icon: ShieldCheck, 
+    title: "Verified Professionals", 
+    detail: "Background-verified and trained caregivers, nurses, and attendants.",
+    theme: { bg: "bg-emerald-50/70 dark:bg-emerald-950/20", iconBg: "bg-emerald-100 dark:bg-emerald-900/40", iconColor: "text-emerald-600 dark:text-emerald-400" }
+  },
+  { 
+    icon: Clock3, 
+    title: "Flexible Hourly Care", 
+    detail: "Book care for a few hours, overnight, or as per your requirement.",
+    theme: { bg: "bg-blue-50/70 dark:bg-blue-950/20", iconBg: "bg-blue-100 dark:bg-blue-900/40", iconColor: "text-blue-600 dark:text-blue-400" }
+  },
+  { 
+    icon: BellRing, 
+    title: "Medication Alerts", 
+    detail: "Timely reminders to help patients stay on track with medications.",
+    theme: { bg: "bg-fuchsia-50/70 dark:bg-fuchsia-950/20", iconBg: "bg-fuchsia-100 dark:bg-fuchsia-900/40", iconColor: "text-fuchsia-600 dark:text-fuchsia-400" }
+  },
+  { 
+    icon: Zap, 
+    title: "Quick Service Support", 
+    detail: "Fast caregiver deployment and responsive assistance when you need it most.",
+    theme: { bg: "bg-orange-50/70 dark:bg-orange-950/20", iconBg: "bg-orange-100 dark:bg-orange-900/40", iconColor: "text-orange-600 dark:text-orange-400" }
+  },
 ];
 
 const CONDITIONS = [
@@ -81,16 +92,7 @@ function ServicesIndex() {
   const phone = settings?.phone?.replace(/[^\d+]/g, "");
   const whatsapp = (settings?.whatsapp ?? settings?.phone)?.replace(/[^\d]/g, "");
 
-  // ── Services hero content (admin-managed via Settings → Services Hero) ──
-  const hero = settings?.services_hero;
-  const heroTitle =
-    hero?.title?.trim() || "Trusted Home Healthcare Services in Gurgaon & Delhi NCR";
-  const heroSubtitle =
-    hero?.subtitle?.trim() ||
-    "Nupun provides compassionate and reliable home healthcare for seniors, patients and recovering individuals in the comfort of their homes. From trained attendants and nursing to physiotherapy, post-surgery support and elder care — flexible care with hourly, short-term and long-term options.";
-  // Admin-set image wins; otherwise fall back to the bundled hero photo.
-  const heroBg = hero?.background_image?.url || HERO_FALLBACK_IMG;
-  const heroStats = hero?.stats?.length ? hero.stats : STATS;
+  const heroSlides = settings?.services_hero?.slides;
 
   const categories = useMemo(() => {
     const set = new Set<string>();
@@ -105,93 +107,8 @@ function ServicesIndex() {
 
   return (
     <>
-      {/* ── Hero (full-bleed image + centred CTA) ────────────── */}
-      <section className="relative isolate flex min-h-[560px] items-center overflow-hidden lg:min-h-[680px]">
-        {/* Background image */}
-        <img
-          src={heroBg}
-          alt={hero?.background_image?.alt ?? "Home healthcare"}
-          className="absolute inset-0 -z-20 h-full w-full object-cover"
-        />
-        {/* Warm brand overlay for legibility */}
-        <div
-          className="absolute inset-0 -z-10"
-          style={{
-            background:
-              "linear-gradient(180deg, color-mix(in oklab, var(--accent) 62%, black 30%) 0%, color-mix(in oklab, var(--primary) 45%, black 45%) 60%, color-mix(in oklab, black 78%, transparent) 100%)",
-          }}
-        />
-
-        <div className="container-x relative w-full pt-32 pb-20 lg:pt-40 lg:pb-28 text-center text-white">
-          <nav
-            aria-label="Breadcrumb"
-            className="mb-8 flex items-center justify-center gap-2 text-xs text-white/70"
-          >
-            <Link to="/" className="transition-colors hover:text-white">Home</Link>
-            <span>/</span>
-            <span className="text-white/90">Services</span>
-          </nav>
-
-          <Reveal>
-            <h1 className="mx-auto max-w-5xl font-display text-4xl font-bold leading-[1.06] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
-              {heroTitle}
-            </h1>
-          </Reveal>
-          <Reveal delay={0.08}>
-            <p className="mx-auto mt-6 max-w-3xl text-base leading-relaxed text-white/85 md:text-lg">
-              {heroSubtitle}
-            </p>
-          </Reveal>
-
-          <Reveal delay={0.16}>
-            <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
-              {phone && (
-                <a
-                  href={`tel:${phone}`}
-                  className="inline-flex items-center gap-2 rounded-lg bg-white px-8 py-3.5 text-sm font-semibold text-primary shadow-[0_16px_36px_-18px_rgba(0,0,0,0.6)] transition-transform hover:-translate-y-0.5"
-                >
-                  <Phone className="h-4 w-4" /> Call Now
-                </a>
-              )}
-              {whatsapp && (
-                <a
-                  href={`https://wa.me/${whatsapp}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-lg bg-primary px-8 py-3.5 text-sm font-semibold text-primary-foreground shadow-[0_16px_36px_-18px_rgba(0,0,0,0.6)] transition-transform hover:-translate-y-0.5"
-                >
-                  <MessageCircle className="h-4 w-4" /> WhatsApp Now
-                </a>
-              )}
-              <Link
-                to="/booking"
-                className="inline-flex items-center gap-2 rounded-lg border border-white/40 bg-white/10 px-8 py-3.5 text-sm font-semibold text-white backdrop-blur transition-colors hover:bg-white/20"
-              >
-                Book a consult <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ── Stats band ───────────────────────────────────────── */}
-      <div className="container-x -mt-10 relative z-10 pb-4">
-        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-          {heroStats.map((s, i) => (
-            <motion.div
-              key={`${s.label}-${i}`}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
-              className="rounded-3xl border border-border/60 bg-surface px-6 py-8 text-center shadow-[0_24px_60px_-40px_rgba(0,0,0,0.35)]"
-            >
-              <div className="font-display text-4xl tracking-tight text-primary md:text-5xl">{s.value}</div>
-              <div className="mt-2 text-sm font-medium text-foreground/70">{s.label}</div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
+      {/* ── Full-screen 3D hero slider ────────────────────────── */}
+      <ServicesHeroSlider slides={heroSlides} />
 
       {/* ── Sticky category rail ─────────────────────────────── */}
       {categories.length > 1 && (
@@ -221,7 +138,7 @@ function ServicesIndex() {
       )}
 
       {/* ── Our Healthcare Services ──────────────────────────── */}
-      <Section id="catalogue" className="pt-12">
+      <Section id="catalogue" className="pt-12 pb-8 lg:pb-12">
         <SectionHeader
           align="center"
           eyebrow="What we do"
@@ -256,7 +173,7 @@ function ServicesIndex() {
           </div>
         )}
 
-        <div className="mt-14 text-center text-sm text-muted-foreground">
+        <div className="mt-10 text-center text-sm text-muted-foreground">
           Don't see what you need?{" "}
           <Link to="/contact" className="text-accent font-medium underline-offset-4 hover:underline">
             Talk to a care advisor →
@@ -265,65 +182,96 @@ function ServicesIndex() {
       </Section>
 
       {/* ── Why Choose Nupun ─────────────────────────────────── */}
-      <section className="relative overflow-hidden">
-        <div
-          className="absolute inset-0 -z-10"
-          style={{
-            background:
-              "linear-gradient(135deg, var(--accent), color-mix(in oklab, var(--primary) 80%, black 8%))",
-          }}
-        />
-        <div className="container-x py-20 lg:py-28 text-primary-foreground">
+      <section className="relative overflow-hidden bg-background">
+        <div className="container-x pb-20 lg:pb-28 pt-0">
           <div className="text-center max-w-2xl mx-auto mb-14">
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/15 border border-white/20 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] mb-4">
-              <HeartHandshake className="h-3.5 w-3.5" /> Why families choose us
+            <div className="inline-flex items-center gap-2 rounded-full bg-surface border border-border px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground shadow-sm mb-5">
+              <HeartHandshake className="h-3.5 w-3.5 text-primary" /> Why families choose us
             </div>
-            <h2 className="font-display text-4xl md:text-5xl tracking-tight">Why Choose Nupun?</h2>
+            <h2 className="font-display text-4xl md:text-5xl tracking-tight text-foreground">Why Choose Nupun?</h2>
           </div>
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {WHY.map(({ icon: Icon, title, detail }, i) => (
+          
+          <div className="grid gap-5 lg:grid-cols-2 xl:grid-cols-4">
+            {WHY.map(({ icon: Icon, title, detail, theme }, i) => (
               <motion.div
                 key={title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
-                className="rounded-2xl bg-white/10 border border-white/15 backdrop-blur-sm p-6 hover:bg-white/15 transition-colors"
+                transition={{ duration: 0.5, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                className={`group flex items-center gap-5 rounded-[24px] ${theme.bg} p-6 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] border border-transparent hover:border-black/5 dark:hover:border-white/5`}
               >
-                <div className="grid h-11 w-11 place-items-center rounded-xl bg-white/15 mb-4">
-                  <Icon className="h-5 w-5" strokeWidth={1.7} />
+                {/* Icon Circle */}
+                <div className={`grid h-16 w-16 shrink-0 place-items-center rounded-full ${theme.iconBg} ${theme.iconColor} transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-inner`}>
+                  <Icon className="h-7 w-7" strokeWidth={2.5} />
                 </div>
-                <div className="font-display text-lg leading-tight">{title}</div>
-                <p className="mt-2 text-sm text-white/80 leading-relaxed">{detail}</p>
+                
+                {/* Content */}
+                <div>
+                  <h3 className="font-display text-lg font-bold leading-tight tracking-tight text-foreground">
+                    {title}
+                  </h3>
+                  <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground line-clamp-3 pr-2">
+                    {detail}
+                  </p>
+                </div>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── Conditions we support ────────────────────────────── */}
-      <Section>
-        <SectionHeader
-          align="center"
-          eyebrow="Clinical coverage"
-          title="Conditions We Support"
-          description="Specialised, medically supervised care plans across a wide range of conditions."
-        />
-        <div className="flex flex-wrap justify-center gap-3">
-          {CONDITIONS.map((c, i) => (
-            <motion.span
-              key={c}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.35, delay: (i % 5) * 0.05 }}
-              className="rounded-full border border-border/70 bg-surface px-5 py-2.5 text-sm font-medium text-foreground/80 hover:border-primary/50 hover:text-primary transition-colors"
-            >
-              {c}
-            </motion.span>
-          ))}
+      {/* ── Conditions We Support (Pro Liquid Glass) ────────────────────────────── */}
+      <section className="relative overflow-hidden pt-0 pb-20">
+        {/* Animated Liquid Background Blobs (No giant white container) */}
+        <div className="absolute inset-0 z-0 pointer-events-none" aria-hidden="true">
+          <div className="absolute top-[10%] left-[5%] w-[450px] h-[450px] bg-primary/20 rounded-full mix-blend-multiply filter blur-[90px] opacity-70 animate-float-slow" />
+          <div className="absolute bottom-[5%] right-[10%] w-[550px] h-[550px] bg-accent/20 rounded-full mix-blend-multiply filter blur-[120px] opacity-60 animate-float-slower" style={{ animationDelay: '1.5s' }} />
+          <div className="absolute top-[40%] left-[60%] w-[350px] h-[350px] bg-primary/10 rounded-full mix-blend-multiply filter blur-[80px] opacity-80 animate-float-slow" style={{ animationDelay: '3s' }} />
         </div>
-      </Section>
+
+        <div className="container-x relative z-10 max-w-6xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-16 relative">
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-primary backdrop-blur-md mb-6">
+              <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+              Clinical coverage
+            </div>
+            <h2 className="font-display text-4xl tracking-tight text-foreground md:text-5xl lg:text-6xl mb-5">
+              Conditions We Support
+            </h2>
+            <p className="text-lg text-foreground/70 leading-relaxed max-w-2xl mx-auto">
+              Specialised, medically supervised care plans across a wide range of conditions.
+            </p>
+          </div>
+
+          {/* Grid of Glass Cards */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            {CONDITIONS.map((c, i) => (
+              <motion.div
+                key={c}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: (i % 8) * 0.05 }}
+                className="group cursor-pointer h-full"
+              >
+                {/* Individual Glassmorphism Card */}
+                <div className="relative h-full overflow-hidden rounded-[1.5rem] border border-white/60 bg-white/40 p-6 flex items-center justify-center text-center backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.04),inset_0_0_0_1px_rgba(255,255,255,0.3)] transition-all duration-300 group-hover:scale-105 group-hover:-translate-y-1 group-hover:bg-primary group-hover:border-primary group-hover:shadow-[0_15px_30px_-10px_rgba(26,130,118,0.4)]">
+                  {/* Top Glossy Highlight */}
+                  <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-80" />
+                  {/* Inner glossy reflection on hover */}
+                  <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                  
+                  <span className="relative z-10 font-semibold text-foreground/90 text-[15px] leading-snug group-hover:text-white transition-colors duration-300">
+                    {c}
+                  </span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* ── Testimonials (live data only) ────────────────────── */}
       {testimonials.length > 0 && (
@@ -369,16 +317,58 @@ function ServicesIndex() {
         </section>
       )}
 
-      {/* ── FAQ (live data only) ─────────────────────────────── */}
+      {/* ── FAQ (Home Page Style) ─────────────────────────────── */}
       {faqs.length > 0 && (
-        <Section>
-          <SectionHeader
-            align="center"
-            eyebrow="Good to know"
-            title="Frequently Asked Questions"
-          />
-          <div className="max-w-3xl mx-auto">
-            <FaqAccordion items={faqs} />
+        <Section className="bg-[#F8F9FA]">
+          <div className="grid gap-12 lg:grid-cols-2 items-start">
+            {/* Left Side: Illustration */}
+            <div className="flex items-center justify-center lg:justify-end pr-0 lg:pr-8">
+              <img 
+                src="/assets/faq-illustration.jpeg" 
+                alt="Telemedicine Consultation" 
+                className="w-[85%] md:w-[70%] lg:w-[85%] max-w-md h-auto mix-blend-multiply"
+              />
+            </div>
+
+            {/* Right Side: FAQs (Animated) */}
+            <motion.div
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={{
+                hidden: {},
+                show: { transition: { staggerChildren: 0.1 } }
+              }}
+              className="flex flex-col justify-center"
+            >
+              <motion.h2 
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
+                }}
+                className="font-display text-3xl md:text-4xl lg:text-[2.75rem] font-bold text-foreground mb-6 leading-tight tracking-tight"
+              >
+                Frequently Asked<br/>
+                <span className="text-primary">Questions</span>
+              </motion.h2>
+
+              <FaqAccordion items={faqs.slice(0, 6)} />
+              
+              <motion.div 
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
+                }}
+                className="mt-8 text-center sm:text-left"
+              >
+                <Link 
+                  to="/faq" 
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-primary/10 text-primary px-8 py-3.5 font-semibold hover:bg-primary hover:text-white transition-colors duration-300"
+                >
+                  Read More...
+                </Link>
+              </motion.div>
+            </motion.div>
           </div>
         </Section>
       )}
