@@ -1,6 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const NAV = [
@@ -135,29 +136,39 @@ export function Header() {
           </div>
         </div>
 
-        {open && (
-          <div className="lg:hidden mt-2 rounded-3xl bg-white/30 backdrop-blur-2xl backdrop-saturate-150 border border-white/50 shadow-[0_20px_50px_-20px_rgba(15,80,80,0.35)]">
-            <div className="py-3 px-3 grid gap-1">
-              {[...NAV, ...MOBILE_EXTRA].map((item) => (
+        <AnimatePresence>
+          {open && (
+            <motion.div 
+              initial={{ opacity: 0, y: -15, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -15, scale: 0.98 }}
+              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              className="lg:hidden mt-2 rounded-3xl bg-white/30 backdrop-blur-2xl backdrop-saturate-150 border border-white/50 shadow-[0_20px_50px_-20px_rgba(15,80,80,0.35)] origin-top overflow-hidden"
+            >
+              <div className="py-3 px-3 grid gap-1">
+                {[...NAV, ...MOBILE_EXTRA].map((item) => (
+                  <Link
+                    key={item.to}
+                    to={item.to}
+                    onClick={() => setOpen(false)}
+                    activeOptions={{ exact: item.to === "/" }}
+                    activeProps={{ className: "bg-primary-soft text-accent" }}
+                    className="rounded-xl px-4 py-3 text-base font-medium text-foreground/80"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
                 <Link
-                  key={item.to}
-                  to={item.to}
-                  activeOptions={{ exact: item.to === "/" }}
-                  activeProps={{ className: "bg-primary-soft text-accent" }}
-                  className="rounded-xl px-4 py-3 text-base font-medium text-foreground/80"
+                  to="/booking"
+                  onClick={() => setOpen(false)}
+                  className="mt-2 rounded-full bg-primary px-4 py-3 text-center text-sm font-semibold text-primary-foreground"
                 >
-                  {item.label}
+                  Book Appointment
                 </Link>
-              ))}
-              <Link
-                to="/booking"
-                className="mt-2 rounded-full bg-primary px-4 py-3 text-center text-sm font-semibold text-primary-foreground"
-              >
-                Book Appointment
-              </Link>
-            </div>
-          </div>
-        )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </header>
   );
