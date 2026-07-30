@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "framer-motion";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import {
   blogsQ,
@@ -92,8 +92,8 @@ function TrustBar() {
 
 
 function CareTeamSection() {
-  const [active, setActive] = useState(0);
   const { data: settings } = useQuery(settingsQ());
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const DEFAULT_SLIDES = [
     {
@@ -172,150 +172,135 @@ function CareTeamSection() {
     : DEFAULT_SLIDES;
 
   const total = slides.length;
-  const next = useCallback(() => setActive((p) => (p + 1) % total), [total]);
-  const prev = useCallback(() => setActive((p) => (p - 1 + total) % total), [total]);
 
-  useEffect(() => {
-    const id = setInterval(next, 6000);
-    return () => clearInterval(id);
-  }, [next, active]);
+  // Container-level scroll tracking (like ulmind.com)
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"],
+  });
 
-  const slide = slides[active];
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 30,
+    damping: 40,
+    restDelta: 0.001,
+  });
+
+  // Create opacity + scale for each card based on its segment of the total scroll
+  // Each card occupies 1/total of the scroll, fading out during its segment
+  const cardAnimations = slides.map((_, i) => {
+    const segmentSize = 1 / total;
+    const start = i * segmentSize;
+    const end = (i + 1) * segmentSize;
+    const isLast = i === total - 1;
+
+    return {
+      opacity: isLast
+        ? 1 // last card stays visible
+        : useTransform(smoothProgress, [start, end], [1, 0]),
+      scale: isLast
+        ? 1
+        : useTransform(smoothProgress, [start, end], [1, 0.9]),
+    };
+  });
 
   return (
-    <section className="relative isolate overflow-hidden w-full">
-      {/* Full-width background image */}
-      <AnimatePresence mode="sync">
-        <motion.div
-          key={slide.image}
-          initial={{ opacity: 0, scale: 1.06 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
-          className="absolute inset-0 -z-10"
-        >
-          <img
-            src={slide.image}
-            alt=""
-            className="h-full w-full object-cover object-top"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/55 to-black/30" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" />
-        </motion.div>
-      </AnimatePresence>
-
-      {/* Content overlay */}
-      <div className="relative z-10 container-x py-6 md:py-8 lg:py-10 flex flex-col justify-center">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={slide.image}
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const, staggerChildren: 0.07 } }}
-            exit={{ opacity: 0, y: -15, transition: { duration: 0.3 } }}
-            className="max-w-2xl"
+    <section className="relative w-full bg-background">
+      {/* Stacking zone: height = slides × 100vh for scroll room */}
+      <div ref={containerRef} style={{ height: `${total * 100}vh` }} className="relative">
+        {slides.map((slide, i) => (
+          <div
+            key={i}
+            className="sticky top-0 h-screen w-full flex items-center justify-center"
+            style={{ zIndex: i + 1 }}
           >
-            {/* Eyebrow */}
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-sm uppercase tracking-[0.2em] text-primary mb-2"
-            >
-              {slide.eyebrow}
-            </motion.div>
-
-            {/* Title */}
-            <motion.h2
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0, transition: { delay: 0.05 } }}
-              className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-semibold leading-[1.1] text-white whitespace-pre-line"
-            >
-              {slide.title}
-            </motion.h2>
-
-            {/* Description */}
-            <motion.p
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0, transition: { delay: 0.1 } }}
-              className="mt-2 md:mt-3 max-w-lg text-[13px] md:text-base leading-relaxed text-white/75"
-            >
-              {slide.description}
-            </motion.p>
-
-            {/* Button */}
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0, transition: { delay: 0.15 } }}
-              className="mt-5"
-            >
-              <Link
-                to={slide.buttonLink}
-                className="group inline-flex items-center gap-2 rounded-full bg-[#43D4B0] px-5 md:px-7 py-3 md:py-3.5 text-xs md:text-sm font-semibold text-white shadow-lg shadow-[#43D4B0]/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#43D4B0]/40"
-              >
-                {slide.buttonText}
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-              </Link>
-            </motion.div>
-
-            {/* Stats — 4 glass cards */}
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0, transition: { delay: 0.2 } }}
-              className="mt-5 md:mt-8 grid grid-cols-2 sm:grid-cols-4 gap-2 md:gap-3"
-            >
-              {slide.stats.map((s) => (
-                <div
-                  key={s.label}
-                  className="rounded-2xl bg-white/10 backdrop-blur-md ring-1 ring-white/15 px-3 py-4 md:px-4 md:py-4"
-                >
-                  <div className="font-display text-lg sm:text-2xl md:text-[26px] font-bold text-white leading-none">
-                    {s.count}
-                  </div>
-                  <div className="mt-1.5 text-[10px] md:text-xs text-white/55">{s.label}</div>
-                </div>
-              ))}
-            </motion.div>
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Slider controls — bottom */}
-        <div className="mt-8 flex items-center gap-4">
-          <button
-            onClick={prev}
-            className="grid h-10 w-10 place-items-center rounded-full bg-white/15 backdrop-blur-sm text-white ring-1 ring-white/25 hover:bg-white/25 transition-colors"
-            aria-label="Previous slide"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </button>
-
-          <div className="flex items-center gap-2">
-            {slides.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setActive(i)}
-                aria-label={`Go to slide ${i + 1}`}
-                className={`transition-all duration-300 rounded-full ${
-                  i === active
-                    ? "w-8 h-2.5 bg-[#43D4B0]"
-                    : "w-2.5 h-2.5 bg-white/40 hover:bg-white/60"
-                }`}
-              />
-            ))}
+            <StackedCard
+              slide={slide}
+              index={i}
+              total={total}
+              opacity={cardAnimations[i].opacity}
+              scale={cardAnimations[i].scale}
+            />
           </div>
-
-          <button
-            onClick={next}
-            className="grid h-10 w-10 place-items-center rounded-full bg-white/15 backdrop-blur-sm text-white ring-1 ring-white/25 hover:bg-white/25 transition-colors"
-            aria-label="Next slide"
-          >
-            <ChevronRight className="h-5 w-5" />
-          </button>
-
-          <span className="ml-2 text-sm font-medium text-white/40 tabular-nums">
-            {String(active + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-          </span>
-        </div>
+        ))}
       </div>
     </section>
+  );
+}
+
+function StackedCard({
+  slide,
+  index,
+  total,
+  opacity,
+  scale,
+}: {
+  slide: any;
+  index: number;
+  total: number;
+  opacity: any;
+  scale: any;
+}) {
+  return (
+    <motion.div
+      style={{ opacity, scale }}
+      className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[85vh] md:h-[80vh] will-change-transform"
+    >
+      <div className="relative w-full h-full rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-[0_-10px_60px_rgba(0,0,0,0.2)]">
+        {/* Background image */}
+        <img
+          src={slide.image}
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover object-[center_30%]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/55 to-black/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+
+        {/* Content overlay */}
+        <div className="relative z-10 h-full p-8 md:p-14 lg:p-20 flex flex-col justify-center">
+          <div className="max-w-2xl mt-4 md:mt-0">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 backdrop-blur-md mb-5 md:mb-6">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#43D4B0] animate-pulse" />
+              <span className="text-[11px] md:text-xs uppercase tracking-[0.2em] font-semibold text-white/90">
+                {slide.eyebrow}
+              </span>
+            </div>
+
+            <h2 className="font-display text-3xl sm:text-5xl md:text-[3.5rem] font-medium leading-[1.05] text-white tracking-tight drop-shadow-lg whitespace-pre-line">
+              {slide.title}
+            </h2>
+            <p className="mt-4 md:mt-6 max-w-[500px] text-[15px] md:text-[17px] leading-relaxed text-white/80 drop-shadow-md font-light">
+              {slide.description}
+            </p>
+
+            <div className="mt-8 md:mt-10">
+              <Link
+                to={slide.buttonLink}
+                className="group inline-flex items-center gap-2 rounded-full bg-[#43D4B0] px-6 md:px-8 py-3.5 md:py-4 text-[14px] md:text-[15px] font-semibold text-white shadow-[0_15px_40px_-10px_rgba(67,212,176,0.5)] transition-all duration-300 hover:bg-[#3bc3a0] hover:-translate-y-0.5 hover:shadow-[0_20px_50px_-10px_rgba(67,212,176,0.6)]"
+              >
+                {slide.buttonText}
+                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </div>
+
+            <div className="mt-12 md:mt-16 grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-5">
+              {slide.stats.map((s: any, idx: number) => (
+                <div
+                  key={idx}
+                  className="rounded-[1.25rem] border border-white/10 bg-white/[0.03] backdrop-blur-xl p-4 md:p-5 shadow-sm transition-all hover:bg-white/[0.05]"
+                >
+                  <div className="font-display text-2xl md:text-3xl font-bold text-white tracking-tight">
+                    {s.count}
+                  </div>
+                  <div className="mt-2 text-[10px] md:text-[11px] text-white/60 font-medium uppercase tracking-[0.1em]">
+                    {s.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </motion.div>
   );
 }
 

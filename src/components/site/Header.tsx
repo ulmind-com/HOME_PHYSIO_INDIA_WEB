@@ -49,7 +49,7 @@ export function Header() {
   const isFaq = pathname === "/faq";
   const isBlogs = pathname.startsWith("/blogs");
   const isBooking = pathname === "/booking";
-  const onDarkHero = !isHome && !isAbout && !isEquipment && !isFaq && !isBlogs && !isBooking && !scrolled;
+  const onDarkHero = !isAbout && !isEquipment && !isFaq && !isBlogs && !isBooking && !scrolled;
   const overlay = isHome && !scrolled;
 
   return (

@@ -149,6 +149,13 @@ export type ServicesHero = {
   slides?: HeroSlide[];
 };
 
+export type HomeHero = {
+  trust_badge_text?: string | null;
+  trust_badge_quote?: string | null;
+  trust_badge_avatars?: ImageAsset[];
+  slider_images?: ImageAsset[];
+};
+
 export type Settings = {
   website_name?: string | null;
   tagline?: string | null;
@@ -164,6 +171,7 @@ export type Settings = {
   google_reviews_link?: string | null;
   working_hours?: { day: string; hours: string }[];
   services_hero?: ServicesHero | null;
+  home_hero?: HomeHero | null;
 
   // Hero section
   hero_headline?: string | null;
