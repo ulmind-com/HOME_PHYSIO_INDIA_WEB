@@ -9,6 +9,9 @@ import { Counter } from "@/components/site/ui/Counter";
 const HERO_IMAGES = [
   "/assets/premium-hero-new-1.png",
   "/assets/premium-hero-new-2.png",
+  "/assets/premium-hero-new-3.png",
+  "/assets/premium-hero-new-4.png",
+  "/assets/premium-hero-new-5.png",
 ];
 
 const SLIDE_DURATION = 6000;
