@@ -195,7 +195,7 @@ export function HowItWorksSection({ illustration }: { illustration?: string }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.5, duration: 0.6 }}
-              className="glass absolute -bottom-6 -left-6 flex items-center gap-3 rounded-2xl p-4 shadow-soft lg:-left-10"
+              className="glass absolute bottom-0 sm:-bottom-6 left-0 sm:-left-6 flex items-center gap-3 rounded-2xl p-4 shadow-soft lg:-left-10"
             >
               <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
                 <ShieldCheck className="h-5 w-5" />
@@ -212,7 +212,7 @@ export function HowItWorksSection({ illustration }: { illustration?: string }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.65, duration: 0.6 }}
-              className="glass absolute -top-4 -right-4 flex items-center gap-2.5 rounded-2xl p-3 shadow-soft lg:-right-8"
+              className="glass absolute top-0 sm:-top-4 right-0 sm:-right-4 flex items-center gap-2.5 rounded-2xl p-3 shadow-soft lg:-right-8"
             >
               <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-accent text-accent-foreground">
                 <Sparkles className="h-4 w-4" />

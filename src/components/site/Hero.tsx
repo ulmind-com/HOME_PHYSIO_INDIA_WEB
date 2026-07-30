@@ -127,7 +127,7 @@ export function Hero() {
             initial="hidden"
             animate="show"
             custom={3}
-            className="mt-10 md:mt-14 flex flex-wrap items-center gap-6 md:gap-10 border-t border-border/50 pt-6 md:pt-8 w-full"
+            className="mt-10 md:mt-14 flex flex-wrap items-center justify-between sm:justify-start gap-4 sm:gap-6 md:gap-10 border-t border-border/50 pt-6 md:pt-8 w-full"
           >
             <StatItem
               icon={<ClinicIcon />}
@@ -178,15 +178,15 @@ function StatItem({
   label: string;
 }) {
   return (
-    <div className="flex items-center gap-3">
-      <span className="grid h-12 w-12 place-items-center rounded-full bg-[#E8F8F5] text-[#43D4B0]">
+    <div className="flex items-center gap-2 sm:gap-3">
+      <span className="grid h-10 w-10 sm:h-12 sm:w-12 place-items-center rounded-full bg-[#E8F8F5] text-[#43D4B0]">
         {icon}
       </span>
       <div>
-        <div className="font-display text-[26px] font-bold text-foreground leading-none">
+        <div className="font-display text-xl sm:text-[26px] font-bold text-foreground leading-none">
           {value}
         </div>
-        <div className="mt-0.5 text-xs text-muted-foreground">{label}</div>
+        <div className="mt-0.5 text-[10px] sm:text-xs text-muted-foreground">{label}</div>
       </div>
     </div>
   );
