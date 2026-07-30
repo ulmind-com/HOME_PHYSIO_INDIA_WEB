@@ -77,7 +77,7 @@ export function Hero() {
             initial="hidden"
             animate="show"
             custom={1}
-            className="font-display text-[clamp(2.2rem,4vw,3.6rem)] leading-[1.1] tracking-tight text-foreground"
+            className="font-display font-bold text-[#0A2640] tracking-tight leading-[1.05] mt-4 sm:mt-5 text-[34px] xs:text-[38px] sm:text-[44px] md:text-[50px] lg:text-[58px]"
           >
             {heroHeadline.includes("Doorstep") ? (
               <>Trusted Home Health Care at Your <span className="text-primary">Doorstep</span></>
@@ -174,12 +174,12 @@ export function Hero() {
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="relative lg:w-[48%] w-full self-stretch flex items-stretch justify-end py-6 lg:py-10 lg:-mr-6 xl:-mr-10"
+          className="relative lg:w-[48%] w-full self-stretch flex items-center justify-end py-6 lg:py-10 lg:-mr-6 xl:-mr-10"
         >
           <HeroShape
             imageUrl={HERO_NURSE_PATIENT_IMAGE}
+            className="w-[90%] sm:w-[85%] mx-auto lg:mx-0 lg:w-full h-auto max-w-md lg:max-w-none transform origin-right object-contain lg:object-cover"
             alt="Nupun Home Health Care — Compassionate nurse with elderly patient"
-            className="w-full h-full max-h-[640px]"
           />
         </motion.div>
 

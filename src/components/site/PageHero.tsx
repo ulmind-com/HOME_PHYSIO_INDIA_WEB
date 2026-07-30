@@ -28,7 +28,7 @@ export function PageHero({
 }) {
   const centered = align === "center";
   return (
-    <section className="relative isolate flex min-h-[440px] items-center overflow-hidden lg:min-h-[520px]">
+    <section className="relative isolate flex min-h-[60vh] sm:min-h-[440px] items-center overflow-hidden lg:min-h-[520px]">
       {/* Background */}
       {image ? (
         <img
@@ -58,7 +58,7 @@ export function PageHero({
       <div className="pointer-events-none absolute inset-0 -z-10 opacity-40 mix-blend-overlay bg-[radial-gradient(circle_at_25%_20%,white,transparent_45%)]" />
 
       <div
-        className={`container-x relative w-full pt-28 pb-16 lg:pt-36 lg:pb-24 text-white ${
+        className={`container-x relative w-full pt-32 pb-20 lg:pt-40 lg:pb-24 text-white ${
           centered ? "text-center" : ""
         }`}
       >
@@ -95,7 +95,7 @@ export function PageHero({
             </div>
           )}
           <h1
-            className={`font-display text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl ${
+            className={`font-display text-[34px] sm:text-4xl font-bold leading-[1.1] tracking-tight md:text-5xl lg:text-6xl drop-shadow-sm ${
               centered ? "mx-auto max-w-4xl" : "max-w-3xl"
             }`}
           >
@@ -103,7 +103,7 @@ export function PageHero({
           </h1>
           {description && (
             <p
-              className={`mt-5 text-base leading-relaxed text-white/85 md:text-lg ${
+              className={`mt-4 md:mt-5 text-[15px] sm:text-base leading-relaxed text-white/90 md:text-lg ${
                 centered ? "mx-auto max-w-2xl" : "max-w-2xl"
               }`}
             >
