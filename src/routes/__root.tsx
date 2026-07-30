@@ -14,6 +14,8 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "../components/site/Header";
 import { Footer } from "../components/site/Footer";
 import { Toaster } from "../components/ui/sonner";
+import { useQuery } from "@tanstack/react-query";
+import { settingsQ } from "../lib/api/queries";
 
 function NotFoundComponent() {
   return (
@@ -143,11 +145,27 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+function ThemeInjector() {
+  const { data: settings } = useQuery(settingsQ());
+
+  if (!settings?.theme_primary && !settings?.theme_accent) return null;
+
+  return (
+    <style dangerouslySetInnerHTML={{
+      __html: `:root {
+        ${settings.theme_primary ? `--primary: ${settings.theme_primary}; --ring: ${settings.theme_primary};` : ""}
+        ${settings.theme_accent ? `--accent: ${settings.theme_accent};` : ""}
+      }`
+    }} />
+  );
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   return (
     <QueryClientProvider client={queryClient}>
+      <ThemeInjector />
       <div className="flex min-h-dvh flex-col">
         <Header />
         <main className="flex-1">

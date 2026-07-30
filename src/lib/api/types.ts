@@ -154,6 +154,8 @@ export type Settings = {
   tagline?: string | null;
   logo?: string | null;
   favicon?: string | null;
+  theme_primary?: string | null;
+  theme_accent?: string | null;
   email?: string | null;
   phone?: string | null;
   whatsapp?: string | null;
