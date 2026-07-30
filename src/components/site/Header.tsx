@@ -123,12 +123,12 @@ export function Header() {
             </Link>
             
             <button
-              onClick={() => setOpen(true)}
+              onClick={() => setOpen(!open)}
               className={cn(
                 "p-2 -mr-2 rounded-full lg:hidden",
                 onDarkHero ? "text-white hover:bg-white/10" : "text-foreground hover:bg-white/50",
               )}
-              aria-label="Open menu"
+              aria-label="Toggle menu"
             >
               {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
