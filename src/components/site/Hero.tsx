@@ -57,11 +57,24 @@ const slideVariants = {
 };
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: {
+    opacity: 0,
+    y: 50,
+    rotateX: -25,
+    scale: 0.95,
+    filter: "blur(4px)",
+  },
   show: (i: number = 0) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.8, delay: 0.4 + i * 0.1, ease: [0.16, 1, 0.3, 1] as const },
+    rotateX: 0,
+    scale: 1,
+    filter: "blur(0px)",
+    transition: {
+      duration: 1.2,
+      delay: 0.2 + i * 0.15,
+      ease: [0.16, 1, 0.3, 1] as const,
+    },
   }),
 };
 
