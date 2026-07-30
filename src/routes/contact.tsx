@@ -102,7 +102,15 @@ function ContactPage() {
   );
 }
 
-function InfoRow({ icon: Icon, title, desc }: { icon: any; title: string; desc: string }) {
+function InfoRow({
+  icon: Icon,
+  title,
+  desc,
+}: {
+  icon: any /* eslint-disable-line @typescript-eslint/no-explicit-any */;
+  title: string;
+  desc: string;
+}) {
   return (
     <div className="flex items-start gap-5 group">
       <div className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform duration-300">

@@ -174,7 +174,13 @@ function FooterLink({ to, children }: { to: string; children: React.ReactNode })
   );
 }
 
-function SocialIcon({ Icon, href }: { Icon: any; href: string }) {
+function SocialIcon({
+  Icon,
+  href,
+}: {
+  Icon: any /* eslint-disable-line @typescript-eslint/no-explicit-any */;
+  href: string;
+}) {
   return (
     <a
       href={href}
