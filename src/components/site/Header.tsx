@@ -29,8 +29,8 @@ export function Header() {
   // pill can switch from floating-over-hero styling to solid-on-content styling.
   useEffect(() => {
     const compute = () => {
-      const hero = document.querySelector<HTMLElement>("main section");
-      const threshold = hero ? hero.offsetHeight - 96 : window.innerHeight * 0.7;
+      const hero = document.getElementById("hero-section") || document.querySelector<HTMLElement>("main section");
+      const threshold = hero ? hero.offsetHeight - 96 : window.innerHeight * 0.4;
       setScrolled(window.scrollY > threshold);
     };
     compute();

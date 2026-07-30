@@ -1,7 +1,7 @@
 import { useNavigate, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { ArrowRight, Building2, Stethoscope, Users, HeartPulse } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Building2, Stethoscope, Users, HeartPulse } from "lucide-react";
 import { reviewSummaryQ, settingsQ } from "@/lib/api/queries";
 import { Counter } from "@/components/site/ui/Counter";
 import { HeroShape } from "@/components/site/HeroShape";
@@ -51,10 +51,10 @@ export function Hero() {
       </div>
 
       {/* ── MAIN CONTENT GRID ── */}
-      <div className="relative z-10 container-x min-h-[100svh] flex flex-col lg:flex-row items-center">
+      <div className="relative z-10 container-x min-h-[100svh] flex flex-col lg:flex-row lg:justify-between items-center">
 
         {/* ─── LEFT: Text Content ─── */}
-        <div className="relative z-20 flex flex-col justify-center pt-32 pb-12 lg:pt-28 lg:pb-16 lg:w-[46%] lg:pr-8">
+        <div className="relative z-20 flex flex-col justify-center pt-32 pb-12 lg:pt-28 lg:pb-16 lg:w-[48%] lg:pr-8 xl:pr-12">
 
           {/* Sub-heading */}
           <motion.div
@@ -62,10 +62,12 @@ export function Hero() {
             initial="hidden"
             animate="show"
             custom={0}
-            className="mb-4 md:mb-5 flex items-center gap-2 text-primary"
+            className="mb-4 md:mb-5 flex items-center gap-2.5"
           >
-            <HeartPulse className="h-5 w-5" fill="currentColor" />
-            <span className="font-display text-lg md:text-xl font-medium tracking-wide">
+            <div className="flex h-7 w-7 md:h-8 md:w-8 items-center justify-center rounded-full bg-gradient-to-tr from-[#FF6B6B] to-[#FF8E53] shadow-sm">
+              <HeartPulse className="h-4 w-4 text-white" />
+            </div>
+            <span className="font-display text-[1.1rem] md:text-[1.35rem] font-semibold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#FF6B6B] to-[#FF8E53]">
               {heroSubtitle}
             </span>
           </motion.div>
@@ -75,7 +77,7 @@ export function Hero() {
             initial="hidden"
             animate="show"
             custom={1}
-            className="font-display text-[clamp(2.4rem,4.5vw,4rem)] leading-[1.1] tracking-tight text-foreground"
+            className="font-display text-[clamp(2.2rem,4vw,3.6rem)] leading-[1.1] tracking-tight text-foreground"
           >
             {heroHeadline.includes("Doorstep") ? (
               <>Trusted Home Health Care at Your <span className="text-primary">Doorstep</span></>
@@ -107,7 +109,7 @@ export function Hero() {
               className="group inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 md:px-7 py-3 md:py-3.5 text-[14px] md:text-[15px] font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/30"
             >
               Book Trusted Care
-              <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+              <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </button>
 
             <a
@@ -129,21 +131,41 @@ export function Hero() {
             custom={3}
             className="mt-10 md:mt-14 flex flex-wrap items-center justify-between sm:justify-start gap-4 sm:gap-6 md:gap-10 border-t border-border/50 pt-6 md:pt-8 w-full"
           >
-            <StatItem
-              icon={<ClinicIcon />}
-              value={<><Counter value={50} />+</>}
-              label="Clinics"
-            />
-            <StatItem
-              icon={<DoctorIcon />}
-              value={<><Counter value={2} />K+</>}
-              label="Doctors"
-            />
-            <StatItem
-              icon={<PatientIcon />}
-              value={<><Counter value={50} />K+</>}
-              label="Patients"
-            />
+            {settings?.hero_stats?.length ? (
+              settings.hero_stats.map((stat, i) => {
+                const ICONS = [<ClinicIcon key="clinic"/>, <DoctorIcon key="doc"/>, <PatientIcon key="pat"/>];
+                const Icon = ICONS[i % ICONS.length];
+                const match = stat.value.match(/^(\d+)(.*)$/);
+                const num = match ? parseInt(match[1], 10) : null;
+                const suffix = match ? match[2] : stat.value;
+                return (
+                  <StatItem
+                    key={stat.label + i}
+                    icon={Icon}
+                    value={num !== null ? <><Counter value={num} />{suffix}</> : stat.value}
+                    label={stat.label}
+                  />
+                );
+              })
+            ) : (
+              <>
+                <StatItem
+                  icon={<ClinicIcon />}
+                  value={<><Counter value={50} />+</>}
+                  label="Clinics"
+                />
+                <StatItem
+                  icon={<DoctorIcon />}
+                  value={<><Counter value={2} />K+</>}
+                  label="Doctors"
+                />
+                <StatItem
+                  icon={<PatientIcon />}
+                  value={<><Counter value={50} />K+</>}
+                  label="Patients"
+                />
+              </>
+            )}
           </motion.div>
         </div>
 
@@ -152,12 +174,12 @@ export function Hero() {
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="relative lg:w-[54%] w-full self-stretch flex items-stretch justify-end py-6 lg:py-10 lg:-mr-6 xl:-mr-10"
+          className="relative lg:w-[48%] w-full self-stretch flex items-stretch justify-end py-6 lg:py-10 lg:-mr-6 xl:-mr-10"
         >
           <HeroShape
             imageUrl={HERO_NURSE_PATIENT_IMAGE}
             alt="Nupun Home Health Care — Compassionate nurse with elderly patient"
-            className="w-full h-full max-h-[720px]"
+            className="w-full h-full max-h-[640px]"
           />
         </motion.div>
 

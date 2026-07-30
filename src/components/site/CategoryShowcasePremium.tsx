@@ -51,11 +51,36 @@ export function CategoryShowcasePremium() {
   );
 
   const scrollPrev = useCallback(() => {
-    if (emblaApi) emblaApi.scrollPrev();
+    if (!emblaApi) return;
+    const autoScroll = emblaApi.plugins().autoScroll;
+    if (autoScroll) {
+      autoScroll.stop();
+    }
+    emblaApi.scrollPrev();
   }, [emblaApi]);
 
   const scrollNext = useCallback(() => {
-    if (emblaApi) emblaApi.scrollNext();
+    if (!emblaApi) return;
+    const autoScroll = emblaApi.plugins().autoScroll;
+    if (autoScroll) {
+      autoScroll.stop();
+    }
+    emblaApi.scrollNext();
+  }, [emblaApi]);
+
+  // Restart auto-scroll when the manual scroll settles
+  useEffect(() => {
+    if (!emblaApi) return;
+    const onSettle = () => {
+      const autoScroll = emblaApi.plugins().autoScroll;
+      if (autoScroll && !autoScroll.isPlaying()) {
+        autoScroll.play();
+      }
+    };
+    emblaApi.on("settle", onSettle);
+    return () => {
+      emblaApi.off("settle", onSettle);
+    };
   }, [emblaApi]);
 
   const items = fallbacks.map((fb, i) => {

@@ -22,7 +22,7 @@ function ContactPage() {
   return (
     <main className="min-h-screen bg-[#F8F9FA] relative flex flex-col">
       {/* ── Hero Background ────────────────────────────────────────── */}
-      <div className="absolute top-0 left-0 right-0 h-[60vh] min-h-[500px] z-0">
+      <div id="hero-section" className="absolute top-0 left-0 right-0 h-[60vh] min-h-[500px] z-0">
         <div className="absolute inset-0 bg-dark" /> {/* Dark Theme Base */}
         <img 
           src="/assets/hero-slide-1.jpeg" 
@@ -37,10 +37,10 @@ function ContactPage() {
         {/* Header Text */}
         <div className="text-center mb-12 max-w-2xl">
           <h1 className="text-3xl md:text-4xl lg:text-5xl text-white mb-3 md:mb-4 drop-shadow-md">
-            Contact us
+            {settings?.cta_title || "Contact Us"}
           </h1>
           <p className="text-sm md:text-[17px] text-white/90 leading-relaxed font-medium">
-            Nupun is ready to provide the right solution according to your needs
+            {settings?.cta_description || "We are here to provide the right care solutions for you and your family."}
           </p>
         </div>
 
@@ -56,24 +56,24 @@ function ContactPage() {
                 Get in touch
               </h2>
               <p className="text-[13px] md:text-[15px] text-muted-foreground leading-relaxed mb-6 md:mb-10">
-                Sociosqu viverra lectus placerat sem efficitur molestie vehicula cubilia leo etiam nam.
+                Have questions or need assistance? Our team is always ready to help. Reach out to us today.
               </p>
 
               <div className="space-y-8">
                 <InfoRow 
                   icon={MapPin} 
                   title="Head Office" 
-                  desc={settings?.address || "Jalan Cempaka Wangi No 22\nJakarta - Indonesia"} 
+                  desc={settings?.address || "Delhi NCR, India"} 
                 />
                 <InfoRow 
                   icon={Mail} 
                   title="Email Us" 
-                  desc={settings?.email || "support@yourdomain.tld\nhello@yourdomain.tld"} 
+                  desc={settings?.email || "info@nupun.com"} 
                 />
                 <InfoRow 
                   icon={Phone} 
                   title="Call Us" 
-                  desc={settings?.phone || "Phone : +6221.2002.2012\nFax : +6221.2002.2013"} 
+                  desc={settings?.phone || "+91 98765 43210"} 
                 />
               </div>
             </div>
