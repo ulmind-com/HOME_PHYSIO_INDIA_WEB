@@ -54,18 +54,20 @@ export function Hero() {
       <div className="relative z-10 container-x min-h-[100svh] flex flex-col lg:flex-row items-center">
 
         {/* ─── LEFT: Text Content ─── */}
-        <div className="relative z-20 flex flex-col justify-center pt-28 pb-10 lg:pt-0 lg:pb-0 lg:w-[46%] lg:pr-8">
+        <div className="relative z-20 flex flex-col justify-center pt-32 pb-12 lg:pt-28 lg:pb-16 lg:w-[46%] lg:pr-8">
 
-          {/* Sub-heading / Premium Badge */}
+          {/* Sub-heading */}
           <motion.div
             variants={fadeUp}
             initial="hidden"
             animate="show"
             custom={0}
-            className="mb-4 md:mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm font-semibold text-primary shadow-sm w-fit"
+            className="mb-4 md:mb-5 flex items-center gap-2 text-primary"
           >
-            <HeartPulse className="h-4 w-4" fill="currentColor" />
-            {heroSubtitle}
+            <HeartPulse className="h-5 w-5" fill="currentColor" />
+            <span className="font-display text-lg md:text-xl font-medium tracking-wide">
+              {heroSubtitle}
+            </span>
           </motion.div>
 
           <motion.h1
@@ -105,7 +107,7 @@ export function Hero() {
               className="group inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 md:px-7 py-3 md:py-3.5 text-[14px] md:text-[15px] font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/30"
             >
               Book Trusted Care
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
             </button>
 
             <a
@@ -114,8 +116,8 @@ export function Hero() {
               rel="noopener noreferrer"
               className="group inline-flex items-center justify-center gap-2.5 rounded-full border border-primary/20 bg-white px-6 md:px-7 py-3 md:py-3.5 text-[14px] md:text-[15px] font-semibold text-foreground shadow-sm hover:border-[#25D366] hover:text-[#25D366] transition-all duration-300 hover:-translate-y-0.5"
             >
-              <WhatsappIcon className="h-5 w-5 text-[#25D366]" />
               WhatsApp Now
+              <WhatsappIcon className="h-5 w-5 text-[#25D366]" />
             </a>
           </motion.div>
 
@@ -125,7 +127,7 @@ export function Hero() {
             initial="hidden"
             animate="show"
             custom={3}
-            className="mt-8 md:mt-14 flex items-center gap-5 md:gap-10"
+            className="mt-10 md:mt-14 flex flex-wrap items-center gap-6 md:gap-10 border-t border-border/50 pt-6 md:pt-8 w-full"
           >
             <StatItem
               icon={<ClinicIcon />}

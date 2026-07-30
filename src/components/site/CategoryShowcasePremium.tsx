@@ -1,7 +1,12 @@
 import { Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
+import useEmblaCarousel from "embla-carousel-react";
+import AutoScroll from "embla-carousel-auto-scroll";
+import { useCallback, useEffect } from "react";
 import type { Service } from "@/lib/api/types";
+import { servicesQ } from "@/lib/api/queries";
 import { CategoryCardShape } from "./CategoryCardShape";
 const nursingAsset = { url: "/assets/categories/nursing.jpg" };
 const elderAsset = { url: "/assets/categories/elder.jpg" };
@@ -37,7 +42,22 @@ const fallbacks: Array<{ title: string; description: string; image: string; vari
   },
 ];
 
-export function CategoryShowcasePremium({ services }: { services: Service[] }) {
+export function CategoryShowcasePremium() {
+  const { data: servicesData } = useQuery(servicesQ({ limit: 8 }));
+  const services = servicesData?.items ?? [];
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { align: "start", loop: true, containScroll: "trimSnaps" },
+    [AutoScroll({ playOnInit: true, speed: 0.8, stopOnInteraction: false, stopOnMouseEnter: true })]
+  );
+
+  const scrollPrev = useCallback(() => {
+    if (emblaApi) emblaApi.scrollPrev();
+  }, [emblaApi]);
+
+  const scrollNext = useCallback(() => {
+    if (emblaApi) emblaApi.scrollNext();
+  }, [emblaApi]);
+
   const items = fallbacks.map((fb, i) => {
     const svc = services[i];
     return {
@@ -50,7 +70,7 @@ export function CategoryShowcasePremium({ services }: { services: Service[] }) {
   });
 
   return (
-    <div className="relative z-10 container-x pb-24 lg:pb-32">
+    <div className="relative z-10 pt-16 lg:pt-24 pb-24 lg:pb-32 overflow-hidden">
       {/* Decorative background dots */}
       <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden>
         <div
@@ -69,9 +89,9 @@ export function CategoryShowcasePremium({ services }: { services: Service[] }) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="mb-14 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end"
+        className="container-x mb-14 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end"
       >
-        <div>
+        <div className="flex-1">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-accent backdrop-blur">
             <span className="h-1.5 w-1.5 rounded-full bg-primary" />
             What we specialize in
@@ -93,15 +113,35 @@ export function CategoryShowcasePremium({ services }: { services: Service[] }) {
             </svg>
           </h3>
         </div>
-        <p className="max-w-md text-base leading-relaxed text-muted-foreground">
-          Four pillars of premium home care — each designed around your family's unique rhythm and delivered by
-          verified professionals.
-        </p>
+        <div className="flex flex-col items-start md:items-end gap-6 text-left md:text-right">
+          <p className="max-w-md text-base leading-relaxed text-muted-foreground">
+            Four pillars of premium home care — each designed around your family's unique rhythm and delivered by
+            verified professionals.
+          </p>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={scrollPrev}
+              className="grid h-12 w-12 place-items-center rounded-full border border-border bg-surface text-foreground transition-all hover:border-primary/40 hover:bg-primary/5 hover:text-primary"
+              aria-label="Previous Category"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+            <button
+              onClick={scrollNext}
+              className="grid h-12 w-12 place-items-center rounded-full border border-border bg-surface text-foreground transition-all hover:border-primary/40 hover:bg-primary/5 hover:text-primary"
+              aria-label="Next Category"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
+          </div>
+        </div>
       </motion.div>
 
-      {/* Grid */}
-      <div className="grid gap-6 md:grid-cols-2 lg:gap-8">
-        {items.map((item, i) => {
+      {/* Carousel */}
+      <div className="container-x">
+        <div className="overflow-visible" ref={emblaRef}>
+          <div className="flex -ml-4 md:-ml-6 lg:-ml-8">
+            {items.map((item, i) => {
           const CardInner = (
             <>
               {/* Image */}
@@ -152,23 +192,26 @@ export function CategoryShowcasePremium({ services }: { services: Service[] }) {
             "group relative block aspect-[4/5] w-full overflow-hidden rounded-[2rem] shadow-[0_20px_60px_-30px_rgba(0,0,0,0.35)] ring-1 ring-black/5 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_40px_80px_-30px_rgba(0,0,0,0.45)] md:aspect-[16/11] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary";
 
           return (
-            <motion.div
-              key={item.title + i}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.7, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-            >
-              {item.slug ? (
-                <Link to="/services/$slug" params={{ slug: item.slug }} className={cardClasses}>
-                  {CardInner}
-                </Link>
-              ) : (
-                <div className={cardClasses}>{CardInner}</div>
-              )}
-            </motion.div>
-          );
-        })}
+              <motion.div
+                key={item.title + i}
+                className="min-w-0 flex-[0_0_90%] md:flex-[0_0_50%] lg:flex-[0_0_42%] pl-4 md:pl-6 lg:pl-8"
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.7, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+              >
+                {item.slug ? (
+                  <Link to="/services/$slug" params={{ slug: item.slug }} className={cardClasses}>
+                    {CardInner}
+                  </Link>
+                ) : (
+                  <div className={cardClasses}>{CardInner}</div>
+                )}
+              </motion.div>
+            );
+          })}
+          </div>
+        </div>
       </div>
     </div>
   );

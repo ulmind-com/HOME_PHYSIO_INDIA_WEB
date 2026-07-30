@@ -13,15 +13,13 @@ import {
 } from "@/lib/api/queries";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/site/Reveal";
 import { Section, SectionHeader, EmptyState } from "@/components/site/Section";
-import { ServicesMarquee } from "@/components/site/ServicesMarquee";
-import { EquipmentCarousel } from "@/components/site/EquipmentCarousel";
 import { BlogCard } from "@/components/site/cards/BlogCard";
 import { VideoTestimonialsSection } from "@/components/site/VideoTestimonialsSection";
 import { TestimonialCard } from "@/components/site/cards/TestimonialCard";
 import { FaqAccordion } from "@/components/site/FaqAccordion";
 import { GoogleReviews } from "@/components/site/GoogleReviews";
 import { Hero } from "@/components/site/Hero";
-import { AboutWelcomeSection } from "@/components/site/AboutWelcomeSection";
+import { CategoryShowcasePremium } from "@/components/site/CategoryShowcasePremium";
 import { HowItWorksSection } from "@/components/site/HowItWorksSection";
 import { ProfessionalsSection } from "@/components/site/ProfessionalsSection";
 
@@ -52,12 +50,10 @@ function Home() {
   return (
     <>
       <Hero />
-      <AboutWelcomeSection />
+      <CategoryShowcasePremium />
       <TrustBar />
-      <ServicesMarquee />
       <HowItWorksSection />
       <ProfessionalsSection />
-      <EquipmentSection />
       <CareTeamSection />
       <TestimonialsSection />
       <VideoTestimonialsSection />
@@ -94,24 +90,6 @@ function TrustBar() {
 
 
 
-
-function EquipmentSection() {
-  return (
-    <Section className="pt-0 pb-20 lg:pt-0 lg:pb-28">
-      <div className="flex items-end justify-between gap-6 mb-12 flex-wrap">
-        <SectionHeader
-          eyebrow="Equipment"
-          title="Hospital-grade equipment, at home."
-          description="Ultrasound, monitoring, anesthesiology and clinical kits — sanitised, insured and delivered."
-        />
-        <Link to="/equipment" className="inline-flex items-center gap-1 text-sm font-medium text-accent hover:gap-2 transition-all">
-          Browse equipment <ArrowRight className="h-4 w-4" />
-        </Link>
-      </div>
-      <EquipmentCarousel />
-    </Section>
-  );
-}
 
 function CareTeamSection() {
   const [active, setActive] = useState(0);
