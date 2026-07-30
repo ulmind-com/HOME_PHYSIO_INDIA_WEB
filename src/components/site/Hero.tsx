@@ -89,7 +89,7 @@ export function Hero() {
   const getStatIcon = (index: number) => {
     const ICONS = [ShieldCheck, Users, Clock, Heart];
     const Icon = ICONS[index % ICONS.length];
-    return <Icon className="w-5 h-5 text-teal-400" />;
+    return <Icon className="w-5 h-5 text-primary" />;
   };
 
   const [[current, direction], setCurrent] = useState([0, 0]);
@@ -166,7 +166,7 @@ export function Hero() {
               custom={0}
               className="mb-4 inline-flex self-start items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md shadow-sm"
             >
-              <Heart className="h-4 w-4 text-teal-400 fill-teal-400/20" />
+              <Heart className="h-4 w-4 text-primary fill-primary/20" />
               <span className="text-[13px] sm:text-sm font-medium tracking-wide text-white uppercase">
                 {heroSubtitle}
               </span>
@@ -181,7 +181,7 @@ export function Hero() {
               style={{ textShadow: "0 4px 40px rgba(0,0,0,0.5)" }}
             >
               {heroHeadline.includes("Doorstep") ? (
-                <>Trusted Home Health Care at Your <span className="text-teal-400 font-semibold italic">Doorstep</span></>
+                <>Trusted Home Health Care at Your <span className="text-primary font-semibold italic">Doorstep</span></>
               ) : (
                 <>{heroHeadline}</>
               )}
@@ -208,7 +208,7 @@ export function Hero() {
             >
               <button
                 onClick={() => navigate({ to: "/booking" })}
-                className="group inline-flex items-center justify-center gap-2 rounded-full bg-teal-500 px-8 py-3.5 text-[15px] font-semibold text-white shadow-[0_10px_30px_-10px_rgba(20,184,166,0.5)] transition-all duration-300 hover:bg-teal-400 hover:-translate-y-0.5"
+                className="group inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-[15px] font-semibold text-primary-foreground shadow-sm transition-all duration-300 hover:brightness-110 hover:-translate-y-0.5"
               >
                 Book Consultation
                 <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -316,11 +316,11 @@ export function Hero() {
                     <span className="absolute inset-0 rounded-full bg-white/30" />
                     {i === current && (
                       <motion.span
-                        className="absolute inset-0 rounded-full bg-teal-400"
+                        className="absolute inset-0 rounded-full bg-primary"
                         initial={{ scaleX: 0 }}
                         animate={{ scaleX: 1 }}
                         transition={{ duration: SLIDE_DURATION / 1000, ease: "linear" }}
-                        style={{ transformOrigin: "left", boxShadow: "0 0 12px rgba(45,212,191,0.8)" }}
+                        style={{ transformOrigin: "left" }}
                       />
                     )}
                   </button>
