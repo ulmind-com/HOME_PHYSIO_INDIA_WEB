@@ -57,6 +57,7 @@ export function Header() {
   return (
     <header className={cn("z-50 inset-x-0", overlay ? "absolute top-4" : "fixed top-4")}>
       <div className="container-x">
+        <div
           className={cn(
             "relative overflow-hidden flex h-16 items-center justify-between gap-4 rounded-full pl-3 pr-3 lg:h-[68px] lg:pl-6 lg:pr-2 transition-all duration-500",
             onDarkHero
