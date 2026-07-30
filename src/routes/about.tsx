@@ -98,17 +98,17 @@ function AboutPage() {
         {/* Subtle background blob */}
         <div className="absolute top-0 right-0 -z-10 w-full h-full opacity-30 bg-gradient-to-l from-primary/10 to-transparent" />
         
-        <div className="container-x pt-24 pb-8 lg:pt-28 lg:pb-10 grid lg:grid-cols-12 gap-8 lg:gap-6 items-center">
+        <div className="container-x pt-24 pb-6 md:pb-8 lg:pt-28 lg:pb-10 grid lg:grid-cols-12 gap-6 lg:gap-6 items-center">
           
           {/* Left Content */}
           <div className="space-y-4 lg:col-span-7 xl:col-span-6 lg:pr-6">
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">
+            <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm font-semibold text-primary">
               <ShieldCheck className="h-4 w-4" fill="currentColor" /> {heroBadge}
             </div>
 
             {/* Title */}
-            <h1 className="font-display text-3xl md:text-4xl lg:text-5xl leading-[1.15] tracking-tight text-foreground">
+            <h1 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-[1.15] tracking-tight text-foreground">
               {heroTitle.includes("Always") ? (
                 <>Healthcare for Good. Today. Tomorrow. <span className="text-primary">Always.</span></>
               ) : (
@@ -117,7 +117,7 @@ function AboutPage() {
             </h1>
 
             {/* Description */}
-            <p className="text-lg text-foreground/80 max-w-lg leading-relaxed">
+            <p className="text-sm md:text-lg text-foreground/80 max-w-lg leading-relaxed">
               {heroDesc}
             </p>
 
@@ -134,7 +134,7 @@ function AboutPage() {
             </div>
 
             {/* Stats */}
-            <div className="flex flex-wrap gap-5 pt-0">
+            <div className="flex flex-wrap gap-3 md:gap-5 pt-0">
               <div className="flex items-center gap-3">
                 <div className="text-primary"><Award className="h-9 w-9" strokeWidth={1.5} /></div>
                 <div>
@@ -159,8 +159,8 @@ function AboutPage() {
             </div>
 
             {/* Actions */}
-            <div className="flex flex-wrap items-center gap-3 pt-0">
-              <a href={`tel:${phone || '18001234567'}`} className="inline-flex items-center gap-2 rounded-full bg-white border border-border/80 px-5 py-2.5 text-[13px] font-semibold text-foreground shadow-[0_2px_10px_rgba(0,0,0,0.03)] hover:bg-surface hover:-translate-y-0.5 transition-all">
+            <div className="flex flex-wrap items-center gap-2 md:gap-3 pt-0">
+              <a href={`tel:${phone || '18001234567'}`} className="inline-flex items-center gap-2 rounded-full bg-white border border-border/80 px-4 md:px-5 py-2 md:py-2.5 text-[12px] md:text-[13px] font-semibold text-foreground shadow-[0_2px_10px_rgba(0,0,0,0.03)] hover:bg-surface hover:-translate-y-0.5 transition-all">
                 <Phone className="h-4 w-4 text-muted-foreground" /> Request a Callback
               </a>
               <Link to="/booking" className="inline-flex items-center gap-2 rounded-full bg-primary/10 border border-primary/20 px-5 py-2.5 text-[13px] font-bold text-primary hover:bg-primary/15 hover:-translate-y-0.5 transition-all">

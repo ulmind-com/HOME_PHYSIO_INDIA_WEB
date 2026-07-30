@@ -62,7 +62,7 @@ export function Hero() {
             initial="hidden"
             animate="show"
             custom={0}
-            className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-sm font-semibold text-primary shadow-sm w-fit"
+            className="mb-4 md:mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm font-semibold text-primary shadow-sm w-fit"
           >
             <HeartPulse className="h-4 w-4" fill="currentColor" />
             {heroSubtitle}
@@ -87,7 +87,7 @@ export function Hero() {
             initial="hidden"
             animate="show"
             custom={2}
-            className="mt-6 max-w-[480px] text-[16px] leading-relaxed text-muted-foreground font-medium"
+            className="mt-4 md:mt-6 max-w-[480px] text-[14px] md:text-[16px] leading-relaxed text-muted-foreground font-medium"
           >
             {heroDescription}
           </motion.p>
@@ -98,11 +98,11 @@ export function Hero() {
             initial="hidden"
             animate="show"
             custom={3}
-            className="mt-8 flex flex-wrap items-center gap-4"
+            className="mt-6 md:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 md:gap-4"
           >
             <button
               onClick={() => navigate({ to: "/booking" })}
-              className="group inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-[15px] font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/30"
+              className="group inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 md:px-7 py-3 md:py-3.5 text-[14px] md:text-[15px] font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/30"
             >
               Book Trusted Care
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -112,7 +112,7 @@ export function Hero() {
               href={`https://wa.me/${whatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-2.5 rounded-full border border-primary/20 bg-white px-7 py-3.5 text-[15px] font-semibold text-foreground shadow-sm hover:border-[#25D366] hover:text-[#25D366] transition-all duration-300 hover:-translate-y-0.5"
+              className="group inline-flex items-center justify-center gap-2.5 rounded-full border border-primary/20 bg-white px-6 md:px-7 py-3 md:py-3.5 text-[14px] md:text-[15px] font-semibold text-foreground shadow-sm hover:border-[#25D366] hover:text-[#25D366] transition-all duration-300 hover:-translate-y-0.5"
             >
               <WhatsappIcon className="h-5 w-5 text-[#25D366]" />
               WhatsApp Now
@@ -125,7 +125,7 @@ export function Hero() {
             initial="hidden"
             animate="show"
             custom={3}
-            className="mt-14 flex items-center gap-10"
+            className="mt-8 md:mt-14 flex items-center gap-5 md:gap-10"
           >
             <StatItem
               icon={<ClinicIcon />}

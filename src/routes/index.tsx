@@ -227,7 +227,7 @@ function CareTeamSection() {
       </AnimatePresence>
 
       {/* Content overlay */}
-      <div className="relative z-10 container-x py-8 lg:py-10 flex flex-col justify-center">
+      <div className="relative z-10 container-x py-6 md:py-8 lg:py-10 flex flex-col justify-center">
         <AnimatePresence mode="wait">
           <motion.div
             key={slide.image}
@@ -249,7 +249,7 @@ function CareTeamSection() {
             <motion.h2
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0, transition: { delay: 0.05 } }}
-              className="font-display text-4xl md:text-5xl lg:text-[3.5rem] font-semibold leading-[1.1] text-white whitespace-pre-line"
+              className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-semibold leading-[1.1] text-white whitespace-pre-line"
             >
               {slide.title}
             </motion.h2>
@@ -258,7 +258,7 @@ function CareTeamSection() {
             <motion.p
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0, transition: { delay: 0.1 } }}
-              className="mt-3 max-w-lg text-[15px] md:text-base leading-relaxed text-white/75"
+              className="mt-2 md:mt-3 max-w-lg text-[13px] md:text-base leading-relaxed text-white/75"
             >
               {slide.description}
             </motion.p>
@@ -271,7 +271,7 @@ function CareTeamSection() {
             >
               <Link
                 to={slide.buttonLink}
-                className="group inline-flex items-center gap-2 rounded-full bg-[#43D4B0] px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-[#43D4B0]/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#43D4B0]/40"
+                className="group inline-flex items-center gap-2 rounded-full bg-[#43D4B0] px-5 md:px-7 py-3 md:py-3.5 text-xs md:text-sm font-semibold text-white shadow-lg shadow-[#43D4B0]/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#43D4B0]/40"
               >
                 {slide.buttonText}
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -282,17 +282,17 @@ function CareTeamSection() {
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0, transition: { delay: 0.2 } }}
-              className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3"
+              className="mt-5 md:mt-8 grid grid-cols-2 sm:grid-cols-4 gap-2 md:gap-3"
             >
               {slide.stats.map((s) => (
                 <div
                   key={s.label}
-                  className="rounded-2xl bg-white/10 backdrop-blur-md ring-1 ring-white/15 px-4 py-4"
+                  className="rounded-2xl bg-white/10 backdrop-blur-md ring-1 ring-white/15 px-3 py-4 md:px-4 md:py-4"
                 >
-                  <div className="font-display text-2xl sm:text-[26px] font-bold text-white leading-none">
+                  <div className="font-display text-lg sm:text-2xl md:text-[26px] font-bold text-white leading-none">
                     {s.count}
                   </div>
-                  <div className="mt-1.5 text-xs text-white/55">{s.label}</div>
+                  <div className="mt-1.5 text-[10px] md:text-xs text-white/55">{s.label}</div>
                 </div>
               ))}
             </motion.div>

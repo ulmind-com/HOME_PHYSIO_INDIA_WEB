@@ -112,7 +112,7 @@ export function ProfessionalsSection() {
   const backdrop = backdropAsset.url;
 
   return (
-    <Section className="relative overflow-hidden pt-20 pb-10 lg:pt-28 lg:pb-16">
+    <Section className="relative overflow-hidden pt-12 pb-8 md:pt-20 md:pb-10 lg:pt-28 lg:pb-16">
       <div className="relative isolate overflow-hidden rounded-[2rem] border border-primary/10 shadow-[var(--shadow-elegant)]">
         {/* Full-section photo backdrop (replaces the dark shape) */}
         <motion.img
@@ -129,7 +129,7 @@ export function ProfessionalsSection() {
         {/* Soft light wash — no dark shape, just enough contrast for text on the left */}
         <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-r from-white/85 via-white/55 to-transparent" />
 
-        <div className="relative grid gap-14 lg:grid-cols-2 lg:gap-20 items-center p-6 md:p-12 lg:p-16 text-foreground">
+        <div className="relative grid gap-8 md:gap-14 lg:grid-cols-2 lg:gap-20 items-center p-5 md:p-12 lg:p-16 text-foreground">
 
         {/* LEFT — copy + features */}
         <div className="relative">
@@ -151,7 +151,7 @@ export function ProfessionalsSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.55, delay: 0.05 }}
-            className="mt-5 font-display text-4xl md:text-5xl lg:text-6xl leading-[1.05] tracking-tight"
+            className="mt-4 md:mt-5 font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.05] tracking-tight"
           >
             Professionals <span className="text-gradient">dedicated</span> to your health
           </motion.h2>
@@ -161,13 +161,13 @@ export function ProfessionalsSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.15 }}
-            className="mt-5 max-w-lg text-muted-foreground"
+            className="mt-3 md:mt-5 max-w-lg text-sm md:text-base text-muted-foreground"
           >
             Our team of skilled nurses, physiotherapists and doctors is committed to compassionate,
             personalised care — hospital-grade standards, delivered inside your home.
           </motion.p>
 
-          <ul className="mt-10 space-y-6">
+          <ul className="mt-6 md:mt-10 space-y-4 md:space-y-6">
             {FEATURES.map((f, i) => (
               <motion.li
                 key={f.title}
@@ -175,16 +175,16 @@ export function ProfessionalsSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.45, delay: 0.1 + i * 0.08 }}
-                className="flex items-start gap-5"
+                className="flex items-start gap-3 md:gap-5"
               >
                 <div className="relative shrink-0">
                   <div className="absolute inset-0 rounded-2xl bg-primary/15 blur-md" />
-                  <div className="relative grid h-14 w-14 place-items-center rounded-2xl glass border border-primary/20">
+                  <div className="relative grid h-11 w-11 md:h-14 md:w-14 place-items-center rounded-xl md:rounded-2xl glass border border-primary/20">
                     <f.Icon className="h-6 w-6 text-primary" />
                   </div>
                 </div>
                 <div>
-                  <div className="font-display text-xl">{f.title}</div>
+                  <div className="font-display text-base md:text-xl">{f.title}</div>
                   <p className="mt-1 text-sm text-muted-foreground max-w-md">{f.desc}</p>
                 </div>
               </motion.li>
@@ -200,7 +200,7 @@ export function ProfessionalsSection() {
           >
             <Link
               to="/about"
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-medium text-primary-foreground shadow-[var(--shadow-elegant)] hover:gap-3 transition-all"
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-5 md:px-7 py-3 md:py-3.5 text-xs md:text-sm font-medium text-primary-foreground shadow-[var(--shadow-elegant)] hover:gap-3 transition-all"
             >
               View More About Us <ArrowRight className="h-4 w-4" />
             </Link>

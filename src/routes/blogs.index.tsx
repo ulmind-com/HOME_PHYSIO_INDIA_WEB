@@ -74,31 +74,31 @@ function BlogsPage() {
         {/* Subtle background blob */}
         <div className="absolute top-0 right-0 -z-10 w-full h-full opacity-30 bg-gradient-to-l from-primary/10 to-transparent pointer-events-none" />
         
-        <div className="container-x pt-24 pb-8 lg:pt-28 lg:pb-10 grid lg:grid-cols-12 gap-8 lg:gap-6 items-center min-h-[450px]">
+        <div className="container-x pt-24 pb-6 md:pb-8 lg:pt-28 lg:pb-10 grid lg:grid-cols-12 gap-6 lg:gap-6 items-center min-h-[320px] md:min-h-[450px]">
           
           {/* Left Content */}
           <div className="space-y-6 lg:col-span-7 xl:col-span-6 lg:pr-6 z-10 relative">
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">
+            <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm font-semibold text-primary">
               <BookOpen className="h-4 w-4" fill="currentColor" /> Knowledge & Insights
             </div>
 
             {/* Title */}
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight text-foreground">
+            <h1 className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight text-foreground">
               Our <span className="text-primary relative whitespace-nowrap">Blogs
                 <svg className="absolute -bottom-1 left-0 w-full h-3 text-accent/30 -z-10" viewBox="0 0 100 20" preserveAspectRatio="none"><path d="M0 10 Q50 0 100 10" stroke="currentColor" strokeWidth="4" fill="none"/></svg>
               </span>
             </h1>
 
             {/* Description */}
-            <p className="text-lg text-foreground/80 max-w-lg leading-relaxed font-medium">
+            <p className="text-sm md:text-lg text-foreground/80 max-w-lg leading-relaxed font-medium">
               Compassionate stories for a healthier life. Discover insights, tips, and the latest news in home health care.
             </p>
           </div>
         </div>
 
         {/* Right Image (Absolute positioning exactly like About page) */}
-        <div className="relative h-[400px] w-full lg:absolute lg:right-0 lg:top-0 lg:h-full lg:w-[45%] xl:w-[50%] -z-10">
+        <div className="relative h-[250px] md:h-[400px] w-full lg:absolute lg:right-0 lg:top-0 lg:h-full lg:w-[45%] xl:w-[50%] -z-10">
            <img 
              src="/assets/hero-doctors-team.png" 
              alt="Our Blogs" 
@@ -110,15 +110,15 @@ function BlogsPage() {
         </div>
       </div>
 
-      <Section className="py-12 lg:py-16">
+      <Section className="py-8 md:py-12 lg:py-16">
         {/* ── Filter Pills ── */}
-        <div className="flex flex-wrap items-center gap-3 mb-12 border-b border-black/5 pb-8">
+        <div className="flex items-center gap-2 md:gap-3 mb-8 md:mb-12 border-b border-black/5 pb-6 md:pb-8 overflow-x-auto no-scrollbar">
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
               className={cn(
-                "px-5 py-2.5 rounded-full text-[14px] font-bold transition-all duration-300",
+                "px-4 md:px-5 py-2 md:py-2.5 rounded-full text-[13px] md:text-[14px] font-bold transition-all duration-300 whitespace-nowrap shrink-0",
                 activeCategory === cat
                   ? "bg-primary text-white shadow-md shadow-primary/20"
                   : "bg-white border border-black/10 text-muted-foreground hover:border-primary/50 hover:text-foreground"
@@ -130,7 +130,7 @@ function BlogsPage() {
         </div>
 
         {/* ── Blog Grid ── */}
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 md:gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {filteredBlogs.map((blog) => (
             <BlogCard key={blog.id} blog={blog} />
           ))}
@@ -158,9 +158,9 @@ function BlogCard({ blog }: { blog: Blog }) {
     <Link 
       to="/blogs/$slug"
       params={{ slug: blog.slug || "" }}
-      className="group flex flex-col bg-white rounded-[32px] overflow-hidden border border-black/5 hover:border-primary/20 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] transition-all duration-500 hover:-translate-y-1"
+      className="group flex flex-col bg-white rounded-[24px] md:rounded-[32px] overflow-hidden border border-black/5 hover:border-primary/20 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] transition-all duration-500 hover:-translate-y-1"
     >
-      <div className="relative h-[240px] w-full overflow-hidden rounded-t-[32px] rounded-br-[80px]">
+      <div className="relative h-[180px] md:h-[240px] w-full overflow-hidden rounded-t-[24px] md:rounded-t-[32px] rounded-br-[60px] md:rounded-br-[80px]">
         <img 
           src={imageUrl} 
           alt={blog.title} 
@@ -175,17 +175,17 @@ function BlogCard({ blog }: { blog: Blog }) {
         )}
       </div>
 
-      <div className="flex flex-col flex-1 p-8">
+      <div className="flex flex-col flex-1 p-5 md:p-8">
         <div className="flex items-center gap-2 text-[13px] font-semibold text-muted-foreground mb-4">
           <Calendar className="h-4 w-4" />
           {formattedDate}
         </div>
         
-        <h3 className="font-display text-[22px] font-bold text-foreground leading-tight mb-3 group-hover:text-primary transition-colors line-clamp-2">
+        <h3 className="font-display text-lg md:text-[22px] font-bold text-foreground leading-tight mb-2 md:mb-3 group-hover:text-primary transition-colors line-clamp-2">
           {blog.title}
         </h3>
         
-        <p className="text-[15px] text-muted-foreground leading-relaxed line-clamp-3 mb-6 font-medium">
+        <p className="text-[13px] md:text-[15px] text-muted-foreground leading-relaxed line-clamp-3 mb-4 md:mb-6 font-medium">
           {blog.excerpt || "Read more about this topic in our detailed article."}
         </p>
         

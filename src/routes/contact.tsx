@@ -32,30 +32,30 @@ function ContactPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-dark/80 via-transparent to-[#F8F9FA]" />
       </div>
 
-      <div className="relative z-10 flex flex-col items-center pt-32 pb-24 px-4 w-full flex-1">
+      <div className="relative z-10 flex flex-col items-center pt-24 md:pt-32 pb-16 md:pb-24 px-4 w-full flex-1">
         
         {/* Header Text */}
         <div className="text-center mb-12 max-w-2xl">
-          <h1 className="text-4xl md:text-5xl text-white mb-4 drop-shadow-md">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl text-white mb-3 md:mb-4 drop-shadow-md">
             Contact us
           </h1>
-          <p className="text-[17px] text-white/90 leading-relaxed font-medium">
+          <p className="text-sm md:text-[17px] text-white/90 leading-relaxed font-medium">
             Nupun is ready to provide the right solution according to your needs
           </p>
         </div>
 
         {/* Liquid Glass Container */}
-        <div className="w-full max-w-[1100px] bg-white/80 backdrop-blur-2xl rounded-[32px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1),0_0_0_1px_rgba(255,255,255,0.6)] overflow-hidden flex flex-col md:flex-row mb-16">
+        <div className="w-full max-w-[1100px] bg-white/80 backdrop-blur-2xl rounded-[24px] md:rounded-[32px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1),0_0_0_1px_rgba(255,255,255,0.6)] overflow-hidden flex flex-col md:flex-row mb-10 md:mb-16">
           
           {/* Left Column: Info */}
-          <div className="w-full md:w-[42%] p-8 md:p-12 lg:p-14 flex flex-col justify-between relative">
+          <div className="w-full md:w-[42%] p-6 md:p-12 lg:p-14 flex flex-col justify-between relative">
             <div className="absolute inset-0 bg-gradient-to-br from-white/60 to-transparent pointer-events-none" />
             
             <div className="relative z-10">
-              <h2 className="text-[32px] text-foreground leading-tight mb-3">
+              <h2 className="text-2xl md:text-[32px] text-foreground leading-tight mb-2 md:mb-3">
                 Get in touch
               </h2>
-              <p className="text-[15px] text-muted-foreground leading-relaxed mb-10">
+              <p className="text-[13px] md:text-[15px] text-muted-foreground leading-relaxed mb-6 md:mb-10">
                 Sociosqu viverra lectus placerat sem efficitur molestie vehicula cubilia leo etiam nam.
               </p>
 
@@ -80,8 +80,8 @@ function ContactPage() {
           </div>
 
           {/* Right Column: Form */}
-          <div className="w-full md:w-[58%] bg-white p-8 md:p-12 lg:p-14 relative z-10 rounded-l-none md:rounded-l-[32px] shadow-[-10px_0_30px_rgba(0,0,0,0.02)]">
-            <h2 className="text-[32px] text-foreground leading-tight mb-8">
+          <div className="w-full md:w-[58%] bg-white p-6 md:p-12 lg:p-14 relative z-10 rounded-l-none md:rounded-l-[32px] shadow-[-10px_0_30px_rgba(0,0,0,0.02)]">
+            <h2 className="text-2xl md:text-[32px] text-foreground leading-tight mb-6 md:mb-8">
               Send us a message
             </h2>
             <ContactForm />
@@ -91,7 +91,7 @@ function ContactPage() {
       </div>
 
       {/* Full Width Map */}
-      <div className="w-full h-[450px] relative z-10 border-t border-border">
+      <div className="w-full h-[300px] md:h-[450px] relative z-10 border-t border-border">
         {settings?.google_map_embed ? (
           <div
             className="w-full h-full [&_iframe]:w-full [&_iframe]:h-full [&_iframe]:border-none"

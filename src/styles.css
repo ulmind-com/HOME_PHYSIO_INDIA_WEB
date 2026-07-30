@@ -279,3 +279,12 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Hide scrollbar for horizontal scroll containers on mobile */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
