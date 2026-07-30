@@ -116,11 +116,12 @@ export function Header() {
             <Link
               to="/booking"
               className={cn(
-                "hidden sm:inline-flex h-10 items-center justify-center rounded-full px-5 text-sm font-semibold transition-all hover:scale-105",
-                onDarkHero ? "bg-white text-primary hover:bg-white/90" : "bg-primary text-primary-foreground shadow-sm hover:bg-accent",
+                "inline-flex h-[32px] sm:h-10 items-center justify-center rounded-full px-4 sm:px-5 text-[11px] xs:text-[12px] sm:text-sm font-semibold tracking-wide transition-all hover:scale-105",
+                onDarkHero ? "bg-white text-primary hover:bg-white/90" : "bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-sm hover:opacity-90",
               )}
             >
-              Book Appointment
+              <span className="sm:hidden">Book Trusted Care</span>
+              <span className="hidden sm:inline">Book Appointment</span>
             </Link>
             
             <button
