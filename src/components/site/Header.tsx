@@ -57,20 +57,17 @@ export function Header() {
   return (
     <header className={cn("z-50 inset-x-0", overlay ? "absolute top-4" : "fixed top-4")}>
       <div className="container-x">
-        <div
           className={cn(
-            "relative overflow-hidden flex h-16 items-center justify-between gap-4 rounded-full pl-3 pr-3 lg:h-[68px] lg:pl-6 lg:pr-2",
-            "backdrop-blur-2xl backdrop-saturate-150 transition-colors duration-300",
-            "shadow-[0_20px_50px_-20px_rgba(15,80,80,0.35)]",
+            "relative overflow-hidden flex h-16 items-center justify-between gap-4 rounded-full pl-3 pr-3 lg:h-[68px] lg:pl-6 lg:pr-2 transition-all duration-500",
             onDarkHero
-              ? "bg-white/10 border border-white/25"
-              : "bg-white/30 border border-white/50",
+              ? "bg-transparent border-transparent shadow-none"
+              : "bg-white/80 border border-white/60 shadow-[0_20px_50px_-20px_rgba(15,80,80,0.15)] backdrop-blur-2xl backdrop-saturate-150",
           )}
         >
           <div
             className={cn(
-              "pointer-events-none absolute inset-x-0 top-0 h-1/2 rounded-full bg-gradient-to-b to-transparent",
-              onDarkHero ? "from-white/15" : "from-white/50",
+              "pointer-events-none absolute inset-x-0 top-0 h-1/2 rounded-full bg-gradient-to-b to-transparent transition-opacity duration-500",
+              onDarkHero ? "opacity-0" : "opacity-100 from-white/60",
             )}
           />
           <Link to="/" className="relative flex items-center gap-2.5 shrink-0">

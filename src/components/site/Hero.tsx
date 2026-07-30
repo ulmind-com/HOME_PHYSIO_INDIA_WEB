@@ -98,12 +98,6 @@ export function Hero() {
         { value: 24, suffix: "/7", label: "Support Available" },
       ];
 
-  const getStatIcon = (index: number) => {
-    const ICONS = [ShieldCheck, Users, Clock, Heart];
-    const Icon = ICONS[index % ICONS.length];
-    return <Icon className="w-5 h-5 text-primary" />;
-  };
-
   const [[current, direction], setCurrent] = useState([0, 0]);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -176,10 +170,10 @@ export function Hero() {
               initial="hidden"
               animate="show"
               custom={0}
-              className="mb-4 inline-flex self-start items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md shadow-sm"
+              className="mb-6 flex items-center gap-4"
             >
-              <Heart className="h-4 w-4 text-primary fill-primary/20" />
-              <span className="text-[13px] sm:text-sm font-medium tracking-wide text-white uppercase">
+              <div className="h-[2px] w-12 bg-primary rounded-full shadow-[0_0_10px_var(--color-primary)]" />
+              <span className="text-[16px] sm:text-[19px] italic font-serif tracking-wide text-white/90 drop-shadow-md">
                 {heroSubtitle}
               </span>
             </motion.div>
@@ -189,13 +183,28 @@ export function Hero() {
               initial="hidden"
               animate="show"
               custom={1}
-              className="font-display font-medium text-white tracking-tight leading-[1.1] text-[40px] sm:text-[48px] md:text-[56px] lg:text-[64px]"
-              style={{ textShadow: "0 4px 40px rgba(0,0,0,0.5)" }}
+              className="font-display font-light text-white tracking-[-0.02em] leading-[1.05] text-[44px] sm:text-[52px] md:text-[64px] lg:text-[72px]"
+              style={{ textShadow: "0 10px 40px rgba(0,0,0,0.4), 0 2px 10px rgba(0,0,0,0.2)" }}
             >
               {heroHeadline.includes("Doorstep") ? (
                 <>
                   Trusted Home Health Care at Your{" "}
-                  <span className="text-primary font-semibold italic">Doorstep</span>
+                  <span className="text-primary font-medium italic relative inline-block">
+                    Doorstep
+                    <svg
+                      className="absolute -bottom-2 left-0 w-full"
+                      viewBox="0 0 100 20"
+                      preserveAspectRatio="none"
+                    >
+                      <path
+                        d="M0,10 Q50,20 100,10"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        className="text-primary/60"
+                      />
+                    </svg>
+                  </span>
                 </>
               ) : (
                 <>{heroHeadline}</>
@@ -240,22 +249,27 @@ export function Hero() {
               </a>
             </motion.div>
 
-            {/* Stats */}
+            {/* Premium Stats Glass Panel */}
             <motion.div
               variants={fadeUp}
               initial="hidden"
               animate="show"
               custom={4}
-              className="mt-8 md:mt-10 flex flex-wrap items-center gap-x-8 gap-y-4 pt-6 border-t border-white/20"
+              className="mt-12 md:mt-16 inline-flex flex-wrap items-center gap-x-8 gap-y-6 p-6 sm:p-8 rounded-[2rem] bg-white/10 border border-white/20 backdrop-blur-2xl backdrop-saturate-200 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.2)]"
             >
-              {stats.map((stat, idx) => (
-                <StatItem
-                  key={idx}
-                  icon={getStatIcon(idx)}
-                  value={stat.value}
-                  suffix={stat.suffix}
-                  label={stat.label}
-                />
+              {stats.map((stat, i) => (
+                <div
+                  key={i}
+                  className="flex flex-col relative pr-8 last:pr-0 after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-12 after:bg-white/10 last:after:hidden"
+                >
+                  <div className="font-display text-3xl sm:text-4xl font-light text-white tracking-tight">
+                    {stat.value}
+                    <span className="text-primary font-medium">{stat.suffix}</span>
+                  </div>
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.15em] text-white/60 mt-1">
+                    {stat.label}
+                  </div>
+                </div>
               ))}
             </motion.div>
           </div>
