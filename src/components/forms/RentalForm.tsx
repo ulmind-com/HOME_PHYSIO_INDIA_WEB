@@ -10,10 +10,18 @@ import { CheckCircle2, Loader2 } from "lucide-react";
 const schema = z.object({
   customer_name: z.string().trim().min(2).max(120),
   customer_phone: z.string().trim().min(7).max(20),
-  customer_email: z.string().trim().email().optional().or(z.literal("").transform(() => undefined)),
+  customer_email: z
+    .string()
+    .trim()
+    .email()
+    .optional()
+    .or(z.literal("").transform(() => undefined)),
   address: z.string().trim().min(5).max(500),
   start_date: z.string().min(1, "Pick a date"),
-  end_date: z.string().optional().or(z.literal("").transform(() => undefined)),
+  end_date: z
+    .string()
+    .optional()
+    .or(z.literal("").transform(() => undefined)),
   quantity: z.coerce.number().int().min(1).max(20).optional(),
 });
 type Values = z.infer<typeof schema>;
@@ -21,11 +29,18 @@ type Values = z.infer<typeof schema>;
 export function RentalForm({ equipmentId }: { equipmentId: string }) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [done, setDone] = useState(false);
-  const form = useForm<Values>({ resolver: zodResolver(schema) as never, defaultValues: { quantity: 1 } });
+  const form = useForm<Values>({
+    resolver: zodResolver(schema) as never,
+    defaultValues: { quantity: 1 },
+  });
 
   const mut = useMutation({
     mutationFn: (v: Values) => api.post("/equipment/rentals", { equipment_id: equipmentId, ...v }),
-    onSuccess: () => { setDone(true); toast.success("Rental request received."); form.reset(); },
+    onSuccess: () => {
+      setDone(true);
+      toast.success("Rental request received.");
+      form.reset();
+    },
     onError: (err: Error) => toast.error(err.message || "Request failed"),
   });
 
@@ -34,7 +49,9 @@ export function RentalForm({ equipmentId }: { equipmentId: string }) {
       <div className="rounded-3xl border border-border bg-surface p-8 text-center">
         <CheckCircle2 className="mx-auto h-10 w-10 text-primary" />
         <h3 className="mt-3 font-display text-xl">Request received</h3>
-        <p className="mt-1 text-sm text-muted-foreground">Our team will confirm availability and delivery.</p>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Our team will confirm availability and delivery.
+        </p>
       </div>
     );
   }
@@ -78,11 +95,22 @@ export function RentalForm({ equipmentId }: { equipmentId: string }) {
   );
 }
 
-const inputCls = "w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20";
-function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
+const inputCls =
+  "w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20";
+function Field({
+  label,
+  error,
+  children,
+}: {
+  label: string;
+  error?: string;
+  children: React.ReactNode;
+}) {
   return (
     <label className="block">
-      <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{label}</span>
+      <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+        {label}
+      </span>
       <div className="mt-1.5">{children}</div>
       {error && <span className="mt-1 block text-xs text-destructive">{error}</span>}
     </label>

@@ -11,7 +11,10 @@ export const Route = createFileRoute("/faq")({
   head: () => ({
     meta: [
       { title: "FAQ — Nupun Home Health Care" },
-      { name: "description", content: "Answers to common questions about Nupun's care services and equipment." },
+      {
+        name: "description",
+        content: "Answers to common questions about Nupun's care services and equipment.",
+      },
       { property: "og:title", content: "FAQ — Nupun Home Health Care" },
       { property: "og:description", content: "Common questions about our care and equipment." },
       { property: "og:url", content: "/faq" },
@@ -22,12 +25,48 @@ export const Route = createFileRoute("/faq")({
 });
 
 const DUMMY_FAQS = [
-  { id: "1", question: "Do you provide elder care at home?", answer: "Yes, we provide comprehensive elder care services right at your home, ensuring comfort and professional medical attention.", category: "Elder Care" },
-  { id: "2", question: "I live outside my home town. Can I still arrange care for my parents there?", answer: "Absolutely. You can coordinate and monitor the care plan remotely through our care desk.", category: "Support" },
-  { id: "3", question: "Can I book a caregiver for only a few hours a day?", answer: "Yes, we offer flexible durations. You can book a caregiver for as little as 4 hours a day or opt for 24/7 care.", category: "Services" },
-  { id: "4", question: "What's the difference between a caregiver and a nurse at home?", answer: "A caregiver assists with daily living activities (bathing, feeding, mobility), while a registered nurse provides medical care (injections, wound care, monitoring).", category: "Medical Care" },
-  { id: "5", question: "Can you help after a hospital discharge or surgery at home?", answer: "Yes, our post-operative care team ensures a smooth transition from hospital to home, including wound care and physiotherapy.", category: "Medical Care" },
-  { id: "6", question: "Do you provide 24-hour or overnight care if required?", answer: "Yes, we provide round-the-clock 24-hour care as well as dedicated overnight shifts based on your requirements.", category: "Elder Care" },
+  {
+    id: "1",
+    question: "Do you provide elder care at home?",
+    answer:
+      "Yes, we provide comprehensive elder care services right at your home, ensuring comfort and professional medical attention.",
+    category: "Elder Care",
+  },
+  {
+    id: "2",
+    question: "I live outside my home town. Can I still arrange care for my parents there?",
+    answer:
+      "Absolutely. You can coordinate and monitor the care plan remotely through our care desk.",
+    category: "Support",
+  },
+  {
+    id: "3",
+    question: "Can I book a caregiver for only a few hours a day?",
+    answer:
+      "Yes, we offer flexible durations. You can book a caregiver for as little as 4 hours a day or opt for 24/7 care.",
+    category: "Services",
+  },
+  {
+    id: "4",
+    question: "What's the difference between a caregiver and a nurse at home?",
+    answer:
+      "A caregiver assists with daily living activities (bathing, feeding, mobility), while a registered nurse provides medical care (injections, wound care, monitoring).",
+    category: "Medical Care",
+  },
+  {
+    id: "5",
+    question: "Can you help after a hospital discharge or surgery at home?",
+    answer:
+      "Yes, our post-operative care team ensures a smooth transition from hospital to home, including wound care and physiotherapy.",
+    category: "Medical Care",
+  },
+  {
+    id: "6",
+    question: "Do you provide 24-hour or overnight care if required?",
+    answer:
+      "Yes, we provide round-the-clock 24-hour care as well as dedicated overnight shifts based on your requirements.",
+    category: "Elder Care",
+  },
 ];
 
 function FaqPage() {
@@ -55,7 +94,7 @@ function FaqPage() {
           <h1 className="font-display text-4xl md:text-[44px] font-bold tracking-tight text-foreground mb-8">
             Frequently Asked Questions
           </h1>
-          
+
           {categories.length > 1 && (
             <div className="flex flex-wrap justify-center gap-3 mb-10">
               {categories.map((c) => {

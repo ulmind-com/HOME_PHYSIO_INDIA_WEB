@@ -23,8 +23,6 @@ import { CategoryShowcasePremium } from "@/components/site/CategoryShowcasePremi
 import { HowItWorksSection } from "@/components/site/HowItWorksSection";
 import { ProfessionalsSection } from "@/components/site/ProfessionalsSection";
 
-
-
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -37,7 +35,8 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "Nupun Home Health Care — Hospital-grade care, at home" },
       {
         property: "og:description",
-        content: "Verified nurses, physiotherapists and premium medical equipment — delivered home.",
+        content:
+          "Verified nurses, physiotherapists and premium medical equipment — delivered home.",
       },
       { property: "og:url", content: "/" },
     ],
@@ -66,13 +65,17 @@ function Home() {
   );
 }
 
-
-
 function TrustBar() {
   const { data: settings } = useQuery(settingsQ());
   const items = settings?.trust_bar_items?.length
     ? settings.trust_bar_items
-    : ["Licensed nurses", "24/7 helpline", "Insurance-friendly", "Transparent pricing", "Background-checked"];
+    : [
+        "Licensed nurses",
+        "24/7 helpline",
+        "Insurance-friendly",
+        "Transparent pricing",
+        "Background-checked",
+      ];
   return (
     <div className="border-y border-border/70 bg-surface/60 backdrop-blur">
       <div className="container-x py-4 overflow-hidden">
@@ -87,9 +90,6 @@ function TrustBar() {
     </div>
   );
 }
-
-
-
 
 function CareTeamSection() {
   const { data: settings } = useQuery(settingsQ());
@@ -160,7 +160,7 @@ function CareTeamSection() {
 
   // Use slides from admin panel if available, otherwise use defaults
   const slides = settings?.care_team_slides?.length
-    ? settings.care_team_slides.map(s => ({
+    ? settings.care_team_slides.map((s) => ({
         image: s.image,
         eyebrow: s.eyebrow,
         title: s.title,
@@ -197,9 +197,7 @@ function CareTeamSection() {
       opacity: isLast
         ? 1 // last card stays visible
         : useTransform(smoothProgress, [start, end], [1, 0]),
-      scale: isLast
-        ? 1
-        : useTransform(smoothProgress, [start, end], [1, 0.9]),
+      scale: isLast ? 1 : useTransform(smoothProgress, [start, end], [1, 0.9]),
     };
   });
 
@@ -312,7 +310,9 @@ function TestimonialsSection() {
     <Section>
       <SectionHeader eyebrow="Testimonials" title="Words from the families we serve." />
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {items.slice(0, 6).map((t) => (<TestimonialCard key={t.id} t={t} />))}
+        {items.slice(0, 6).map((t) => (
+          <TestimonialCard key={t.id} t={t} />
+        ))}
       </div>
     </Section>
   );
@@ -329,10 +329,14 @@ function BlogVideosSection() {
         <>
           <div className="flex items-end justify-between mb-10">
             <SectionHeader eyebrow="Journal" title="From the care blog" />
-            <Link to="/blog" className="text-sm font-medium text-accent">All posts →</Link>
+            <Link to="/blog" className="text-sm font-medium text-accent">
+              All posts →
+            </Link>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
-            {bItems.map((b) => (<BlogCard key={b.id} blog={b} />))}
+            {bItems.map((b) => (
+              <BlogCard key={b.id} blog={b} />
+            ))}
           </div>
         </>
       )}
@@ -350,9 +354,9 @@ function FaqSection() {
       <div className="grid gap-12 lg:grid-cols-2 items-start">
         {/* Left Side: Illustration (No Animation) */}
         <div className="flex items-center justify-center lg:justify-end pr-0 lg:pr-8">
-          <img 
-            src="/assets/faq-illustration.jpeg" 
-            alt="Telemedicine Consultation" 
+          <img
+            src="/assets/faq-illustration.jpeg"
+            alt="Telemedicine Consultation"
             className="w-[85%] md:w-[70%] lg:w-[85%] max-w-md h-auto mix-blend-multiply"
           />
         </div>
@@ -364,32 +368,33 @@ function FaqSection() {
           viewport={{ once: true, margin: "-100px" }}
           variants={{
             hidden: {},
-            show: { transition: { staggerChildren: 0.1 } }
+            show: { transition: { staggerChildren: 0.1 } },
           }}
           className="flex flex-col justify-center"
         >
-          <motion.h2 
+          <motion.h2
             variants={{
               hidden: { opacity: 0, y: 20 },
-              show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
+              show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
             }}
             className="font-display text-3xl md:text-4xl lg:text-[2.75rem] font-bold text-foreground mb-6 leading-tight tracking-tight"
           >
-            Frequently Asked<br/>
+            Frequently Asked
+            <br />
             <span className="text-primary">Questions</span>
           </motion.h2>
 
           <FaqAccordion items={items.slice(0, 6)} />
-          
-          <motion.div 
+
+          <motion.div
             variants={{
               hidden: { opacity: 0, y: 20 },
-              show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
+              show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
             }}
             className="mt-8 text-center sm:text-left"
           >
-            <Link 
-              to="/faq" 
+            <Link
+              to="/faq"
               className="inline-flex items-center justify-center gap-2 rounded-full bg-primary/10 text-primary px-8 py-3.5 font-semibold hover:bg-primary hover:text-white transition-colors duration-300"
             >
               Read More...
@@ -425,19 +430,28 @@ function ContactCta() {
         <div className="absolute inset-0 opacity-30 mix-blend-overlay bg-[radial-gradient(circle_at_20%_20%,white,transparent_40%)]" />
         <div className="relative grid gap-8 lg:grid-cols-2 lg:items-center">
           <div>
-            <div className="text-sm uppercase tracking-[0.2em] text-white/70 mb-3">Ready when you are</div>
+            <div className="text-sm uppercase tracking-[0.2em] text-white/70 mb-3">
+              Ready when you are
+            </div>
             <h2 className="font-display text-4xl md:text-5xl text-white">
               {settings?.cta_title || "Talk to a care advisor."}
             </h2>
             <p className="mt-4 text-white/80 max-w-md">
-              {settings?.cta_description || "Tell us what you need — we'll match the right nurse or equipment, usually within two hours."}
+              {settings?.cta_description ||
+                "Tell us what you need — we'll match the right nurse or equipment, usually within two hours."}
             </p>
           </div>
           <div className="flex flex-wrap gap-3 lg:justify-end">
-            <Link to="/booking" className="rounded-full bg-white text-dark px-6 py-3.5 text-sm font-medium">
+            <Link
+              to="/booking"
+              className="rounded-full bg-white text-dark px-6 py-3.5 text-sm font-medium"
+            >
               Book care
             </Link>
-            <Link to="/contact" className="rounded-full border border-white/30 text-white px-6 py-3.5 text-sm font-medium">
+            <Link
+              to="/contact"
+              className="rounded-full border border-white/30 text-white px-6 py-3.5 text-sm font-medium"
+            >
               Contact us
             </Link>
           </div>

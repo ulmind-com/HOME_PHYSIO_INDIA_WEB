@@ -19,7 +19,11 @@ export const servicesQ = (params: { limit?: number; featured?: boolean } = {}) =
   queryOptions({
     queryKey: ["services", params],
     queryFn: ({ signal }) =>
-      api.get<Paginated<Service>>("/services", { page_size: params.limit ?? 24, is_featured: params.featured }, signal),
+      api.get<Paginated<Service>>(
+        "/services",
+        { page_size: params.limit ?? 24, is_featured: params.featured },
+        signal,
+      ),
     staleTime: FIVE_MIN,
   });
 

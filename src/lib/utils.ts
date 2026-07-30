@@ -10,5 +10,5 @@ export function imgUrl(
   value: string | { url?: string | null } | null | undefined,
 ): string | undefined {
   if (!value) return undefined;
-  return typeof value === "string" ? value : value.url ?? undefined;
+  return typeof value === "string" ? value : (value.url ?? undefined);
 }

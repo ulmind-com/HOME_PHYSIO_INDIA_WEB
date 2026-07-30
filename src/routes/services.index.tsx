@@ -24,9 +24,16 @@ export const Route = createFileRoute("/services/")({
   head: () => ({
     meta: [
       { title: "Services — Nupun Home Health Care" },
-      { name: "description", content: "Nurses, physios, elder care, post-op recovery and more — medically supervised care delivered at home." },
+      {
+        name: "description",
+        content:
+          "Nurses, physios, elder care, post-op recovery and more — medically supervised care delivered at home.",
+      },
       { property: "og:title", content: "Services — Nupun Home Health Care" },
-      { property: "og:description", content: "Medically supervised home care — nurses, physios, elder care and more." },
+      {
+        property: "og:description",
+        content: "Medically supervised home care — nurses, physios, elder care and more.",
+      },
       { property: "og:url", content: "/services" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -36,31 +43,46 @@ export const Route = createFileRoute("/services/")({
   component: ServicesIndex,
 });
 
-
 const WHY = [
-  { 
-    icon: ShieldCheck, 
-    title: "Verified Professionals", 
+  {
+    icon: ShieldCheck,
+    title: "Verified Professionals",
     detail: "Background-verified and trained caregivers, nurses, and attendants.",
-    theme: { bg: "bg-emerald-50/70 dark:bg-emerald-950/20", iconBg: "bg-emerald-100 dark:bg-emerald-900/40", iconColor: "text-emerald-600 dark:text-emerald-400" }
+    theme: {
+      bg: "bg-emerald-50/70 dark:bg-emerald-950/20",
+      iconBg: "bg-emerald-100 dark:bg-emerald-900/40",
+      iconColor: "text-emerald-600 dark:text-emerald-400",
+    },
   },
-  { 
-    icon: Clock3, 
-    title: "Flexible Hourly Care", 
+  {
+    icon: Clock3,
+    title: "Flexible Hourly Care",
     detail: "Book care for a few hours, overnight, or as per your requirement.",
-    theme: { bg: "bg-blue-50/70 dark:bg-blue-950/20", iconBg: "bg-blue-100 dark:bg-blue-900/40", iconColor: "text-blue-600 dark:text-blue-400" }
+    theme: {
+      bg: "bg-blue-50/70 dark:bg-blue-950/20",
+      iconBg: "bg-blue-100 dark:bg-blue-900/40",
+      iconColor: "text-blue-600 dark:text-blue-400",
+    },
   },
-  { 
-    icon: BellRing, 
-    title: "Medication Alerts", 
+  {
+    icon: BellRing,
+    title: "Medication Alerts",
     detail: "Timely reminders to help patients stay on track with medications.",
-    theme: { bg: "bg-fuchsia-50/70 dark:bg-fuchsia-950/20", iconBg: "bg-fuchsia-100 dark:bg-fuchsia-900/40", iconColor: "text-fuchsia-600 dark:text-fuchsia-400" }
+    theme: {
+      bg: "bg-fuchsia-50/70 dark:bg-fuchsia-950/20",
+      iconBg: "bg-fuchsia-100 dark:bg-fuchsia-900/40",
+      iconColor: "text-fuchsia-600 dark:text-fuchsia-400",
+    },
   },
-  { 
-    icon: Zap, 
-    title: "Quick Service Support", 
+  {
+    icon: Zap,
+    title: "Quick Service Support",
     detail: "Fast caregiver deployment and responsive assistance when you need it most.",
-    theme: { bg: "bg-orange-50/70 dark:bg-orange-950/20", iconBg: "bg-orange-100 dark:bg-orange-900/40", iconColor: "text-orange-600 dark:text-orange-400" }
+    theme: {
+      bg: "bg-orange-50/70 dark:bg-orange-950/20",
+      iconBg: "bg-orange-100 dark:bg-orange-900/40",
+      iconColor: "text-orange-600 dark:text-orange-400",
+    },
   },
 ];
 
@@ -149,7 +171,10 @@ function ServicesIndex() {
         {isLoading ? (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="h-[360px] rounded-[1.5rem] border border-border bg-surface animate-pulse" />
+              <div
+                key={i}
+                className="h-[360px] rounded-[1.5rem] border border-border bg-surface animate-pulse"
+              />
             ))}
           </div>
         ) : filtered.length ? (
@@ -169,13 +194,18 @@ function ServicesIndex() {
         ) : (
           <div className="rounded-3xl border border-dashed border-border bg-surface/50 p-16 text-center">
             <div className="font-display text-2xl">Nothing here yet</div>
-            <p className="mt-2 text-sm text-muted-foreground">Try another category, or talk to an advisor.</p>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Try another category, or talk to an advisor.
+            </p>
           </div>
         )}
 
         <div className="mt-10 text-center text-sm text-muted-foreground">
           Don't see what you need?{" "}
-          <Link to="/contact" className="text-accent font-medium underline-offset-4 hover:underline">
+          <Link
+            to="/contact"
+            className="text-accent font-medium underline-offset-4 hover:underline"
+          >
             Talk to a care advisor →
           </Link>
         </div>
@@ -188,9 +218,11 @@ function ServicesIndex() {
             <div className="inline-flex items-center gap-2 rounded-full bg-surface border border-border px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground shadow-sm mb-5">
               <HeartHandshake className="h-3.5 w-3.5 text-primary" /> Why families choose us
             </div>
-            <h2 className="font-display text-4xl md:text-5xl tracking-tight text-foreground">Why Choose Nupun?</h2>
+            <h2 className="font-display text-4xl md:text-5xl tracking-tight text-foreground">
+              Why Choose Nupun?
+            </h2>
           </div>
-          
+
           <div className="grid gap-5 lg:grid-cols-2 xl:grid-cols-4">
             {WHY.map(({ icon: Icon, title, detail, theme }, i) => (
               <motion.div
@@ -202,10 +234,12 @@ function ServicesIndex() {
                 className={`group flex items-center gap-5 rounded-[24px] ${theme.bg} p-6 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] border border-transparent hover:border-black/5 dark:hover:border-white/5`}
               >
                 {/* Icon Circle */}
-                <div className={`grid h-16 w-16 shrink-0 place-items-center rounded-full ${theme.iconBg} ${theme.iconColor} transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-inner`}>
+                <div
+                  className={`grid h-16 w-16 shrink-0 place-items-center rounded-full ${theme.iconBg} ${theme.iconColor} transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-inner`}
+                >
                   <Icon className="h-7 w-7" strokeWidth={2.5} />
                 </div>
-                
+
                 {/* Content */}
                 <div>
                   <h3 className="font-display text-lg font-bold leading-tight tracking-tight text-foreground">
@@ -226,8 +260,14 @@ function ServicesIndex() {
         {/* Animated Liquid Background Blobs (No giant white container) */}
         <div className="absolute inset-0 z-0 pointer-events-none" aria-hidden="true">
           <div className="absolute top-[10%] left-[5%] w-[450px] h-[450px] bg-primary/20 rounded-full mix-blend-multiply filter blur-[90px] opacity-70 animate-float-slow" />
-          <div className="absolute bottom-[5%] right-[10%] w-[550px] h-[550px] bg-accent/20 rounded-full mix-blend-multiply filter blur-[120px] opacity-60 animate-float-slower" style={{ animationDelay: '1.5s' }} />
-          <div className="absolute top-[40%] left-[60%] w-[350px] h-[350px] bg-primary/10 rounded-full mix-blend-multiply filter blur-[80px] opacity-80 animate-float-slow" style={{ animationDelay: '3s' }} />
+          <div
+            className="absolute bottom-[5%] right-[10%] w-[550px] h-[550px] bg-accent/20 rounded-full mix-blend-multiply filter blur-[120px] opacity-60 animate-float-slower"
+            style={{ animationDelay: "1.5s" }}
+          />
+          <div
+            className="absolute top-[40%] left-[60%] w-[350px] h-[350px] bg-primary/10 rounded-full mix-blend-multiply filter blur-[80px] opacity-80 animate-float-slow"
+            style={{ animationDelay: "3s" }}
+          />
         </div>
 
         <div className="container-x relative z-10 max-w-6xl mx-auto">
@@ -262,7 +302,7 @@ function ServicesIndex() {
                   <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-80" />
                   {/* Inner glossy reflection on hover */}
                   <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                  
+
                   <span className="relative z-10 font-semibold text-foreground/90 text-[15px] leading-snug group-hover:text-white transition-colors duration-300">
                     {c}
                   </span>
@@ -277,7 +317,9 @@ function ServicesIndex() {
       {testimonials.length > 0 && (
         <section className="border-t border-border/60 bg-surface/60 overflow-hidden">
           <div className="container-x pt-20 pb-6">
-            <div className="text-[10px] uppercase tracking-[0.24em] text-accent mb-3">What they say about Nupun</div>
+            <div className="text-[10px] uppercase tracking-[0.24em] text-accent mb-3">
+              What they say about Nupun
+            </div>
             <h2 className="font-display text-3xl md:text-4xl tracking-tight max-w-2xl">
               Families across India, in their own words.
             </h2>
@@ -301,12 +343,18 @@ function ServicesIndex() {
                   </blockquote>
                   <figcaption className="mt-5 flex items-center gap-3">
                     {(t.avatar || t.image) && (
-                      <img src={t.avatar ?? t.image ?? ""} alt={t.name} className="h-10 w-10 rounded-full object-cover" />
+                      <img
+                        src={t.avatar ?? t.image ?? ""}
+                        alt={t.name}
+                        className="h-10 w-10 rounded-full object-cover"
+                      />
                     )}
                     <div>
                       <div className="font-display text-sm">{t.name}</div>
                       {(t.role || t.designation) && (
-                        <div className="text-xs text-muted-foreground">{t.role ?? t.designation}</div>
+                        <div className="text-xs text-muted-foreground">
+                          {t.role ?? t.designation}
+                        </div>
                       )}
                     </div>
                   </figcaption>
@@ -323,9 +371,9 @@ function ServicesIndex() {
           <div className="grid gap-12 lg:grid-cols-2 items-start">
             {/* Left Side: Illustration */}
             <div className="flex items-center justify-center lg:justify-end pr-0 lg:pr-8">
-              <img 
-                src="/assets/faq-illustration.jpeg" 
-                alt="Telemedicine Consultation" 
+              <img
+                src="/assets/faq-illustration.jpeg"
+                alt="Telemedicine Consultation"
                 className="w-[85%] md:w-[70%] lg:w-[85%] max-w-md h-auto mix-blend-multiply"
               />
             </div>
@@ -337,32 +385,41 @@ function ServicesIndex() {
               viewport={{ once: true, margin: "-100px" }}
               variants={{
                 hidden: {},
-                show: { transition: { staggerChildren: 0.1 } }
+                show: { transition: { staggerChildren: 0.1 } },
               }}
               className="flex flex-col justify-center"
             >
-              <motion.h2 
+              <motion.h2
                 variants={{
                   hidden: { opacity: 0, y: 20 },
-                  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
+                  show: {
+                    opacity: 1,
+                    y: 0,
+                    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+                  },
                 }}
                 className="font-display text-3xl md:text-4xl lg:text-[2.75rem] font-bold text-foreground mb-6 leading-tight tracking-tight"
               >
-                Frequently Asked<br/>
+                Frequently Asked
+                <br />
                 <span className="text-primary">Questions</span>
               </motion.h2>
 
               <FaqAccordion items={faqs.slice(0, 6)} />
-              
-              <motion.div 
+
+              <motion.div
                 variants={{
                   hidden: { opacity: 0, y: 20 },
-                  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
+                  show: {
+                    opacity: 1,
+                    y: 0,
+                    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+                  },
                 }}
                 className="mt-8 text-center sm:text-left"
               >
-                <Link 
-                  to="/faq" 
+                <Link
+                  to="/faq"
                   className="inline-flex items-center justify-center gap-2 rounded-full bg-primary/10 text-primary px-8 py-3.5 font-semibold hover:bg-primary hover:text-white transition-colors duration-300"
                 >
                   Read More...
@@ -387,12 +444,16 @@ function ServicesIndex() {
         />
         <div className="container-x py-24 lg:py-28 text-background">
           <div className="max-w-3xl">
-            <div className="text-[10px] uppercase tracking-[0.24em] text-background/70 mb-4">Not sure which service fits?</div>
+            <div className="text-[10px] uppercase tracking-[0.24em] text-background/70 mb-4">
+              Not sure which service fits?
+            </div>
             <h2 className="font-display text-4xl md:text-5xl lg:text-6xl tracking-tight leading-[1.05]">
-              Speak with a senior nurse. <em className="not-italic text-primary-glow">Free, in 15 minutes.</em>
+              Speak with a senior nurse.{" "}
+              <em className="not-italic text-primary-glow">Free, in 15 minutes.</em>
             </h2>
             <p className="mt-5 text-background/75 max-w-xl">
-              Describe the situation once — we'll shape a care plan and share pricing before the call ends.
+              Describe the situation once — we'll shape a care plan and share pricing before the
+              call ends.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               {phone && (

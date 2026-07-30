@@ -75,7 +75,10 @@ function BlogIndex() {
         {isLoading ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="h-80 rounded-3xl border border-border bg-surface animate-pulse" />
+              <div
+                key={i}
+                className="h-80 rounded-3xl border border-border bg-surface animate-pulse"
+              />
             ))}
           </div>
         ) : filtered.length ? (
@@ -108,10 +111,13 @@ function BlogIndex() {
                     {featured.title}
                   </h2>
                   {featured.excerpt && (
-                    <p className="mt-4 max-w-lg text-muted-foreground line-clamp-3">{featured.excerpt}</p>
+                    <p className="mt-4 max-w-lg text-muted-foreground line-clamp-3">
+                      {featured.excerpt}
+                    </p>
                   )}
                   <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-accent">
-                    Read story <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    Read story{" "}
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </span>
                 </div>
               </Link>
@@ -127,7 +133,10 @@ function BlogIndex() {
             )}
           </div>
         ) : (
-          <EmptyState title="The journal is coming soon" description="Fresh writing from our care team is on the way." />
+          <EmptyState
+            title="The journal is coming soon"
+            description="Fresh writing from our care team is on the way."
+          />
         )}
       </Section>
     </>

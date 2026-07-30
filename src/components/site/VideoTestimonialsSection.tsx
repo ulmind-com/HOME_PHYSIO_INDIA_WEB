@@ -39,8 +39,7 @@ export function VideoTestimonialsSection() {
           {/* Right: heading + marquee */}
           <div className="lg:col-span-7">
             <h2 className="font-display text-3xl md:text-4xl font-bold leading-[1.1]">
-              What They Say About{" "}
-              <span className="text-primary">Nupun Home Care</span>
+              What They Say About <span className="text-primary">Nupun Home Care</span>
             </h2>
             <p className="mt-3 max-w-lg text-sm md:text-base text-muted-foreground">
               Our members value the peace of mind our caregivers provide.
@@ -57,16 +56,8 @@ export function VideoTestimonialsSection() {
                 style={{ willChange: "transform" }}
               >
                 {loop.map((v, i) => (
-                  <div
-                    key={`${v.id}-${i}`}
-                    className="w-[170px] md:w-[190px] shrink-0"
-                  >
-                    <VideoCard
-                      v={v}
-                      onPlay={setPlaying}
-                      variant="testimonial"
-                      aspect="9/16"
-                    />
+                  <div key={`${v.id}-${i}`} className="w-[170px] md:w-[190px] shrink-0">
+                    <VideoCard v={v} onPlay={setPlaying} variant="testimonial" aspect="9/16" />
                   </div>
                 ))}
               </motion.div>

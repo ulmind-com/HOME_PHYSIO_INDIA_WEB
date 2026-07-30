@@ -24,9 +24,6 @@ export function HeroShape({ imageUrl, className, alt = "" }: HeroShapeProps) {
   const shapePath =
     "M28 60 A28 28 0 0 1 60 28 L600 0 V560 A20 20 0 0 1 578 580 L60 600 A28 28 0 0 1 28 568 Z";
 
-
-
-
   return (
     <svg
       className={className}
@@ -45,10 +42,14 @@ export function HeroShape({ imageUrl, className, alt = "" }: HeroShapeProps) {
       {/* mint fill — uses theme primary token */}
       <path d={shapePath} fill="var(--primary)" />
 
-
-
       {/* decorative outline rings inside the mint panel */}
-      <g clipPath={`url(#${clipId})`} fill="none" stroke="#ffffff" strokeOpacity="0.35" strokeWidth="2">
+      <g
+        clipPath={`url(#${clipId})`}
+        fill="none"
+        stroke="#ffffff"
+        strokeOpacity="0.35"
+        strokeWidth="2"
+      >
         <circle cx="500" cy="120" r="55" />
         <circle cx="380" cy="180" r="32" />
         <circle cx="205" cy="255" r="18" />
@@ -66,7 +67,6 @@ export function HeroShape({ imageUrl, className, alt = "" }: HeroShapeProps) {
         clipPath={`url(#${clipId})`}
         preserveAspectRatio="xMidYMid slice"
       />
-
     </svg>
   );
 }

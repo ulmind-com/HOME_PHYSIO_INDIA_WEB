@@ -11,8 +11,10 @@ export interface PerspectiveCarouselItem {
   alt?: string;
 }
 
-export interface PerspectiveCarouselProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
+export interface PerspectiveCarouselProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  "onChange"
+> {
   items: PerspectiveCarouselItem[];
   activeIndex?: number;
   defaultActiveIndex?: number;
@@ -38,8 +40,7 @@ const DEFAULT_TRANSITION: Transition = {
   duration: 0.9,
 };
 
-const clamp = (value: number, min: number, max: number) =>
-  Math.min(Math.max(value, min), max);
+const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
 
 export function PerspectiveCarousel({
   items,
@@ -115,10 +116,7 @@ export function PerspectiveCarousel({
       )}
     >
       <div
-        className={cn(
-          "relative flex w-full flex-1 items-center justify-center",
-          viewportClassName,
-        )}
+        className={cn("relative flex w-full flex-1 items-center justify-center", viewportClassName)}
         style={{ perspective: "1200px" }}
       >
         <div
@@ -137,10 +135,7 @@ export function PerspectiveCarousel({
             return (
               <motion.div
                 key={`${item.src}-${index}`}
-                className={cn(
-                  "absolute top-1/2 left-1/2 origin-center",
-                  slideClassName,
-                )}
+                className={cn("absolute top-1/2 left-1/2 origin-center", slideClassName)}
                 style={{
                   width: safeSlideWidth,
                   height: safeSlideWidth * 1.35,
@@ -159,9 +154,7 @@ export function PerspectiveCarousel({
                 <button
                   type="button"
                   aria-label={item.alt ?? item.title}
-                  onClick={() =>
-                    isActive ? onSlideClick?.(index) : selectSlide(index)
-                  }
+                  onClick={() => (isActive ? onSlideClick?.(index) : selectSlide(index))}
                   className={cn(
                     "group relative block h-full w-full overflow-hidden rounded-2xl border border-border bg-surface shadow-[0_20px_60px_-30px_rgba(0,0,0,0.35)] transition-shadow",
                     isActive && "shadow-[0_40px_90px_-30px_rgba(0,0,0,0.45)]",

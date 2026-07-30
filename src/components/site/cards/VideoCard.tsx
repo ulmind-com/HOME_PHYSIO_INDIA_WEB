@@ -1,7 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { Play } from "lucide-react";
 import type { Video } from "@/lib/api/types";
-import { getYouTubeId, inferAspect, resolveVideoPoster, resolveVideoSource } from "@/components/site/VideoPlayerModal";
+import {
+  getYouTubeId,
+  inferAspect,
+  resolveVideoPoster,
+  resolveVideoSource,
+} from "@/components/site/VideoPlayerModal";
 
 type Props = {
   v: Video;
@@ -13,7 +18,8 @@ type Props = {
 export function VideoCard({ v, onPlay, aspect, variant = "default" }: Props) {
   const yt = getYouTubeId(v.youtube_url);
   const src = resolveVideoSource(v);
-  const thumb = resolveVideoPoster(v) || (yt ? `https://i.ytimg.com/vi/${yt.id}/hqdefault.jpg` : null);
+  const thumb =
+    resolveVideoPoster(v) || (yt ? `https://i.ytimg.com/vi/${yt.id}/hqdefault.jpg` : null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [detected, setDetected] = useState<"9/16" | "16/9" | null>(null);
   const a = aspect ?? detected ?? (variant === "testimonial" ? "9/16" : inferAspect(v));
@@ -40,7 +46,6 @@ export function VideoCard({ v, onPlay, aspect, variant = "default" }: Props) {
         (a === "9/16" ? "aspect-[9/16]" : "aspect-video")
       }
     >
-
       {thumb ? (
         <>
           {a === "9/16" && (
@@ -95,9 +100,7 @@ export function VideoCard({ v, onPlay, aspect, variant = "default" }: Props) {
       {variant === "default" && (
         <div className="absolute inset-x-0 bottom-0 p-5 text-white">
           <div className="font-display text-lg leading-tight line-clamp-2">{v.title}</div>
-          {v.category && (
-            <div className="mt-1 text-xs italic text-white/80">{v.category}</div>
-          )}
+          {v.category && <div className="mt-1 text-xs italic text-white/80">{v.category}</div>}
         </div>
       )}
     </div>

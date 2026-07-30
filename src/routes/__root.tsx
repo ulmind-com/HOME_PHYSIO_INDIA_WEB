@@ -90,10 +90,24 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "theme-color", content: "#33C4C7" },
-      { property: "og:title", content: "Nupun Home Health Care Services — Premium care, delivered home" },
-      { name: "twitter:title", content: "Nupun Home Health Care Services — Premium care, delivered home" },
-      { property: "og:description", content: "Verified nurses, physiotherapists and premium medical equipment — booked in minutes, delivered to your door. Rated 5-star by families across the region." },
-      { name: "twitter:description", content: "Verified nurses, physiotherapists and premium medical equipment — booked in minutes, delivered to your door. Rated 5-star by families across the region." },
+      {
+        property: "og:title",
+        content: "Nupun Home Health Care Services — Premium care, delivered home",
+      },
+      {
+        name: "twitter:title",
+        content: "Nupun Home Health Care Services — Premium care, delivered home",
+      },
+      {
+        property: "og:description",
+        content:
+          "Verified nurses, physiotherapists and premium medical equipment — booked in minutes, delivered to your door. Rated 5-star by families across the region.",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "Verified nurses, physiotherapists and premium medical equipment — booked in minutes, delivered to your door. Rated 5-star by families across the region.",
+      },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -151,12 +165,14 @@ function ThemeInjector() {
   if (!settings?.theme_primary && !settings?.theme_accent) return null;
 
   return (
-    <style dangerouslySetInnerHTML={{
-      __html: `:root {
+    <style
+      dangerouslySetInnerHTML={{
+        __html: `:root {
         ${settings.theme_primary ? `--primary: ${settings.theme_primary}; --ring: ${settings.theme_primary};` : ""}
         ${settings.theme_accent ? `--accent: ${settings.theme_accent};` : ""}
-      }`
-    }} />
+      }`,
+      }}
+    />
   );
 }
 

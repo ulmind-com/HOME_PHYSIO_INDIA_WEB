@@ -2,7 +2,15 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, Heart, ShieldCheck, Clock, Users, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  ArrowUpRight,
+  Heart,
+  ShieldCheck,
+  Clock,
+  Users,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { settingsQ } from "@/lib/api/queries";
 import { Counter } from "@/components/site/ui/Counter";
 
@@ -60,24 +68,28 @@ const fadeUp = {
 export function Hero() {
   const navigate = useNavigate();
   const { data: settings } = useQuery(settingsQ());
-  
+
   const rawNumber = settings?.whatsapp || settings?.phone || "919876543210";
   const whatsapp = rawNumber.replace(/\D/g, "");
 
   const heroHeadline = settings?.hero_headline || "Trusted Home Health Care at Your Doorstep";
   const heroSubtitle = settings?.hero_subtitle || "Har Pal Aapke Apno Ke Sath";
-  const heroDescription = settings?.hero_description || "Professional Nursing Care, Patient Attendant, Elderly Care, and Physiotherapy at home across Delhi NCR. Delivering hospital-quality care with compassion.";
+  const heroDescription =
+    settings?.hero_description ||
+    "Professional Nursing Care, Patient Attendant, Elderly Care, and Physiotherapy at home across Delhi NCR. Delivering hospital-quality care with compassion.";
 
   const homeHero = settings?.home_hero;
-  const sliderImages = homeHero?.slider_images?.length 
-    ? homeHero.slider_images.map(img => img.url) 
+  const sliderImages = homeHero?.slider_images?.length
+    ? homeHero.slider_images.map((img) => img.url)
     : HERO_IMAGES;
   const trustText = homeHero?.trust_badge_text || "Trusted by 5,000+";
-  const trustQuote = homeHero?.trust_badge_quote || '"Their nursing staff is extremely professional and compassionate. Highly recommended!"';
+  const trustQuote =
+    homeHero?.trust_badge_quote ||
+    '"Their nursing staff is extremely professional and compassionate. Highly recommended!"';
   const avatars = homeHero?.trust_badge_avatars?.length
-    ? homeHero.trust_badge_avatars.map(img => img.url)
+    ? homeHero.trust_badge_avatars.map((img) => img.url)
     : [1, 2, 3, 4].map((i) => `https://i.pravatar.cc/100?img=${i + 20}`);
-    
+
   const stats = homeHero?.stats?.length
     ? homeHero.stats
     : [
@@ -99,7 +111,7 @@ export function Hero() {
     (next: number, dir: number) => {
       setCurrent([((next % sliderImages.length) + sliderImages.length) % sliderImages.length, dir]);
     },
-    [sliderImages.length]
+    [sliderImages.length],
   );
 
   useEffect(() => {
@@ -114,8 +126,10 @@ export function Hero() {
   const bg = sliderImages[current];
 
   return (
-    <section className="relative isolate flex min-h-[100svh] w-full items-center overflow-hidden" style={{ perspective: "1200px" }}>
-      
+    <section
+      className="relative isolate flex min-h-[100svh] w-full items-center overflow-hidden"
+      style={{ perspective: "1200px" }}
+    >
       {/* ── Sliding Background Images ── */}
       <AnimatePresence initial={false} custom={direction} mode="popLayout">
         <motion.div
@@ -142,7 +156,7 @@ export function Hero() {
       {/* ── Overlays ── */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black/90 via-black/60 to-black/30" />
       <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-      
+
       {/* ── Subtle animated grain texture ── */}
       <div
         className="absolute inset-0 -z-[5] pointer-events-none opacity-[0.04]"
@@ -155,10 +169,8 @@ export function Hero() {
       {/* ── Main Content Grid ── */}
       <div className="relative z-10 container-x w-full flex flex-col pt-28 pb-8 lg:pt-32 lg:pb-10 justify-center min-h-[100svh]">
         <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12 w-full h-full justify-between">
-          
           {/* Left Text Content */}
           <div className="flex flex-col justify-center w-full lg:w-[60%] xl:w-[55%]">
-            
             <motion.div
               variants={fadeUp}
               initial="hidden"
@@ -181,7 +193,10 @@ export function Hero() {
               style={{ textShadow: "0 4px 40px rgba(0,0,0,0.5)" }}
             >
               {heroHeadline.includes("Doorstep") ? (
-                <>Trusted Home Health Care at Your <span className="text-primary font-semibold italic">Doorstep</span></>
+                <>
+                  Trusted Home Health Care at Your{" "}
+                  <span className="text-primary font-semibold italic">Doorstep</span>
+                </>
               ) : (
                 <>{heroHeadline}</>
               )}
@@ -267,15 +282,15 @@ export function Hero() {
                 <div className="flex flex-col">
                   <div className="flex items-center gap-1 text-yellow-400">
                     {[...Array(5)].map((_, i) => (
-                      <svg key={i} className="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                      <svg key={i} className="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
                     ))}
                   </div>
                   <span className="text-xs font-semibold text-white/90 mt-1">{trustText}</span>
                 </div>
               </div>
-              <p className="text-xs text-white/70 italic leading-relaxed">
-                {trustQuote}
-              </p>
+              <p className="text-xs text-white/70 italic leading-relaxed">{trustQuote}</p>
             </motion.div>
 
             {/* Progress Dots + Navigation */}
@@ -363,7 +378,9 @@ function StatItem({
           <Counter value={value} />
           <span>{suffix}</span>
         </div>
-        <div className="mt-0.5 text-[11px] font-medium text-white/70 uppercase tracking-wider">{label}</div>
+        <div className="mt-0.5 text-[11px] font-medium text-white/70 uppercase tracking-wider">
+          {label}
+        </div>
       </div>
     </div>
   );

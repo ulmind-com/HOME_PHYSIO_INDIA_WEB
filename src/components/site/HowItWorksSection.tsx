@@ -26,8 +26,15 @@ export function HowItWorksSection({ illustration }: { illustration?: string }) {
   const { data: settings } = useQuery(settingsQ());
   const image = illustration || communityCare.url;
 
-  const rawSteps = settings?.how_it_works_steps?.length ? settings.how_it_works_steps : DEFAULT_STEPS;
-  const steps = rawSteps.map((s, i) => ({ n: i + 1, variant: VARIANTS[i % VARIANTS.length], title: s.title, body: s.body }));
+  const rawSteps = settings?.how_it_works_steps?.length
+    ? settings.how_it_works_steps
+    : DEFAULT_STEPS;
+  const steps = rawSteps.map((s, i) => ({
+    n: i + 1,
+    variant: VARIANTS[i % VARIANTS.length],
+    title: s.title,
+    body: s.body,
+  }));
 
   return (
     <section className="relative isolate overflow-hidden bg-background py-24 lg:py-32">
@@ -82,7 +89,8 @@ export function HowItWorksSection({ illustration }: { illustration?: string }) {
             </svg>
           </h2>
           <p className="mt-8 text-base leading-relaxed text-muted-foreground md:text-lg">
-            Follow these simple steps to arrange compassionate care for your loved ones — in three easy moves.
+            Follow these simple steps to arrange compassionate care for your loved ones — in three
+            easy moves.
           </p>
         </motion.div>
 
@@ -201,8 +209,12 @@ export function HowItWorksSection({ illustration }: { illustration?: string }) {
                 <ShieldCheck className="h-5 w-5" />
               </div>
               <div>
-                <div className="font-display text-sm font-semibold leading-none">Verified caregivers</div>
-                <div className="mt-1 text-[11px] text-muted-foreground">Background-checked & trained</div>
+                <div className="font-display text-sm font-semibold leading-none">
+                  Verified caregivers
+                </div>
+                <div className="mt-1 text-[11px] text-muted-foreground">
+                  Background-checked & trained
+                </div>
               </div>
             </motion.div>
 
@@ -218,7 +230,9 @@ export function HowItWorksSection({ illustration }: { illustration?: string }) {
                 <Sparkles className="h-4 w-4" />
               </div>
               <div>
-                <div className="font-display text-sm font-semibold leading-none">Matched in 24h</div>
+                <div className="font-display text-sm font-semibold leading-none">
+                  Matched in 24h
+                </div>
                 <div className="mt-0.5 text-[10px] text-muted-foreground">Fast, personal care</div>
               </div>
             </motion.div>

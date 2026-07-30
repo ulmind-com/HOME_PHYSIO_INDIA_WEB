@@ -30,7 +30,9 @@ export function Header() {
   // pill can switch from floating-over-hero styling to solid-on-content styling.
   useEffect(() => {
     const compute = () => {
-      const hero = document.getElementById("hero-section") || document.querySelector<HTMLElement>("main section");
+      const hero =
+        document.getElementById("hero-section") ||
+        document.querySelector<HTMLElement>("main section");
       const threshold = hero ? hero.offsetHeight - 96 : window.innerHeight * 0.4;
       setScrolled(window.scrollY > threshold);
     };
@@ -60,7 +62,9 @@ export function Header() {
             "relative overflow-hidden flex h-16 items-center justify-between gap-4 rounded-full pl-3 pr-3 lg:h-[68px] lg:pl-6 lg:pr-2",
             "backdrop-blur-2xl backdrop-saturate-150 transition-colors duration-300",
             "shadow-[0_20px_50px_-20px_rgba(15,80,80,0.35)]",
-            onDarkHero ? "bg-white/10 border border-white/25" : "bg-white/30 border border-white/50",
+            onDarkHero
+              ? "bg-white/10 border border-white/25"
+              : "bg-white/30 border border-white/50",
           )}
         >
           <div
@@ -71,7 +75,14 @@ export function Header() {
           />
           <Link to="/" className="relative flex items-center gap-2.5 shrink-0">
             <div className="relative h-9 w-9 rounded-xl bg-gradient-to-br from-primary to-accent grid place-items-center">
-              <svg viewBox="0 0 24 24" className="h-5 w-5 text-white" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden>
+              <svg
+                viewBox="0 0 24 24"
+                className="h-5 w-5 text-white"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                aria-hidden
+              >
                 <path d="M12 21s-7-4.35-9.5-8.5C.85 9.5 2.4 5.5 6 5c2.05-.28 3.7.9 6 3 2.3-2.1 3.95-3.28 6-3 3.6.5 5.15 4.5 3.5 7.5C19 16.65 12 21 12 21Z" />
               </svg>
             </div>
@@ -101,7 +112,9 @@ export function Header() {
                 key={item.to}
                 to={item.to}
                 activeOptions={{ exact: item.to === "/" }}
-                activeProps={{ className: onDarkHero ? "text-white font-semibold" : "text-accent font-semibold" }}
+                activeProps={{
+                  className: onDarkHero ? "text-white font-semibold" : "text-accent font-semibold",
+                }}
                 inactiveProps={{ className: onDarkHero ? "text-white/75" : "text-foreground/70" }}
                 className={cn(
                   "text-sm uppercase tracking-wider transition-colors hover:text-primary",
@@ -117,7 +130,9 @@ export function Header() {
               to="/booking"
               className={cn(
                 "inline-flex h-[32px] sm:h-10 items-center justify-center rounded-full px-4 sm:px-5 text-[11px] xs:text-[12px] sm:text-sm font-semibold tracking-wide transition-all hover:scale-105",
-                onDarkHero ? "bg-white text-primary hover:bg-white/90" : "bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-sm hover:opacity-90",
+                onDarkHero
+                  ? "bg-white text-primary hover:bg-white/90"
+                  : "bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-sm hover:opacity-90",
               )}
             >
               <span className="flex items-center gap-1.5 sm:hidden">
@@ -125,7 +140,7 @@ export function Header() {
               </span>
               <span className="hidden sm:inline">Book Appointment</span>
             </Link>
-            
+
             <button
               onClick={() => setOpen(!open)}
               className={cn(
@@ -141,7 +156,7 @@ export function Header() {
 
         <AnimatePresence>
           {open && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: -15, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -15, scale: 0.98 }}

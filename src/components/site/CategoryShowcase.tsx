@@ -1,6 +1,15 @@
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { ArrowUpRight, HeartPulse, Stethoscope, Activity, Thermometer, Syringe, Baby, Pill } from "lucide-react";
+import {
+  ArrowUpRight,
+  HeartPulse,
+  Stethoscope,
+  Activity,
+  Thermometer,
+  Syringe,
+  Baby,
+  Pill,
+} from "lucide-react";
 import type { Service } from "@/lib/api/types";
 
 const fallbackCategories = [
@@ -54,7 +63,12 @@ export function CategoryShowcase({ services }: { services: Service[] }) {
   const fallbackItems = fallbackCategories
     .filter((c) => !realItems.some((r) => r.title === c.title))
     .slice(0, Math.max(0, 4 - realItems.length))
-    .map((c, i) => ({ ...c, image: null, slug: "", color: fallbackCategories[(realItems.length + i) % fallbackCategories.length].color }));
+    .map((c, i) => ({
+      ...c,
+      image: null,
+      slug: "",
+      color: fallbackCategories[(realItems.length + i) % fallbackCategories.length].color,
+    }));
 
   const items = [...realItems, ...fallbackItems].slice(0, 4);
 
@@ -70,9 +84,12 @@ export function CategoryShowcase({ services }: { services: Service[] }) {
         <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-accent backdrop-blur">
           What we offer
         </div>
-        <h3 className="font-display text-3xl tracking-tight md:text-4xl lg:text-5xl">Our Categories</h3>
+        <h3 className="font-display text-3xl tracking-tight md:text-4xl lg:text-5xl">
+          Our Categories
+        </h3>
         <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
-          Explore our specialized care categories, designed to meet the unique needs of your family at every stage.
+          Explore our specialized care categories, designed to meet the unique needs of your family
+          at every stage.
         </p>
       </motion.div>
 
@@ -99,7 +116,9 @@ export function CategoryShowcase({ services }: { services: Service[] }) {
                     <item.icon className="h-6 w-6" />
                   </div>
                   <h4 className="font-display text-xl tracking-tight">{item.title}</h4>
-                  <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{item.description}</p>
+                  <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
+                    {item.description}
+                  </p>
                   <div className="mt-5 flex items-center gap-1 text-xs font-semibold uppercase tracking-[0.15em] text-accent">
                     Learn more
                     <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -116,7 +135,9 @@ export function CategoryShowcase({ services }: { services: Service[] }) {
                     <item.icon className="h-6 w-6" />
                   </div>
                   <h4 className="font-display text-xl tracking-tight">{item.title}</h4>
-                  <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{item.description}</p>
+                  <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
+                    {item.description}
+                  </p>
                 </div>
               </div>
             )}

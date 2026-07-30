@@ -9,7 +9,11 @@ export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ params, context }) => {
     try {
       const b = await context.queryClient.ensureQueryData(blogBySlugQ(params.slug));
-      return { title: b.title, description: b.excerpt ?? undefined, image: imgUrl(b.featured_image) };
+      return {
+        title: b.title,
+        description: b.excerpt ?? undefined,
+        image: imgUrl(b.featured_image),
+      };
     } catch {
       throw notFound();
     }
@@ -22,22 +26,28 @@ export const Route = createFileRoute("/blog/$slug")({
       { property: "og:description", content: loaderData?.description ?? "" },
       { property: "og:type", content: "article" },
       { property: "og:url", content: `/blog/${params.slug}` },
-      ...(loaderData?.image ? [
-        { property: "og:image", content: loaderData.image },
-        { name: "twitter:image", content: loaderData.image },
-      ] : []),
+      ...(loaderData?.image
+        ? [
+            { property: "og:image", content: loaderData.image },
+            { name: "twitter:image", content: loaderData.image },
+          ]
+        : []),
     ],
     links: [{ rel: "canonical", href: `/blog/${params.slug}` }],
-    scripts: loaderData ? [{
-      type: "application/ld+json",
-      children: JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "Article",
-        headline: loaderData.title,
-        image: loaderData.image ? [loaderData.image] : undefined,
-        description: loaderData.description,
-      }),
-    }] : [],
+    scripts: loaderData
+      ? [
+          {
+            type: "application/ld+json",
+            children: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Article",
+              headline: loaderData.title,
+              image: loaderData.image ? [loaderData.image] : undefined,
+              description: loaderData.description,
+            }),
+          },
+        ]
+      : [],
   }),
   component: BlogDetail,
 });
@@ -59,8 +69,19 @@ function BlogDetail() {
         <div className="mx-auto max-w-3xl">
           {(b.author_name || date) && (
             <div className="mb-8 flex items-center gap-3 text-sm text-muted-foreground">
-              {b.author_name && <span className="font-medium text-foreground">{b.author_name}</span>}
-              {date && <span>· {new Date(date).toLocaleDateString(undefined, { day: "numeric", month: "long", year: "numeric" })}</span>}
+              {b.author_name && (
+                <span className="font-medium text-foreground">{b.author_name}</span>
+              )}
+              {date && (
+                <span>
+                  ·{" "}
+                  {new Date(date).toLocaleDateString(undefined, {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })}
+                </span>
+              )}
               {b.read_time && <span>· {b.read_time} min read</span>}
             </div>
           )}

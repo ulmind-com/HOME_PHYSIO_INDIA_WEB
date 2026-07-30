@@ -131,7 +131,9 @@ export function PageHero({
 
         {actions && (
           <Reveal delay={0.14}>
-            <div className={`mt-8 flex flex-wrap items-center gap-3 ${centered ? "justify-center" : ""}`}>
+            <div
+              className={`mt-8 flex flex-wrap items-center gap-3 ${centered ? "justify-center" : ""}`}
+            >
               {actions}
             </div>
           </Reveal>

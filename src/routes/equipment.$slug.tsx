@@ -10,7 +10,11 @@ export const Route = createFileRoute("/equipment/$slug")({
   loader: async ({ params, context }) => {
     try {
       const e = await context.queryClient.ensureQueryData(equipmentBySlugQ(params.slug));
-      return { title: e.title, description: e.short_description ?? undefined, image: e.featured_image ?? undefined };
+      return {
+        title: e.title,
+        description: e.short_description ?? undefined,
+        image: e.featured_image ?? undefined,
+      };
     } catch {
       throw notFound();
     }
@@ -22,10 +26,12 @@ export const Route = createFileRoute("/equipment/$slug")({
       { property: "og:title", content: loaderData?.title ?? "Equipment" },
       { property: "og:description", content: loaderData?.description ?? "" },
       { property: "og:url", content: `/equipment/${params.slug}` },
-      ...(loaderData?.image ? [
-        { property: "og:image", content: loaderData.image },
-        { name: "twitter:image", content: loaderData.image },
-      ] : []),
+      ...(loaderData?.image
+        ? [
+            { property: "og:image", content: loaderData.image },
+            { name: "twitter:image", content: loaderData.image },
+          ]
+        : []),
     ],
     links: [{ rel: "canonical", href: `/equipment/${params.slug}` }],
   }),
@@ -44,7 +50,11 @@ function EquipmentDetail() {
         eyebrow={e.category_name ?? "Equipment"}
         title={e.title}
         description={e.short_description ?? undefined}
-        crumbs={[{ label: "Home", to: "/" }, { label: "Equipment", to: "/equipment" }, { label: e.title }]}
+        crumbs={[
+          { label: "Home", to: "/" },
+          { label: "Equipment", to: "/equipment" },
+          { label: e.title },
+        ]}
       />
       <Section className="pt-4">
         <div className="grid gap-12 lg:grid-cols-12">
@@ -64,7 +74,10 @@ function EquipmentDetail() {
                 <h3 className="font-display text-2xl mb-4">Features</h3>
                 <ul className="grid gap-3 md:grid-cols-2">
                   {e.features.map((f) => (
-                    <li key={f} className="flex items-start gap-3 rounded-2xl border border-border bg-surface p-4">
+                    <li
+                      key={f}
+                      className="flex items-start gap-3 rounded-2xl border border-border bg-surface p-4"
+                    >
                       <Check className="mt-0.5 h-4 w-4 text-primary shrink-0" />
                       <span className="text-sm">{f}</span>
                     </li>
@@ -93,7 +106,10 @@ function EquipmentDetail() {
                   <div className="text-xs uppercase tracking-widest text-accent">Rental price</div>
                   <div className="mt-1 font-display text-4xl">
                     ₹{price.toLocaleString()}
-                    <span className="text-base text-muted-foreground"> / {e.price_unit ?? "day"}</span>
+                    <span className="text-base text-muted-foreground">
+                      {" "}
+                      / {e.price_unit ?? "day"}
+                    </span>
                   </div>
                 </div>
               )}

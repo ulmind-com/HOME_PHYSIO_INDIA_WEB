@@ -9,7 +9,9 @@ export function TestimonialCard({ t }: { t: Testimonial }) {
   return (
     <figure className="flex h-full flex-col rounded-3xl border border-border bg-surface p-7">
       <div className="flex gap-1 text-primary">
-        {Array.from({ length: rating }).map((_, i) => <Star key={i} className="h-4 w-4" fill="currentColor" />)}
+        {Array.from({ length: rating }).map((_, i) => (
+          <Star key={i} className="h-4 w-4" fill="currentColor" />
+        ))}
       </div>
       <blockquote className="mt-4 text-base leading-relaxed text-foreground/90">
         “{text}”

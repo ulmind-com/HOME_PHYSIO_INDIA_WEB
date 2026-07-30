@@ -47,7 +47,14 @@ export function CategoryShowcasePremium() {
   const services = servicesData?.items ?? [];
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { align: "start", loop: true, containScroll: "trimSnaps" },
-    [AutoScroll({ playOnInit: true, speed: 0.8, stopOnInteraction: false, stopOnMouseEnter: true })]
+    [
+      AutoScroll({
+        playOnInit: true,
+        speed: 0.8,
+        stopOnInteraction: false,
+        stopOnMouseEnter: true,
+      }),
+    ],
   );
 
   const scrollPrev = useCallback(() => {
@@ -140,8 +147,8 @@ export function CategoryShowcasePremium() {
         </div>
         <div className="flex flex-col items-start md:items-end gap-6 text-left md:text-right">
           <p className="max-w-md text-base leading-relaxed text-muted-foreground">
-            Four pillars of premium home care — each designed around your family's unique rhythm and delivered by
-            verified professionals.
+            Four pillars of premium home care — each designed around your family's unique rhythm and
+            delivered by verified professionals.
           </p>
           <div className="flex items-center gap-2">
             <button
@@ -167,74 +174,74 @@ export function CategoryShowcasePremium() {
         <div className="overflow-visible" ref={emblaRef}>
           <div className="flex -ml-4 md:-ml-6 lg:-ml-8">
             {items.map((item, i) => {
-          const CardInner = (
-            <>
-              {/* Image */}
-              <div className="absolute inset-0">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.08]"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
+              const CardInner = (
+                <>
+                  {/* Image */}
+                  <div className="absolute inset-0">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.08]"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
 
-              {/* Base darkening for legibility */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
+                  {/* Base darkening for legibility */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
 
-              {/* Unique SVG shape overlay (themed mint) */}
-              <div className="absolute inset-0 text-primary opacity-90 mix-blend-multiply transition-opacity duration-500 group-hover:opacity-95">
-                <CategoryCardShape variant={item.variant} className="h-full w-full" />
-              </div>
+                  {/* Unique SVG shape overlay (themed mint) */}
+                  <div className="absolute inset-0 text-primary opacity-90 mix-blend-multiply transition-opacity duration-500 group-hover:opacity-95">
+                    <CategoryCardShape variant={item.variant} className="h-full w-full" />
+                  </div>
 
-              {/* Index */}
-              <div className="absolute left-6 top-6 flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.25em] text-white backdrop-blur-md ring-1 ring-white/20">
-                <span>{String(i + 1).padStart(2, "0")}</span>
-                <span className="opacity-60">/ {String(items.length).padStart(2, "0")}</span>
-              </div>
+                  {/* Index */}
+                  <div className="absolute left-6 top-6 flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.25em] text-white backdrop-blur-md ring-1 ring-white/20">
+                    <span>{String(i + 1).padStart(2, "0")}</span>
+                    <span className="opacity-60">/ {String(items.length).padStart(2, "0")}</span>
+                  </div>
 
-              {/* Text */}
-              <div className="absolute inset-x-0 bottom-0 p-7 md:p-9">
-                <h4 className="font-display text-2xl leading-tight text-white drop-shadow-sm md:text-3xl lg:text-[2rem]">
-                  {item.title}
-                </h4>
-                <p className="mt-2 max-w-md text-sm leading-relaxed text-white/85 opacity-0 translate-y-2 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0 md:text-[15px]">
-                  {item.description}
-                </p>
-              </div>
+                  {/* Text */}
+                  <div className="absolute inset-x-0 bottom-0 p-7 md:p-9">
+                    <h4 className="font-display text-2xl leading-tight text-white drop-shadow-sm md:text-3xl lg:text-[2rem]">
+                      {item.title}
+                    </h4>
+                    <p className="mt-2 max-w-md text-sm leading-relaxed text-white/85 opacity-0 translate-y-2 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0 md:text-[15px]">
+                      {item.description}
+                    </p>
+                  </div>
 
-              {/* Arrow */}
-              <div className="absolute bottom-6 right-6 md:bottom-8 md:right-8">
-                <div className="grid h-14 w-14 place-items-center rounded-full bg-white/95 text-foreground shadow-[0_10px_30px_-10px_rgba(0,0,0,0.4)] ring-1 ring-white/60 backdrop-blur transition-all duration-500 group-hover:bg-primary group-hover:text-primary-foreground group-hover:rotate-45">
-                  <ArrowUpRight className="h-5 w-5" />
-                </div>
-              </div>
-            </>
-          );
+                  {/* Arrow */}
+                  <div className="absolute bottom-6 right-6 md:bottom-8 md:right-8">
+                    <div className="grid h-14 w-14 place-items-center rounded-full bg-white/95 text-foreground shadow-[0_10px_30px_-10px_rgba(0,0,0,0.4)] ring-1 ring-white/60 backdrop-blur transition-all duration-500 group-hover:bg-primary group-hover:text-primary-foreground group-hover:rotate-45">
+                      <ArrowUpRight className="h-5 w-5" />
+                    </div>
+                  </div>
+                </>
+              );
 
-          const cardClasses =
-            "group relative block aspect-[4/5] w-full overflow-hidden rounded-[2rem] shadow-[0_20px_60px_-30px_rgba(0,0,0,0.35)] ring-1 ring-black/5 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_40px_80px_-30px_rgba(0,0,0,0.45)] md:aspect-[16/11] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary";
+              const cardClasses =
+                "group relative block aspect-[4/5] w-full overflow-hidden rounded-[2rem] shadow-[0_20px_60px_-30px_rgba(0,0,0,0.35)] ring-1 ring-black/5 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_40px_80px_-30px_rgba(0,0,0,0.45)] md:aspect-[16/11] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary";
 
-          return (
-              <motion.div
-                key={item.title + i}
-                className="min-w-0 flex-[0_0_90%] md:flex-[0_0_50%] lg:flex-[0_0_42%] pl-4 md:pl-6 lg:pl-8"
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.7, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-              >
-                {item.slug ? (
-                  <Link to="/services/$slug" params={{ slug: item.slug }} className={cardClasses}>
-                    {CardInner}
-                  </Link>
-                ) : (
-                  <div className={cardClasses}>{CardInner}</div>
-                )}
-              </motion.div>
-            );
-          })}
+              return (
+                <motion.div
+                  key={item.title + i}
+                  className="min-w-0 flex-[0_0_90%] md:flex-[0_0_50%] lg:flex-[0_0_42%] pl-4 md:pl-6 lg:pl-8"
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ duration: 0.7, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  {item.slug ? (
+                    <Link to="/services/$slug" params={{ slug: item.slug }} className={cardClasses}>
+                      {CardInner}
+                    </Link>
+                  ) : (
+                    <div className={cardClasses}>{CardInner}</div>
+                  )}
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </div>

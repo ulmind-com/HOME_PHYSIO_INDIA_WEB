@@ -31,15 +31,19 @@ export function HowItWorksBadge({
       </motion.svg>
 
       {/* Inner glass ring */}
-      <div className={`relative grid h-14 w-14 place-items-center rounded-full bg-surface/85 backdrop-blur ring-1 ring-inset ${c.ring.replace("text-", "ring-")}`}>
-        <span className={`font-display text-2xl font-bold leading-none ${c.text}`}>
-          {n}
-        </span>
+      <div
+        className={`relative grid h-14 w-14 place-items-center rounded-full bg-surface/85 backdrop-blur ring-1 ring-inset ${c.ring.replace("text-", "ring-")}`}
+      >
+        <span className={`font-display text-2xl font-bold leading-none ${c.text}`}>{n}</span>
       </div>
 
       {/* Outer pulse dot */}
-      <span className={`absolute -top-0.5 -right-0.5 h-3 w-3 rounded-full ${c.text.replace("text-", "bg-")} opacity-80`}>
-        <span className={`absolute inset-0 rounded-full ${c.text.replace("text-", "bg-")} animate-ping opacity-60`} />
+      <span
+        className={`absolute -top-0.5 -right-0.5 h-3 w-3 rounded-full ${c.text.replace("text-", "bg-")} opacity-80`}
+      >
+        <span
+          className={`absolute inset-0 rounded-full ${c.text.replace("text-", "bg-")} animate-ping opacity-60`}
+        />
       </span>
     </div>
   );

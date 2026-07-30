@@ -9,10 +9,25 @@ import { CheckCircle2, Loader2 } from "lucide-react";
 
 const schema = z.object({
   name: z.string().trim().min(2, "Please enter your name").max(120),
-  company: z.string().trim().max(120).optional().or(z.literal("").transform(() => undefined)),
+  company: z
+    .string()
+    .trim()
+    .max(120)
+    .optional()
+    .or(z.literal("").transform(() => undefined)),
   email: z.string().trim().email("Enter a valid email"),
-  phone: z.string().trim().max(20).optional().or(z.literal("").transform(() => undefined)),
-  subject: z.string().trim().max(200).optional().or(z.literal("").transform(() => undefined)),
+  phone: z
+    .string()
+    .trim()
+    .max(20)
+    .optional()
+    .or(z.literal("").transform(() => undefined)),
+  subject: z
+    .string()
+    .trim()
+    .max(200)
+    .optional()
+    .or(z.literal("").transform(() => undefined)),
   message: z.string().trim().min(10, "Tell us a little more").max(2000),
 });
 type Values = z.infer<typeof schema>;
@@ -23,7 +38,11 @@ export function ContactForm() {
 
   const mut = useMutation({
     mutationFn: (v: Values) => api.post("/contact", v),
-    onSuccess: () => { setDone(true); toast.success("Message sent."); form.reset(); },
+    onSuccess: () => {
+      setDone(true);
+      toast.success("Message sent.");
+      form.reset();
+    },
     onError: (err: Error) => toast.error(err.message || "Could not send message"),
   });
 
@@ -33,7 +52,10 @@ export function ContactForm() {
         <CheckCircle2 className="mx-auto h-12 w-12 text-primary" />
         <h3 className="mt-4 font-display text-2xl">Thank you</h3>
         <p className="mt-2 text-muted-foreground">We'll be in touch shortly.</p>
-        <button onClick={() => setDone(false)} className="mt-6 inline-flex items-center rounded-full border border-border px-5 py-2.5 text-sm font-medium">
+        <button
+          onClick={() => setDone(false)}
+          className="mt-6 inline-flex items-center rounded-full border border-border px-5 py-2.5 text-sm font-medium"
+        >
           Send another
         </button>
       </div>
@@ -55,14 +77,24 @@ export function ContactForm() {
           <input placeholder="Phone" {...form.register("phone")} className={inputCls} />
         </Field>
         <Field label="Email" error={form.formState.errors.email?.message}>
-          <input type="email" placeholder="Email" {...form.register("email")} className={inputCls} />
+          <input
+            type="email"
+            placeholder="Email"
+            {...form.register("email")}
+            className={inputCls}
+          />
         </Field>
       </div>
       <Field label="Subject">
         <input placeholder="Subject" {...form.register("subject")} className={inputCls} />
       </Field>
       <Field label="Message" error={form.formState.errors.message?.message}>
-        <textarea rows={4} placeholder="Message" {...form.register("message")} className={inputCls} />
+        <textarea
+          rows={4}
+          placeholder="Message"
+          {...form.register("message")}
+          className={inputCls}
+        />
       </Field>
       <button
         type="submit"
@@ -76,8 +108,17 @@ export function ContactForm() {
   );
 }
 
-const inputCls = "w-full rounded-2xl border border-black/10 bg-white/80 px-4 py-3.5 text-[14px] outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20 backdrop-blur-md";
-function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
+const inputCls =
+  "w-full rounded-2xl border border-black/10 bg-white/80 px-4 py-3.5 text-[14px] outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20 backdrop-blur-md";
+function Field({
+  label,
+  error,
+  children,
+}: {
+  label: string;
+  error?: string;
+  children: React.ReactNode;
+}) {
   return (
     <label className="block">
       <span className="text-[14px] font-medium text-foreground">{label}</span>

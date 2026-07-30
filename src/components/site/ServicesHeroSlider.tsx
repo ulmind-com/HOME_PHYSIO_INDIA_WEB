@@ -121,13 +121,8 @@ const buttonVariant = {
 };
 
 /* ── Component ────────────────────────────────────────────────────── */
-export function ServicesHeroSlider({
-  slides: dynamicSlides,
-}: {
-  slides?: HeroSlide[];
-}) {
-  const slides =
-    dynamicSlides && dynamicSlides.length > 0 ? dynamicSlides : FALLBACK_SLIDES;
+export function ServicesHeroSlider({ slides: dynamicSlides }: { slides?: HeroSlide[] }) {
+  const slides = dynamicSlides && dynamicSlides.length > 0 ? dynamicSlides : FALLBACK_SLIDES;
 
   const [[current, direction], setCurrent] = useState([0, 0]);
   const timerRef = useRef<ReturnType<typeof setInterval>>(null);
@@ -145,7 +140,9 @@ export function ServicesHeroSlider({
     timerRef.current = setInterval(() => {
       go(current + 1, 1);
     }, SLIDE_DURATION);
-    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
   }, [current, go]);
 
   const slide = slides[current];
@@ -197,8 +194,6 @@ export function ServicesHeroSlider({
         }}
       />
 
-
-
       {/* ── Text content (per-slide, 3D-animated) ─────────────── */}
       <div className="relative z-20 container-x w-full pb-16 pt-32 lg:pb-20 lg:pt-36">
         <AnimatePresence mode="wait">
@@ -241,10 +236,7 @@ export function ServicesHeroSlider({
             )}
 
             {/* CTA Buttons */}
-            <motion.div
-              variants={buttonVariant}
-              className="mt-9 flex flex-wrap items-center gap-4"
-            >
+            <motion.div variants={buttonVariant} className="mt-9 flex flex-wrap items-center gap-4">
               <Link
                 to={slide.button_link || "/booking"}
                 className="group relative inline-flex items-center gap-2.5 overflow-hidden rounded-full bg-[#43D4B0] px-8 py-4 text-sm font-semibold text-white shadow-[0_20px_50px_-20px_rgba(67,212,176,0.5)] transition-all duration-500 hover:-translate-y-0.5 hover:shadow-[0_25px_60px_-15px_rgba(67,212,176,0.6)]"

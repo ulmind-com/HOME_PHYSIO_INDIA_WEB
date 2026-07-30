@@ -38,7 +38,11 @@ function CareerDetail() {
         eyebrow={c.category_name ?? "Open role"}
         title={c.title}
         description={c.short_description ?? undefined}
-        crumbs={[{ label: "Home", to: "/" }, { label: "Careers", to: "/careers" }, { label: c.title }]}
+        crumbs={[
+          { label: "Home", to: "/" },
+          { label: "Careers", to: "/careers" },
+          { label: c.title },
+        ]}
       />
       <Section className="pt-4">
         <div className="grid gap-12 lg:grid-cols-12">

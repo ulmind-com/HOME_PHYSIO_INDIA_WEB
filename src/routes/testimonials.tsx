@@ -35,7 +35,10 @@ function TestimonialsPage() {
         title="Care remembered."
         description="What patients and their families told us — in their own words, after care that mattered."
         crumbs={[{ label: "Home", to: "/" }, { label: "Testimonials" }]}
-        badges={[`${rating}★ average rating`, ...(total ? [`${total}+ reviews`] : ["Trusted by families"])]}
+        badges={[
+          `${rating}★ average rating`,
+          ...(total ? [`${total}+ reviews`] : ["Trusted by families"]),
+        ]}
       />
 
       {/* Rating summary band */}
@@ -50,7 +53,9 @@ function TestimonialsPage() {
                 ))}
               </div>
               <div className="mt-1 text-sm text-muted-foreground">
-                {total ? `Across ${total}+ verified reviews` : "Rated by families across the region"}
+                {total
+                  ? `Across ${total}+ verified reviews`
+                  : "Rated by families across the region"}
               </div>
             </div>
           </div>
@@ -67,7 +72,10 @@ function TestimonialsPage() {
         {isLoading ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="h-60 rounded-3xl border border-border bg-surface animate-pulse" />
+              <div
+                key={i}
+                className="h-60 rounded-3xl border border-border bg-surface animate-pulse"
+              />
             ))}
           </div>
         ) : items.length ? (

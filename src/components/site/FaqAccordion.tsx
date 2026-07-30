@@ -29,10 +29,14 @@ export function FaqAccordion({ items }: { items: Faq[] }) {
               onClick={() => setOpenId(isOpen ? null : f.id)}
               className="flex w-full items-center justify-between px-6 py-5 text-left"
             >
-              <span className={`font-display font-semibold text-[16px] transition-colors ${isOpen ? "text-foreground" : "text-foreground/90"}`}>
+              <span
+                className={`font-display font-semibold text-[16px] transition-colors ${isOpen ? "text-foreground" : "text-foreground/90"}`}
+              >
                 {f.question}
               </span>
-              <span className={`ml-4 shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}>
+              <span
+                className={`ml-4 shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+              >
                 {isOpen ? (
                   <Minus className="h-5 w-5 text-foreground" strokeWidth={2.5} />
                 ) : (
@@ -40,7 +44,7 @@ export function FaqAccordion({ items }: { items: Faq[] }) {
                 )}
               </span>
             </button>
-            
+
             <AnimatePresence initial={false}>
               {isOpen && (
                 <motion.div

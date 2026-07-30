@@ -21,19 +21,18 @@ export function ServicesMarquee() {
       ? items
       : [
           ...items,
-          ...Array.from({ length: 4 - items.length }).map((_, i) => ({
+          ...(Array.from({ length: 4 - items.length }).map((_, i) => ({
             id: `placeholder-${i}`,
             title: ["Home Nursing", "Elder Care", "Physiotherapy", "Mobility Support"][i],
             slug: "",
-            short_description:
-              [
-                "24/7 qualified nurses at your home.",
-                "Compassionate daily companionship.",
-                "In-home rehab by expert therapists.",
-                "Assisted mobility & recovery.",
-              ][i],
+            short_description: [
+              "24/7 qualified nurses at your home.",
+              "Compassionate daily companionship.",
+              "In-home rehab by expert therapists.",
+              "Assisted mobility & recovery.",
+            ][i],
             featured_image: FALLBACK_IMAGES[i],
-          })) as unknown as Service[],
+          })) as unknown as Service[]),
         ];
 
   const track = [...base, ...base];
@@ -74,7 +73,9 @@ export function ServicesMarquee() {
             Our Services
           </div>
           <h3 className="relative font-display text-4xl tracking-tight md:text-5xl lg:text-6xl">
-            Care that meets you<br />where you are.
+            Care that meets you
+            <br />
+            where you are.
             <svg
               className="absolute -bottom-3 left-0 h-3 w-52 text-primary"
               viewBox="0 0 200 12"
@@ -105,8 +106,7 @@ export function ServicesMarquee() {
         role="region"
         aria-label="Our services"
         style={{
-          maskImage:
-            "linear-gradient(to right, transparent, black 6%, black 94%, transparent)",
+          maskImage: "linear-gradient(to right, transparent, black 6%, black 94%, transparent)",
           WebkitMaskImage:
             "linear-gradient(to right, transparent, black 6%, black 94%, transparent)",
         }}
@@ -154,7 +154,11 @@ function ServiceMarqueeCard({
       {/* Image */}
       <div className="relative h-[280px] overflow-hidden">
         {hasSlug ? (
-          <Link to="/services/$slug" params={{ slug: service.slug }} className="block h-full w-full">
+          <Link
+            to="/services/$slug"
+            params={{ slug: service.slug }}
+            className="block h-full w-full"
+          >
             <img
               src={img}
               alt={service.title}

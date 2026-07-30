@@ -14,10 +14,16 @@ export function GoogleReviews({ summary }: { summary: ReviewSummary }) {
         </h2>
         <div className="mt-2 flex gap-1 text-primary">
           {Array.from({ length: 5 }).map((_, i) => (
-            <Star key={i} className="h-5 w-5" fill={i < Math.round(rating) ? "currentColor" : "none"} />
+            <Star
+              key={i}
+              className="h-5 w-5"
+              fill={i < Math.round(rating) ? "currentColor" : "none"}
+            />
           ))}
         </div>
-        <div className="mt-3 text-sm text-muted-foreground">Based on {summary.total_reviews} verified reviews</div>
+        <div className="mt-3 text-sm text-muted-foreground">
+          Based on {summary.total_reviews} verified reviews
+        </div>
         {summary.google_reviews_link && (
           <a
             href={summary.google_reviews_link}
@@ -37,7 +43,10 @@ export function GoogleReviews({ summary }: { summary: ReviewSummary }) {
             <div key={star} className="flex items-center gap-4">
               <div className="w-8 text-sm text-muted-foreground">{star}★</div>
               <div className="flex-1 h-2 rounded-full bg-primary-soft overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-accent to-primary" style={{ width: `${pct}%` }} />
+                <div
+                  className="h-full bg-gradient-to-r from-accent to-primary"
+                  style={{ width: `${pct}%` }}
+                />
               </div>
               <div className="w-10 text-right text-sm text-muted-foreground">{count}</div>
             </div>

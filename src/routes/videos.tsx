@@ -12,7 +12,10 @@ export const Route = createFileRoute("/videos")({
   head: () => ({
     meta: [
       { title: "Videos — Nupun Home Health Care" },
-      { name: "description", content: "Watch care in action — guides, family stories and behind-the-scenes." },
+      {
+        name: "description",
+        content: "Watch care in action — guides, family stories and behind-the-scenes.",
+      },
       { property: "og:title", content: "Videos — Nupun Home Health Care" },
       { property: "og:description", content: "Watch care in action." },
       { property: "og:url", content: "/videos" },
@@ -38,12 +41,17 @@ function VideosPage() {
         {isLoading ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="aspect-video rounded-3xl border border-border bg-surface animate-pulse" />
+              <div
+                key={i}
+                className="aspect-video rounded-3xl border border-border bg-surface animate-pulse"
+              />
             ))}
           </div>
         ) : items.length ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {items.map((v) => <VideoCard key={v.id} v={v} onPlay={setPlaying} />)}
+            {items.map((v) => (
+              <VideoCard key={v.id} v={v} onPlay={setPlaying} />
+            ))}
           </div>
         ) : (
           <EmptyState title="Videos coming soon" />
