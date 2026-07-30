@@ -149,11 +149,18 @@ export type ServicesHero = {
   slides?: HeroSlide[];
 };
 
+export type HomeHeroStat = {
+  value: number;
+  suffix: string;
+  label: string;
+};
+
 export type HomeHero = {
   trust_badge_text?: string | null;
   trust_badge_quote?: string | null;
   trust_badge_avatars?: ImageAsset[];
   slider_images?: ImageAsset[];
+  stats?: HomeHeroStat[];
 };
 
 export type Settings = {

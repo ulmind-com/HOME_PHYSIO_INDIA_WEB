@@ -7,9 +7,8 @@ import { settingsQ } from "@/lib/api/queries";
 import { Counter } from "@/components/site/ui/Counter";
 
 const HERO_IMAGES = [
-  "/assets/premium-hero.png",
-  "/assets/premium-hero-2.png",
-  "/assets/premium-hero-3.png",
+  "/assets/premium-hero-new-1.png",
+  "/assets/premium-hero-new-2.png",
 ];
 
 const SLIDE_DURATION = 6000;
@@ -75,6 +74,20 @@ export function Hero() {
   const avatars = homeHero?.trust_badge_avatars?.length
     ? homeHero.trust_badge_avatars.map(img => img.url)
     : [1, 2, 3, 4].map((i) => `https://i.pravatar.cc/100?img=${i + 20}`);
+    
+  const stats = homeHero?.stats?.length
+    ? homeHero.stats
+    : [
+        { value: 100, suffix: "+", label: "Verified Caregivers" },
+        { value: 5, suffix: "K+", label: "Happy Families" },
+        { value: 24, suffix: "/7", label: "Support Available" },
+      ];
+
+  const getStatIcon = (index: number) => {
+    const ICONS = [ShieldCheck, Users, Clock, Heart];
+    const Icon = ICONS[index % ICONS.length];
+    return <Icon className="w-5 h-5 text-teal-400" />;
+  };
 
   const [[current, direction], setCurrent] = useState([0, 0]);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -137,8 +150,8 @@ export function Hero() {
       />
 
       {/* ── Main Content Grid ── */}
-      <div className="relative z-10 container-x w-full flex flex-col pt-32 pb-12 lg:pt-40 lg:pb-16 justify-center min-h-[100svh]">
-        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16 w-full h-full justify-between">
+      <div className="relative z-10 container-x w-full flex flex-col pt-28 pb-8 lg:pt-32 lg:pb-10 justify-center min-h-[100svh]">
+        <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12 w-full h-full justify-between">
           
           {/* Left Text Content */}
           <div className="flex flex-col justify-center w-full lg:w-[60%] xl:w-[55%]">
@@ -148,7 +161,7 @@ export function Hero() {
               initial="hidden"
               animate="show"
               custom={0}
-              className="mb-6 inline-flex self-start items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md shadow-sm"
+              className="mb-4 inline-flex self-start items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md shadow-sm"
             >
               <Heart className="h-4 w-4 text-teal-400 fill-teal-400/20" />
               <span className="text-[13px] sm:text-sm font-medium tracking-wide text-white uppercase">
@@ -161,7 +174,7 @@ export function Hero() {
               initial="hidden"
               animate="show"
               custom={1}
-              className="font-display font-medium text-white tracking-tight leading-[1.1] text-[40px] sm:text-[50px] md:text-[60px] lg:text-[70px]"
+              className="font-display font-medium text-white tracking-tight leading-[1.1] text-[40px] sm:text-[48px] md:text-[56px] lg:text-[64px]"
               style={{ textShadow: "0 4px 40px rgba(0,0,0,0.5)" }}
             >
               {heroHeadline.includes("Doorstep") ? (
@@ -176,7 +189,7 @@ export function Hero() {
               initial="hidden"
               animate="show"
               custom={2}
-              className="mt-6 max-w-[540px] text-[16px] md:text-[18px] leading-relaxed text-white/80 font-light"
+              className="mt-4 max-w-[540px] text-[15px] md:text-[17px] leading-relaxed text-white/80 font-light"
               style={{ textShadow: "0 2px 20px rgba(0,0,0,0.3)" }}
             >
               {heroDescription}
@@ -188,11 +201,11 @@ export function Hero() {
               initial="hidden"
               animate="show"
               custom={3}
-              className="mt-8 md:mt-12 flex flex-col sm:flex-row items-stretch sm:items-center gap-4"
+              className="mt-6 md:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4"
             >
               <button
                 onClick={() => navigate({ to: "/booking" })}
-                className="group inline-flex items-center justify-center gap-2 rounded-full bg-teal-500 px-8 py-4 text-[15px] font-semibold text-white shadow-[0_10px_30px_-10px_rgba(20,184,166,0.5)] transition-all duration-300 hover:bg-teal-400 hover:-translate-y-0.5"
+                className="group inline-flex items-center justify-center gap-2 rounded-full bg-teal-500 px-8 py-3.5 text-[15px] font-semibold text-white shadow-[0_10px_30px_-10px_rgba(20,184,166,0.5)] transition-all duration-300 hover:bg-teal-400 hover:-translate-y-0.5"
               >
                 Book Consultation
                 <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -202,7 +215,7 @@ export function Hero() {
                 href={`https://wa.me/${whatsapp}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center justify-center gap-2.5 rounded-full border border-white/30 bg-white/10 backdrop-blur-md px-8 py-4 text-[15px] font-medium text-white shadow-sm hover:bg-white/20 hover:border-white/50 transition-all duration-300 hover:-translate-y-0.5"
+                className="group inline-flex items-center justify-center gap-2.5 rounded-full border border-white/30 bg-white/10 backdrop-blur-md px-8 py-3.5 text-[15px] font-medium text-white shadow-sm hover:bg-white/20 hover:border-white/50 transition-all duration-300 hover:-translate-y-0.5"
               >
                 <WhatsappIcon className="h-5 w-5 text-[#25D366]" />
                 WhatsApp Us
@@ -215,16 +228,22 @@ export function Hero() {
               initial="hidden"
               animate="show"
               custom={4}
-              className="mt-12 md:mt-16 flex flex-wrap items-center gap-x-8 gap-y-6 pt-8 border-t border-white/20"
+              className="mt-8 md:mt-10 flex flex-wrap items-center gap-x-8 gap-y-4 pt-6 border-t border-white/20"
             >
-              <StatItem icon={<ShieldCheck className="w-5 h-5 text-teal-400" />} value={100} suffix="+" label="Verified Caregivers" />
-              <StatItem icon={<Users className="w-5 h-5 text-teal-400" />} value={5} suffix="K+" label="Happy Families" />
-              <StatItem icon={<Clock className="w-5 h-5 text-teal-400" />} value={24} suffix="/7" label="Support Available" />
+              {stats.map((stat, idx) => (
+                <StatItem
+                  key={idx}
+                  icon={getStatIcon(idx)}
+                  value={stat.value}
+                  suffix={stat.suffix}
+                  label={stat.label}
+                />
+              ))}
             </motion.div>
           </div>
 
           {/* Right Floating Trust Badge & Slider Controls */}
-          <div className="flex flex-col items-end gap-10 lg:w-[35%]">
+          <div className="flex flex-col items-end gap-8 lg:w-[35%]">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
