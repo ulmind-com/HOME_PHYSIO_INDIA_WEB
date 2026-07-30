@@ -59,7 +59,7 @@ const slideVariants = {
     filter: "brightness(1)",
     transition: {
       duration: 0.9,
-      ease: [0.22, 1, 0.36, 1],
+      ease: [0.22, 1, 0.36, 1] as const,
     },
   },
   exit: (dir: number) => ({
@@ -70,7 +70,7 @@ const slideVariants = {
     filter: "brightness(0.3)",
     transition: {
       duration: 0.7,
-      ease: [0.22, 1, 0.36, 1],
+      ease: [0.22, 1, 0.36, 1] as const,
     },
   }),
 };
@@ -95,13 +95,13 @@ const textChild = {
     y: 0,
     rotateX: 0,
     filter: "blur(0px)",
-    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as const },
   },
   exit: {
     opacity: 0,
     y: -20,
     filter: "blur(4px)",
-    transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] as const },
   },
 };
 
@@ -111,7 +111,7 @@ const buttonVariant = {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.7, delay: 0.6, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.7, delay: 0.6, ease: [0.22, 1, 0.36, 1] as const },
   },
   exit: {
     opacity: 0,
@@ -130,7 +130,7 @@ export function ServicesHeroSlider({
     dynamicSlides && dynamicSlides.length > 0 ? dynamicSlides : FALLBACK_SLIDES;
 
   const [[current, direction], setCurrent] = useState([0, 0]);
-  const timerRef = useRef<ReturnType<typeof setInterval>>();
+  const timerRef = useRef<ReturnType<typeof setInterval>>(null);
   const pausedRef = useRef(false);
 
   const go = useCallback(
@@ -145,7 +145,7 @@ export function ServicesHeroSlider({
     timerRef.current = setInterval(() => {
       go(current + 1, 1);
     }, SLIDE_DURATION);
-    return () => clearInterval(timerRef.current);
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, [current, go]);
 
   const slide = slides[current];
