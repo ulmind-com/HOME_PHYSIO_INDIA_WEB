@@ -1,6 +1,8 @@
 import { cn } from "@/lib/utils";
 import type { ReactNode } from "react";
 
+import { PremiumScrollReveal } from "./PremiumScrollReveal";
+
 export function Section({
   children,
   className,
@@ -11,9 +13,11 @@ export function Section({
   id?: string;
 }) {
   return (
-    <section id={id} className={cn("py-20 lg:py-28", className)}>
-      <div className="container-x">{children}</div>
-    </section>
+    <PremiumScrollReveal>
+      <section id={id} className={cn("py-20 lg:py-28", className)}>
+        <div className="container-x">{children}</div>
+      </section>
+    </PremiumScrollReveal>
   );
 }
 

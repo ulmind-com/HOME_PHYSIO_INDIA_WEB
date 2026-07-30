@@ -45,22 +45,24 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
+import { PremiumScrollReveal } from "@/components/site/PremiumScrollReveal";
+
 function Home() {
   return (
     <>
       <Hero />
-      <CategoryShowcasePremium />
-      <TrustBar />
-      <HowItWorksSection />
+      <PremiumScrollReveal><CategoryShowcasePremium /></PremiumScrollReveal>
+      <PremiumScrollReveal><TrustBar /></PremiumScrollReveal>
+      <PremiumScrollReveal><HowItWorksSection /></PremiumScrollReveal>
       <ProfessionalsSection />
-      <CareTeamSection />
-      <TestimonialsSection />
-      <VideoTestimonialsSection />
-      <BlogVideosSection />
+      <PremiumScrollReveal><CareTeamSection /></PremiumScrollReveal>
+      <PremiumScrollReveal><TestimonialsSection /></PremiumScrollReveal>
+      <PremiumScrollReveal><VideoTestimonialsSection /></PremiumScrollReveal>
+      <PremiumScrollReveal><BlogVideosSection /></PremiumScrollReveal>
 
-      <FaqSection />
-      <ReviewsSection />
-      <ContactCta />
+      <PremiumScrollReveal><FaqSection /></PremiumScrollReveal>
+      <PremiumScrollReveal><ReviewsSection /></PremiumScrollReveal>
+      <PremiumScrollReveal><ContactCta /></PremiumScrollReveal>
     </>
   );
 }

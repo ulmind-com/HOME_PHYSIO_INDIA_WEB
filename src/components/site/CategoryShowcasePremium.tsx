@@ -102,14 +102,7 @@ export function CategoryShowcasePremium() {
   });
 
   return (
-    <section style={{ perspective: "1200px" }}>
-      <motion.div
-        initial={{ opacity: 0, y: 80, rotateX: 30, scale: 0.9, filter: "blur(8px)" }}
-        whileInView={{ opacity: 1, y: 0, rotateX: 0, scale: 1, filter: "blur(0px)" }}
-        viewport={{ once: true, amount: 0.15 }}
-        transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
-        className="relative z-10 pt-16 lg:pt-24 pb-24 lg:pb-32 overflow-hidden"
-      >
+    <div className="relative z-10 pt-16 lg:pt-24 pb-24 lg:pb-32 overflow-hidden">
       {/* Decorative background dots */}
       <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden>
         <div
@@ -252,7 +245,6 @@ export function CategoryShowcasePremium() {
           </div>
         </div>
       </div>
-    </motion.div>
-    </section>
+    </div>
   );
 }
