@@ -51,18 +51,38 @@ function Home() {
   return (
     <>
       <Hero />
-      <PremiumScrollReveal><CategoryShowcasePremium /></PremiumScrollReveal>
-      <PremiumScrollReveal><TrustBar /></PremiumScrollReveal>
-      <PremiumScrollReveal><HowItWorksSection /></PremiumScrollReveal>
+      <PremiumScrollReveal>
+        <CategoryShowcasePremium />
+      </PremiumScrollReveal>
+      <PremiumScrollReveal>
+        <TrustBar />
+      </PremiumScrollReveal>
+      <PremiumScrollReveal>
+        <HowItWorksSection />
+      </PremiumScrollReveal>
       <ProfessionalsSection />
-      <PremiumScrollReveal><CareTeamSection /></PremiumScrollReveal>
-      <PremiumScrollReveal><TestimonialsSection /></PremiumScrollReveal>
-      <PremiumScrollReveal><VideoTestimonialsSection /></PremiumScrollReveal>
-      <PremiumScrollReveal><BlogVideosSection /></PremiumScrollReveal>
+      <PremiumScrollReveal>
+        <CareTeamSection />
+      </PremiumScrollReveal>
+      <PremiumScrollReveal>
+        <TestimonialsSection />
+      </PremiumScrollReveal>
+      <PremiumScrollReveal>
+        <VideoTestimonialsSection />
+      </PremiumScrollReveal>
+      <PremiumScrollReveal>
+        <BlogVideosSection />
+      </PremiumScrollReveal>
 
-      <PremiumScrollReveal><FaqSection /></PremiumScrollReveal>
-      <PremiumScrollReveal><ReviewsSection /></PremiumScrollReveal>
-      <PremiumScrollReveal><ContactCta /></PremiumScrollReveal>
+      <PremiumScrollReveal>
+        <FaqSection />
+      </PremiumScrollReveal>
+      <PremiumScrollReveal>
+        <ReviewsSection />
+      </PremiumScrollReveal>
+      <PremiumScrollReveal>
+        <ContactCta />
+      </PremiumScrollReveal>
     </>
   );
 }

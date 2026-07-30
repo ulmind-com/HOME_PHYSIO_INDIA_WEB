@@ -27,7 +27,6 @@ const schema = z.object({
 type Values = z.infer<typeof schema>;
 
 export function RentalForm({ equipmentId }: { equipmentId: string }) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [done, setDone] = useState(false);
   const form = useForm<Values>({
     resolver: zodResolver(schema) as never,
