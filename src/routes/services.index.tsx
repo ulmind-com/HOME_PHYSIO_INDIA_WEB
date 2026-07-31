@@ -224,33 +224,41 @@ function ServicesIndex() {
           </div>
 
           <div className="grid gap-5 lg:grid-cols-2 xl:grid-cols-4">
-            {WHY.map(({ icon: Icon, title, detail, theme }, i) => (
-              <motion.div
-                key={title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                className={`group flex items-center gap-5 rounded-[24px] ${theme.bg} p-6 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] border border-transparent hover:border-black/5 dark:hover:border-white/5`}
-              >
-                {/* Icon Circle */}
-                <div
-                  className={`grid h-16 w-16 shrink-0 place-items-center rounded-full ${theme.iconBg} ${theme.iconColor} transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-inner`}
-                >
-                  <Icon className="h-7 w-7" strokeWidth={2.5} />
-                </div>
+            {(settings?.why_choose_items?.length ? settings.why_choose_items : WHY).map((item, i) => {
+              const baseItem = item as any;
+              const Icon = baseItem.icon || WHY[i % WHY.length].icon;
+              const title = baseItem.title;
+              const detail = baseItem.detail;
+              const theme = baseItem.theme || WHY[i % WHY.length].theme;
 
-                {/* Content */}
-                <div>
-                  <h3 className="font-display text-lg font-bold leading-tight tracking-tight text-foreground">
-                    {title}
-                  </h3>
-                  <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground line-clamp-3 pr-2">
-                    {detail}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
+              return (
+                <motion.div
+                  key={title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                  className={`group flex items-center gap-5 rounded-[24px] ${theme.bg} p-6 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] border border-transparent hover:border-black/5 dark:hover:border-white/5`}
+                >
+                  {/* Icon Circle */}
+                  <div
+                    className={`grid h-16 w-16 shrink-0 place-items-center rounded-full ${theme.iconBg} ${theme.iconColor} transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-inner`}
+                  >
+                    <Icon className="h-7 w-7" strokeWidth={2.5} />
+                  </div>
+
+                  {/* Content */}
+                  <div>
+                    <h3 className="font-display text-lg font-bold leading-tight tracking-tight text-foreground">
+                      {title}
+                    </h3>
+                    <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground line-clamp-3 pr-2">
+                      {detail}
+                    </p>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -287,7 +295,7 @@ function ServicesIndex() {
 
           {/* Grid of Glass Cards */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-            {CONDITIONS.map((c, i) => (
+            {(settings?.conditions_list?.length ? settings.conditions_list : CONDITIONS).map((c, i) => (
               <motion.div
                 key={c}
                 initial={{ opacity: 0, y: 20 }}

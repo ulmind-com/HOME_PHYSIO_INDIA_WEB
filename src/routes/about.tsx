@@ -177,39 +177,28 @@ function AboutPage() {
 
             {/* Stats */}
             <div className="flex flex-wrap gap-3 md:gap-5 pt-0">
-              <div className="flex items-center gap-3">
-                <div className="text-primary">
-                  <Award className="h-9 w-9" strokeWidth={1.5} />
-                </div>
-                <div>
-                  <div className="font-display text-[22px] font-bold leading-tight">35+</div>
-                  <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mt-0.5">
-                    Years of Trust
+              {(settings?.about_stats?.length ? settings.about_stats : [
+                { value: "35+", label: "Years of Trust", icon: Award },
+                { value: "4000+", label: "Expert Doctors", icon: Stethoscope },
+                { value: "30M+", label: "Lives Touched", icon: HeartPulse }
+              ]).map((stat, i) => {
+                const ICONS = [Award, Stethoscope, HeartPulse];
+                // Use the icon from the fallback if it exists, otherwise assign based on index
+                const Icon = (stat as any).icon || ICONS[i % ICONS.length];
+                return (
+                  <div key={i} className="flex items-center gap-3">
+                    <div className="text-primary">
+                      <Icon className="h-9 w-9" strokeWidth={1.5} />
+                    </div>
+                    <div>
+                      <div className="font-display text-[22px] font-bold leading-tight">{stat.value}</div>
+                      <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mt-0.5">
+                        {stat.label}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="text-primary">
-                  <Stethoscope className="h-9 w-9" strokeWidth={1.5} />
-                </div>
-                <div>
-                  <div className="font-display text-[22px] font-bold leading-tight">4000+</div>
-                  <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mt-0.5">
-                    Expert Doctors
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="text-primary">
-                  <HeartPulse className="h-9 w-9" strokeWidth={1.5} />
-                </div>
-                <div>
-                  <div className="font-display text-[22px] font-bold leading-tight">30M+</div>
-                  <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mt-0.5">
-                    Lives Touched
-                  </div>
-                </div>
-              </div>
+                );
+              })}
             </div>
 
             {/* Actions */}
@@ -240,7 +229,7 @@ function AboutPage() {
         <div className="relative h-[400px] w-full lg:absolute lg:right-0 lg:top-0 lg:h-full lg:w-[45%] xl:w-[50%] -z-10">
           {/* Replace this with an actual image that fits the doctor/patient context */}
           <img
-            src="/assets/Get professional and compassionate elderly care at home in Ranchi (2)-Picsart-BackgroundRemover.jpeg"
+            src={settings?.about_hero_image || "/assets/Get professional and compassionate elderly care at home in Ranchi (2)-Picsart-BackgroundRemover.jpeg"}
             alt="Doctor and Patient"
             className="w-full h-full object-cover object-top"
           />

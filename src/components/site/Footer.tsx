@@ -1,13 +1,15 @@
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { settingsQ, socialQ } from "@/lib/api/queries";
+import { settingsQ, socialQ, servicesQ } from "@/lib/api/queries";
 import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
 
 export function Footer() {
   const { data: settings } = useQuery(settingsQ());
   const { data: social } = useQuery(socialQ());
+  const { data: servicesData } = useQuery(servicesQ({ limit: 5 }));
 
   const name = settings?.website_name ?? "Nupun Home Health Care";
+  const services = servicesData?.items ?? [];
 
   return (
     <footer className="relative mt-0 bg-[#F2F0EC] pt-16 pb-0 sm:pt-20 flex flex-col">
@@ -105,11 +107,21 @@ export function Footer() {
               </FooterCol>
 
               <FooterCol title="Services">
-                <FooterLink to="/services">Elder Care</FooterLink>
-                <FooterLink to="/services">Physiotherapy</FooterLink>
-                <FooterLink to="/services">Skilled Nursing</FooterLink>
-                <FooterLink to="/services">Rehabilitation</FooterLink>
-                <FooterLink to="/services">Medical Equipment</FooterLink>
+                {services.length > 0 ? (
+                  services.map((s) => (
+                    <FooterLink key={s.id} to={`/services`}>
+                      {s.title}
+                    </FooterLink>
+                  ))
+                ) : (
+                  <>
+                    <FooterLink to="/services">Elder Care</FooterLink>
+                    <FooterLink to="/services">Physiotherapy</FooterLink>
+                    <FooterLink to="/services">Skilled Nursing</FooterLink>
+                    <FooterLink to="/services">Rehabilitation</FooterLink>
+                    <FooterLink to="/services">Medical Equipment</FooterLink>
+                  </>
+                )}
               </FooterCol>
 
               <FooterCol title="Support">
