@@ -229,7 +229,12 @@ function AboutPage() {
         <div className="relative h-[400px] w-full lg:absolute lg:right-0 lg:top-0 lg:h-full lg:w-[45%] xl:w-[50%] -z-10">
           {/* Replace this with an actual image that fits the doctor/patient context */}
           <img
-            src={settings?.about_hero_image || "/assets/Get professional and compassionate elderly care at home in Ranchi (2)-Picsart-BackgroundRemover.jpeg"}
+            src={
+              typeof settings?.about_hero_image === "string"
+                ? settings.about_hero_image
+                : settings?.about_hero_image?.url ||
+                  "/assets/Get professional and compassionate elderly care at home in Ranchi (2)-Picsart-BackgroundRemover.jpeg"
+            }
             alt="Doctor and Patient"
             className="w-full h-full object-cover object-top"
           />

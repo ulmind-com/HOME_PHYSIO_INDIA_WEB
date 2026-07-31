@@ -231,6 +231,15 @@ export type Settings = {
   about_welcome_title?: string | null;
   about_welcome_description?: string | null;
   about_welcome_image?: string | ImageAsset | null;
+
+  // Legal Pages
+  privacy_sections?: { title: string; body: string }[];
+  terms_sections?: { title: string; body: string }[];
+  refund_sections?: { title: string; body: string }[];
+
+  // Services Page
+  why_choose_items?: { title: string; detail: string }[];
+  conditions_list?: string[];
 };
 
 export type SocialLinks = {
