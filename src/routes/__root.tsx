@@ -13,6 +13,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "../components/site/Header";
 import { Footer } from "../components/site/Footer";
+import { WhatsAppWidget } from "../components/site/WhatsAppWidget";
 import { Toaster } from "../components/ui/sonner";
 import { useQuery } from "@tanstack/react-query";
 import { settingsQ } from "../lib/api/queries";
@@ -189,6 +190,7 @@ function RootComponent() {
         </main>
         <Footer />
       </div>
+      <WhatsAppWidget />
       <Toaster position="top-center" richColors />
     </QueryClientProvider>
   );
