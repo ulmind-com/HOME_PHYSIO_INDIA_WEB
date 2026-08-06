@@ -168,12 +168,8 @@ export function ComprehensiveServicesSection() {
         {/* 4 Detailed Static Cards (2x2 Grid, Aroha Cares Style) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 max-w-7xl mx-auto">
           {services.map((service, idx) => (
-            <motion.article
+            <article
               key={service.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: idx * 0.15, ease: [0.22, 1, 0.36, 1] }}
               className="group relative flex flex-col overflow-hidden rounded-[2.5rem] border border-border/80 bg-surface/95 shadow-[0_15px_45px_-10px_rgba(0,0,0,0.08)] transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_25px_65px_-15px_rgba(0,0,0,0.15)] hover:border-primary/50"
             >
               {/* Media Header */}
@@ -258,7 +254,7 @@ export function ComprehensiveServicesSection() {
                   </Link>
                 </div>
               </div>
-            </motion.article>
+            </article>
           ))}
         </div>
       </div>
