@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
+import useEmblaCarousel from "embla-carousel-react";
+import AutoScroll from "embla-carousel-auto-scroll";
 import {
   blogsQ,
   faqsQ,
@@ -157,13 +159,35 @@ function TestimonialsSection() {
   const rawItems = data?.items ?? [];
   const items = rawItems.length ? rawItems : DEFAULT_TESTIMONIALS;
 
+  const [emblaRef] = useEmblaCarousel(
+    { loop: true, dragFree: true, align: "start" },
+    [
+      AutoScroll({
+        playOnInit: true,
+        speed: 1.2,
+        stopOnInteraction: false,
+        stopOnMouseEnter: true,
+        direction: "forward",
+      }),
+    ]
+  );
+
   return (
-    <Section>
+    <Section className="overflow-hidden pb-4">
       <SectionHeader eyebrow="Testimonials & Reviews" title="They Say About Nupun" />
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-10">
-        {items.slice(0, 6).map((t) => (
-          <TestimonialCard key={t.id} t={t} />
-        ))}
+      <div className="mt-10 -mx-4 md:-mx-8">
+        <div className="overflow-hidden cursor-grab active:cursor-grabbing" ref={emblaRef}>
+          <div className="flex pl-4 md:pl-8">
+            {[...items, ...items, ...items].map((t, i) => (
+              <div
+                key={`${t.id}-${i}`}
+                className="min-w-0 flex-[0_0_85%] sm:flex-[0_0_50%] md:flex-[0_0_35%] lg:flex-[0_0_28%] pr-4 md:pr-6"
+              >
+                <TestimonialCard t={t} />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </Section>
   );
