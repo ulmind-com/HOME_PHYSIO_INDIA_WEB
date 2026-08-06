@@ -58,9 +58,7 @@ function Home() {
       </PremiumScrollReveal>
 
       {/* 3. Our Comprehensive Services (4 detailed static cards — Aroha Cares style) */}
-      <PremiumScrollReveal>
-        <ComprehensiveServicesSection />
-      </PremiumScrollReveal>
+      <ComprehensiveServicesSection />
 
       {/* 4. About Us Section */}
       <PremiumScrollReveal>
