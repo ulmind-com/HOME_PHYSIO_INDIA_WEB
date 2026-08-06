@@ -46,7 +46,7 @@ export function CategoryShowcasePremium() {
   const { data: servicesData } = useQuery(servicesQ({ limit: 8 }));
   const services = servicesData?.items ?? [];
   const [emblaRef, emblaApi] = useEmblaCarousel(
-    { align: "start", loop: true, containScroll: "trimSnaps" },
+    { align: "start", loop: true, containScroll: "trimSnaps", breakpoints: { "(max-width: 767px)": { active: false } } },
     [
       AutoScroll({
         playOnInit: true,
@@ -172,7 +172,7 @@ export function CategoryShowcasePremium() {
       {/* Carousel */}
       <div className="container-x">
         <div className="overflow-visible" ref={emblaRef}>
-          <div className="flex -ml-4 md:-ml-6 lg:-ml-8">
+          <div className="flex flex-col gap-8 md:flex-row md:-ml-6 lg:-ml-8 md:gap-0">
             {items.map((item, i) => {
               const CardInner = (
                 <>
@@ -226,7 +226,7 @@ export function CategoryShowcasePremium() {
               return (
                 <motion.div
                   key={item.title + i}
-                  className="min-w-0 flex-[0_0_90%] md:flex-[0_0_50%] lg:flex-[0_0_42%] pl-4 md:pl-6 lg:pl-8"
+                  className="min-w-0 w-full md:w-auto md:flex-[0_0_50%] lg:flex-[0_0_42%] md:pl-6 lg:pl-8"
                   initial={{ opacity: 0, y: 40 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-60px" }}
