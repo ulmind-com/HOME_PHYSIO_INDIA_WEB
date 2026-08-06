@@ -8,8 +8,6 @@ import {
   Users,
   ArrowRight,
   Phone,
-  ClipboardCheck,
-  UserCheck,
   Stethoscope,
   BadgeCheck,
   Search,
@@ -22,6 +20,7 @@ import { PageHero } from "@/components/site/PageHero";
 import { Section, SectionHeader } from "@/components/site/Section";
 import { Reveal } from "@/components/site/Reveal";
 import { ServicesMarquee } from "@/components/site/ServicesMarquee";
+import { HowItWorksSection } from "@/components/site/HowItWorksSection";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -64,26 +63,6 @@ const DEFAULT_VALUES = [
 ];
 const ICONS = [HeartPulse, ShieldCheck, Sparkles, Users];
 
-const PROCESS = [
-  {
-    icon: Phone,
-    step: "01",
-    title: "Book a consultation",
-    body: "Tell us your needs over a call or online. A care expert listens and advises — no pressure.",
-  },
-  {
-    icon: ClipboardCheck,
-    step: "02",
-    title: "Get a custom care plan",
-    body: "We shape a personalised plan around the condition, schedule and budget, with clear pricing.",
-  },
-  {
-    icon: UserCheck,
-    step: "03",
-    title: "Meet your caregiver",
-    body: "You're matched with a verified, trained and compassionate professional from our team.",
-  },
-];
 
 const DEFAULT_COMMITMENTS = [
   "2-hour caregiver replacement SLA",
@@ -351,66 +330,7 @@ function AboutPage() {
       </div>
 
       {/* ── How it works ─────────────────────────────────────── */}
-      <Section>
-        <SectionHeader
-          align="center"
-          eyebrow="How it works"
-          title="Getting started is easy"
-          description="Three simple steps to arrange compassionate, skilled care for your loved ones."
-        />
-        <div className="grid gap-6 lg:grid-cols-3">
-          {PROCESS.map((p, i) => {
-            const themes = [
-              {
-                bg: "bg-[#F5FAF6]",
-                iconBg: "bg-[#E5F4EA]",
-                iconColor: "text-[#16A34A]",
-                border: "border-[#E5F4EA]",
-              },
-              {
-                bg: "bg-[#F4F7FC]",
-                iconBg: "bg-[#E6F0FD]",
-                iconColor: "text-[#2563EB]",
-                border: "border-[#E6F0FD]",
-              },
-              {
-                bg: "bg-[#FDF5FB]",
-                iconBg: "bg-[#FCE6F5]",
-                iconColor: "text-[#C026D3]",
-                border: "border-[#FCE6F5]",
-              },
-            ];
-            const theme = themes[i % themes.length];
-
-            return (
-              <Reveal key={p.step} delay={i * 0.08}>
-                <div
-                  className={`group relative h-full rounded-[2rem] border ${theme.border} ${theme.bg} p-6 transition-all duration-500 hover:shadow-xl hover:-translate-y-1 flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-5`}
-                >
-                  {/* Glowing Icon Wrapper */}
-                  <div
-                    className={`shrink-0 relative grid h-20 w-20 place-items-center rounded-full ${theme.iconBg} ${theme.iconColor} transition-transform duration-500 group-hover:scale-105`}
-                  >
-                    {/* Inner glowing pulse */}
-                    <div className="absolute inset-0 rounded-full bg-white opacity-40 blur-md transition-opacity group-hover:opacity-80" />
-                    <p.icon className="relative z-10 h-8 w-8" strokeWidth={2} />
-                  </div>
-
-                  {/* Text Wrapper */}
-                  <div className="flex-1 mt-2 sm:mt-0">
-                    <div className="font-display text-xl md:text-[22px] font-bold text-foreground leading-tight group-hover:text-primary transition-colors">
-                      {p.title}
-                    </div>
-                    <p className="mt-2 text-[14px] leading-relaxed text-muted-foreground/90">
-                      {p.body}
-                    </p>
-                  </div>
-                </div>
-              </Reveal>
-            );
-          })}
-        </div>
-      </Section>
+      <HowItWorksSection />
 
       {/* ── Commitment (dark band) ───────────────────────────── */}
       <section className="relative overflow-hidden rounded-[2.5rem] mx-4 lg:mx-auto max-w-[1400px] shadow-2xl shadow-primary/20 my-16">

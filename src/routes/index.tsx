@@ -1,18 +1,14 @@
-import { useState, useEffect, useCallback, useRef } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "framer-motion";
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { motion } from "framer-motion";
 import {
   blogsQ,
   faqsQ,
   reviewSummaryQ,
-  servicesQ,
   settingsQ,
   testimonialsQ,
 } from "@/lib/api/queries";
-import { Reveal, StaggerGroup, StaggerItem } from "@/components/site/Reveal";
-import { Section, SectionHeader, EmptyState } from "@/components/site/Section";
+import { Section, SectionHeader } from "@/components/site/Section";
 import { BlogCard } from "@/components/site/cards/BlogCard";
 import { VideoTestimonialsSection } from "@/components/site/VideoTestimonialsSection";
 import { TestimonialCard } from "@/components/site/cards/TestimonialCard";
@@ -20,8 +16,10 @@ import { FaqAccordion } from "@/components/site/FaqAccordion";
 import { GoogleReviews } from "@/components/site/GoogleReviews";
 import { Hero } from "@/components/site/Hero";
 import { CategoryShowcasePremium } from "@/components/site/CategoryShowcasePremium";
+import { ComprehensiveServicesSection } from "@/components/site/ComprehensiveServicesSection";
 import { HowItWorksSection } from "@/components/site/HowItWorksSection";
 import { ProfessionalsSection } from "@/components/site/ProfessionalsSection";
+import { PremiumScrollReveal } from "@/components/site/PremiumScrollReveal";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -45,25 +43,34 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-import { PremiumScrollReveal } from "@/components/site/PremiumScrollReveal";
-
 function Home() {
   return (
     <>
+      {/* 1. Hero Page / Top Banner */}
       <Hero />
+      <TrustBar />
+
+      {/* 2. Our Categories Section (Quick view icons/boxes) */}
       <PremiumScrollReveal>
         <CategoryShowcasePremium />
       </PremiumScrollReveal>
+
+      {/* 3. Our Comprehensive Services (4 detailed static cards — Aroha Cares style) */}
       <PremiumScrollReveal>
-        <TrustBar />
+        <ComprehensiveServicesSection />
       </PremiumScrollReveal>
+
+      {/* 4. About Us Section */}
+      <PremiumScrollReveal>
+        <ProfessionalsSection />
+      </PremiumScrollReveal>
+
+      {/* 5. Getting Started Easy (Step 1, 2, 3) */}
       <PremiumScrollReveal>
         <HowItWorksSection />
       </PremiumScrollReveal>
-      <ProfessionalsSection />
-      <PremiumScrollReveal>
-        <CareTeamSection />
-      </PremiumScrollReveal>
+
+      {/* 6. They Say About Nupun (Testimonials & Reviews) */}
       <PremiumScrollReveal>
         <TestimonialsSection />
       </PremiumScrollReveal>
@@ -71,15 +78,20 @@ function Home() {
         <VideoTestimonialsSection />
       </PremiumScrollReveal>
       <PremiumScrollReveal>
+        <ReviewsSection />
+      </PremiumScrollReveal>
+
+      {/* 7. Care Blog Section */}
+      <PremiumScrollReveal>
         <BlogVideosSection />
       </PremiumScrollReveal>
 
+      {/* 8. FAQ's Section */}
       <PremiumScrollReveal>
         <FaqSection />
       </PremiumScrollReveal>
-      <PremiumScrollReveal>
-        <ReviewsSection />
-      </PremiumScrollReveal>
+
+      {/* Closing Contact CTA */}
       <PremiumScrollReveal>
         <ContactCta />
       </PremiumScrollReveal>
@@ -113,230 +125,42 @@ function TrustBar() {
   );
 }
 
-function CareTeamSection() {
-  const { data: settings } = useQuery(settingsQ());
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const DEFAULT_SLIDES = [
-    {
-      image: "/assets/hero-slide-1.jpeg",
-      eyebrow: "Physiotherapy",
-      title: "Expert physiotherapists\nbringing recovery home.",
-      description:
-        "Our certified physios deliver hospital-grade rehabilitation at your doorstep — from post-surgery recovery to chronic pain management.",
-      buttonText: "Book Physiotherapy",
-      buttonLink: "/booking",
-      stats: [
-        { count: "45+", label: "Physiotherapists" },
-        { count: "10K+", label: "Sessions Done" },
-        { count: "98%", label: "Recovery Rate" },
-        { count: "2hr", label: "Avg Response" },
-      ],
-    },
-    {
-      image: "/assets/hero-slide-2.jpeg",
-      eyebrow: "Elder Care",
-      title: "Compassionate senior\ncare — with dignity.",
-      description:
-        "Dedicated attendants and nurses providing 24/7 elder care — medication, mobility support and emotional companionship your loved ones deserve.",
-      buttonText: "Explore Elder Care",
-      buttonLink: "/services",
-      stats: [
-        { count: "200+", label: "Care Attendants" },
-        { count: "50K+", label: "Families Served" },
-        { count: "24/7", label: "Available" },
-        { count: "4.9★", label: "Google Rating" },
-      ],
-    },
-    {
-      image: "/assets/hero-slide-3.jpeg",
-      eyebrow: "Skilled Nursing",
-      title: "Nurses, trained and\nverified — handpicked.",
-      description:
-        "From wound dressing and IV therapy to post-operative care — our nurses deliver clinical precision with a gentle, caring touch. Only 4% make the cut.",
-      buttonText: "Get Nursing Care",
-      buttonLink: "/booking",
-      stats: [
-        { count: "120+", label: "Registered Nurses" },
-        { count: "30+", label: "Doctors on Panel" },
-        { count: "5-step", label: "Vetting Process" },
-        { count: "4%", label: "Selection Rate" },
-      ],
-    },
-    {
-      image: "/assets/hero-slide-4.jpeg",
-      eyebrow: "Rehabilitation",
-      title: "Rehabilitation that\nrestores confidence.",
-      description:
-        "Advanced physical therapy for stroke recovery, joint replacement and neurological conditions — guided by experts who truly care.",
-      buttonText: "Start Rehab Plan",
-      buttonLink: "/booking",
-      stats: [
-        { count: "95%", label: "Improvement Rate" },
-        { count: "30+", label: "Specializations" },
-        { count: "5K+", label: "Patients Helped" },
-        { count: "1hr", label: "First Session" },
-      ],
-    },
-  ];
-
-  // Use slides from admin panel if available, otherwise use defaults
-  const slides = settings?.care_team_slides?.length
-    ? settings.care_team_slides.map((s) => ({
-        image: s.image,
-        eyebrow: s.eyebrow,
-        title: s.title,
-        description: s.description,
-        buttonText: s.button_text,
-        buttonLink: s.button_link,
-        stats: s.stats,
-      }))
-    : DEFAULT_SLIDES;
-
-  const total = slides.length;
-
-  // Container-level scroll tracking (like ulmind.com)
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"],
-  });
-
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 30,
-    damping: 40,
-    restDelta: 0.001,
-  });
-
-  // Create opacity + scale for each card based on its segment of the total scroll
-  // Each card occupies 1/total of the scroll, fading out during its segment
-  const cardAnimations = slides.map((_, i) => {
-    const segmentSize = 1 / total;
-    const start = i * segmentSize;
-    const end = (i + 1) * segmentSize;
-    const isLast = i === total - 1;
-
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const opacity = isLast ? 1 : useTransform(smoothProgress, [start, end], [1, 0]);
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const scale = isLast ? 1 : useTransform(smoothProgress, [start, end], [1, 0.9]);
-
-    return { opacity, scale };
-  });
-
-  return (
-    <section className="relative w-full bg-background">
-      {/* Stacking zone: height = slides × 100vh for scroll room */}
-      <div ref={containerRef} style={{ height: `${total * 100}vh` }} className="relative">
-        {slides.map((slide, i) => (
-          <div
-            key={i}
-            className="sticky top-0 h-screen w-full flex items-center justify-center"
-            style={{ zIndex: i + 1 }}
-          >
-            <StackedCard
-              slide={slide}
-              index={i}
-              total={total}
-              opacity={cardAnimations[i].opacity}
-              scale={cardAnimations[i].scale}
-            />
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function StackedCard({
-  slide,
-  index,
-  total,
-  opacity,
-  scale,
-}: {
-  slide: any /* eslint-disable-line @typescript-eslint/no-explicit-any */;
-  index: number;
-  total: number;
-  opacity: any /* eslint-disable-line @typescript-eslint/no-explicit-any */;
-  scale: any /* eslint-disable-line @typescript-eslint/no-explicit-any */;
-}) {
-  return (
-    <motion.div
-      style={{ opacity, scale }}
-      className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[85vh] md:h-[80vh] will-change-transform"
-    >
-      <div className="relative w-full h-full rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-[0_-10px_60px_rgba(0,0,0,0.2)]">
-        {/* Background image */}
-        <img
-          src={slide.image}
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover object-[center_30%]"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/55 to-black/30" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-
-        {/* Content overlay */}
-        <div className="relative z-10 h-full p-8 md:p-14 lg:p-20 flex flex-col justify-center">
-          <div className="max-w-2xl mt-4 md:mt-0">
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 backdrop-blur-md mb-5 md:mb-6">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-              <span className="text-[11px] md:text-xs uppercase tracking-[0.2em] font-semibold text-white/90">
-                {slide.eyebrow}
-              </span>
-            </div>
-
-            <h2 className="font-display text-3xl sm:text-5xl md:text-[3.5rem] font-medium leading-[1.05] text-white tracking-tight drop-shadow-lg whitespace-pre-line">
-              {slide.title}
-            </h2>
-            <p className="mt-4 md:mt-6 max-w-[500px] text-[15px] md:text-[17px] leading-relaxed text-white/80 drop-shadow-md font-light">
-              {slide.description}
-            </p>
-
-            <div className="mt-8 md:mt-10">
-              <Link
-                to={slide.buttonLink}
-                className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 md:px-8 py-3.5 md:py-4 text-[14px] md:text-[15px] font-semibold text-white shadow-[0_15px_40px_-10px_var(--color-primary),0.5)] transition-all duration-300 hover:bg-primary/90 hover:-translate-y-0.5 hover:shadow-[0_20px_50px_-10px_var(--color-primary),0.6)]"
-              >
-                {slide.buttonText}
-                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </div>
-
-            <div className="mt-12 md:mt-16 grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-5">
-              {slide.stats.map(
-                (
-                  s: any /* eslint-disable-line @typescript-eslint/no-explicit-any */,
-                  idx: number,
-                ) => (
-                  <div
-                    key={idx}
-                    className="rounded-[1.25rem] border border-white/10 bg-white/[0.03] backdrop-blur-xl p-4 md:p-5 shadow-sm transition-all hover:bg-white/[0.05]"
-                  >
-                    <div className="font-display text-2xl md:text-3xl font-bold text-white tracking-tight">
-                      {s.count}
-                    </div>
-                    <div className="mt-2 text-[10px] md:text-[11px] text-white/60 font-medium uppercase tracking-[0.1em]">
-                      {s.label}
-                    </div>
-                  </div>
-                ),
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
+const DEFAULT_TESTIMONIALS: any[] = [
+  {
+    id: "1",
+    name: "Rajeshwar Roy",
+    role: "Son of Patient, Kolkata",
+    rating: 5,
+    content:
+      "Nupun Health arranged an ICU-trained nurse within two hours after my father was discharged. The clinical discipline and empathy shown by the staff were exceptional.",
+  },
+  {
+    id: "2",
+    name: "Anjali Mukherjee",
+    role: "Post-Surgery Patient",
+    rating: 5,
+    content:
+      "The physiotherapist assigned to me for knee replacement recovery was thorough and patient. I walked without assistance much faster than my doctor anticipated!",
+  },
+  {
+    id: "3",
+    name: "Saurabh Banerjee",
+    role: "Elder Care Client",
+    rating: 5,
+    content:
+      "Having a dedicated 24/7 care attendant for my elderly mother brought our family peace of mind. Truly hospital-grade standards at home.",
+  },
+];
 
 function TestimonialsSection() {
   const { data } = useQuery(testimonialsQ({ limit: 8 }));
-  const items = data?.items ?? [];
-  if (!items.length) return null;
+  const rawItems = data?.items ?? [];
+  const items = rawItems.length ? rawItems : DEFAULT_TESTIMONIALS;
+
   return (
     <Section>
-      <SectionHeader eyebrow="Testimonials" title="Words from the families we serve." />
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <SectionHeader eyebrow="Testimonials & Reviews" title="They Say About Nupun" />
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-10">
         {items.slice(0, 6).map((t) => (
           <TestimonialCard key={t.id} t={t} />
         ))}
@@ -345,41 +169,109 @@ function TestimonialsSection() {
   );
 }
 
+const DEFAULT_BLOGS: any[] = [
+  {
+    id: "1",
+    title: "How to Ensure Safety & Comfort for Seniors Recovering at Home",
+    slug: "senior-home-recovery-safety",
+    category_name: "Elder Care",
+    excerpt:
+      "Essential guidelines for home adaptations, fall prevention, and vitals monitoring to create a safe post-hospitalization healing sanctuary.",
+    author_name: "Dr. A. Sengupta",
+    read_time: "4",
+    featured_image: "/assets/hero-slide-2.jpeg",
+    published_at: "2026-07-28T10:00:00Z",
+  },
+  {
+    id: "2",
+    title: "Understanding In-Home Physiotherapy: Timeline & Milestones",
+    slug: "in-home-physiotherapy-milestones",
+    category_name: "Physiotherapy",
+    excerpt:
+      "What to expect during orthopedic or stroke rehabilitation, and why familiarity of home accelerates cognitive and physical recovery.",
+    author_name: "S. Roy, PT",
+    read_time: "5",
+    featured_image: "/assets/hero-slide-1.jpeg",
+    published_at: "2026-07-22T10:00:00Z",
+  },
+  {
+    id: "3",
+    title: "When Do You Need Skilled ICU Nursing Care at Home?",
+    slug: "skilled-icu-nursing-at-home-guide",
+    category_name: "Skilled Nursing",
+    excerpt:
+      "A step-by-step assessment guide for families evaluating round-the-clock ventilator, tracheostomy, or palliative nursing care.",
+    author_name: "Nurse Lead Team",
+    read_time: "3",
+    featured_image: "/assets/hero-slide-3.jpeg",
+    published_at: "2026-07-15T10:00:00Z",
+  },
+];
+
 function BlogVideosSection() {
   const { data: blogs } = useQuery(blogsQ({ limit: 3 }));
-  const bItems = blogs?.items ?? [];
-  if (!bItems.length) return null;
+  const rawItems = blogs?.items ?? [];
+  const bItems = rawItems.length ? rawItems : DEFAULT_BLOGS;
 
   return (
     <Section>
-      {!!bItems.length && (
-        <>
-          <div className="flex items-end justify-between mb-10">
-            <SectionHeader eyebrow="Journal" title="From the care blog" />
-            <Link to="/blog" className="text-sm font-medium text-accent">
-              All posts →
-            </Link>
-          </div>
-          <div className="grid gap-6 md:grid-cols-3">
-            {bItems.map((b) => (
-              <BlogCard key={b.id} blog={b} />
-            ))}
-          </div>
-        </>
-      )}
+      <div className="flex items-end justify-between mb-10">
+        <SectionHeader eyebrow="Care Blog" title="Latest from Our Care Blog" />
+        <Link to="/blog" className="text-sm font-medium text-accent hover:underline">
+          All posts →
+        </Link>
+      </div>
+      <div className="grid gap-6 md:grid-cols-3">
+        {bItems.map((b) => (
+          <BlogCard key={b.id} blog={b} />
+        ))}
+      </div>
     </Section>
   );
 }
 
+const DEFAULT_FAQS: any[] = [
+  {
+    id: "1",
+    question: "How quickly can Nupun arrange a nurse or caregiver at my home?",
+    answer:
+      "In most cases, we can verify your medical requirements and assign a qualified nurse or attendant to your doorstep within 2 to 4 hours of your booking consultation.",
+  },
+  {
+    id: "2",
+    question: "Are all Nupun caregivers and nurses certified and background-checked?",
+    answer:
+      "Yes. Every registered nurse, physiotherapist, and care attendant goes through a rigorous 5-step vetting process, including medical credentials verification, criminal background checks, and practical clinical skills testing.",
+  },
+  {
+    id: "3",
+    question: "Can I request a replacement if the assigned caregiver does not suit our family schedule?",
+    answer:
+      "Absolutely. Your dedicated care advisor maintains daily coordination and can facilitate a smooth caregiver replacement within 24 hours without any interruption to ongoing care.",
+  },
+  {
+    id: "4",
+    question: "Do you provide medical equipment along with nursing or therapy services?",
+    answer:
+      "Yes, we provide comprehensive ICU setup rentals, hospital beds, oxygen concentrators, BiPAP/CPAP monitors, and specialized physiotherapy equipment directly installed at your residence.",
+  },
+  {
+    id: "5",
+    question: "How does billing and pricing work for long-term care plans?",
+    answer:
+      "We offer complete transparent pricing with weekly or monthly billing packages tailored to your chosen care shifts (8-hr, 12-hr, or 24-hr live-in care). No hidden charges.",
+  },
+];
+
 function FaqSection() {
   const { data } = useQuery(faqsQ({ limit: 6 }));
-  const items = data?.items ?? [];
-  if (!items.length) return null;
+  const rawItems = data?.items ?? [];
+  const items = rawItems.length ? rawItems : DEFAULT_FAQS;
 
   return (
     <Section className="bg-[#F8F9FA]">
       <div className="grid gap-12 lg:grid-cols-2 items-start">
-        {/* Left Side: Illustration (No Animation) */}
+        {/* Left Side: Illustration */}
         <div className="flex items-center justify-center lg:justify-end pr-0 lg:pr-8">
           <img
             src="/assets/faq-illustration.jpeg"
@@ -388,7 +280,7 @@ function FaqSection() {
           />
         </div>
 
-        {/* Right Side: FAQs (Animated) */}
+        {/* Right Side: FAQs */}
         <motion.div
           initial="hidden"
           whileInView="show"
@@ -471,13 +363,13 @@ function ContactCta() {
           <div className="flex flex-wrap gap-3 lg:justify-end">
             <Link
               to="/booking"
-              className="rounded-full bg-white text-dark px-6 py-3.5 text-sm font-medium"
+              className="rounded-full bg-white text-dark px-6 py-3.5 text-sm font-medium transition-transform hover:scale-105"
             >
               Book care
             </Link>
             <Link
               to="/contact"
-              className="rounded-full border border-white/30 text-white px-6 py-3.5 text-sm font-medium"
+              className="rounded-full border border-white/30 text-white px-6 py-3.5 text-sm font-medium transition-colors hover:bg-white/10"
             >
               Contact us
             </Link>
@@ -485,15 +377,5 @@ function ContactCta() {
         </div>
       </motion.div>
     </Section>
-  );
-}
-
-function SkeletonGrid({ count = 6 }: { count?: number }) {
-  return (
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {Array.from({ length: count }).map((_, i) => (
-        <div key={i} className="h-64 rounded-3xl border border-border bg-surface animate-pulse" />
-      ))}
-    </div>
   );
 }

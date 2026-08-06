@@ -95,21 +95,12 @@ export function Hero() {
   const sliderImages = homeHero?.slider_images?.length
     ? homeHero.slider_images.map((img) => img.url)
     : HERO_IMAGES;
-  const trustText = homeHero?.trust_badge_text || "Trusted by 5,000+";
-  const trustQuote =
-    homeHero?.trust_badge_quote ||
-    '"Their nursing staff is extremely professional and compassionate. Highly recommended!"';
-  const avatars = homeHero?.trust_badge_avatars?.length
-    ? homeHero.trust_badge_avatars.map((img) => img.url)
-    : [1, 2, 3, 4].map((i) => `https://i.pravatar.cc/100?img=${i + 20}`);
 
-  const stats = homeHero?.stats?.length
-    ? homeHero.stats
-    : [
-        { value: 100, suffix: "+", label: "Verified Caregivers" },
-        { value: 5, suffix: "K+", label: "Happy Families" },
-        { value: 24, suffix: "/7", label: "Support Available" },
-      ];
+  const stats = [
+    { value: 250, suffix: "+", label: "Caregivers" },
+    { value: 40, suffix: "+", label: "Nurses" },
+    { value: 35, suffix: "+", label: "Physiotherapists" },
+  ];
 
   const getStatIcon = (index: number) => {
     const ICONS = [ShieldCheck, Users, Clock, Heart];
@@ -208,7 +199,7 @@ export function Hero() {
               {heroHeadline.includes("Doorstep") ? (
                 <>
                   Trusted Home Health Care at Your{" "}
-                  <span className="text-primary font-semibold italic">Doorstep</span>
+                  <span className="text-white font-semibold italic">Doorstep</span>
                 </>
               ) : (
                 <>{heroHeadline}</>
@@ -238,7 +229,7 @@ export function Hero() {
                 onClick={() => navigate({ to: "/booking" })}
                 className="group inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-[15px] font-semibold text-primary-foreground shadow-sm transition-all duration-300 hover:brightness-110 hover:-translate-y-0.5"
               >
-                Book Consultation
+                Book Trusted Care
                 <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </button>
 
@@ -273,38 +264,8 @@ export function Hero() {
             </motion.div>
           </div>
 
-          {/* Right Floating Trust Badge & Slider Controls */}
-          <div className="flex flex-col items-end gap-8 lg:w-[35%]">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1, ease: [0.16, 1, 0.3, 1] }}
-              className="bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl rounded-3xl p-5 md:p-6 flex flex-col gap-4 max-w-[280px]"
-            >
-              <div className="flex items-center gap-4">
-                <div className="flex -space-x-3">
-                  {avatars.map((url, i) => (
-                    <img
-                      key={i}
-                      src={url}
-                      alt="User avatar"
-                      className="w-10 h-10 rounded-full border-2 border-slate-800 object-cover shadow-sm"
-                    />
-                  ))}
-                </div>
-                <div className="flex flex-col">
-                  <div className="flex items-center gap-1 text-yellow-400">
-                    {[...Array(5)].map((_, i) => (
-                      <svg key={i} className="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                    ))}
-                  </div>
-                  <span className="text-xs font-semibold text-white/90 mt-1">{trustText}</span>
-                </div>
-              </div>
-              <p className="text-xs text-white/70 italic leading-relaxed">{trustQuote}</p>
-            </motion.div>
+          {/* Right Slider Controls */}
+          <div className="flex flex-col items-end justify-end gap-8 lg:w-[35%] h-full mt-8 lg:mt-0">
 
             {/* Progress Dots + Navigation */}
             <motion.div
