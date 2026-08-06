@@ -129,7 +129,7 @@ export function Header() {
             <Link
               to="/booking"
               className={cn(
-                "inline-flex h-[32px] sm:h-10 items-center justify-center rounded-full px-4 sm:px-5 text-[11px] xs:text-[12px] sm:text-sm font-semibold tracking-wide transition-all hover:scale-105",
+                "hidden sm:inline-flex h-[32px] sm:h-10 items-center justify-center rounded-full px-4 sm:px-5 text-[11px] xs:text-[12px] sm:text-sm font-semibold tracking-wide transition-all hover:scale-105",
                 onDarkHero
                   ? "bg-white text-primary hover:bg-white/90"
                   : "bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-sm hover:opacity-90",
