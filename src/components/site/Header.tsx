@@ -86,7 +86,7 @@ export function Header() {
                 <path d="M12 21s-7-4.35-9.5-8.5C.85 9.5 2.4 5.5 6 5c2.05-.28 3.7.9 6 3 2.3-2.1 3.95-3.28 6-3 3.6.5 5.15 4.5 3.5 7.5C19 16.65 12 21 12 21Z" />
               </svg>
             </div>
-            <div className="leading-tight flex flex-col justify-center max-w-[100px] xs:max-w-none">
+            <div className="leading-tight flex flex-col justify-center whitespace-nowrap">
               <div
                 className={cn(
                   "font-display text-[15px] font-semibold tracking-tight uppercase",
