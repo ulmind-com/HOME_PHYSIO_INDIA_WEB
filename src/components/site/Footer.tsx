@@ -190,7 +190,7 @@ function SocialIcon({
   Icon,
   href,
 }: {
-  Icon: any /* eslint-disable-line @typescript-eslint/no-explicit-any */;
+  Icon: any /* eslint-disable-line @typescript-eslint/no-explicit-any */ /* eslint-disable-line @typescript-eslint/no-explicit-any */;
   href: string;
 }) {
   return (

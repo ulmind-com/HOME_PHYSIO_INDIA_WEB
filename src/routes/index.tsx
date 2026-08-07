@@ -3,13 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
 import AutoScroll from "embla-carousel-auto-scroll";
-import {
-  blogsQ,
-  faqsQ,
-  reviewSummaryQ,
-  settingsQ,
-  testimonialsQ,
-} from "@/lib/api/queries";
+import { blogsQ, faqsQ, reviewSummaryQ, settingsQ, testimonialsQ } from "@/lib/api/queries";
 import { Section, SectionHeader } from "@/components/site/Section";
 import { BlogCard } from "@/components/site/cards/BlogCard";
 import { VideoTestimonialsSection } from "@/components/site/VideoTestimonialsSection";
@@ -22,6 +16,8 @@ import { ComprehensiveServicesSection } from "@/components/site/ComprehensiveSer
 import { HowItWorksSection } from "@/components/site/HowItWorksSection";
 import { ProfessionalsSection } from "@/components/site/ProfessionalsSection";
 import { PremiumScrollReveal } from "@/components/site/PremiumScrollReveal";
+import { WhyChooseUsSection } from "@/components/site/WhyChooseUsSection";
+import { CommitmentSection } from "@/components/site/CommitmentSection";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -70,6 +66,11 @@ function Home() {
         <HowItWorksSection />
       </PremiumScrollReveal>
 
+      {/* 7. Care Blog Section */}
+      <PremiumScrollReveal>
+        <BlogVideosSection />
+      </PremiumScrollReveal>
+
       {/* 6. They Say About Nupun (Testimonials & Reviews) */}
       <PremiumScrollReveal>
         <TestimonialsSection />
@@ -81,9 +82,14 @@ function Home() {
         <ReviewsSection />
       </PremiumScrollReveal>
 
-      {/* 7. Care Blog Section */}
+      {/* Why Choose Nupun Section */}
       <PremiumScrollReveal>
-        <BlogVideosSection />
+        <WhyChooseUsSection />
+      </PremiumScrollReveal>
+
+      {/* Commitment to Excellence Section */}
+      <PremiumScrollReveal>
+        <CommitmentSection />
       </PremiumScrollReveal>
 
       {/* 8. FAQ's Section */}
@@ -125,7 +131,7 @@ function TrustBar() {
   );
 }
 
-const DEFAULT_TESTIMONIALS: any[] = [
+const DEFAULT_TESTIMONIALS: any /* eslint-disable-line @typescript-eslint/no-explicit-any */[] = [
   {
     id: "1",
     name: "Rajeshwar Roy",
@@ -157,18 +163,15 @@ function TestimonialsSection() {
   const rawItems = data?.items ?? [];
   const items = rawItems.length ? rawItems : DEFAULT_TESTIMONIALS;
 
-  const [emblaRef] = useEmblaCarousel(
-    { loop: true, dragFree: true, align: "start" },
-    [
-      AutoScroll({
-        playOnInit: true,
-        speed: 1.2,
-        stopOnInteraction: false,
-        stopOnMouseEnter: true,
-        direction: "forward",
-      }),
-    ]
-  );
+  const [emblaRef] = useEmblaCarousel({ loop: true, dragFree: true, align: "start" }, [
+    AutoScroll({
+      playOnInit: true,
+      speed: 1.2,
+      stopOnInteraction: false,
+      stopOnMouseEnter: true,
+      direction: "forward",
+    }),
+  ]);
 
   return (
     <Section className="overflow-hidden pb-4">
@@ -191,7 +194,7 @@ function TestimonialsSection() {
   );
 }
 
-const DEFAULT_BLOGS: any[] = [
+const DEFAULT_BLOGS: any /* eslint-disable-line @typescript-eslint/no-explicit-any */[] = [
   {
     id: "1",
     title: "How to Ensure Safety & Comfort for Seniors Recovering at Home",
@@ -231,28 +234,48 @@ const DEFAULT_BLOGS: any[] = [
 ];
 
 function BlogVideosSection() {
-  const { data: blogs } = useQuery(blogsQ({ limit: 3 }));
+  const { data: blogs } = useQuery(blogsQ({ limit: 6 }));
   const rawItems = blogs?.items ?? [];
-  const bItems = rawItems.length ? rawItems : DEFAULT_BLOGS;
+  const bItems = rawItems.length ? rawItems : [...DEFAULT_BLOGS, ...DEFAULT_BLOGS];
+
+  const [emblaRef] = useEmblaCarousel({ loop: true, dragFree: true, align: "start" }, [
+    AutoScroll({
+      playOnInit: true,
+      speed: 1.2,
+      stopOnInteraction: false,
+      stopOnMouseEnter: true,
+      direction: "forward",
+    }),
+  ]);
 
   return (
-    <Section>
+    <Section className="overflow-hidden">
       <div className="flex items-end justify-between mb-10">
         <SectionHeader eyebrow="Care Blog" title="Latest from Our Care Blog" />
-        <Link to="/blog" className="text-sm font-medium text-accent hover:underline">
+        <Link to="/blog" className="text-sm font-medium text-accent hover:underline mb-8">
           All posts →
         </Link>
       </div>
-      <div className="grid gap-6 md:grid-cols-3">
-        {bItems.map((b) => (
-          <BlogCard key={b.id} blog={b} />
-        ))}
+
+      <div className="-mx-4 md:-mx-8">
+        <div className="overflow-hidden cursor-grab active:cursor-grabbing" ref={emblaRef}>
+          <div className="flex pl-4 md:pl-8">
+            {bItems.map((b, i) => (
+              <div
+                key={`${b.id}-${i}`}
+                className="min-w-0 flex-[0_0_85%] sm:flex-[0_0_50%] md:flex-[0_0_35%] lg:flex-[0_0_28%] pr-4 md:pr-6 pb-4"
+              >
+                <BlogCard blog={b} />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </Section>
   );
 }
 
-const DEFAULT_FAQS: any[] = [
+const DEFAULT_FAQS: any /* eslint-disable-line @typescript-eslint/no-explicit-any */[] = [
   {
     id: "1",
     question: "How quickly can Nupun arrange a nurse or caregiver at my home?",
@@ -267,7 +290,8 @@ const DEFAULT_FAQS: any[] = [
   },
   {
     id: "3",
-    question: "Can I request a replacement if the assigned caregiver does not suit our family schedule?",
+    question:
+      "Can I request a replacement if the assigned caregiver does not suit our family schedule?",
     answer:
       "Absolutely. Your dedicated care advisor maintains daily coordination and can facilitate a smooth caregiver replacement within 24 hours without any interruption to ongoing care.",
   },
@@ -311,7 +335,8 @@ function FaqSection() {
             hidden: {},
             show: { transition: { staggerChildren: 0.1 } },
           }}
-          className="flex flex-col justify-center"
+          className="flex flex-col justify-center will-change-transform"
+          style={{ transform: 'translateZ(0)' }}
         >
           <motion.h2
             variants={{
@@ -365,10 +390,10 @@ function ContactCta() {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="relative overflow-hidden rounded-[2.5rem] p-10 lg:p-16 text-white shadow-[var(--shadow-elegant)]"
-        style={{ background: "linear-gradient(135deg, var(--accent), var(--primary))" }}
+        className="relative overflow-hidden rounded-[2.5rem] p-10 lg:p-16 text-white shadow-[var(--shadow-elegant)] will-change-transform"
+        style={{ background: "linear-gradient(135deg, var(--accent), var(--primary))", transform: 'translateZ(0)' }}
       >
-        <div className="absolute inset-0 opacity-30 mix-blend-overlay bg-[radial-gradient(circle_at_20%_20%,white,transparent_40%)]" />
+        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_20%_20%,white,transparent_40%)]" />
         <div className="relative grid gap-8 lg:grid-cols-2 lg:items-center">
           <div>
             <div className="text-sm uppercase tracking-[0.2em] text-white/70 mb-3">

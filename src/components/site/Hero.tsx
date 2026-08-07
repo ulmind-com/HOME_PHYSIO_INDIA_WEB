@@ -89,18 +89,21 @@ export function Hero() {
   const heroSubtitle = settings?.hero_subtitle || "Har Pal Aapke Apno Ke Sath";
   const heroDescription =
     settings?.hero_description ||
-    "Professional Nursing Care, Patient Attendant, Elderly Care, and Physiotherapy at home across Delhi NCR. Delivering hospital-quality care with compassion.";
+    "Trusted Home Nursing, Patient Attendant, Elderly Care, ICU Care, Physiotherapy, Medical Equipment Rental, Services at Home across Faridabad, Gurugram, Noida & Delhi.";
 
   const homeHero = settings?.home_hero;
   const sliderImages = homeHero?.slider_images?.length
     ? homeHero.slider_images.map((img) => img.url)
     : HERO_IMAGES;
 
-  const stats = [
+  const defaultStats = [
+    { value: 1500, suffix: "+", label: "Family Served" },
     { value: 250, suffix: "+", label: "Caregivers" },
     { value: 40, suffix: "+", label: "Nurses" },
     { value: 35, suffix: "+", label: "Physiotherapists" },
   ];
+
+  const stats = homeHero?.stats?.length ? homeHero.stats : defaultStats;
 
   const getStatIcon = (index: number) => {
     const ICONS = [ShieldCheck, Users, Clock, Heart];
