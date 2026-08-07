@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { ArrowRight, Check, ShieldCheck, Sparkles, HeartPulse } from "lucide-react";
-import { settingsQ } from "@/lib/api/queries";
+import { servicesQ } from "@/lib/api/queries";
 
 type ServiceStaticCard = {
   id: string;
@@ -93,27 +93,37 @@ const DEFAULT_SERVICES: ServiceStaticCard[] = [
 ];
 
 export function ComprehensiveServicesSection() {
-  const { data: settings } = useQuery(settingsQ());
+  const { data: servicesData } = useQuery(servicesQ({ limit: 4 }));
+  const rawItems = servicesData?.items ?? [];
 
-  // Use slides/services from admin panel if present and match structure, else default to Aroha Cares style 4 cards
-  const services: ServiceStaticCard[] = settings?.care_team_slides?.length
-    ? settings.care_team_slides.slice(0, 4).map((s, i) => ({
-        id: `custom-${i}`,
-        eyebrow: s.eyebrow || DEFAULT_SERVICES[i]?.eyebrow || "Service",
-        title: s.title ? s.title.replace(/\n/g, " ") : DEFAULT_SERVICES[i]?.title || "Care Service",
-        description: s.description || DEFAULT_SERVICES[i]?.description || "",
-        image: s.image || DEFAULT_SERVICES[i]?.image || "/assets/community-care.jpeg",
-        badge: s.stats?.[0]?.count ? `${s.stats[0].count} ${s.stats[0].label}` : DEFAULT_SERVICES[i]?.badge || "Verified Care",
-        highlight: s.stats?.[1]?.count ? `${s.stats[1].count} ${s.stats[1].label}` : DEFAULT_SERVICES[i]?.highlight || "Hospital-Grade",
-        features: DEFAULT_SERVICES[i]?.features || [
-          "Personalized home care plan",
-          "Qualified & verified professionals",
-          "24/7 dedicated advisor support",
-          "Regular vitals monitoring & reports",
-        ],
-        buttonText: s.button_text || DEFAULT_SERVICES[i]?.buttonText || "Book Service",
-        buttonLink: s.button_link || "/booking",
-      }))
+  // Use services from admin panel if present, else default to Aroha Cares style 4 cards
+  const services: ServiceStaticCard[] = rawItems.length > 0
+    ? rawItems.slice(0, 4).map((s, i) => {
+        // Handle ImageAsset or string gracefully
+        const imageStr = typeof s.featured_image === "string"
+          ? s.featured_image
+          : (s.featured_image as any)?.url || DEFAULT_SERVICES[i]?.image || "/assets/community-care.jpeg";
+
+        return {
+          id: s.id || `custom-${i}`,
+          eyebrow: s.category_name || DEFAULT_SERVICES[i]?.eyebrow || "Service",
+          title: s.title || DEFAULT_SERVICES[i]?.title || "Care Service",
+          description: s.short_description || s.description || DEFAULT_SERVICES[i]?.description || "",
+          image: imageStr,
+          badge: s.price ? `Starts at ₹${s.price}` : (DEFAULT_SERVICES[i]?.badge || "Verified Care"),
+          highlight: s.features?.[0] || DEFAULT_SERVICES[i]?.highlight || "Hospital-Grade",
+          features: s.features?.length > 1
+            ? s.features.slice(1, 5)
+            : DEFAULT_SERVICES[i]?.features || [
+                "Personalized home care plan",
+                "Qualified & verified professionals",
+                "24/7 dedicated advisor support",
+                "Regular vitals monitoring & reports",
+              ],
+          buttonText: "Book Service",
+          buttonLink: `/services/${s.slug || ""}`,
+        };
+      })
     : DEFAULT_SERVICES;
 
   return (
