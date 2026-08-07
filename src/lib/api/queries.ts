@@ -11,6 +11,7 @@ import type {
   SocialLinks,
   Testimonial,
   Video,
+  Category,
 } from "./types";
 
 const FIVE_MIN = 5 * 60 * 1000;
@@ -22,6 +23,18 @@ export const servicesQ = (params: { limit?: number; featured?: boolean } = {}) =
       api.get<Paginated<Service>>(
         "/services",
         { page_size: params.limit ?? 24, is_featured: params.featured },
+        signal,
+      ),
+    staleTime: FIVE_MIN,
+  });
+
+export const categoriesQ = (params: { limit?: number } = {}) =>
+  queryOptions({
+    queryKey: ["categories", params],
+    queryFn: ({ signal }) =>
+      api.get<Paginated<Category>>(
+        "/services/categories",
+        { page_size: params.limit ?? 24 },
         signal,
       ),
     staleTime: FIVE_MIN,

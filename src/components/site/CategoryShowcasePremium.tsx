@@ -5,8 +5,8 @@ import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import AutoScroll from "embla-carousel-auto-scroll";
 import { useCallback, useEffect } from "react";
-import type { Service } from "@/lib/api/types";
-import { servicesQ } from "@/lib/api/queries";
+import type { Category } from "@/lib/api/types";
+import { categoriesQ } from "@/lib/api/queries";
 import { CategoryCardShape } from "./CategoryCardShape";
 const nursingAsset = { url: "/assets/categories/nursing.jpg" };
 const elderAsset = { url: "/assets/categories/elder.jpg" };
@@ -43,8 +43,8 @@ const fallbacks: Array<{ title: string; description: string; image: string; vari
 ];
 
 export function CategoryShowcasePremium() {
-  const { data: servicesData } = useQuery(servicesQ({ limit: 8 }));
-  const services = servicesData?.items ?? [];
+  const { data: categoriesData } = useQuery(categoriesQ({ limit: 8 }));
+  const categories = categoriesData?.items ?? [];
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { align: "start", loop: true, containScroll: "trimSnaps", breakpoints: { "(max-width: 767px)": { active: false } } },
     [
@@ -91,12 +91,18 @@ export function CategoryShowcasePremium() {
   }, [emblaApi]);
 
   const items = fallbacks.map((fb, i) => {
-    const svc = services[i];
+    const cat = categories[i];
+    
+    // Extract string URL if it's an ImageAsset object
+    const imageStr = cat?.image 
+      ? (typeof cat.image === "string" ? cat.image : cat.image.url) 
+      : fb.image;
+
     return {
-      title: svc?.title || fb.title,
-      description: svc?.short_description || fb.description,
-      image: svc?.featured_image || fb.image,
-      slug: svc?.slug || "",
+      title: cat?.name || fb.title,
+      description: cat?.description || fb.description,
+      image: imageStr || fb.image,
+      slug: cat?.slug || "",
       variant: fb.variant,
     };
   });
