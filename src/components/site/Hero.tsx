@@ -108,7 +108,7 @@ export function Hero() {
   const getStatIcon = (index: number) => {
     const ICONS = [ShieldCheck, Users, Clock, Heart];
     const Icon = ICONS[index % ICONS.length];
-    return <Icon className="w-5 h-5 text-primary" />;
+    return <Icon className="w-6 h-6 md:w-7 md:h-7" strokeWidth={2.5} />;
   };
 
   const [[current, direction], setCurrent] = useState([0, 0]);
@@ -346,18 +346,18 @@ function StatItem({
   label: string;
 }) {
   return (
-    <div className="flex items-center gap-3">
-      <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 backdrop-blur-md shadow-sm border border-white/20">
-        {icon}
-      </span>
-      <div>
-        <div className="font-display text-2xl font-semibold text-white flex items-baseline drop-shadow-md">
+    <div className="flex flex-col group relative">
+      <div className="font-display text-[28px] md:text-[32px] font-bold text-white flex items-center gap-2 drop-shadow-md">
+        <span className="text-primary transition-transform duration-300 group-hover:scale-110">
+          {icon}
+        </span>
+        <div className="flex items-baseline tracking-tight">
           <Counter value={value} />
-          <span>{suffix}</span>
+          <span className="text-primary">{suffix}</span>
         </div>
-        <div className="mt-0.5 text-[11px] font-medium text-white/70 uppercase tracking-wider">
-          {label}
-        </div>
+      </div>
+      <div className="mt-1 text-[11px] font-medium text-white/60 uppercase tracking-widest pl-7">
+        {label}
       </div>
     </div>
   );
