@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { ArrowRight, Check, ShieldCheck, Sparkles, HeartPulse } from "lucide-react";
 import { servicesQ } from "@/lib/api/queries";
+import { NursingBookingModal } from "@/components/forms/NursingBookingModal";
 
 type ServiceStaticCard = {
   id: string;
@@ -252,16 +253,17 @@ export function ComprehensiveServicesSection() {
                     Learn More →
                   </Link>
 
-                  <Link
-                    to={service.buttonLink}
-                    className="group/btn relative overflow-hidden rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-white shadow-[0_10px_25px_-5px_var(--color-primary),0.4)] transition-all duration-300 hover:bg-primary/90 hover:-translate-y-0.5 hover:shadow-[0_15px_30px_-5px_var(--color-primary),0.6)]"
-                  >
-                    <span className="relative z-10 flex items-center gap-2">
-                      {service.buttonText}
-                      <ArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
-                    </span>
-                    <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-[800ms] ease-out group-hover/btn:translate-x-full" />
-                  </Link>
+                  <NursingBookingModal defaultService={service.title}>
+                    <button
+                      className="group/btn relative overflow-hidden rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-white shadow-[0_10px_25px_-5px_var(--color-primary),0.4)] transition-all duration-300 hover:bg-primary/90 hover:-translate-y-0.5 hover:shadow-[0_15px_30px_-5px_var(--color-primary),0.6)]"
+                    >
+                      <span className="relative z-10 flex items-center gap-2">
+                        {service.buttonText}
+                        <ArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
+                      </span>
+                      <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-[800ms] ease-out group-hover/btn:translate-x-full" />
+                    </button>
+                  </NursingBookingModal>
                 </div>
               </div>
             </article>

@@ -1,6 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
-import { motion } from "framer-motion";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { motion, AnimatePresence } from "framer-motion";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { toast } from "sonner";
+import { api } from "@/lib/api/client";
 import {
   Syringe,
   Droplets,
@@ -18,10 +23,12 @@ import {
   ChevronDown,
   Stethoscope,
   ThumbsUp,
+  Loader2,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { categoriesQ, faqsQ, settingsQ } from "@/lib/api/queries";
-import { BookingForm } from "@/components/forms/BookingForm";
+import { BookingForm, CITIES } from "@/components/forms/BookingForm";
+import { NursingBookingModal } from "@/components/forms/NursingBookingModal";
 import { Section } from "@/components/site/Section";
 
 export const Route = createFileRoute("/nursing-care")({
@@ -54,8 +61,8 @@ const NURSING_SERVICES = [
   {
     icon: Stethoscope,
     emoji: "🩺",
-    title: "Nursing Care at Home",
-    description: "Qualified nursing staff provide routine patient care, health monitoring and assistance according to the patient's care requirements.",
+    title: "Nursing Care at home",
+    description: "Qualified nursing staff provide routine patient care, health monitoring and assistance according to the patient's care requirements and medical instructions.",
     color: "text-blue-600",
     bg: "from-blue-50 to-sky-50",
     iconBg: "bg-blue-100",
@@ -64,7 +71,7 @@ const NURSING_SERVICES = [
     icon: Syringe,
     emoji: "💉",
     title: "Injection Administration",
-    description: "Nursing staff can provide prescribed injections at home, helping patients avoid unnecessary clinic or hospital visits.",
+    description: "Nursing staff can provide prescribed injections at home, helping patients avoid unnecessary visits to a clinic or hospital.",
     color: "text-violet-600",
     bg: "from-violet-50 to-purple-50",
     iconBg: "bg-violet-100",
@@ -82,7 +89,7 @@ const NURSING_SERVICES = [
     icon: Bandage,
     emoji: "🩹",
     title: "Wound & Dressing Care",
-    description: "Professional wound dressing for patients recovering from surgery, injuries or conditions requiring regular dressing changes.",
+    description: "Professional wound dressing support for patients recovering from surgery, injuries, wounds or other conditions requiring regular dressing changes.",
     color: "text-rose-600",
     bg: "from-rose-50 to-pink-50",
     iconBg: "bg-rose-100",
@@ -91,7 +98,7 @@ const NURSING_SERVICES = [
     icon: Shield,
     emoji: "🛡️",
     title: "Bed Sore Care",
-    description: "Regular nursing support for patients with pressure sores, including prescribed dressing care and assistance with positioning.",
+    description: "Regular nursing support for patients with pressure sores, including prescribed dressing care and assistance with positioning and hygiene.",
     color: "text-amber-600",
     bg: "from-amber-50 to-yellow-50",
     iconBg: "bg-amber-100",
@@ -109,7 +116,7 @@ const NURSING_SERVICES = [
     icon: HeartPulse,
     emoji: "🫁",
     title: "Ryles Tube Care & Feeding",
-    description: "Nursing assistance for patients requiring Ryles/NG tube feeding and related routine care as advised by the treating professional.",
+    description: "Nursing assistance for patients requiring Ryles/NG tube feeding and related routine care as advised by the treating healthcare professional.",
     color: "text-indigo-600",
     bg: "from-indigo-50 to-blue-50",
     iconBg: "bg-indigo-100",
@@ -135,8 +142,8 @@ const NURSING_SERVICES = [
   {
     icon: Home,
     emoji: "🏥",
-    title: "Post-Hospitalisation Nursing",
-    description: "Nursing support for patients returning home after surgery or hospitalisation who still require medical supervision and routine care.",
+    title: "Post-Hospitalisation Nursing Care",
+    description: "Nursing support for patients returning home after surgery, hospitalisation or treatment who still require medical supervision and routine care.",
     color: "text-primary",
     bg: "from-primary/5 to-primary/10",
     iconBg: "bg-primary/15",
@@ -194,14 +201,14 @@ const WHY_CHOOSE = [
   {
     icon: ThumbsUp,
     title: "Family Communication",
-    description: "Families can stay informed about the patient's routine care and important observations after each nursing visit.",
+    description: "Families can stay informed about the patient's routine care and important observations.",
     color: "text-amber-600",
     bg: "bg-amber-50",
     iconBg: "bg-amber-100",
   },
   {
     icon: Shield,
-    title: "Professional & Respectful",
+    title: "Professional & Respectful Approach",
     description: "We focus on patient comfort, privacy, dignity and proper adherence to the prescribed care instructions.",
     color: "text-teal-600",
     bg: "bg-teal-50",
@@ -217,9 +224,9 @@ const WHO_CAN_BENEFIT = [
   "Have a catheter or feeding tube",
   "Require tracheostomy care",
   "Need support after surgery",
-  "Bedridden and need nursing assistance",
-  "Need regular vitals monitoring",
-  "Require ongoing nursing support",
+  "Are bedridden and require nursing assistance",
+  "Need regular monitoring of vital signs",
+  "Require ongoing nursing support at home",
 ];
 
 const DEFAULT_FAQS = [
@@ -355,18 +362,46 @@ function NursingHero({
   whatsapp?: string;
   heroImage?: string | null;
 }) {
-  const bgImage = heroImage || "/assets/categories/nursing.jpg";
+  const images = [
+    heroImage || "/assets/categories/nursing.jpg",
+    "/assets/nurse-bp.png",
+    "/assets/nurse-sugar.png",
+    "/assets/nurse-tracheostomy.png",
+  ];
+  
+  const [currentIdx, setCurrentIdx] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIdx((prev) => (prev + 1) % images.length);
+    }, 5500);
+    return () => clearInterval(timer);
+  }, [images.length]);
 
   return (
-    <section className="relative min-h-svh flex items-center overflow-hidden">
-      {/* Hero background image (dynamic or fallback) */}
-      <img
-        src={bgImage}
-        alt="Home Nursing Care"
-        className="absolute inset-0 w-full h-full object-cover object-top -z-20"
-      />
-      {/* Dark overlay for text readability */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-black/70 via-black/55 to-black/70" />
+    <section className="relative min-h-[100svh] lg:min-h-svh flex items-center overflow-hidden">
+      {/* Hero background image slider */}
+      <div className="absolute inset-0 -z-20 w-full h-full bg-[#0a0a0a]">
+        <AnimatePresence>
+          <motion.img
+            key={currentIdx}
+            src={images[currentIdx]}
+            alt="Home Nursing Care"
+            initial={{ opacity: 0, scale: 1.15 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ 
+              opacity: { duration: 1.8, ease: "easeInOut" },
+              scale: { duration: 8, ease: "easeOut" }
+            }}
+            className="absolute inset-0 w-full h-full object-cover object-center"
+          />
+        </AnimatePresence>
+      </div>
+      
+      {/* Cinematic dark overlay similar to home page hero */}
+      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black/90 via-black/60 to-black/30" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
 
       {/* Dot grid */}
       <div
@@ -414,20 +449,20 @@ function NursingHero({
             </h1>
 
             <p className="text-white/70 text-base md:text-lg leading-relaxed max-w-xl mb-6">
-              Nupun Home Health Care Services provides nursing support for
-              patients who need professional medical care in the comfort of
-              their own home — from routine monitoring and injections to wound
-              care and post-operative support.
+              Nupun Home Health Care Services provides nursing support for patients who need professional medical care in the comfort of their own home. Our nursing services are designed for patients recovering after hospitalisation, managing ongoing health needs, or requiring regular nursing procedures.
+              <span className="block mt-3">
+                From routine monitoring and injections to wound care, catheter care and other prescribed nursing procedures, our team helps families manage patient care with greater convenience and confidence.
+              </span>
             </p>
 
             <div className="flex flex-wrap gap-3">
-              <Link
-                to="/booking"
-                search={{ service: "nursing-care" }}
-                className="inline-flex items-center gap-2 rounded-full bg-cyan-400 text-slate-900 px-6 py-3 text-sm font-semibold shadow-[0_20px_40px_-10px_rgba(34,211,238,0.4)] hover:bg-cyan-300 hover:-translate-y-0.5 transition-all duration-300"
-              >
-                Book a Nurse <ArrowRight className="h-4 w-4" />
-              </Link>
+              <NursingBookingModal>
+                <button
+                  className="inline-flex items-center gap-2 rounded-full bg-cyan-400 text-slate-900 px-6 py-3 text-sm font-semibold shadow-[0_20px_40px_-10px_rgba(34,211,238,0.4)] hover:bg-cyan-300 hover:-translate-y-0.5 transition-all duration-300"
+                >
+                  Book a Nurse <ArrowRight className="h-4 w-4" />
+                </button>
+              </NursingBookingModal>
               {phone && (
                 <a
                   href={`tel:${phone}`}
@@ -520,11 +555,10 @@ function NursingServicesSection() {
           Nursing Procedures
         </div>
         <h2 className="font-display text-4xl md:text-5xl lg:text-6xl tracking-tight text-foreground mb-4">
-          Our Home Nursing Services
+          Our Home Nursing services
         </h2>
         <p className="text-muted-foreground text-lg leading-relaxed">
-          Professional nursing assistance for patients who require medical
-          support at home — from a single visit to regular ongoing care.
+          Professional nursing assistance for patients who require medical support at home.
         </p>
       </motion.div>
 
@@ -540,9 +574,8 @@ function NursingServicesSection() {
               transition={{ duration: 0.5, delay: (i % 5) * 0.07, ease: [0.22, 1, 0.36, 1] }}
             >
               <div
-                className={`group h-full flex flex-col rounded-2xl bg-gradient-to-br ${s.bg} border border-white p-5 shadow-sm transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_15px_40px_-10px_rgba(0,0,0,0.1)] cursor-default`}
+                className={`group h-full flex flex-col rounded-2xl bg-white border border-white p-5 shadow-sm transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_15px_40px_-10px_rgba(0,0,0,0.1)] cursor-default`}
               >
-                <div className="text-2xl mb-3">{s.emoji}</div>
                 <div className={`w-10 h-10 rounded-xl ${s.iconBg} flex items-center justify-center mb-3`}>
                   <Icon className={`h-5 w-5 ${s.color}`} strokeWidth={2} />
                 </div>
@@ -753,13 +786,13 @@ function NursingCtaBand({ phone, whatsapp }: { phone?: string; whatsapp?: string
             will guide you regarding the available nursing support option.
           </p>
           <div className="flex flex-wrap gap-4">
-            <Link
-              to="/booking"
-              search={{ service: "nursing-care" }}
-              className="inline-flex items-center gap-2 rounded-full bg-cyan-400 text-slate-900 px-8 py-4 text-base font-semibold hover:bg-cyan-300 transition-all duration-300 shadow-[0_15px_35px_-10px_rgba(34,211,238,0.4)]"
-            >
-              Book a Nurse <ArrowRight className="h-5 w-5" />
-            </Link>
+            <NursingBookingModal>
+              <button
+                className="inline-flex items-center gap-2 rounded-full bg-cyan-400 text-slate-900 px-8 py-4 text-base font-semibold hover:bg-cyan-300 transition-all duration-300 shadow-[0_15px_35px_-10px_rgba(34,211,238,0.4)]"
+              >
+                Book a Nurse <ArrowRight className="h-5 w-5" />
+              </button>
+            </NursingBookingModal>
             {phone && (
               <a
                 href={`tel:${phone}`}
@@ -801,13 +834,13 @@ function NursingFaqSection({
             Still unsure? Our care team is ready to help.
           </p>
           <div className="flex flex-col gap-3">
-            <Link
-              to="/booking"
-              search={{ service: "nursing-care" }}
-              className="inline-flex items-center gap-2 rounded-full bg-primary/10 text-primary px-6 py-3 text-sm font-semibold hover:bg-primary hover:text-white transition-colors duration-300 w-fit"
-            >
-              Book Home Nursing Care →
-            </Link>
+            <NursingBookingModal>
+              <button
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-primary/10 text-primary px-6 py-3 text-sm font-semibold hover:bg-primary hover:text-white transition-colors duration-300 w-fit"
+              >
+                Book Home Nursing Care →
+              </button>
+            </NursingBookingModal>
             <Link
               to="/contact"
               className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors w-fit"
@@ -860,78 +893,155 @@ function NursingFaqSection({
 
 /* ─────────────────────── Booking Panel ─────────────────────── */
 
+const nursingFormSchema = z.object({
+  patient_name: z.string().min(2, "Enter full name"),
+  contact_phone: z.string().min(7, "Enter a valid phone number"),
+  city: z.string().min(1, "Select a city"),
+  service_name: z.string().min(1, "Select a service"),
+});
+
+type NursingFormValues = z.infer<typeof nursingFormSchema>;
+
 function NursingBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: string }) {
+  const [done, setDone] = useState(false);
+  const form = useForm<NursingFormValues>({
+    resolver: zodResolver(nursingFormSchema),
+    defaultValues: {
+      patient_name: "",
+      contact_phone: "",
+      city: "",
+      service_name: "",
+    },
+  });
+
+  const mut = useMutation({
+    mutationFn: (data: NursingFormValues) =>
+      api.post("/bookings", {
+        ...data,
+        preferred_date: new Date().toISOString().split("T")[0],
+        address: "Pending (Provided via Quick Form)",
+      }),
+    onSuccess: () => {
+      setDone(true);
+      toast.success("Booking received — we'll contact you shortly.");
+    },
+    onError: (err: Error) => toast.error(err.message || "Something went wrong."),
+  });
+
   return (
-    <section className="py-20 lg:py-28 bg-background">
-      <div className="container-x">
-        <div className="grid gap-12 lg:grid-cols-12">
-          {/* Left: Info */}
-          <div className="lg:col-span-5">
-            <div className="sticky top-28">
-              <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-6">
-                <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                Book a Nurse
-              </div>
-              <h2 className="font-display text-3xl md:text-4xl tracking-tight text-foreground mb-4">
-                Book Home Nursing Care
-              </h2>
-              <p className="text-muted-foreground leading-relaxed mb-8">
-                Fill in your details and our care team will contact you shortly.
-                Confirmation within 2 hours — no payment required to request.
+    <section className="py-20 lg:py-28 bg-[#F8F9FA]" id="booking">
+      <div className="container-x max-w-md mx-auto">
+        <div className="rounded-2xl border border-border bg-white p-6 md:p-8 shadow-sm">
+          {done ? (
+            <div className="text-center py-6">
+              <h3 className="font-display text-2xl mb-2">Thank You!</h3>
+              <p className="text-muted-foreground mb-6">
+                Our nursing team will contact you shortly.
+              </p>
+              <button
+                onClick={() => {
+                  setDone(false);
+                  form.reset();
+                }}
+                className="rounded-full border border-border bg-white px-6 py-2.5 text-sm font-medium hover:border-primary transition-colors"
+              >
+                Book Another
+              </button>
+            </div>
+          ) : (
+            <>
+              <h3 className="font-display text-2xl md:text-3xl tracking-tight text-foreground mb-2">
+                Book an nurse
+              </h3>
+              <p className="text-muted-foreground text-sm mb-8">
+                Fill out the form and our nursing team will contact you shortly.
               </p>
 
-              <div className="space-y-4 mb-8">
-                {[
-                  "Trained nursing professionals",
-                  "Single visit or regular nursing",
-                  "Medical procedures at home",
-                  "Serving Faridabad, Delhi, Noida & Gurugram",
-                ].map((f) => (
-                  <div key={f} className="flex items-center gap-3 text-sm font-medium text-foreground">
-                    <div className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-primary/15 text-primary">
-                      <Check className="h-3.5 w-3.5" strokeWidth={3} />
-                    </div>
-                    {f}
-                  </div>
-                ))}
-              </div>
-
-              {(phone || whatsapp) && (
-                <div className="space-y-3">
-                  <div className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground mb-3">
-                    Prefer to speak directly?
-                  </div>
-                  {phone && (
-                    <a
-                      href={`tel:${phone}`}
-                      className="flex items-center gap-3 rounded-2xl border border-border bg-surface px-5 py-3.5 text-sm font-medium hover:border-primary hover:text-primary transition-colors"
-                    >
-                      <Phone className="h-4 w-4 text-primary" /> Call Now
-                    </a>
-                  )}
-                  {whatsapp && (
-                    <a
-                      href={`https://wa.me/${whatsapp}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-3 rounded-2xl border border-border bg-surface px-5 py-3.5 text-sm font-medium hover:border-primary hover:text-primary transition-colors"
-                    >
-                      <span className="h-4 w-4 text-primary font-bold text-base">W</span> WhatsApp Us
-                    </a>
+              <form onSubmit={form.handleSubmit((v) => mut.mutate(v))} className="space-y-4">
+                <div>
+                  <input
+                    {...form.register("patient_name")}
+                    placeholder="Full name"
+                    className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15"
+                  />
+                  {form.formState.errors.patient_name && (
+                    <p className="text-xs text-destructive mt-1">
+                      {form.formState.errors.patient_name.message}
+                    </p>
                   )}
                 </div>
-              )}
-            </div>
-          </div>
 
-          {/* Right: Booking Form */}
-          <div className="lg:col-span-7">
-            <BookingForm
-              presetServiceName="Nursing Care"
-            />
-          </div>
+                <div>
+                  <input
+                    {...form.register("contact_phone")}
+                    placeholder="Phone number"
+                    className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15"
+                  />
+                  {form.formState.errors.contact_phone && (
+                    <p className="text-xs text-destructive mt-1">
+                      {form.formState.errors.contact_phone.message}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <select
+                    {...form.register("city")}
+                    className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-muted-foreground focus:text-foreground"
+                  >
+                    <option value="">Select city drop-down</option>
+                    {CITIES.map((c) => (
+                      <option key={c} value={c}>
+                        {c}
+                      </option>
+                    ))}
+                  </select>
+                  {form.formState.errors.city && (
+                    <p className="text-xs text-destructive mt-1">
+                      {form.formState.errors.city.message}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <select
+                    {...form.register("service_name")}
+                    className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-muted-foreground focus:text-foreground"
+                  >
+                    <option value="">Select service drop down-Nursing Care at Home</option>
+                    <option value="Injection Administration">Injection Administration</option>
+                    <option value="IV Infusion & Drip Care">IV Infusion & Drip Care</option>
+                    <option value="Wound Dressing Care">Wound Dressing Care</option>
+                    <option value="Catheter Care">Catheter Care</option>
+                    <option value="Ryles Tube Feeding">Ryles Tube Feeding</option>
+                    <option value="Tracheostomy Care">Tracheostomy Care</option>
+                    <option value="Post-Hospitalisation Nursing Care">
+                      Post-Hospitalisation Nursing Care
+                    </option>
+                    <option value="Vital Signs Monitoring">Vital Signs Monitoring</option>
+                    <option value="Other Nursing Requirement">Other Nursing Requirement</option>
+                  </select>
+                  {form.formState.errors.service_name && (
+                    <p className="text-xs text-destructive mt-1">
+                      {form.formState.errors.service_name.message}
+                    </p>
+                  )}
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={mut.isPending}
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-foreground px-4 py-3.5 text-sm font-semibold text-background hover:bg-accent transition-colors disabled:opacity-60 mt-2"
+                >
+                  {mut.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
+                  Submit request
+                </button>
+              </form>
+            </>
+          )}
         </div>
       </div>
     </section>
   );
 }
+
