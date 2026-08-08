@@ -355,37 +355,18 @@ function NursingHero({
   whatsapp?: string;
   heroImage?: string | null;
 }) {
+  const bgImage = heroImage || "/assets/categories/nursing.jpg";
+
   return (
     <section className="relative min-h-[92vh] flex items-center overflow-hidden">
-      {/* Gradient background */}
-      <div
-        className="absolute inset-0 -z-10"
-        style={{
-          background:
-            "linear-gradient(135deg, oklch(0.18 0.06 240) 0%, oklch(0.26 0.08 260) 50%, oklch(0.22 0.05 230) 100%)",
-        }}
+      {/* Hero background image (dynamic or fallback) */}
+      <img
+        src={bgImage}
+        alt="Home Nursing Care"
+        className="absolute inset-0 w-full h-full object-cover -z-20"
       />
-
-      {/* Decorative blobs (only if no image) */}
-      {!heroImage && (
-        <div className="absolute inset-0 -z-10 pointer-events-none" aria-hidden>
-          <div className="absolute top-[10%] left-[5%] w-[450px] h-[450px] bg-blue-400/20 rounded-full blur-[120px] opacity-60" />
-          <div className="absolute bottom-[5%] right-[8%] w-[550px] h-[550px] bg-cyan-500/15 rounded-full blur-[140px]" />
-          <div className="absolute top-[50%] left-[40%] w-[300px] h-[300px] bg-violet-500/10 rounded-full blur-[90px]" />
-        </div>
-      )}
-
-      {/* Dynamic Hero Image */}
-      {heroImage && (
-        <>
-          <img
-            src={heroImage}
-            alt="Nursing Care Background"
-            className="absolute inset-0 w-full h-full object-cover -z-10"
-          />
-          <div className="absolute inset-0 bg-black/60 -z-10 mix-blend-multiply" />
-        </>
-      )}
+      {/* Dark overlay for text readability */}
+      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-black/70 via-black/50 to-black/70" />
 
       {/* Dot grid */}
       <div

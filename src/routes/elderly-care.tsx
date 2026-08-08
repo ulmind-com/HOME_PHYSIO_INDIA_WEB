@@ -279,40 +279,18 @@ function ElderlyHero({
   whatsapp?: string;
   heroImage?: string | null;
 }) {
+  const bgImage = heroImage || "/assets/services/nurse-elder.jpg";
+
   return (
     <section className="relative min-h-[92vh] flex items-center overflow-hidden">
-      {/* Gradient background */}
-      <div
-        className="absolute inset-0 -z-10"
-        style={{
-          background:
-            "linear-gradient(135deg, oklch(0.22 0.04 200) 0%, oklch(0.30 0.06 260) 50%, oklch(0.25 0.05 300) 100%)",
-        }}
+      {/* Hero background image (dynamic or fallback) */}
+      <img
+        src={bgImage}
+        alt="Elderly Care at Home"
+        className="absolute inset-0 w-full h-full object-cover -z-20"
       />
-
-      {/* Decorative blobs (only if no image) */}
-      {!heroImage && (
-        <div className="absolute inset-0 -z-10 pointer-events-none" aria-hidden>
-          <div className="absolute top-[15%] left-[8%] w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] opacity-60 animate-pulse" />
-          <div className="absolute bottom-[10%] right-[5%] w-[600px] h-[600px] bg-violet-500/15 rounded-full blur-[140px] opacity-50" />
-          <div
-            className="absolute top-[40%] right-[20%] w-[300px] h-[300px] bg-rose-400/10 rounded-full blur-[100px]"
-            style={{ animationDelay: "2s" }}
-          />
-        </div>
-      )}
-
-      {/* Dynamic Hero Image */}
-      {heroImage && (
-        <>
-          <img
-            src={heroImage}
-            alt="Elderly Care Background"
-            className="absolute inset-0 w-full h-full object-cover -z-10"
-          />
-          <div className="absolute inset-0 bg-black/60 -z-10 mix-blend-multiply" />
-        </>
-      )}
+      {/* Dark overlay for text readability */}
+      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-black/70 via-black/50 to-black/70" />
 
       {/* Dot grid overlay */}
       <div
