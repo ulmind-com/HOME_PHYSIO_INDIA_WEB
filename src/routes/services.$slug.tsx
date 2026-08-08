@@ -13,7 +13,7 @@ export const Route = createFileRoute("/services/$slug")({
       return {
         title: svc.title,
         description: svc.short_description ?? svc.description ?? undefined,
-        image: svc.featured_image ?? undefined,
+        image: (typeof svc.featured_image === 'string' ? svc.featured_image : svc.featured_image?.url) ?? undefined,
       };
     } catch {
       throw notFound();
@@ -64,7 +64,7 @@ function ServiceDetail() {
             {service.featured_image && (
               <div className="overflow-hidden rounded-3xl border border-border">
                 <img
-                  src={service.featured_image}
+                  src={typeof service.featured_image === 'string' ? service.featured_image : service.featured_image.url}
                   alt={service.title}
                   className="w-full h-auto object-cover"
                 />

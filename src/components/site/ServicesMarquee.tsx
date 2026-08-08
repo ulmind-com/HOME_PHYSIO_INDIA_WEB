@@ -146,7 +146,7 @@ function ServiceMarqueeCard({
   index: number;
   fallbackImage: string;
 }) {
-  const img = service.featured_image || fallbackImage;
+  const img = (typeof service.featured_image === 'string' ? service.featured_image : service.featured_image?.url) || fallbackImage;
   const hasSlug = !!service.slug;
 
   return (

@@ -14,7 +14,7 @@ function FeaturedServiceTile({ service }: { service: Service }) {
     >
       {service.featured_image ? (
         <img
-          src={service.featured_image}
+          src={typeof service.featured_image === 'string' ? service.featured_image : service.featured_image.url}
           alt={service.title}
           className="absolute inset-0 h-full w-full object-cover opacity-90 transition-transform duration-[1200ms] ease-out group-hover:scale-[1.06]"
         />
@@ -71,7 +71,7 @@ function WideServiceTile({ service }: { service: Service }) {
       <div className="relative aspect-[4/3] md:aspect-auto md:min-h-[300px] overflow-hidden">
         {service.featured_image ? (
           <img
-            src={service.featured_image}
+            src={typeof service.featured_image === 'string' ? service.featured_image : service.featured_image.url}
             alt={service.title}
             className="h-full w-full object-cover transition-transform duration-[1000ms] ease-out group-hover:scale-[1.05]"
           />

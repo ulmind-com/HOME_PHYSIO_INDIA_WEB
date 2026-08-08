@@ -13,7 +13,7 @@ export function ServiceCard({ service }: { service: Service }) {
       <div className="relative aspect-[4/3] overflow-hidden">
         {service.featured_image ? (
           <img
-            src={service.featured_image}
+            src={typeof service.featured_image === 'string' ? service.featured_image : service.featured_image.url}
             alt={service.title}
             loading="lazy"
             decoding="async"

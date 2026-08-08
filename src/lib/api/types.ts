@@ -29,7 +29,7 @@ export type Service = {
   category_id?: string | null;
   category_name?: string | null;
   icon?: string | null;
-  featured_image?: string | null;
+  featured_image?: { url: string; public_id?: string | null } | null;
   gallery?: string[];
   price?: number | null;
   price_unit?: string | null;
