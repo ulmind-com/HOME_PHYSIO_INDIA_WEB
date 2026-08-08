@@ -363,7 +363,7 @@ function NursingHero({
       <img
         src={bgImage}
         alt="Home Nursing Care"
-        className="absolute inset-0 w-full h-full object-cover -z-20"
+        className="absolute inset-0 w-full h-full object-cover object-top -z-20"
       />
       {/* Dark overlay for text readability */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-br from-black/70 via-black/55 to-black/70" />
