@@ -353,7 +353,7 @@ function StatItem({
         </span>
         <div className="flex items-baseline tracking-tight">
           <Counter value={value} />
-          <span className="text-primary">{suffix}</span>
+          <span className="text-white ml-1.5">{suffix}</span>
         </div>
       </div>
       <div className="mt-1 text-[11px] font-medium text-white/60 uppercase tracking-widest pl-7">
