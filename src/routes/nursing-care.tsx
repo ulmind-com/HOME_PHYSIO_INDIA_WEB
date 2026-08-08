@@ -444,7 +444,8 @@ function NursingHero({
             </div>
 
             <h1 className="font-display text-4xl md:text-5xl lg:text-[3.5rem] font-bold text-white leading-[1.08] tracking-tight mb-4">
-              Professional Nursing Support,{" "}
+              Professional <br />
+              Nursing Support{" "}
               <em className="not-italic text-cyan-300">Delivered at Home</em>
             </h1>
 
