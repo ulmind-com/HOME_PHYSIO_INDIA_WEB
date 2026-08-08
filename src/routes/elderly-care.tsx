@@ -282,7 +282,7 @@ function ElderlyHero({
   const bgImage = heroImage || "/assets/services/nurse-elder.jpg";
 
   return (
-    <section className="relative min-h-[92vh] flex items-center overflow-hidden">
+    <section className="relative min-h-svh flex items-center overflow-hidden">
       {/* Hero background image (dynamic or fallback) */}
       <img
         src={bgImage}
@@ -290,7 +290,7 @@ function ElderlyHero({
         className="absolute inset-0 w-full h-full object-cover -z-20"
       />
       {/* Dark overlay for text readability */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-black/70 via-black/50 to-black/70" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-black/70 via-black/55 to-black/70" />
 
       {/* Dot grid overlay */}
       <div
@@ -302,8 +302,8 @@ function ElderlyHero({
         aria-hidden
       />
 
-      <div className="container-x relative z-10 pt-32 pb-20 lg:pt-40">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+      <div className="container-x relative z-10 pt-24 pb-12 lg:pt-28 lg:pb-14">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left content */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
@@ -311,17 +311,17 @@ function ElderlyHero({
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-white/90 mb-8">
-              <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/90 mb-5">
+              <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
               Nupun Home Health Care Services
             </div>
 
-            <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.05] tracking-tight mb-6">
+            <h1 className="font-display text-4xl md:text-5xl lg:text-[3.5rem] font-bold text-white leading-[1.08] tracking-tight mb-4">
               Trusted Elder Care,{" "}
               <em className="not-italic text-primary">Right at Home</em>
             </h1>
 
-            <p className="text-white/75 text-lg md:text-xl leading-relaxed max-w-xl mb-10">
+            <p className="text-white/75 text-base md:text-lg leading-relaxed max-w-xl mb-6">
               Nupun Home Health Care Services provides trained and caring
               attendants for elderly people who need support at home. Our
               caregivers assist seniors with personal hygiene, mobility, meals,
@@ -329,34 +329,34 @@ function ElderlyHero({
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-3">
               <Link
                 to="/booking"
                 search={{ service: "elderly-care" }}
-                className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-4 text-base font-semibold text-primary-foreground shadow-[0_20px_40px_-10px_rgba(0,0,0,0.4)] hover:bg-primary/90 hover:-translate-y-0.5 transition-all duration-300"
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-[0_20px_40px_-10px_rgba(0,0,0,0.4)] hover:bg-primary/90 hover:-translate-y-0.5 transition-all duration-300"
               >
-                Book an Attendant <ArrowRight className="h-5 w-5" />
+                Book an Attendant <ArrowRight className="h-4 w-4" />
               </Link>
               {phone && (
                 <a
                   href={`tel:${phone}`}
-                  className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 backdrop-blur-md px-8 py-4 text-base font-semibold text-white hover:bg-white/20 transition-all duration-300"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 backdrop-blur-md px-6 py-3 text-sm font-semibold text-white hover:bg-white/20 transition-all duration-300"
                 >
-                  <Phone className="h-5 w-5" /> Call Now
+                  <Phone className="h-4 w-4" /> Call Now
                 </a>
               )}
             </div>
 
             {/* Trust stats */}
-            <div className="mt-12 flex flex-wrap gap-8">
+            <div className="mt-8 flex flex-wrap gap-6">
               {[
                 { val: "24/7", label: "Care Available" },
                 { val: "200+", label: "Verified Attendants" },
                 { val: "4 Cities", label: "NCR Coverage" },
               ].map((s) => (
                 <div key={s.label}>
-                  <div className="text-2xl font-display font-bold text-white">{s.val}</div>
-                  <div className="text-sm text-white/60 mt-0.5">{s.label}</div>
+                  <div className="text-xl font-display font-bold text-white">{s.val}</div>
+                  <div className="text-xs text-white/60 mt-0.5">{s.label}</div>
                 </div>
               ))}
             </div>
@@ -369,10 +369,10 @@ function ElderlyHero({
             transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
             className="hidden lg:block"
           >
-            <div className="relative rounded-[2.5rem] border border-white/20 bg-white/10 backdrop-blur-2xl p-8 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.5)]">
+            <div className="relative rounded-[2rem] border border-white/20 bg-white/10 backdrop-blur-2xl p-6 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.5)]">
               <div className="absolute -top-6 -right-6 h-24 w-24 rounded-full bg-primary/30 blur-2xl" />
 
-              <div className="text-white/60 text-xs uppercase tracking-[0.2em] font-semibold mb-5">
+              <div className="text-white/60 text-xs uppercase tracking-[0.2em] font-semibold mb-4">
                 Whether your loved one needs
               </div>
 
@@ -384,26 +384,26 @@ function ElderlyHero({
               ].map((item, i) => (
                 <div
                   key={i}
-                  className="flex items-center gap-3 mb-4 last:mb-0"
+                  className="flex items-center gap-3 mb-3 last:mb-0"
                 >
-                  <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-primary/30 text-primary border border-primary/40">
-                    <Check className="h-4 w-4" strokeWidth={3} />
+                  <div className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-primary/30 text-primary border border-primary/40">
+                    <Check className="h-3.5 w-3.5" strokeWidth={3} />
                   </div>
-                  <span className="text-white font-medium">{item}</span>
+                  <span className="text-white font-medium text-sm">{item}</span>
                 </div>
               ))}
 
-              <div className="mt-8 h-px bg-white/10" />
-              <p className="mt-6 text-white/70 text-sm leading-relaxed">
+              <div className="mt-5 h-px bg-white/10" />
+              <p className="mt-4 text-white/70 text-sm leading-relaxed">
                 Our team provides dependable care according to the individual
                 needs of your loved one.
               </p>
 
-              <div className="mt-6 flex items-center gap-3">
+              <div className="mt-4 flex items-center gap-2">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-5 w-5 fill-primary text-primary" />
+                  <Star key={i} className="h-4 w-4 fill-primary text-primary" />
                 ))}
-                <span className="text-white/70 text-sm ml-1">Trusted by families across NCR</span>
+                <span className="text-white/70 text-xs ml-1">Trusted by families across NCR</span>
               </div>
             </div>
           </motion.div>

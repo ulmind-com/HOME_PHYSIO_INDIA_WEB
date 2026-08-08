@@ -358,7 +358,7 @@ function NursingHero({
   const bgImage = heroImage || "/assets/categories/nursing.jpg";
 
   return (
-    <section className="relative min-h-[92vh] flex items-center overflow-hidden">
+    <section className="relative min-h-svh flex items-center overflow-hidden">
       {/* Hero background image (dynamic or fallback) */}
       <img
         src={bgImage}
@@ -366,7 +366,7 @@ function NursingHero({
         className="absolute inset-0 w-full h-full object-cover -z-20"
       />
       {/* Dark overlay for text readability */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-black/70 via-black/50 to-black/70" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-black/70 via-black/55 to-black/70" />
 
       {/* Dot grid */}
       <div
@@ -395,58 +395,58 @@ function NursingHero({
         ))}
       </div>
 
-      <div className="container-x relative z-10 pt-32 pb-20 lg:pt-40">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+      <div className="container-x relative z-10 pt-24 pb-12 lg:pt-28 lg:pb-14">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left content */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-white/90 mb-8">
-              <span className="h-2 w-2 rounded-full bg-cyan-400 animate-pulse" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/90 mb-5">
+              <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-pulse" />
               Skilled Nursing Care at Home
             </div>
 
-            <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.05] tracking-tight mb-6">
+            <h1 className="font-display text-4xl md:text-5xl lg:text-[3.5rem] font-bold text-white leading-[1.08] tracking-tight mb-4">
               Professional Nursing Support,{" "}
               <em className="not-italic text-cyan-300">Delivered at Home</em>
             </h1>
 
-            <p className="text-white/70 text-lg md:text-xl leading-relaxed max-w-xl mb-10">
+            <p className="text-white/70 text-base md:text-lg leading-relaxed max-w-xl mb-6">
               Nupun Home Health Care Services provides nursing support for
               patients who need professional medical care in the comfort of
               their own home — from routine monitoring and injections to wound
               care and post-operative support.
             </p>
 
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-3">
               <Link
                 to="/booking"
                 search={{ service: "nursing-care" }}
-                className="inline-flex items-center gap-2 rounded-full bg-cyan-400 text-slate-900 px-8 py-4 text-base font-semibold shadow-[0_20px_40px_-10px_rgba(34,211,238,0.4)] hover:bg-cyan-300 hover:-translate-y-0.5 transition-all duration-300"
+                className="inline-flex items-center gap-2 rounded-full bg-cyan-400 text-slate-900 px-6 py-3 text-sm font-semibold shadow-[0_20px_40px_-10px_rgba(34,211,238,0.4)] hover:bg-cyan-300 hover:-translate-y-0.5 transition-all duration-300"
               >
-                Book a Nurse <ArrowRight className="h-5 w-5" />
+                Book a Nurse <ArrowRight className="h-4 w-4" />
               </Link>
               {phone && (
                 <a
                   href={`tel:${phone}`}
-                  className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 backdrop-blur-md px-8 py-4 text-base font-semibold text-white hover:bg-white/20 transition-all duration-300"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 backdrop-blur-md px-6 py-3 text-sm font-semibold text-white hover:bg-white/20 transition-all duration-300"
                 >
-                  <Phone className="h-5 w-5" /> Call Now
+                  <Phone className="h-4 w-4" /> Call Now
                 </a>
               )}
             </div>
 
-            <div className="mt-12 flex flex-wrap gap-8">
+            <div className="mt-8 flex flex-wrap gap-6">
               {[
                 { val: "10+", label: "Nursing Services" },
                 { val: "24/7", label: "Availability" },
                 { val: "4 Cities", label: "NCR Coverage" },
               ].map((s) => (
                 <div key={s.label}>
-                  <div className="text-2xl font-display font-bold text-white">{s.val}</div>
-                  <div className="text-sm text-white/55 mt-0.5">{s.label}</div>
+                  <div className="text-xl font-display font-bold text-white">{s.val}</div>
+                  <div className="text-xs text-white/55 mt-0.5">{s.label}</div>
                 </div>
               ))}
             </div>
@@ -459,18 +459,18 @@ function NursingHero({
             transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
             className="hidden lg:block"
           >
-            <div className="relative rounded-[2.5rem] border border-white/15 bg-white/8 backdrop-blur-2xl p-8 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.6)]">
-              <div className="absolute -top-8 -right-8 h-28 w-28 rounded-full bg-cyan-400/20 blur-3xl" />
+            <div className="relative rounded-[2rem] border border-white/15 bg-white/8 backdrop-blur-2xl p-6 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.6)]">
+              <div className="absolute -top-6 -right-6 h-20 w-20 rounded-full bg-cyan-400/20 blur-3xl" />
 
-              <div className="grid h-16 w-16 place-items-center rounded-2xl bg-cyan-400/20 text-cyan-300 border border-cyan-400/20 mb-6">
-                <Stethoscope className="h-8 w-8" strokeWidth={1.5} />
+              <div className="grid h-12 w-12 place-items-center rounded-2xl bg-cyan-400/20 text-cyan-300 border border-cyan-400/20 mb-4">
+                <Stethoscope className="h-6 w-6" strokeWidth={1.5} />
               </div>
 
-              <div className="text-white/50 text-xs uppercase tracking-[0.2em] font-semibold mb-5">
+              <div className="text-white/50 text-xs uppercase tracking-[0.2em] font-semibold mb-4">
                 Nursing services available
               </div>
 
-              <div className="grid grid-cols-2 gap-2.5 mb-6">
+              <div className="grid grid-cols-2 gap-2 mb-5">
                 {[
                   "Injections",
                   "IV Infusion",
@@ -483,7 +483,7 @@ function NursingHero({
                 ].map((item, i) => (
                   <div
                     key={i}
-                    className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2"
+                    className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-2.5 py-1.5"
                   >
                     <div className="h-1.5 w-1.5 rounded-full bg-cyan-400 shrink-0" />
                     <span className="text-white/80 text-xs font-medium">{item}</span>
@@ -491,8 +491,8 @@ function NursingHero({
                 ))}
               </div>
 
-              <div className="h-px bg-white/10 mb-5" />
-              <p className="text-white/55 text-sm leading-relaxed">
+              <div className="h-px bg-white/10 mb-4" />
+              <p className="text-white/55 text-xs leading-relaxed">
                 From a single nursing visit to regular ongoing nursing support —
                 we arrange the right care for your patient.
               </p>
