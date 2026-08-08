@@ -15,18 +15,20 @@ const equipmentAsset = { url: "/assets/categories/equipment.jpg" };
 
 type Variant = "a" | "b" | "c" | "d";
 
-const fallbacks: Array<{ title: string; description: string; image: string; variant: Variant }> = [
+const fallbacks: Array<{ title: string; description: string; image: string; variant: Variant; dedicatedLink?: string }> = [
   {
     title: "Home Nursing Care",
     description: "24/7 qualified nurses at your home — injections, wound care, monitoring.",
     image: nursingAsset.url,
     variant: "a",
+    dedicatedLink: "/nursing-care",
   },
   {
     title: "Elder Care",
     description: "Compassionate daily companionship and assisted living support.",
     image: elderAsset.url,
     variant: "b",
+    dedicatedLink: "/elderly-care",
   },
   {
     title: "Physiotherapy & Recovery",
@@ -98,12 +100,23 @@ export function CategoryShowcasePremium() {
       ? (typeof cat.image === "string" ? cat.image : cat.image.url) 
       : fb.image;
 
+    // Detect dedicated landing pages by slug or name matching
+    const catNameLower = (cat?.name ?? "").toLowerCase();
+    const catSlugLower = (cat?.slug ?? "").toLowerCase();
+    const dedicatedLink =
+      catNameLower.includes("elder") || catNameLower.includes("senior") || catSlugLower.includes("elder")
+        ? "/elderly-care"
+        : catNameLower.includes("nurs") || catSlugLower.includes("nurs")
+        ? "/nursing-care"
+        : fb.dedicatedLink ?? null;
+
     return {
       title: cat?.name || fb.title,
       description: cat?.description || fb.description,
       image: imageStr || fb.image,
       slug: cat?.slug || "",
       variant: fb.variant,
+      dedicatedLink,
     };
   });
 
@@ -238,7 +251,11 @@ export function CategoryShowcasePremium() {
                   viewport={{ once: true, margin: "-60px" }}
                   transition={{ duration: 0.7, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  {item.slug ? (
+                  {item.dedicatedLink ? (
+                    <Link to={item.dedicatedLink as any} className={cardClasses}>
+                      {CardInner}
+                    </Link>
+                  ) : item.slug ? (
                     <Link to="/services/$slug" params={{ slug: item.slug }} className={cardClasses}>
                       {CardInner}
                     </Link>

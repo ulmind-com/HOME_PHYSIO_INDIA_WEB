@@ -7,6 +7,18 @@ export type SeoMeta = {
   schema_markup?: unknown;
 };
 
+export type Category = {
+  id: string;
+  name: string;
+  slug?: string | null;
+  description?: string | null;
+  image?: string | ImageAsset | null;
+  order?: number;
+  is_active?: boolean;
+  created_at?: string;
+  updated_at?: string;
+};
+
 export type Service = {
   id: string;
   title: string;

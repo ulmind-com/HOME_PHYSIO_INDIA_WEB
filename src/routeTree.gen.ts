@@ -13,7 +13,9 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as BookingRouteImport } from './routes/booking'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ElderlyCareRouteImport } from './routes/elderly-care'
 import { Route as FaqRouteImport } from './routes/faq'
+import { Route as NursingCareRouteImport } from './routes/nursing-care'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as RefundPolicyRouteImport } from './routes/refund-policy'
 import { Route as TermsRouteImport } from './routes/terms'
@@ -51,9 +53,19 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ElderlyCareRoute = ElderlyCareRouteImport.update({
+  id: '/elderly-care',
+  path: '/elderly-care',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FaqRoute = FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NursingCareRoute = NursingCareRouteImport.update({
+  id: '/nursing-care',
+  path: '/nursing-care',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -142,7 +154,9 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/booking': typeof BookingRoute
   '/contact': typeof ContactRoute
+  '/elderly-care': typeof ElderlyCareRoute
   '/faq': typeof FaqRoute
+  '/nursing-care': typeof NursingCareRoute
   '/privacy': typeof PrivacyRoute
   '/refund-policy': typeof RefundPolicyRoute
   '/terms': typeof TermsRoute
@@ -165,7 +179,9 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/booking': typeof BookingRoute
   '/contact': typeof ContactRoute
+  '/elderly-care': typeof ElderlyCareRoute
   '/faq': typeof FaqRoute
+  '/nursing-care': typeof NursingCareRoute
   '/privacy': typeof PrivacyRoute
   '/refund-policy': typeof RefundPolicyRoute
   '/terms': typeof TermsRoute
@@ -189,7 +205,9 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/booking': typeof BookingRoute
   '/contact': typeof ContactRoute
+  '/elderly-care': typeof ElderlyCareRoute
   '/faq': typeof FaqRoute
+  '/nursing-care': typeof NursingCareRoute
   '/privacy': typeof PrivacyRoute
   '/refund-policy': typeof RefundPolicyRoute
   '/terms': typeof TermsRoute
@@ -214,7 +232,9 @@ export interface FileRouteTypes {
     | '/about'
     | '/booking'
     | '/contact'
+    | '/elderly-care'
     | '/faq'
+    | '/nursing-care'
     | '/privacy'
     | '/refund-policy'
     | '/terms'
@@ -237,7 +257,9 @@ export interface FileRouteTypes {
     | '/about'
     | '/booking'
     | '/contact'
+    | '/elderly-care'
     | '/faq'
+    | '/nursing-care'
     | '/privacy'
     | '/refund-policy'
     | '/terms'
@@ -260,7 +282,9 @@ export interface FileRouteTypes {
     | '/about'
     | '/booking'
     | '/contact'
+    | '/elderly-care'
     | '/faq'
+    | '/nursing-care'
     | '/privacy'
     | '/refund-policy'
     | '/terms'
@@ -284,7 +308,9 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   BookingRoute: typeof BookingRoute
   ContactRoute: typeof ContactRoute
+  ElderlyCareRoute: typeof ElderlyCareRoute
   FaqRoute: typeof FaqRoute
+  NursingCareRoute: typeof NursingCareRoute
   PrivacyRoute: typeof PrivacyRoute
   RefundPolicyRoute: typeof RefundPolicyRoute
   TermsRoute: typeof TermsRoute
@@ -333,11 +359,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/elderly-care': {
+      id: '/elderly-care'
+      path: '/elderly-care'
+      fullPath: '/elderly-care'
+      preLoaderRoute: typeof ElderlyCareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/faq': {
       id: '/faq'
       path: '/faq'
       fullPath: '/faq'
       preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nursing-care': {
+      id: '/nursing-care'
+      path: '/nursing-care'
+      fullPath: '/nursing-care'
+      preLoaderRoute: typeof NursingCareRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -460,7 +500,9 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   BookingRoute: BookingRoute,
   ContactRoute: ContactRoute,
+  ElderlyCareRoute: ElderlyCareRoute,
   FaqRoute: FaqRoute,
+  NursingCareRoute: NursingCareRoute,
   PrivacyRoute: PrivacyRoute,
   RefundPolicyRoute: RefundPolicyRoute,
   TermsRoute: TermsRoute,

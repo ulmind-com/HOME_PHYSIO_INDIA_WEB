@@ -115,9 +115,9 @@ export function Footer() {
                   ))
                 ) : (
                   <>
-                    <FooterLink to="/services">Elder Care</FooterLink>
+                    <FooterLink to="/elderly-care">Elderly Care</FooterLink>
+                    <FooterLink to="/nursing-care">Nursing Care</FooterLink>
                     <FooterLink to="/services">Physiotherapy</FooterLink>
-                    <FooterLink to="/services">Skilled Nursing</FooterLink>
                     <FooterLink to="/services">Rehabilitation</FooterLink>
                     <FooterLink to="/services">Medical Equipment</FooterLink>
                   </>

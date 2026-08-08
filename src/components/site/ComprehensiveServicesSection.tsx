@@ -52,7 +52,7 @@ const DEFAULT_SERVICES: ServiceStaticCard[] = [
       "Specialized Memory & Dementia Support",
     ],
     buttonText: "Explore Elder Care",
-    buttonLink: "/booking",
+    buttonLink: "/elderly-care",
   },
   {
     id: "nursing",
@@ -70,7 +70,7 @@ const DEFAULT_SERVICES: ServiceStaticCard[] = [
       "Continuous Vitals & Doctor Surveillance",
     ],
     buttonText: "Get Nursing Care",
-    buttonLink: "/booking",
+    buttonLink: "/nursing-care",
   },
   {
     id: "rehab",
@@ -112,8 +112,8 @@ export function ComprehensiveServicesSection() {
           image: imageStr,
           badge: s.price ? `Starts at ₹${s.price}` : (DEFAULT_SERVICES[i]?.badge || "Verified Care"),
           highlight: s.features?.[0] || DEFAULT_SERVICES[i]?.highlight || "Hospital-Grade",
-          features: s.features?.length > 1
-            ? s.features.slice(1, 5)
+          features: (s.features?.length ?? 0) > 1
+            ? s.features!.slice(1, 5)
             : DEFAULT_SERVICES[i]?.features || [
                 "Personalized home care plan",
                 "Qualified & verified professionals",
@@ -246,7 +246,7 @@ export function ComprehensiveServicesSection() {
                 {/* Actions Footer */}
                 <div className="mt-8 pt-5 border-t border-border/50 flex items-center justify-between gap-4">
                   <Link
-                    to="/services"
+                    to={service.buttonLink as any}
                     className="text-xs font-semibold uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors inline-flex items-center gap-1"
                   >
                     Learn More →

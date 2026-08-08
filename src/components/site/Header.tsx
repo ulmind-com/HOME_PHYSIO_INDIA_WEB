@@ -15,6 +15,8 @@ const NAV = [
 ] as const;
 
 const MOBILE_EXTRA = [
+  { to: "/elderly-care", label: "Elderly Care" },
+  { to: "/nursing-care", label: "Nursing Care" },
   { to: "/blog", label: "Blog" },
   { to: "/careers", label: "Careers" },
 ] as const;

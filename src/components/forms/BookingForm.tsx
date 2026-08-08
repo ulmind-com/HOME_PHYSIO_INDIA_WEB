@@ -13,6 +13,9 @@ import { cn } from "@/lib/utils";
 const emptyToUndef = <T extends z.ZodTypeAny>(schema: T) =>
   z.preprocess((v) => (v === "" || v === null ? undefined : v), schema);
 
+const CITIES = ["Faridabad", "Delhi", "Noida", "Gurugram", "Other"] as const;
+type City = (typeof CITIES)[number];
+
 const schema = z.object({
   service_name: z.string().trim().min(2, "Please choose a service"),
   service_id: emptyToUndef(z.string().optional()),
@@ -26,10 +29,14 @@ const schema = z.object({
   contact_phone: z.string().trim().min(7, "Enter a valid phone").max(20),
   contact_email: emptyToUndef(z.string().trim().email("Enter a valid email").optional()),
   address: z.string().trim().min(5, "Enter the full address").max(500),
-  city: emptyToUndef(z.string().optional()),
+  city: emptyToUndef(z.enum(CITIES).optional()),
   pincode: emptyToUndef(z.string().optional()),
 });
 type Values = z.infer<typeof schema>;
+
+// ── exported Cities list so pages can show it ──
+export { CITIES };
+export type { City };
 
 const STEPS = [
   { key: "service", label: "Service", fields: ["service_name", "care_type"] as const },
@@ -46,7 +53,15 @@ const STEPS = [
   },
 ];
 
-export function BookingForm({ presetServiceSlug }: { presetServiceSlug?: string } = {}) {
+export function BookingForm({
+  presetServiceSlug,
+  presetServiceName,
+  presetCity,
+}: {
+  presetServiceSlug?: string;
+  presetServiceName?: string;
+  presetCity?: City;
+} = {}) {
   const [step, setStep] = useState(0);
   const [done, setDone] = useState(false);
   const { data: services } = useQuery(servicesQ({ limit: 100 }));
@@ -57,9 +72,10 @@ export function BookingForm({ presetServiceSlug }: { presetServiceSlug?: string 
     resolver: zodResolver(schema) as never,
     mode: "onBlur",
     defaultValues: {
-      service_name: preset?.title ?? "",
+      service_name: preset?.title ?? presetServiceName ?? "",
       service_id: preset?.id ?? "",
       care_type: "home_visit",
+      city: presetCity,
     },
   });
 
@@ -167,7 +183,7 @@ export function BookingForm({ presetServiceSlug }: { presetServiceSlug?: string 
             exit={{ opacity: 0, x: -30, filter: "blur(6px)" }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           >
-            {step === 0 && <ServiceStep form={form} options={options} />}
+            {step === 0 && <ServiceStep form={form} options={options} presetServiceName={presetServiceName} />}
             {step === 1 && <ScheduleStep form={form} />}
             {step === 2 && <PatientStep form={form} />}
             {step === 3 && <ContactStep form={form} />}
@@ -206,9 +222,11 @@ export function BookingForm({ presetServiceSlug }: { presetServiceSlug?: string 
 function ServiceStep({
   form,
   options,
+  presetServiceName,
 }: {
   form: UseFormReturn<Values>;
   options: { id: string; title: string; slug: string; short_description?: string | null }[];
+  presetServiceName?: string;
 }) {
   const selected = form.watch("service_name");
   const care = form.watch("care_type");
@@ -219,6 +237,12 @@ function ServiceStep({
         title="Which service brings you here?"
         description="Pick a service — you can add details in the next steps."
       />
+      {presetServiceName && (
+        <div className="flex items-center gap-2 rounded-2xl border border-primary/30 bg-primary/5 px-4 py-3 text-sm font-medium text-primary">
+          <CheckCircle2 className="h-4 w-4 shrink-0" />
+          Service pre-selected: <span className="font-semibold">{presetServiceName}</span>
+        </div>
+      )}
       <input type="hidden" {...form.register("service_id")} />
       <div className="grid gap-3 md:grid-cols-2">
         {options.slice(0, 8).map((s) => {
@@ -389,8 +413,13 @@ function ContactStep({ form }: { form: UseFormReturn<Values> }) {
         />
       </FloatField>
       <div className="grid gap-4 md:grid-cols-2">
-        <FloatField label="City">
-          <input {...form.register("city")} className={inputCls} />
+        <FloatField label="City" error={form.formState.errors.city?.message}>
+          <select {...form.register("city")} className={inputCls}>
+            <option value="">Select city</option>
+            {CITIES.map((c) => (
+              <option key={c} value={c}>{c}</option>
+            ))}
+          </select>
         </FloatField>
         <FloatField label="Pincode">
           <input {...form.register("pincode")} className={inputCls} />
