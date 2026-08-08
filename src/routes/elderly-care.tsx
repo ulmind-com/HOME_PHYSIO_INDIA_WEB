@@ -18,7 +18,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { useState } from "react";
-import { faqsQ, settingsQ } from "@/lib/api/queries";
+import { categoriesQ, faqsQ, settingsQ } from "@/lib/api/queries";
 import { BookingForm } from "@/components/forms/BookingForm";
 import { Section } from "@/components/site/Section";
 
@@ -217,6 +217,19 @@ const DEFAULT_FAQS = [
 function ElderlyCarePage() {
   const { data: settings } = useQuery(settingsQ());
   const { data: faqData } = useQuery(faqsQ({ limit: 20 }));
+  const { data: catData } = useQuery(categoriesQ({ limit: 100 }));
+
+  const category = (catData?.items ?? []).find(
+    (c) =>
+      c.name.toLowerCase().includes("elder") ||
+      c.slug?.toLowerCase().includes("elder")
+  );
+  
+  const heroImageStr = category?.hero_image
+    ? typeof category.hero_image === "string"
+      ? category.hero_image
+      : category.hero_image.url
+    : null;
 
   const phone = settings?.phone?.replace(/[^\d+]/g, "");
   const whatsapp = (settings?.whatsapp ?? settings?.phone)?.replace(/\D/g, "");
@@ -232,7 +245,7 @@ function ElderlyCarePage() {
   return (
     <>
       {/* ── Hero ─────────────────────────────────────────────── */}
-      <ElderlyHero phone={phone} whatsapp={whatsapp} />
+      <ElderlyHero phone={phone} whatsapp={whatsapp} heroImage={heroImageStr} />
 
       {/* ── Our Elderly Care Services ─────────────────────── */}
       <ServicesSection />
@@ -260,9 +273,11 @@ function ElderlyCarePage() {
 function ElderlyHero({
   phone,
   whatsapp,
+  heroImage,
 }: {
   phone?: string;
   whatsapp?: string;
+  heroImage?: string | null;
 }) {
   return (
     <section className="relative min-h-[92vh] flex items-center overflow-hidden">
@@ -275,15 +290,29 @@ function ElderlyHero({
         }}
       />
 
-      {/* Decorative blobs */}
-      <div className="absolute inset-0 -z-10 pointer-events-none" aria-hidden>
-        <div className="absolute top-[15%] left-[8%] w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] opacity-60 animate-pulse" />
-        <div className="absolute bottom-[10%] right-[5%] w-[600px] h-[600px] bg-violet-500/15 rounded-full blur-[140px] opacity-50" />
-        <div
-          className="absolute top-[40%] right-[20%] w-[300px] h-[300px] bg-rose-400/10 rounded-full blur-[100px]"
-          style={{ animationDelay: "2s" }}
-        />
-      </div>
+      {/* Decorative blobs (only if no image) */}
+      {!heroImage && (
+        <div className="absolute inset-0 -z-10 pointer-events-none" aria-hidden>
+          <div className="absolute top-[15%] left-[8%] w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] opacity-60 animate-pulse" />
+          <div className="absolute bottom-[10%] right-[5%] w-[600px] h-[600px] bg-violet-500/15 rounded-full blur-[140px] opacity-50" />
+          <div
+            className="absolute top-[40%] right-[20%] w-[300px] h-[300px] bg-rose-400/10 rounded-full blur-[100px]"
+            style={{ animationDelay: "2s" }}
+          />
+        </div>
+      )}
+
+      {/* Dynamic Hero Image */}
+      {heroImage && (
+        <>
+          <img
+            src={heroImage}
+            alt="Elderly Care Background"
+            className="absolute inset-0 w-full h-full object-cover -z-10"
+          />
+          <div className="absolute inset-0 bg-black/60 -z-10 mix-blend-multiply" />
+        </>
+      )}
 
       {/* Dot grid overlay */}
       <div

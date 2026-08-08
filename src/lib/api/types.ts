@@ -13,6 +13,7 @@ export type Category = {
   slug?: string | null;
   description?: string | null;
   image?: string | ImageAsset | null;
+  hero_image?: string | ImageAsset | null;
   order?: number;
   is_active?: boolean;
   created_at?: string;

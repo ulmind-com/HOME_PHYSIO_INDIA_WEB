@@ -20,7 +20,7 @@ import {
   ThumbsUp,
 } from "lucide-react";
 import { useState } from "react";
-import { faqsQ, settingsQ } from "@/lib/api/queries";
+import { categoriesQ, faqsQ, settingsQ } from "@/lib/api/queries";
 import { BookingForm } from "@/components/forms/BookingForm";
 import { Section } from "@/components/site/Section";
 
@@ -290,6 +290,19 @@ const DEFAULT_FAQS = [
 function NursingCarePage() {
   const { data: settings } = useQuery(settingsQ());
   const { data: faqData } = useQuery(faqsQ({ limit: 20 }));
+  const { data: catData } = useQuery(categoriesQ({ limit: 100 }));
+
+  const category = (catData?.items ?? []).find(
+    (c) =>
+      c.name.toLowerCase().includes("nurs") ||
+      c.slug?.toLowerCase().includes("nurs")
+  );
+  
+  const heroImageStr = category?.hero_image
+    ? typeof category.hero_image === "string"
+      ? category.hero_image
+      : category.hero_image.url
+    : null;
 
   const phone = settings?.phone?.replace(/[^\d+]/g, "");
   const whatsapp = (settings?.whatsapp ?? settings?.phone)?.replace(/\D/g, "");
@@ -305,7 +318,7 @@ function NursingCarePage() {
   return (
     <>
       {/* ── Hero ─────────────────────────────────────────────── */}
-      <NursingHero phone={phone} whatsapp={whatsapp} />
+      <NursingHero phone={phone} whatsapp={whatsapp} heroImage={heroImageStr} />
 
       {/* ── Our Home Nursing Services ─────────────────────── */}
       <NursingServicesSection />
@@ -333,7 +346,15 @@ function NursingCarePage() {
 
 /* ─────────────────────── Hero ─────────────────────── */
 
-function NursingHero({ phone, whatsapp }: { phone?: string; whatsapp?: string }) {
+function NursingHero({
+  phone,
+  whatsapp,
+  heroImage,
+}: {
+  phone?: string;
+  whatsapp?: string;
+  heroImage?: string | null;
+}) {
   return (
     <section className="relative min-h-[92vh] flex items-center overflow-hidden">
       {/* Gradient background */}
@@ -345,12 +366,26 @@ function NursingHero({ phone, whatsapp }: { phone?: string; whatsapp?: string })
         }}
       />
 
-      {/* Decorative blobs */}
-      <div className="absolute inset-0 -z-10 pointer-events-none" aria-hidden>
-        <div className="absolute top-[10%] left-[5%] w-[450px] h-[450px] bg-blue-400/20 rounded-full blur-[120px] opacity-60" />
-        <div className="absolute bottom-[5%] right-[8%] w-[550px] h-[550px] bg-cyan-500/15 rounded-full blur-[140px]" />
-        <div className="absolute top-[50%] left-[40%] w-[300px] h-[300px] bg-violet-500/10 rounded-full blur-[90px]" />
-      </div>
+      {/* Decorative blobs (only if no image) */}
+      {!heroImage && (
+        <div className="absolute inset-0 -z-10 pointer-events-none" aria-hidden>
+          <div className="absolute top-[10%] left-[5%] w-[450px] h-[450px] bg-blue-400/20 rounded-full blur-[120px] opacity-60" />
+          <div className="absolute bottom-[5%] right-[8%] w-[550px] h-[550px] bg-cyan-500/15 rounded-full blur-[140px]" />
+          <div className="absolute top-[50%] left-[40%] w-[300px] h-[300px] bg-violet-500/10 rounded-full blur-[90px]" />
+        </div>
+      )}
+
+      {/* Dynamic Hero Image */}
+      {heroImage && (
+        <>
+          <img
+            src={heroImage}
+            alt="Nursing Care Background"
+            className="absolute inset-0 w-full h-full object-cover -z-10"
+          />
+          <div className="absolute inset-0 bg-black/60 -z-10 mix-blend-multiply" />
+        </>
+      )}
 
       {/* Dot grid */}
       <div
