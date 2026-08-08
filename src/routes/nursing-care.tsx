@@ -476,7 +476,7 @@ function NursingHero({
 
             <div className="mt-8 flex flex-wrap gap-6">
               {[
-                { val: "10+", label: "Nursing Services" },
+                { val: "40+", label: "Nurses" },
                 { val: "24/7", label: "Availability" },
                 { val: "4 Cities", label: "NCR Coverage" },
               ].map((s) => (
