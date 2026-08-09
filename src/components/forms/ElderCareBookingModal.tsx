@@ -10,17 +10,17 @@ import { User, Phone, CheckCircle2, Loader2, CalendarHeart, Clock, HeartHandshak
 import { api } from "@/lib/api/client";
 
 const ELDER_SERVICES = [
-  "Elderly Care",
-  "Bedridden Patient Care",
-  "Mobility Assistance",
-  "Daily Living Support",
+  "Elderly care",
+  "Patient care",
+  "Bedridden",
+  "24 hour attendant"
 ];
 
-const DUTY_HOURS = [
-  "Hourly Support",
-  "Daytime Care (8-12 hours)",
-  "Overnight Care",
-  "24-Hour Care",
+const CITIES = [
+  "Faridabad",
+  "Delhi",
+  "Noida",
+  "Gurugram"
 ];
 
 export function ElderCareBookingModal({ children }: { children: React.ReactNode }) {
@@ -38,9 +38,8 @@ export function ElderCareBookingModal({ children }: { children: React.ReactNode 
     const data = {
       full_name: formData.get("fullName") as string,
       phone_number: formData.get("phone") as string,
+      city: formData.get("city") as string,
       service_type: formData.get("service") as string,
-      patient_condition: formData.get("condition") as string,
-      preferred_duty_hours: formData.get("dutyHours") as string,
     };
 
     try {
@@ -148,41 +147,24 @@ export function ElderCareBookingModal({ children }: { children: React.ReactNode 
                   </div>
                 </div>
 
-                {/* Patient Condition */}
+                {/* City Selection */}
                 <div className="space-y-1.5">
                   <label className="text-[13px] font-medium text-white/80 pl-1">
-                    Patient Condition / Requirement
+                    Select City
                   </label>
                   <div className="relative group">
-                    <CalendarHeart className="absolute left-3.5 top-4 h-5 w-5 text-white/40 group-focus-within:text-primary transition-colors" />
-                    <textarea
-                      required
-                      name="condition"
-                      rows={3}
-                      placeholder="Briefly describe the patient's condition..."
-                      className="w-full rounded-xl border border-white/10 bg-white/[0.06] pl-11 pr-4 py-3.5 text-sm text-white placeholder-white/35 outline-none transition-all duration-300 focus:border-primary/50 focus:bg-white/[0.08] focus:shadow-[0_0_0_3px_rgba(0,128,128,0.08)] resize-none"
-                    />
-                  </div>
-                </div>
-
-                {/* Duty Hours */}
-                <div className="space-y-1.5">
-                  <label className="text-[13px] font-medium text-white/80 pl-1">
-                    Preferred Duty Hours
-                  </label>
-                  <div className="relative group">
-                    <Clock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-white/40 group-focus-within:text-primary transition-colors z-10" />
+                    <CalendarHeart className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-white/40 group-focus-within:text-primary transition-colors z-10" />
                     <select
                       required
-                      name="dutyHours"
+                      name="city"
                       className="w-full rounded-xl border border-white/10 bg-white/[0.06] pl-11 pr-4 py-3.5 text-sm text-white/60 focus:text-white outline-none transition-all duration-300 focus:border-primary/50 focus:bg-white/[0.08] focus:shadow-[0_0_0_3px_rgba(0,128,128,0.08)] appearance-none cursor-pointer"
                     >
                       <option value="" className="bg-[#0f2a1f] text-white/50">
-                        Select duty hours...
+                        Select city...
                       </option>
-                      {DUTY_HOURS.map((s) => (
-                        <option key={s} value={s} className="bg-[#0f2a1f] text-white">
-                          {s}
+                      {CITIES.map((c) => (
+                        <option key={c} value={c} className="bg-[#0f2a1f] text-white">
+                          {c}
                         </option>
                       ))}
                     </select>
