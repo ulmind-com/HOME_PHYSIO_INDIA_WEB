@@ -241,8 +241,8 @@ function ElderlyHero({ phone, whatsapp }: { phone?: string; whatsapp?: string })
       </div>
 
       {/* Overlays */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black/95 via-black/70 to-black/30" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-slate-900/95 via-slate-900/60 to-transparent" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent" />
 
       <div className="container-x relative z-10 pt-32 pb-20">
         <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-20 items-center">
@@ -291,7 +291,8 @@ function ElderlyHero({ phone, whatsapp }: { phone?: string; whatsapp?: string })
             transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
             className="hidden lg:block relative"
           >
-            <div className="relative rounded-[2.5rem] border border-white/15 bg-white/5 backdrop-blur-3xl p-8 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.6)] overflow-hidden group">
+            <div className="relative rounded-[2.5rem] border border-white/30 bg-white/5 backdrop-blur-lg p-8 shadow-[0_8px_32px_0_rgba(255,255,255,0.15)] overflow-hidden group">
+              <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-50 pointer-events-none" />
               <div className="absolute -top-10 -right-10 h-32 w-32 rounded-full bg-primary/20 blur-[50px] transition-transform duration-700 group-hover:scale-150" />
               <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-blue-500/10 blur-[50px] transition-transform duration-700 group-hover:scale-150" />
               
