@@ -152,7 +152,7 @@ export function Hero() {
           <img
             src={bg}
             alt="Premium Home Health Care"
-            className="h-full w-full object-cover object-[center_30%]"
+            className="h-full w-full object-cover object-center"
             style={{
               animation: `heroKenBurns ${SLIDE_DURATION}ms ease-out forwards`,
             }}

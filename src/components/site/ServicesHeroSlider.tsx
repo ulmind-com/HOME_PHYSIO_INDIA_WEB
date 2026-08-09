@@ -168,7 +168,7 @@ export function ServicesHeroSlider({ slides: dynamicSlides }: { slides?: HeroSli
           <img
             src={bg}
             alt={slide.title ?? ""}
-            className="h-full w-full object-cover object-[center_25%]"
+            className="h-full w-full object-cover object-center"
             style={{
               animation: `heroKenBurns ${SLIDE_DURATION}ms ease-out forwards`,
             }}
