@@ -403,8 +403,8 @@ function NursingHero({
         <AnimatePresence>
           <motion.div
             key={currentIdx}
-            initial={{ opacity: 0, scale: 1.15 }}
-            animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, scale: 1 }}
+            animate={{ opacity: 1, scale: 1.15 }}
             exit={{ opacity: 0 }}
             transition={{ 
               opacity: { duration: 1.8, ease: "easeInOut" },
