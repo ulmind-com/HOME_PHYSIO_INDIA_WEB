@@ -649,7 +649,7 @@ function PhysioCtaBand({ phone, whatsapp }: { phone?: string; whatsapp?: string 
           </p>
           <div className="flex flex-wrap gap-4">
             <PhysioBookingModal>
-              <button className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-8 py-4 text-base font-semibold hover:bg-primary/90 transition-all duration-300 shadow-[0_15px_35px_-10px_rgba(52,211,153,0.4)]">
+              <button className="inline-flex items-center gap-2 rounded-full bg-slate-900 text-white px-8 py-4 text-base font-semibold hover:bg-slate-800 transition-all duration-300 shadow-[0_15px_35px_-10px_rgba(0,0,0,0.4)]">
                 Book a Physiotherapist <ArrowRight className="h-5 w-5" />
               </button>
             </PhysioBookingModal>
