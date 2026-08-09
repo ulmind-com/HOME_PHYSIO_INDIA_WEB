@@ -314,8 +314,11 @@ function NursingCarePage() {
       : category.hero_image.url
     : null;
 
-  const phone = settings?.phone?.replace(/[^\d+]/g, "");
-  const whatsapp = (settings?.whatsapp ?? settings?.phone)?.replace(/\D/g, "");
+  const rawPhone = settings?.phone || "+919876543210";
+  const rawWhatsapp = settings?.whatsapp || settings?.phone || "919876543210";
+
+  const phone = rawPhone.replace(/[^\d+]/g, "");
+  const whatsapp = rawWhatsapp.replace(/\D/g, "");
 
   const faqs = (faqData?.items ?? []).filter(
     (f) =>
@@ -488,15 +491,13 @@ function NursingHero({
                 </button>
               </NursingBookingModal>
 
-              {phone && (
-                <a
-                  href={`tel:${phone}`}
-                  className="group inline-flex items-center justify-center gap-2.5 rounded-full border border-white/30 bg-white/10 backdrop-blur-md px-8 py-3.5 text-[15px] font-medium text-white shadow-sm hover:bg-white/20 hover:border-white/50 transition-all duration-300 hover:-translate-y-0.5"
-                >
-                  <Phone className="h-5 w-5 text-[#25D366]" />
-                  Call Now
-                </a>
-              )}
+              <a
+                href={`tel:${phone || "+919876543210"}`}
+                className="group inline-flex items-center justify-center gap-2.5 rounded-full border border-white/30 bg-white/10 backdrop-blur-md px-8 py-3.5 text-[15px] font-medium text-white shadow-sm hover:bg-white/20 hover:border-white/50 transition-all duration-300 hover:-translate-y-0.5"
+              >
+                <Phone className="h-5 w-5 text-[#25D366]" />
+                Call Now
+              </a>
             </div>
 
             <div className="mt-8 flex flex-wrap gap-6">
