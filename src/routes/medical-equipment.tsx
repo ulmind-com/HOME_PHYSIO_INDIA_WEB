@@ -67,7 +67,7 @@ const EQUIPMENT_CARDS = [
     icon: BedDouble,
     image: "/assets/equip_hospital_bed.png",
     emoji: "🛏️",
-    title: "Hospital Bed",
+    title: "Hospital Bed on Rent",
     description:
       "Adjustable hospital beds designed to provide comfortable positioning and easier patient care at home.",
     color: "text-blue-600",
@@ -78,7 +78,7 @@ const EQUIPMENT_CARDS = [
     icon: CircleGauge,
     image: "/assets/equip_wheelchair.png",
     emoji: "🦼",
-    title: "Wheelchair",
+    title: "Wheelchair on Rent",
     description:
       "Mobility support for elderly patients, patients recovering from illness or surgery and people with limited mobility.",
     color: "text-violet-600",
@@ -89,7 +89,7 @@ const EQUIPMENT_CARDS = [
     icon: Wind,
     image: "/assets/equip_oxygen_concentrator.png",
     emoji: "💨",
-    title: "Oxygen Concentrator",
+    title: "Oxygen Concentrator on Rent",
     description:
       "Oxygen concentrator support for patients who have been prescribed supplemental oxygen for use at home.",
     color: "text-cyan-600",
@@ -100,7 +100,7 @@ const EQUIPMENT_CARDS = [
     icon: Stethoscope,
     image: "/assets/equip_bipap_machine.png",
     emoji: "🩺",
-    title: "BiPAP Machine",
+    title: "BiPAP Machine on Rent",
     description:
       "Respiratory support equipment for patients who have been prescribed BiPAP therapy by their healthcare professional.",
     color: "text-rose-600",
@@ -111,7 +111,7 @@ const EQUIPMENT_CARDS = [
     icon: Wind,
     image: "/assets/equip_cpap_machine.png",
     emoji: "🫁",
-    title: "CPAP Machine",
+    title: "CPAP Machine on Rent",
     description:
       "CPAP equipment for patients who have been prescribed continuous positive airway pressure therapy.",
     color: "text-teal-600",
@@ -122,7 +122,7 @@ const EQUIPMENT_CARDS = [
     icon: Box,
     image: "/assets/equip_suction_machine.png",
     emoji: "💧",
-    title: "Suction Machine",
+    title: "Suction Machine on Rent",
     description:
       "Medical suction equipment to assist patients who require secretion-management support at home.",
     color: "text-emerald-600",
@@ -133,7 +133,7 @@ const EQUIPMENT_CARDS = [
     icon: SquareDashedBottom,
     image: "/assets/equip_air_mattress.png",
     emoji: "🛌",
-    title: "Air Mattress",
+    title: "Air Mattress on Rent",
     description:
       "Pressure-relieving mattress support for patients who spend extended periods in bed and require additional comfort and pressure management.",
     color: "text-indigo-600",
@@ -142,8 +142,8 @@ const EQUIPMENT_CARDS = [
   },
   {
     icon: Footprints,
-    emoji: "🚶",
-    title: "Walker",
+    emoji: "🩼",
+    title: "Walker on Rent",
     description:
       "Walking support for elderly patients and people recovering from surgery, injury or mobility-related conditions.",
     color: "text-teal-600",
@@ -471,11 +471,11 @@ function EquipmentGridSection() {
           <span className="h-1.5 w-1.5 rounded-full bg-primary" />
           Our Medical Equipment
         </div>
-        <h2 className="font-display text-4xl md:text-5xl lg:text-6xl tracking-tight text-foreground mb-4">
-          Our Medical Equipment
+        <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground tracking-tight leading-[1.1] mb-6">
+          Medical Equipment Rental Services
         </h2>
-        <p className="text-muted-foreground text-lg leading-relaxed">
-          Explore essential equipment designed to support patients and caregivers with comfortable and convenient home-based care.
+        <p className="text-muted-foreground text-lg leading-relaxed max-w-2xl mx-auto">
+          Nupun Home Health Care Services provides essential medical equipment on rent for patients who need comfortable and convenient care at home. Whether you need equipment for a few days, weeks or longer-term use, we help you arrange suitable equipment according to your requirement and availability.
         </p>
       </motion.div>
 
