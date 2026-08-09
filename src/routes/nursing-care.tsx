@@ -363,10 +363,9 @@ function NursingHero({
   heroImage?: string | null;
 }) {
   const images = [
-    heroImage || "/assets/categories/nursing.jpg",
-    "/assets/nurse-bp.png",
-    "/assets/nurse-sugar.png",
-    "/assets/nurse-tracheostomy.png",
+    heroImage || "/assets/nurse-hero-21-9-1.png",
+    "/assets/nurse-hero-21-9-2.png",
+    "/assets/nurse-hero-21-9-3.png",
   ];
   
   const [currentIdx, setCurrentIdx] = useState(0);
