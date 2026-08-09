@@ -115,9 +115,9 @@ const PHYSIO_SERVICE_CARDS = [
     title: "Bedridden Patient Physiotherapy",
     description:
       "Gentle physiotherapy for bedridden patients to support mobility, joint movement, muscle strength and prevention of complications related to prolonged immobility.",
-    color: "text-emerald-600",
-    bg: "from-emerald-50 to-green-50",
-    iconBg: "bg-emerald-100",
+    color: "text-teal-600",
+    bg: "from-teal-50 to-cyan-50",
+    iconBg: "bg-teal-100",
   },
   {
     icon: PersonStanding,
@@ -136,7 +136,7 @@ const PHYSIO_SERVICE_CARDS = [
     description:
       "Exercises designed to improve walking, balance, transfers and functional movement while helping reduce the risk of falls.",
     color: "text-teal-600",
-    bg: "from-teal-50 to-emerald-50",
+    bg: "from-teal-50 to-teal-50",
     iconBg: "bg-teal-100",
   },
 ];
@@ -167,9 +167,9 @@ const WHY_CHOOSE = [
     title: "Personalised Care Plans",
     description:
       "Exercises and therapy are planned according to the patient's condition, mobility and recovery requirements.",
-    color: "text-emerald-600",
-    bg: "bg-emerald-50",
-    iconBg: "bg-emerald-100",
+    color: "text-teal-600",
+    bg: "bg-teal-50",
+    iconBg: "bg-teal-100",
   },
   {
     icon: Home,
@@ -345,7 +345,7 @@ function PhysioHero({
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/90 mb-5">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="h-1.5 w-1.5 rounded-full bg-teal-400 animate-pulse" />
               Physiotherapy & Recovery
             </div>
 
@@ -363,7 +363,7 @@ function PhysioHero({
 
             <div className="flex flex-wrap gap-3">
               <PhysioBookingModal>
-                <button className="inline-flex items-center gap-2 rounded-full bg-emerald-400 text-slate-900 px-6 py-3 text-sm font-semibold shadow-[0_20px_40px_-10px_rgba(52,211,153,0.4)] hover:bg-emerald-300 hover:-translate-y-0.5 transition-all duration-300">
+                <button className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3 text-sm font-semibold shadow-[0_20px_40px_-10px_rgba(52,211,153,0.4)] hover:bg-primary/90 hover:-translate-y-0.5 transition-all duration-300">
                   Book a Physiotherapist <ArrowRight className="h-4 w-4" />
                 </button>
               </PhysioBookingModal>
@@ -399,9 +399,9 @@ function PhysioHero({
             className="hidden lg:block"
           >
             <div className="relative rounded-[2rem] border border-white/15 bg-white/8 backdrop-blur-2xl p-6 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.6)]">
-              <div className="absolute -top-6 -right-6 h-20 w-20 rounded-full bg-emerald-400/20 blur-3xl" />
+              <div className="absolute -top-6 -right-6 h-20 w-20 rounded-full bg-teal-400/20 blur-3xl" />
 
-              <div className="grid h-12 w-12 place-items-center rounded-2xl bg-emerald-400/20 text-emerald-300 border border-emerald-400/20 mb-4">
+              <div className="grid h-12 w-12 place-items-center rounded-2xl bg-teal-400/20 text-teal-300 border border-teal-400/20 mb-4">
                 <Activity className="h-6 w-6" strokeWidth={1.5} />
               </div>
 
@@ -424,7 +424,7 @@ function PhysioHero({
                     key={i}
                     className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-2.5 py-1.5"
                   >
-                    <div className="h-1.5 w-1.5 rounded-full bg-emerald-400 shrink-0" />
+                    <div className="h-1.5 w-1.5 rounded-full bg-teal-400 shrink-0" />
                     <span className="text-white/80 text-xs font-medium">{item}</span>
                   </div>
                 ))}
@@ -503,9 +503,9 @@ function PhysioServicesSection() {
 
 function PhysioChecklistSection() {
   return (
-    <section className="relative py-20 lg:py-28 overflow-hidden bg-gradient-to-br from-slate-900 to-emerald-950">
+    <section className="relative py-20 lg:py-28 overflow-hidden bg-gradient-to-br from-slate-900 to-teal-950">
       <div className="absolute inset-0 pointer-events-none" aria-hidden>
-        <div className="absolute top-0 right-[20%] w-80 h-80 bg-emerald-500/15 rounded-full blur-[100px]" />
+        <div className="absolute top-0 right-[20%] w-80 h-80 bg-primary/15 rounded-full blur-[100px]" />
         <div className="absolute bottom-0 left-[10%] w-64 h-64 bg-teal-600/10 rounded-full blur-[80px]" />
       </div>
 
@@ -518,7 +518,7 @@ function PhysioChecklistSection() {
             transition={{ duration: 0.7 }}
           >
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-white/70 mb-6">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+              <span className="h-1.5 w-1.5 rounded-full bg-teal-400" />
               What We Cover
             </div>
             <h2 className="font-display text-4xl md:text-5xl text-white tracking-tight leading-tight mb-6">
@@ -547,7 +547,7 @@ function PhysioChecklistSection() {
                 transition={{ duration: 0.4, delay: i * 0.04 }}
                 className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 backdrop-blur-md px-4 py-3"
               >
-                <div className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-emerald-400/25 text-emerald-300">
+                <div className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-teal-400/25 text-teal-300">
                   <Check className="h-3.5 w-3.5" strokeWidth={3} />
                 </div>
                 <span className="text-sm font-medium text-white/85">{feat}</span>
@@ -621,14 +621,8 @@ function PhysioWhyChooseSection() {
 
 function PhysioCtaBand({ phone, whatsapp }: { phone?: string; whatsapp?: string }) {
   return (
-    <section className="relative overflow-hidden">
-      <div
-        className="absolute inset-0 -z-10"
-        style={{
-          background:
-            "linear-gradient(135deg, oklch(0.22 0.06 160) 0%, oklch(0.28 0.08 180) 100%)",
-        }}
-      />
+    <section className="relative overflow-hidden bg-primary">
+      <div className="absolute inset-0 -z-10" />
       <div className="absolute inset-0 -z-10 opacity-10 pointer-events-none">
         <div
           style={{
@@ -647,7 +641,7 @@ function PhysioCtaBand({ phone, whatsapp }: { phone?: string; whatsapp?: string 
           </div>
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-white tracking-tight leading-[1.1] mb-6">
             Whether your loved one is recovering after surgery or needs rehabilitation,{" "}
-            <em className="not-italic text-emerald-300">we can help.</em>
+            <em className="not-italic text-teal-300">we can help.</em>
           </h2>
           <p className="text-white/65 text-lg leading-relaxed max-w-2xl mb-10">
             Our team provides convenient home-based physiotherapy focused on mobility, strength,
@@ -655,7 +649,7 @@ function PhysioCtaBand({ phone, whatsapp }: { phone?: string; whatsapp?: string 
           </p>
           <div className="flex flex-wrap gap-4">
             <PhysioBookingModal>
-              <button className="inline-flex items-center gap-2 rounded-full bg-emerald-400 text-slate-900 px-8 py-4 text-base font-semibold hover:bg-emerald-300 transition-all duration-300 shadow-[0_15px_35px_-10px_rgba(52,211,153,0.4)]">
+              <button className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-8 py-4 text-base font-semibold hover:bg-primary/90 transition-all duration-300 shadow-[0_15px_35px_-10px_rgba(52,211,153,0.4)]">
                 Book a Physiotherapist <ArrowRight className="h-5 w-5" />
               </button>
             </PhysioBookingModal>
