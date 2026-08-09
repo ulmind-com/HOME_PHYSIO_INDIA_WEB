@@ -48,25 +48,25 @@ export const Route = createFileRoute("/elderly-care")({
 
 const SERVICES = [
   {
-    image: "/assets/hero-nurse-patient.png",
+    image: "/assets/services/elderly_care.png",
     title: "Elderly Care",
     description:
       "Compassionate home care and companionship for seniors who need assistance with their daily routine, personal care and comfort.",
   },
   {
-    image: "/assets/equip_hospital_bed.png",
+    image: "/assets/services/bedridden_care.png",
     title: "Bedridden Patient Care",
     description:
       "Support for bedridden seniors with personal hygiene, feeding, position changes, mobility assistance and daily supervision.",
   },
   {
-    image: "/assets/equip_wheelchair.png",
+    image: "/assets/services/mobility_care.png",
     title: "Mobility Assistance",
     description:
       "Our attendants assist elderly people with walking, transfers, movement and safe mobility at home to help reduce the risk of falls.",
   },
   {
-    image: "/assets/home-care-steps.png",
+    image: "/assets/services/daily_living.png",
     title: "Daily Living Support",
     description:
       "Assistance with bathing, grooming, hygiene, meals, feeding and other everyday activities that become difficult for elderly people.",
