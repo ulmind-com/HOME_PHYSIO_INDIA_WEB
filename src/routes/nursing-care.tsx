@@ -26,6 +26,7 @@ import {
   Loader2,
   ChevronLeft,
   ChevronRight,
+  ArrowUpRight,
 } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import { categoriesQ, faqsQ, settingsQ } from "@/lib/api/queries";
@@ -477,20 +478,20 @@ function NursingHero({
               </span>
             </p>
 
-            <div className="flex flex-wrap gap-3">
+            <div className="mt-6 md:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
               <NursingBookingModal>
                 <button
-                  className="inline-flex items-center gap-2 rounded-full bg-cyan-400 text-slate-900 px-6 py-3 text-sm font-semibold shadow-[0_20px_40px_-10px_rgba(34,211,238,0.4)] hover:bg-cyan-300 hover:-translate-y-0.5 transition-all duration-300"
+                  className="group inline-flex items-center justify-center gap-2 rounded-full bg-cyan-400 px-8 py-3.5 text-[15px] font-semibold text-slate-900 shadow-sm transition-all duration-300 hover:brightness-110 hover:-translate-y-0.5 w-full sm:w-auto"
                 >
-                  Book a Nurse <ArrowRight className="h-4 w-4" />
+                  Book a Nurse <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </button>
               </NursingBookingModal>
               {phone && (
                 <a
                   href={`tel:${phone}`}
-                  className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 backdrop-blur-md px-6 py-3 text-sm font-semibold text-white hover:bg-white/20 transition-all duration-300"
+                  className="group inline-flex items-center justify-center gap-2.5 rounded-full border border-white/30 bg-white/10 backdrop-blur-md px-8 py-3.5 text-[15px] font-medium text-white shadow-sm hover:bg-white/20 hover:border-white/50 transition-all duration-300 hover:-translate-y-0.5 w-full sm:w-auto"
                 >
-                  <Phone className="h-4 w-4" /> Call Now
+                  <Phone className="h-5 w-5" /> Call Now
                 </a>
               )}
             </div>
@@ -556,6 +557,56 @@ function NursingHero({
             </div>
           </motion.div>
         </div>
+
+        {/* Progress Dots + Navigation (Matches Home Hero) */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2, duration: 1 }}
+          className="flex items-center gap-5 mt-10 lg:mt-8 w-full lg:justify-end"
+        >
+          {/* Arrow Nav */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => go(currentIdx - 1)}
+              className="grid h-12 w-12 place-items-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition-all hover:bg-white/20 hover:border-white/40"
+              aria-label="Previous slide"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+            <button
+              onClick={() => go(currentIdx + 1)}
+              className="grid h-12 w-12 place-items-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition-all hover:bg-white/20 hover:border-white/40"
+              aria-label="Next slide"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
+          </div>
+
+          {/* Progress Bars */}
+          <div className="flex items-center gap-2">
+            {images.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => go(i)}
+                className="group relative h-1.5 overflow-hidden rounded-full transition-all duration-500"
+                style={{ width: i === currentIdx ? 48 : 20 }}
+                aria-label={`Go to slide ${i + 1}`}
+              >
+                <span className="absolute inset-0 rounded-full bg-white/30" />
+                {i === currentIdx && (
+                  <motion.span
+                    className="absolute inset-0 rounded-full bg-cyan-400"
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ duration: 5.5, ease: "linear" }}
+                    style={{ transformOrigin: "left" }}
+                  />
+                )}
+              </button>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );
