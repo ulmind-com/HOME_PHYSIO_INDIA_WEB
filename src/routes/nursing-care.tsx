@@ -24,8 +24,10 @@ import {
   Stethoscope,
   ThumbsUp,
   Loader2,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { categoriesQ, faqsQ, settingsQ } from "@/lib/api/queries";
 import { BookingForm, CITIES } from "@/components/forms/BookingForm";
 import { NursingBookingModal } from "@/components/forms/NursingBookingModal";
@@ -376,12 +378,19 @@ function NursingHero({
   
   const [currentIdx, setCurrentIdx] = useState(0);
 
+  const go = useCallback(
+    (next: number) => {
+      setCurrentIdx(((next % images.length) + images.length) % images.length);
+    },
+    [images.length]
+  );
+
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentIdx((prev) => (prev + 1) % images.length);
+      go(currentIdx + 1);
     }, 5500);
     return () => clearInterval(timer);
-  }, [images.length]);
+  }, [currentIdx, go]);
 
   return (
     <section className="relative min-h-[100svh] lg:min-h-svh flex items-center overflow-hidden">
