@@ -468,10 +468,12 @@ function NursingHero({
               Skilled Nursing Care at Home
             </div>
 
-            <h1 className="font-display text-4xl md:text-5xl lg:text-[3.5rem] font-bold text-white leading-[1.08] tracking-tight mb-4">
-              Professional <br />
-              Nursing Support{" "}
-              <em className="not-italic text-cyan-300">Delivered at Home</em>
+            <h1 
+              className="font-display font-medium text-white tracking-tight leading-[1.1] text-[40px] sm:text-[48px] md:text-[56px] lg:text-[64px] mb-4"
+              style={{ textShadow: "0 4px 40px rgba(0,0,0,0.5)" }}
+            >
+              Professional Nursing Support <br />
+              <span className="text-white font-semibold italic">Delivered at Home</span>
             </h1>
 
             <p className="text-white/70 text-base md:text-lg leading-relaxed max-w-xl mb-6">
