@@ -472,8 +472,7 @@ function NursingHero({
               className="font-display font-medium text-white tracking-tight leading-[1.1] text-[40px] sm:text-[48px] md:text-[56px] lg:text-[64px] mb-4"
               style={{ textShadow: "0 4px 40px rgba(0,0,0,0.5)" }}
             >
-              Professional Nursing Support <br />
-              <span className="text-white font-semibold italic">Delivered at Home</span>
+              Professional Nursing Support Delivered at Home
             </h1>
 
             <p className="text-white/70 text-base md:text-lg leading-relaxed max-w-xl mb-6">
