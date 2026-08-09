@@ -367,6 +367,12 @@ function NursingHero({
     "/assets/nurse-hero-21-9-2.png",
     "/assets/nurse-hero-21-9-3.png",
   ];
+
+  const mobileImages = [
+    "/assets/nurse-hero-mobile-1.png",
+    "/assets/nurse-hero-mobile-2.png",
+    "/assets/nurse-hero-mobile-3.png",
+  ];
   
   const [currentIdx, setCurrentIdx] = useState(0);
 
@@ -382,10 +388,8 @@ function NursingHero({
       {/* Hero background image slider */}
       <div className="absolute inset-0 -z-20 w-full h-full bg-[#0a0a0a]">
         <AnimatePresence>
-          <motion.img
+          <motion.div
             key={currentIdx}
-            src={images[currentIdx]}
-            alt="Home Nursing Care"
             initial={{ opacity: 0, scale: 1.15 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
@@ -393,8 +397,17 @@ function NursingHero({
               opacity: { duration: 1.8, ease: "easeInOut" },
               scale: { duration: 8, ease: "easeOut" }
             }}
-            className="absolute inset-0 w-full h-full object-cover object-center"
-          />
+            className="absolute inset-0 w-full h-full"
+          >
+            <picture>
+              <source media="(max-width: 768px)" srcSet={mobileImages[currentIdx]} />
+              <img 
+                src={images[currentIdx]} 
+                alt="Home Nursing Care" 
+                className="w-full h-full object-cover object-center"
+              />
+            </picture>
+          </motion.div>
         </AnimatePresence>
       </div>
       
