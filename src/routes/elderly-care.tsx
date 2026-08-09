@@ -1,25 +1,23 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Heart,
   Bed,
   PersonStanding,
   UtensilsCrossed,
-  ShieldCheck,
-  Clock3,
-  Bell,
-  Users,
-  Star,
-  HeartHandshake,
+  CheckCircle2,
   Phone,
   ArrowRight,
-  Check,
   ChevronDown,
+  Clock,
+  Pill,
+  MessageCircle,
+  ShieldCheck,
 } from "lucide-react";
-import { useState } from "react";
-import { categoriesQ, faqsQ, settingsQ } from "@/lib/api/queries";
-import { BookingForm } from "@/components/forms/BookingForm";
+import { useState, useEffect } from "react";
+import { settingsQ, faqsQ } from "@/lib/api/queries";
+import { ElderCareBookingModal } from "@/components/forms/ElderCareBookingModal";
 import { Section } from "@/components/site/Section";
 
 export const Route = createFileRoute("/elderly-care")({
@@ -55,8 +53,8 @@ const SERVICES = [
     title: "Elderly Care",
     description:
       "Compassionate home care and companionship for seniors who need assistance with their daily routine, personal care and comfort.",
-    gradient: "from-rose-50 to-pink-50",
-    iconColor: "text-rose-500",
+    color: "text-rose-600",
+    bg: "from-rose-50 to-pink-50",
     iconBg: "bg-rose-100",
   },
   {
@@ -65,8 +63,8 @@ const SERVICES = [
     title: "Bedridden Patient Care",
     description:
       "Support for bedridden seniors with personal hygiene, feeding, position changes, mobility assistance and daily supervision.",
-    gradient: "from-blue-50 to-indigo-50",
-    iconColor: "text-blue-500",
+    color: "text-blue-600",
+    bg: "from-blue-50 to-indigo-50",
     iconBg: "bg-blue-100",
   },
   {
@@ -75,8 +73,8 @@ const SERVICES = [
     title: "Mobility Assistance",
     description:
       "Our attendants assist elderly people with walking, transfers, movement and safe mobility at home to help reduce the risk of falls.",
-    gradient: "from-emerald-50 to-teal-50",
-    iconColor: "text-emerald-500",
+    color: "text-emerald-600",
+    bg: "from-emerald-50 to-teal-50",
     iconBg: "bg-emerald-100",
   },
   {
@@ -85,8 +83,8 @@ const SERVICES = [
     title: "Daily Living Support",
     description:
       "Assistance with bathing, grooming, hygiene, meals, feeding and other everyday activities that become difficult for elderly people.",
-    gradient: "from-amber-50 to-orange-50",
-    iconColor: "text-amber-500",
+    color: "text-amber-600",
+    bg: "from-amber-50 to-orange-50",
     iconBg: "bg-amber-100",
   },
 ];
@@ -108,56 +106,32 @@ const WHY_CHOOSE = [
   {
     icon: ShieldCheck,
     title: "Trained Caregivers",
-    description:
-      "Our attendants are selected and trained to provide dependable assistance to elderly people at home.",
-    color: "text-emerald-600",
-    bg: "bg-emerald-50",
-    iconBg: "bg-emerald-100",
+    desc: "Our attendants are selected and trained to provide dependable assistance to elderly people at home.",
   },
   {
-    icon: Clock3,
+    icon: Clock,
     title: "Flexible Care Options",
-    description:
-      "Choose care according to your requirement, including hourly, 8-hour, 12-hour and 24-hour support.",
-    color: "text-blue-600",
-    bg: "bg-blue-50",
-    iconBg: "bg-blue-100",
+    desc: "Choose care according to your requirement, including hourly, 8-hour, 12-hour and 24-hour support.",
   },
   {
-    icon: Bell,
+    icon: Pill,
     title: "Medication Support",
-    description:
-      "Caregivers can provide timely medication reminders according to the family's instructions and prescribed routine.",
-    color: "text-violet-600",
-    bg: "bg-violet-50",
-    iconBg: "bg-violet-100",
+    desc: "Caregivers can provide timely medication reminders according to the family's instructions and prescribed routine.",
   },
   {
-    icon: Users,
+    icon: MessageCircle,
     title: "Family Updates",
-    description:
-      "Families can stay informed about the elderly person's daily routine, care and well-being.",
-    color: "text-pink-600",
-    bg: "bg-pink-50",
-    iconBg: "bg-pink-100",
+    desc: "Families can stay informed about the elderly person's daily routine, care and well-being.",
   },
   {
     icon: Heart,
     title: "Personalised Care",
-    description:
-      "Every senior has different needs. We understand the patient's routine and provide care accordingly.",
-    color: "text-rose-600",
-    bg: "bg-rose-50",
-    iconBg: "bg-rose-100",
+    desc: "Every senior has different needs. We understand the patient's routine and provide care accordingly.",
   },
   {
-    icon: HeartHandshake,
+    icon: CheckCircle2,
     title: "Safety & Comfort",
-    description:
-      "Our caregivers focus on safe mobility, hygiene, comfort and respectful assistance at home.",
-    color: "text-teal-600",
-    bg: "bg-teal-50",
-    iconBg: "bg-teal-100",
+    desc: "Our caregivers focus on safe mobility, hygiene, comfort and respectful assistance at home.",
   },
 ];
 
@@ -212,24 +186,11 @@ const DEFAULT_FAQS = [
   },
 ];
 
-/* ─────────────────────── Component ─────────────────────── */
+/* ─────────────────────── Components ─────────────────────── */
 
 function ElderlyCarePage() {
   const { data: settings } = useQuery(settingsQ());
   const { data: faqData } = useQuery(faqsQ({ limit: 20 }));
-  const { data: catData } = useQuery(categoriesQ({ limit: 100 }));
-
-  const category = (catData?.items ?? []).find(
-    (c) =>
-      c.name.toLowerCase().includes("elder") ||
-      c.slug?.toLowerCase().includes("elder")
-  );
-  
-  const heroImageStr = category?.hero_image
-    ? typeof category.hero_image === "string"
-      ? category.hero_image
-      : category.hero_image.url
-    : null;
 
   const phone = settings?.phone?.replace(/[^\d+]/g, "");
   const whatsapp = (settings?.whatsapp ?? settings?.phone)?.replace(/\D/g, "");
@@ -244,166 +205,133 @@ function ElderlyCarePage() {
 
   return (
     <>
-      {/* ── Hero ─────────────────────────────────────────────── */}
-      <ElderlyHero phone={phone} whatsapp={whatsapp} heroImage={heroImageStr} />
-
-      {/* ── Our Elderly Care Services ─────────────────────── */}
-      <ServicesSection />
-
-      {/* ── Trusted Elderly Care Services (Checklist) ─────── */}
-      <TrustedSection />
-
-      {/* ── Why Choose Nupun ─────────────────────────────── */}
-      <WhyChooseSection />
-
-      {/* ── CTA Band ─────────────────────────────────────── */}
-      <CtaBand phone={phone} whatsapp={whatsapp} />
-
-      {/* ── FAQ ──────────────────────────────────────────── */}
-      <FaqSection faqs={displayFaqs} />
-
-      {/* ── Booking Panel ────────────────────────────────── */}
-      <BookingPanel phone={phone} whatsapp={whatsapp} />
+      <ElderlyHero phone={phone} whatsapp={whatsapp} />
+      <ElderlyServices />
+      <TrustedFeatures />
+      <WhyChooseUs />
+      <ElderlyCtaBand phone={phone} whatsapp={whatsapp} />
+      <ElderlyFaq faqs={displayFaqs} />
     </>
   );
 }
 
 /* ─────────────────────── Hero ─────────────────────── */
 
-function ElderlyHero({
-  phone,
-  whatsapp,
-  heroImage,
-}: {
-  phone?: string;
-  whatsapp?: string;
-  heroImage?: string | null;
-}) {
-  const bgImage = heroImage || "/assets/services/nurse-elder.jpg";
+function ElderlyHero({ phone, whatsapp }: { phone?: string; whatsapp?: string }) {
+  const images = ["/assets/services/nurse-elder.jpg"];
+  const [currentIdx, setCurrentIdx] = useState(0);
+
+  useEffect(() => {
+    if (images.length <= 1) return;
+    const timer = setInterval(() => {
+      setCurrentIdx((prev) => (prev + 1) % images.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, [images.length]);
 
   return (
-    <section className="relative min-h-svh flex items-center overflow-hidden">
-      {/* Hero background image (dynamic or fallback) */}
-      <img
-        src={bgImage}
-        alt="Elderly Care at Home"
-        className="absolute inset-0 w-full h-full object-cover object-top -z-20"
-      />
-      {/* Dark overlay for text readability */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-black/70 via-black/55 to-black/70" />
+    <section className="relative min-h-[100svh] lg:min-h-svh flex items-center overflow-hidden">
+      {/* Hero background image slider */}
+      <div className="absolute inset-0 -z-20 w-full h-full bg-[#051114]">
+        <AnimatePresence>
+          <motion.img
+            key={currentIdx}
+            src={images[currentIdx]}
+            alt="Trusted Elder Care"
+            initial={{ opacity: 0, scale: 1.15 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{
+              opacity: { duration: 1.8, ease: "easeInOut" },
+              scale: { duration: 10, ease: "linear" },
+            }}
+            className="w-full h-full object-cover object-[center_30%]"
+          />
+        </AnimatePresence>
+      </div>
 
-      {/* Dot grid overlay */}
-      <div
-        className="absolute inset-0 -z-10 opacity-10"
-        style={{
-          backgroundImage: "radial-gradient(white 1px, transparent 1px)",
-          backgroundSize: "32px 32px",
-        }}
-        aria-hidden
-      />
+      {/* Overlays */}
+      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black/95 via-black/70 to-black/30" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
 
-      <div className="container-x relative z-10 pt-24 pb-12 lg:pt-28 lg:pb-14">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-          {/* Left content */}
+      <div className="container-x relative z-10 pt-32 pb-20">
+        <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-20 items-center">
           <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            {/* Badge */}
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/90 mb-5">
               <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-              Nupun Home Health Care Services
+              Elderly Care Services
             </div>
 
-            <h1 className="font-display text-4xl md:text-5xl lg:text-[3.5rem] font-bold text-white leading-[1.08] tracking-tight mb-4">
-              Trusted Elder Care,{" "}
-              <em className="not-italic text-primary">Right at Home</em>
+            <h1 className="font-display text-4xl md:text-5xl lg:text-[4rem] font-bold text-white leading-[1.08] tracking-tight mb-6">
+              Trusted Elder Care, <br />
+              <span className="text-teal-400">Right at Home</span>
             </h1>
 
-            <p className="text-white/75 text-base md:text-lg leading-relaxed max-w-xl mb-6">
-              Nupun Home Health Care Services provides trained and caring
-              attendants for elderly people who need support at home. Our
-              caregivers assist seniors with personal hygiene, mobility, meals,
-              companionship, medication reminders and daily routine activities.
+            <p className="text-white/80 text-base md:text-lg leading-relaxed max-w-xl mb-6">
+              Nupun Home Health Care Services provides trained and caring attendants for elderly people who need support at home. Our caregivers assist seniors with personal hygiene, mobility, meals, companionship, medication reminders and daily routine activities.
+            </p>
+            <p className="text-white/70 text-base md:text-lg leading-relaxed max-w-xl mb-8">
+              Whether your loved one needs support for a few hours, daytime care, overnight assistance or long-term elderly care, our team provides dependable care according to their individual needs.
             </p>
 
-            {/* CTA Buttons */}
             <div className="flex flex-wrap gap-3">
-              <Link
-                to="/booking"
-                search={{ service: "elderly-care" }}
-                className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-[0_20px_40px_-10px_rgba(0,0,0,0.4)] hover:bg-primary/90 hover:-translate-y-0.5 transition-all duration-300"
-              >
-                Book an Attendant <ArrowRight className="h-4 w-4" />
-              </Link>
+              <ElderCareBookingModal>
+                <button className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3.5 text-sm font-semibold shadow-[0_20px_40px_-10px_rgba(0,128,128,0.4)] hover:bg-primary/90 hover:-translate-y-0.5 transition-all duration-300">
+                  Book an Attendant <ArrowRight className="h-4 w-4" />
+                </button>
+              </ElderCareBookingModal>
               {phone && (
                 <a
                   href={`tel:${phone}`}
-                  className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 backdrop-blur-md px-6 py-3 text-sm font-semibold text-white hover:bg-white/20 transition-all duration-300"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 backdrop-blur-md px-6 py-3.5 text-sm font-semibold text-white hover:bg-white/20 transition-all duration-300"
                 >
-                  <Phone className="h-4 w-4" /> Call Now
+                  <Phone className="h-4 w-4" />
+                  Call Now
                 </a>
               )}
             </div>
-
-            {/* Trust stats */}
-            <div className="mt-8 flex flex-wrap gap-6">
-              {[
-                { val: "24/7", label: "Care Available" },
-                { val: "200+", label: "Verified Attendants" },
-                { val: "4 Cities", label: "NCR Coverage" },
-              ].map((s) => (
-                <div key={s.label}>
-                  <div className="text-xl font-display font-bold text-white">{s.val}</div>
-                  <div className="text-xs text-white/60 mt-0.5">{s.label}</div>
-                </div>
-              ))}
-            </div>
           </motion.div>
 
-          {/* Right: Glass card */}
+          {/* Right side floating card */}
           <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="hidden lg:block"
+            initial={{ opacity: 0, scale: 0.9, rotate: -2 }}
+            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+            transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="hidden lg:block relative"
           >
-            <div className="relative rounded-[2rem] border border-white/20 bg-white/10 backdrop-blur-2xl p-6 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.5)]">
-              <div className="absolute -top-6 -right-6 h-24 w-24 rounded-full bg-primary/30 blur-2xl" />
-
-              <div className="text-white/60 text-xs uppercase tracking-[0.2em] font-semibold mb-4">
-                Whether your loved one needs
-              </div>
-
-              {[
-                "Support for a few hours",
-                "Daytime care",
-                "Overnight assistance",
-                "Long-term elderly care",
-              ].map((item, i) => (
-                <div
-                  key={i}
-                  className="flex items-center gap-3 mb-3 last:mb-0"
-                >
-                  <div className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-primary/30 text-primary border border-primary/40">
-                    <Check className="h-3.5 w-3.5" strokeWidth={3} />
-                  </div>
-                  <span className="text-white font-medium text-sm">{item}</span>
+            <div className="relative rounded-[2.5rem] border border-white/15 bg-white/5 backdrop-blur-3xl p-8 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.6)] overflow-hidden group">
+              <div className="absolute -top-10 -right-10 h-32 w-32 rounded-full bg-primary/20 blur-[50px] transition-transform duration-700 group-hover:scale-150" />
+              <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-blue-500/10 blur-[50px] transition-transform duration-700 group-hover:scale-150" />
+              
+              <div className="relative z-10">
+                <div className="grid h-14 w-14 place-items-center rounded-2xl bg-primary/20 text-teal-300 border border-primary/20 mb-6">
+                  <Heart className="h-7 w-7" />
                 </div>
-              ))}
+                
+                <h3 className="text-2xl font-display font-semibold text-white mb-3">
+                  Compassionate Care
+                </h3>
+                <p className="text-white/60 leading-relaxed text-[15px] mb-8">
+                  We provide reliable elderly care at home to help seniors live safely, comfortably and independently with the support they need.
+                </p>
 
-              <div className="mt-5 h-px bg-white/10" />
-              <p className="mt-4 text-white/70 text-sm leading-relaxed">
-                Our team provides dependable care according to the individual
-                needs of your loved one.
-              </p>
-
-              <div className="mt-4 flex items-center gap-2">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-primary text-primary" />
-                ))}
-                <span className="text-white/70 text-xs ml-1">Trusted by families across NCR</span>
+                <div className="space-y-3">
+                  {["Trained Attendants", "24/7 Support Available", "Personalised Care"].map(
+                    (feature) => (
+                      <div
+                        key={feature}
+                        className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-2.5"
+                      >
+                        <div className="h-1.5 w-1.5 rounded-full bg-primary shrink-0" />
+                        <span className="text-sm font-medium text-white/80">{feature}</span>
+                      </div>
+                    )
+                  )}
+                </div>
               </div>
             </div>
           </motion.div>
@@ -413,119 +341,139 @@ function ElderlyHero({
   );
 }
 
-/* ─────────────────────── Our Elderly Care Services ─────────────────────── */
+/* ─────────────────────── Services ─────────────────────── */
 
-function ServicesSection() {
+function ElderlyServices() {
   return (
-    <Section className="py-20 lg:py-28">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="text-center max-w-2xl mx-auto mb-14"
-      >
-        <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-5">
-          <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-          What We Offer
-        </div>
-        <h2 className="font-display text-4xl md:text-5xl lg:text-6xl tracking-tight text-foreground mb-4">
-          Our Elderly Care Services
-        </h2>
-        <p className="text-muted-foreground text-lg leading-relaxed">
-          We provide reliable elderly care at home to help seniors live safely,
-          comfortably and independently with the support they need.
-        </p>
-      </motion.div>
+    <Section className="bg-[#F8F9FA] py-20 lg:py-28">
+      <div className="container-x mb-16 max-w-2xl text-center mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-white px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-5">
+            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+            Our Services
+          </div>
+          <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground tracking-tight leading-[1.1] mb-6">
+            Our Elderly Care Services
+          </h2>
+          <p className="text-muted-foreground text-lg leading-relaxed">
+            We provide reliable elderly care at home to help seniors live safely, comfortably and independently with the support they need.
+          </p>
+        </motion.div>
+      </div>
 
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {SERVICES.map((s, i) => {
-          const Icon = s.icon;
-          return (
-            <motion.div
-              key={s.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <div
-                className={`group h-full flex flex-col rounded-[2rem] bg-gradient-to-br ${s.gradient} border border-white p-7 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.14)] cursor-default`}
+      <div className="container-x">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {SERVICES.map((s, i) => {
+            const Icon = s.icon;
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
               >
-                <div className={`text-4xl mb-5`}>{s.emoji}</div>
-                <div className={`w-12 h-12 rounded-2xl ${s.iconBg} flex items-center justify-center mb-5`}>
-                  <Icon className={`h-6 w-6 ${s.iconColor}`} strokeWidth={2} />
+                <div className="group h-full flex flex-col rounded-3xl bg-white border border-border p-6 shadow-sm transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)]">
+                  <div
+                    className={`w-12 h-12 rounded-2xl ${s.iconBg} flex items-center justify-center mb-5`}
+                  >
+                    <Icon className={`h-6 w-6 ${s.color}`} strokeWidth={2} />
+                  </div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-xl">{s.emoji}</span>
+                    <h3 className="font-display text-lg font-bold text-foreground leading-tight">
+                      {s.title}
+                    </h3>
+                  </div>
+                  <p className="text-muted-foreground text-sm leading-relaxed flex-1">
+                    {s.description}
+                  </p>
                 </div>
-                <h3 className="font-display text-xl font-semibold text-foreground mb-3">
-                  {s.title}
-                </h3>
-                <p className="text-sm leading-relaxed text-muted-foreground flex-1">
-                  {s.description}
-                </p>
-              </div>
-            </motion.div>
-          );
-        })}
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
     </Section>
   );
 }
 
-/* ─────────────────────── Trusted Section ─────────────────────── */
+/* ─────────────────────── Trusted Features ─────────────────────── */
 
-function TrustedSection() {
+function TrustedFeatures() {
   return (
-    <section className="relative py-20 lg:py-28 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none" aria-hidden>
-        <div className="absolute top-0 left-[20%] w-96 h-96 bg-primary/15 rounded-full blur-[100px]" />
-        <div className="absolute bottom-0 right-[10%] w-80 h-80 bg-violet-500/10 rounded-full blur-[80px]" />
-      </div>
-
+    <section className="relative py-20 lg:py-28 overflow-hidden bg-gradient-to-br from-[#0c1c20] to-[#0a1818]">
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-teal-600/10 rounded-full blur-[100px] pointer-events-none" />
+      
       <div className="container-x relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-white/70 mb-6">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 backdrop-blur-md px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-white/70 mb-6">
               <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-              Our Commitment
+              Trusted Care
             </div>
-            <h2 className="font-display text-4xl md:text-5xl text-white tracking-tight leading-tight mb-6">
+            
+            <h2 className="font-display text-3xl md:text-5xl font-bold text-white tracking-tight leading-[1.1] mb-6">
               Trusted Elderly Care Services
             </h2>
-            <p className="text-white/65 text-lg leading-relaxed">
-              At Nupun Home Health Care Services, we understand that caring for
-              an elderly family member requires patience, responsibility and
-              trust. Our trained attendants provide respectful support while
-              maintaining the senior's dignity, comfort and independence.
+            <p className="text-white/70 text-lg leading-relaxed mb-6">
+              At Nupun Home Health Care Services, we understand that caring for an elderly family member requires patience, responsibility and trust.
             </p>
+            <p className="text-white/70 text-lg leading-relaxed mb-10">
+              Our trained attendants provide respectful support while maintaining the senior's dignity, comfort and independence.
+            </p>
+            
+            <div className="grid sm:grid-cols-2 gap-x-6 gap-y-4">
+              {TRUST_FEATURES.map((feature, idx) => (
+                <div key={idx} className="flex items-start gap-3">
+                  <div className="mt-1 flex-shrink-0 grid h-5 w-5 place-items-center rounded-full bg-primary/20 text-teal-300">
+                    <CheckCircle2 className="h-3 w-3" />
+                  </div>
+                  <span className="text-white/80 text-[15px] leading-snug">{feature}</span>
+                </div>
+              ))}
+            </div>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            className="grid grid-cols-1 sm:grid-cols-2 gap-3"
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
+            className="relative"
           >
-            {TRUST_FEATURES.map((feat, i) => (
-              <motion.div
-                key={feat}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.05 }}
-                className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 backdrop-blur-md px-4 py-3"
-              >
-                <div className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-primary/30 text-primary">
-                  <Check className="h-3.5 w-3.5" strokeWidth={3} />
+            <div className="aspect-[4/5] rounded-[2rem] overflow-hidden border border-white/10 relative shadow-2xl">
+              <img 
+                src="/assets/services/nurse-elder.jpg" 
+                alt="Elderly Care" 
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0c1c20] via-transparent to-transparent" />
+            </div>
+            
+            {/* Floating badge */}
+            <div className="absolute -bottom-8 -left-8 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 p-5 shadow-2xl">
+              <div className="flex items-center gap-4">
+                <div className="grid h-12 w-12 place-items-center rounded-xl bg-primary/20 text-teal-300">
+                  <Heart className="h-6 w-6" />
                 </div>
-                <span className="text-sm font-medium text-white/85">{feat}</span>
-              </motion.div>
-            ))}
+                <div>
+                  <div className="text-2xl font-bold text-white leading-none mb-1">100%</div>
+                  <div className="text-sm font-medium text-white/70">Verified Caregivers</div>
+                </div>
+              </div>
+            </div>
           </motion.div>
         </div>
       </div>
@@ -533,54 +481,55 @@ function TrustedSection() {
   );
 }
 
-/* ─────────────────────── Why Choose Nupun ─────────────────────── */
+/* ─────────────────────── Why Choose Us ─────────────────────── */
 
-function WhyChooseSection() {
+function WhyChooseUs() {
   return (
     <Section className="py-20 lg:py-28">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="text-center max-w-2xl mx-auto mb-14"
-      >
-        <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-5">
-          <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-          Why Families Trust Us
-        </div>
-        <h2 className="font-display text-4xl md:text-5xl tracking-tight text-foreground mb-4">
-          Why Choose Nupun Home Health Care Services?
-        </h2>
-      </motion.div>
+      <div className="container-x text-center max-w-2xl mx-auto mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-5">
+            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+            Why Choose Us
+          </div>
+          <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground tracking-tight leading-[1.1]">
+            Why Choose Nupun Home Health Care Services?
+          </h2>
+        </motion.div>
+      </div>
 
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {WHY_CHOOSE.map((item, i) => {
-          const Icon = item.icon;
-          return (
-            <motion.div
-              key={item.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: (i % 3) * 0.1 }}
-              className={`group flex items-start gap-5 rounded-[1.75rem] ${item.bg} border border-transparent hover:border-black/5 p-6 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.06)]`}
-            >
-              <div
-                className={`grid h-14 w-14 shrink-0 place-items-center rounded-2xl ${item.iconBg} ${item.color} transition-transform duration-400 group-hover:scale-110 group-hover:rotate-3`}
+      <div className="container-x">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {WHY_CHOOSE.map((item, i) => {
+            const Icon = item.icon;
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
               >
-                <Icon className="h-6 w-6" strokeWidth={2.5} />
-              </div>
-              <div>
-                <h3 className="font-display text-lg font-bold text-foreground mb-2">
-                  {item.title}
-                </h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  {item.description}
-                </p>
-              </div>
-            </motion.div>
-          );
-        })}
+                <div className="h-full rounded-3xl border border-border bg-surface/50 p-8 transition-colors hover:bg-surface">
+                  <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
+                    <Icon className="h-6 w-6 text-primary" strokeWidth={2} />
+                  </div>
+                  <h3 className="font-display text-xl font-bold text-foreground mb-3">
+                    {item.title}
+                  </h3>
+                  <p className="text-muted-foreground leading-relaxed text-[15px]">
+                    {item.desc}
+                  </p>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
     </Section>
   );
@@ -588,17 +537,11 @@ function WhyChooseSection() {
 
 /* ─────────────────────── CTA Band ─────────────────────── */
 
-function CtaBand({ phone, whatsapp }: { phone?: string; whatsapp?: string }) {
+function ElderlyCtaBand({ phone, whatsapp }: { phone?: string; whatsapp?: string }) {
   return (
-    <section className="relative overflow-hidden">
-      <div
-        className="absolute inset-0 -z-10"
-        style={{
-          background:
-            "linear-gradient(135deg, oklch(0.35 0.08 160) 0%, oklch(0.28 0.06 220) 100%)",
-        }}
-      />
-      <div className="absolute inset-0 -z-10 opacity-20 pointer-events-none">
+    <section className="relative overflow-hidden bg-primary">
+      <div className="absolute inset-0 -z-10" />
+      <div className="absolute inset-0 -z-10 opacity-10 pointer-events-none">
         <div
           style={{
             backgroundImage: "radial-gradient(white 1px, transparent 1px)",
@@ -610,42 +553,29 @@ function CtaBand({ phone, whatsapp }: { phone?: string; whatsapp?: string }) {
       </div>
 
       <div className="container-x py-20 lg:py-24">
-        <div className="max-w-3xl">
-          <div className="text-[10px] uppercase tracking-[0.28em] text-white/60 mb-5">
+        <div className="max-w-3xl mx-auto text-center">
+          <div className="text-[10px] font-semibold uppercase tracking-[0.28em] text-white/60 mb-5">
             Need Elderly Care at Home?
           </div>
-          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-white tracking-tight leading-[1.1] mb-6">
-            If your loved one needs help with daily activities, we're{" "}
-            <em className="not-italic text-primary">here to help.</em>
+          <h2 className="font-display text-4xl md:text-5xl text-white tracking-tight leading-[1.1] mb-6">
+            If your parent, grandparent or loved one needs help with daily activities, personal care, mobility, meals or companionship, <strong className="font-bold">Nupun is here to help.</strong>
           </h2>
-          <p className="text-white/70 text-lg leading-relaxed max-w-2xl mb-10">
+          <p className="text-white/80 text-lg leading-relaxed max-w-2xl mx-auto mb-10">
             Get a trained caregiver according to your family's requirement and schedule.
-            Whether it's a few hours or round-the-clock care — we're ready.
           </p>
-          <div className="flex flex-wrap gap-4">
-            <Link
-              to="/booking"
-              search={{ service: "elderly-care" }}
-              className="inline-flex items-center gap-2 rounded-full bg-white text-foreground px-8 py-4 text-base font-semibold hover:bg-primary hover:text-primary-foreground transition-all duration-300 shadow-[0_15px_35px_-10px_rgba(0,0,0,0.3)]"
-            >
-              Book Elderly Care <ArrowRight className="h-5 w-5" />
-            </Link>
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <ElderCareBookingModal>
+              <button className="inline-flex items-center gap-2 rounded-full bg-slate-900 text-white px-8 py-4 text-base font-semibold hover:bg-slate-800 transition-all duration-300 shadow-xl">
+                Book Elderly Care <ArrowRight className="h-5 w-5" />
+              </button>
+            </ElderCareBookingModal>
             {phone && (
               <a
                 href={`tel:${phone}`}
                 className="inline-flex items-center gap-2 rounded-full border border-white/30 text-white px-8 py-4 text-base font-semibold hover:bg-white/10 transition-all duration-300"
               >
-                <Phone className="h-5 w-5" /> Request a Callback
-              </a>
-            )}
-            {whatsapp && (
-              <a
-                href={`https://wa.me/${whatsapp}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-white/30 text-white px-8 py-4 text-base font-semibold hover:bg-white/10 transition-all duration-300"
-              >
-                WhatsApp Us
+                <Phone className="h-5 w-5" />
+                Request a Callback
               </a>
             )}
           </div>
@@ -657,157 +587,66 @@ function CtaBand({ phone, whatsapp }: { phone?: string; whatsapp?: string }) {
 
 /* ─────────────────────── FAQ ─────────────────────── */
 
-function FaqSection({ faqs }: { faqs: { id: string; question: string; answer: string }[] }) {
-  const [open, setOpen] = useState<string | null>(null);
+function ElderlyFaq({ faqs }: { faqs: any[] }) {
+  const [openId, setOpenId] = useState<string | null>(faqs[0]?.id || null);
+
+  if (!faqs.length) return null;
 
   return (
-    <Section className="bg-[#F8F9FA] py-20 lg:py-28">
-      <div className="grid gap-12 lg:grid-cols-2 items-start max-w-6xl mx-auto">
-        <div>
+    <Section className="bg-[#F8F9FA] py-20 lg:py-28" id="faq">
+      <div className="container-x max-w-4xl mx-auto">
+        <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 rounded-full border border-border bg-white px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-6">
             <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-            Common Questions
+            FAQ
           </div>
-          <h2 className="font-display text-4xl md:text-5xl tracking-tight text-foreground mb-6">
-            Frequently Asked{" "}
-            <span className="text-primary">Questions</span>
+          <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground tracking-tight leading-[1.1]">
+            Frequently Asked Questions
           </h2>
-          <p className="text-muted-foreground leading-relaxed mb-8">
-            Have questions about our elderly care services? Find answers to
-            common queries below. Still have doubts? Call us anytime.
-          </p>
-          <div className="flex flex-col gap-3">
-            <Link
-              to="/booking"
-              search={{ service: "elderly-care" }}
-              className="inline-flex items-center gap-2 rounded-full bg-primary/10 text-primary px-6 py-3 text-sm font-semibold hover:bg-primary hover:text-white transition-colors duration-300 w-fit"
-            >
-              Book Elderly Care →
-            </Link>
-            <Link
-              to="/contact"
-              className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors w-fit"
-            >
-              Contact a care advisor →
-            </Link>
-          </div>
         </div>
 
-        <div className="space-y-3">
-          {faqs.map((faq) => (
-            <motion.div
-              key={faq.id}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="rounded-2xl border border-border bg-white overflow-hidden shadow-sm"
-            >
-              <button
-                className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left"
-                onClick={() => setOpen(open === faq.id ? null : faq.id)}
+        <div className="space-y-4">
+          {faqs.map((faq) => {
+            const isOpen = openId === faq.id;
+            return (
+              <div
+                key={faq.id}
+                className="rounded-2xl border border-border bg-white overflow-hidden shadow-sm transition-shadow hover:shadow-md"
               >
-                <span className="font-semibold text-foreground text-[15px] leading-snug">
-                  {faq.question}
-                </span>
-                <ChevronDown
-                  className={`h-5 w-5 text-muted-foreground shrink-0 transition-transform duration-300 ${
-                    open === faq.id ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-              {open === faq.id && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="px-6 pb-5 text-sm text-muted-foreground leading-relaxed border-t border-border/50 pt-4"
+                <button
+                  onClick={() => setOpenId(isOpen ? null : faq.id)}
+                  className="w-full flex items-center justify-between p-6 text-left"
                 >
-                  {faq.answer}
-                </motion.div>
-              )}
-            </motion.div>
-          ))}
+                  <span className="font-display text-lg font-bold text-foreground pr-8">
+                    {faq.question}
+                  </span>
+                  <div
+                    className={`shrink-0 h-8 w-8 rounded-full border border-border grid place-items-center transition-transform duration-300 ${
+                      isOpen ? "rotate-180 bg-primary/5 border-primary/20 text-primary" : "text-muted-foreground"
+                    }`}
+                  >
+                    <ChevronDown className="h-4 w-4" />
+                  </div>
+                </button>
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                    >
+                      <div className="px-6 pb-6 pt-2 text-muted-foreground leading-relaxed">
+                        {faq.answer}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            );
+          })}
         </div>
       </div>
     </Section>
-  );
-}
-
-/* ─────────────────────── Booking Panel ─────────────────────── */
-
-function BookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: string }) {
-  return (
-    <section className="py-20 lg:py-28 bg-background">
-      <div className="container-x">
-        <div className="grid gap-12 lg:grid-cols-12">
-          {/* Left: Info */}
-          <div className="lg:col-span-5">
-            <div className="sticky top-28">
-              <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-6">
-                <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                Book Now
-              </div>
-              <h2 className="font-display text-3xl md:text-4xl tracking-tight text-foreground mb-4">
-                Book an Elderly Care Attendant
-              </h2>
-              <p className="text-muted-foreground leading-relaxed mb-8">
-                Fill in your details and our care team will contact you shortly.
-                It takes under two minutes — no payment required to request.
-              </p>
-
-              <div className="space-y-4 mb-8">
-                {[
-                  "Trained and verified attendants",
-                  "Flexible hourly to 24/7 care",
-                  "Male or female caregiver options",
-                  "Serving Faridabad, Delhi, Noida & Gurugram",
-                ].map((f) => (
-                  <div key={f} className="flex items-center gap-3 text-sm font-medium text-foreground">
-                    <div className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-primary/15 text-primary">
-                      <Check className="h-3.5 w-3.5" strokeWidth={3} />
-                    </div>
-                    {f}
-                  </div>
-                ))}
-              </div>
-
-              {(phone || whatsapp) && (
-                <div className="space-y-3">
-                  <div className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground mb-3">
-                    Prefer to speak directly?
-                  </div>
-                  {phone && (
-                    <a
-                      href={`tel:${phone}`}
-                      className="flex items-center gap-3 rounded-2xl border border-border bg-surface px-5 py-3.5 text-sm font-medium hover:border-primary hover:text-primary transition-colors"
-                    >
-                      <Phone className="h-4 w-4 text-primary" /> Call Now
-                    </a>
-                  )}
-                  {whatsapp && (
-                    <a
-                      href={`https://wa.me/${whatsapp}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-3 rounded-2xl border border-border bg-surface px-5 py-3.5 text-sm font-medium hover:border-primary hover:text-primary transition-colors"
-                    >
-                      <span className="h-4 w-4 text-primary font-bold text-base">W</span> WhatsApp Us
-                    </a>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Right: Booking Form */}
-          <div className="lg:col-span-7">
-            <BookingForm
-              presetServiceName="Elderly Care"
-            />
-          </div>
-        </div>
-      </div>
-    </section>
   );
 }
