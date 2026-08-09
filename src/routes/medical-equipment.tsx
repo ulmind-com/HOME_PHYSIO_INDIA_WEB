@@ -384,8 +384,7 @@ function EquipmentHero({ phone }: { phone?: string }) {
             </div>
 
             <p className="text-white/70 text-base md:text-lg leading-relaxed max-w-xl mb-6">
-              Nupun Home Health Care Services provides essential medical equipment for patients who need support during recovery, elderly care, post-hospitalisation care or long-term home care.
-              We help families arrange suitable equipment for patient comfort, mobility, respiratory support and everyday care needs.
+              Nupun Home Health Care Services provides essential medical equipment on rent for patients who need comfortable and convenient care at home. Whether you need equipment for a few days, weeks or longer-term use, we help you arrange suitable equipment according to your requirement and availability.
             </p>
 
             <div className="flex flex-wrap gap-3">
