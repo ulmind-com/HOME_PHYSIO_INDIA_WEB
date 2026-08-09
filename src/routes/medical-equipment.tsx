@@ -65,6 +65,7 @@ export const Route = createFileRoute("/medical-equipment")({
 const EQUIPMENT_CARDS = [
   {
     icon: BedDouble,
+    image: "/assets/equip_hospital_bed.png",
     emoji: "🛏️",
     title: "Hospital Bed",
     description:
@@ -75,6 +76,7 @@ const EQUIPMENT_CARDS = [
   },
   {
     icon: CircleGauge,
+    image: "/assets/equip_wheelchair.png",
     emoji: "🦼",
     title: "Wheelchair",
     description:
@@ -85,6 +87,7 @@ const EQUIPMENT_CARDS = [
   },
   {
     icon: Wind,
+    image: "/assets/equip_oxygen_concentrator.png",
     emoji: "💨",
     title: "Oxygen Concentrator",
     description:
@@ -95,6 +98,7 @@ const EQUIPMENT_CARDS = [
   },
   {
     icon: Stethoscope,
+    image: "/assets/equip_bipap_machine.png",
     emoji: "🩺",
     title: "BiPAP Machine",
     description:
@@ -105,6 +109,7 @@ const EQUIPMENT_CARDS = [
   },
   {
     icon: Wind,
+    image: "/assets/equip_cpap_machine.png",
     emoji: "🫁",
     title: "CPAP Machine",
     description:
@@ -115,6 +120,7 @@ const EQUIPMENT_CARDS = [
   },
   {
     icon: Box,
+    image: "/assets/equip_suction_machine.png",
     emoji: "💧",
     title: "Suction Machine",
     description:
@@ -125,6 +131,7 @@ const EQUIPMENT_CARDS = [
   },
   {
     icon: SquareDashedBottom,
+    image: "/assets/equip_air_mattress.png",
     emoji: "🛌",
     title: "Air Mattress",
     description:
@@ -484,11 +491,17 @@ function EquipmentGridSection() {
               transition={{ duration: 0.5, delay: (i % 4) * 0.07, ease: [0.22, 1, 0.36, 1] }}
             >
               <div className="group h-full flex flex-col rounded-2xl bg-white border border-border p-5 shadow-sm transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_15px_40px_-10px_rgba(0,0,0,0.1)] cursor-default">
-                <div
-                  className={`w-10 h-10 rounded-xl ${s.iconBg} flex items-center justify-center mb-3`}
-                >
-                  <Icon className={`h-5 w-5 ${s.color}`} strokeWidth={2} />
-                </div>
+                {s.image ? (
+                  <div className="w-16 h-16 mb-4 relative -ml-1 mix-blend-multiply">
+                    <img src={s.image} alt={s.title} className="w-full h-full object-contain" />
+                  </div>
+                ) : (
+                  <div
+                    className={`w-10 h-10 rounded-xl ${s.iconBg} flex items-center justify-center mb-3`}
+                  >
+                    <Icon className={`h-5 w-5 ${s.color}`} strokeWidth={2} />
+                  </div>
+                )}
                 <h3 className="font-display text-base font-semibold text-foreground mb-2 leading-tight">
                   {s.title}
                 </h3>
