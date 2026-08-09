@@ -1,24 +1,30 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import {
   Heart,
-  Bed,
-  PersonStanding,
-  UtensilsCrossed,
+  CalendarHeart,
   CheckCircle2,
   Phone,
   ArrowRight,
-  ChevronDown,
   Clock,
   Pill,
   MessageCircle,
+  HeartHandshake,
+  ChevronDown,
   ShieldCheck,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { settingsQ, faqsQ } from "@/lib/api/queries";
 import { ElderCareBookingModal } from "@/components/forms/ElderCareBookingModal";
 import { Section } from "@/components/site/Section";
+import { api } from "@/lib/api/client";
+
+const HERO_IMAGES = [
+  "/assets/elderly-hero/1.png",
+  "/assets/elderly-hero/2.png",
+  "/assets/elderly-hero/3.png",
+];
 
 export const Route = createFileRoute("/elderly-care")({
   head: () => ({
@@ -108,7 +114,7 @@ const WHY_CHOOSE = [
     desc: "Families can stay informed about the elderly person's daily routine, care and well-being.",
   },
   {
-    icon: Heart,
+    icon: HeartHandshake,
     title: "Personalised Care",
     desc: "Every senior has different needs. We understand the patient's routine and provide care accordingly.",
   },
@@ -172,12 +178,23 @@ const DEFAULT_FAQS = [
 
 /* ─────────────────────── Components ─────────────────────── */
 
-function ElderlyCarePage() {
+export function ElderlyCarePage() {
+  const { scrollY } = useScroll();
+  const bgScale = useTransform(scrollY, [0, 1000], [1, 1.1]);
+  const [currentImage, setCurrentImage] = useState(0);
+
   const { data: settings } = useQuery(settingsQ());
   const { data: faqData } = useQuery(faqsQ({ limit: 20 }));
 
   const phone = settings?.phone?.replace(/[^\d+]/g, "");
   const whatsapp = (settings?.whatsapp ?? settings?.phone)?.replace(/\D/g, "");
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % HERO_IMAGES.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
 
   const faqs = (faqData?.items ?? []).filter(
     (f) =>
@@ -189,71 +206,47 @@ function ElderlyCarePage() {
 
   return (
     <>
-      <ElderlyHero phone={phone} whatsapp={whatsapp} />
-      <ElderlyServices />
-      <TrustedFeatures />
-      <WhyChooseUs />
-      <ElderlyCtaBand phone={phone} whatsapp={whatsapp} />
-      <ElderlyFaq faqs={displayFaqs} />
-      <ElderlyInlineForm />
-      <ElderlyFooter phone={phone} whatsapp={whatsapp} />
-    </>
-  );
-}
+      <section className="relative min-h-[90svh] flex items-center overflow-hidden">
+        {/* Cinematic Background Image Slider */}
+        <motion.div
+          style={{ scale: bgScale }}
+          className="absolute inset-0 z-0 bg-slate-900"
+        >
+          <AnimatePresence mode="popLayout">
+            <motion.img
+              key={currentImage}
+              src={HERO_IMAGES[currentImage]}
+              alt="Elderly Care"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 1.2, ease: "easeInOut" }}
+              className="absolute inset-0 w-full h-full object-cover object-center"
+            />
+          </AnimatePresence>
+        </motion.div>
 
-/* ─────────────────────── Hero ─────────────────────── */
+        {/* Multi-layered Overlays for depth */}
+        <div className="absolute inset-0 z-0 bg-gradient-to-r from-slate-900/95 via-slate-900/80 to-transparent mix-blend-multiply" />
+        <div className="absolute inset-0 z-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-80" />
 
-function ElderlyHero({ phone, whatsapp }: { phone?: string; whatsapp?: string }) {
-  const images = ["/assets/services/nurse-elder.jpg"];
-  const [currentIdx, setCurrentIdx] = useState(0);
-
-  useEffect(() => {
-    if (images.length <= 1) return;
-    const timer = setInterval(() => {
-      setCurrentIdx((prev) => (prev + 1) % images.length);
-    }, 6000);
-    return () => clearInterval(timer);
-  }, [images.length]);
-
-  return (
-    <section className="relative min-h-[100svh] lg:min-h-svh flex items-center overflow-hidden">
-      {/* Hero background image slider */}
-      <div className="absolute inset-0 -z-20 w-full h-full bg-[#051114]">
-        <AnimatePresence>
-          <motion.img
-            key={currentIdx}
-            src={images[currentIdx]}
-            alt="Trusted Elder Care"
-            initial={{ opacity: 0, scale: 1.15 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{
-              opacity: { duration: 1.8, ease: "easeInOut" },
-              scale: { duration: 10, ease: "linear" },
-            }}
-            className="w-full h-full object-cover object-[center_30%]"
-          />
-        </AnimatePresence>
-      </div>
-
-      {/* Overlays */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black/95 via-black/70 to-black/30" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-
-      <div className="container-x relative z-10 pt-32 pb-20">
-        <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-20 items-center">
+        <div className="container-x relative z-10 flex flex-col justify-center min-h-[90vh] pt-32 pb-20">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="max-w-3xl"
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/90 mb-5">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-              Elderly Care Services
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-4 py-2 text-xs font-medium text-white mb-8">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-500"></span>
+              </span>
+              ELDERLY CARE SERVICES
             </div>
-
-            <h1 className="font-display text-4xl md:text-5xl lg:text-[4rem] font-bold text-white leading-[1.08] tracking-tight mb-6">
-              Trusted Elder Care, <br />
+            
+            <h1 className="font-display text-4xl md:text-5xl lg:text-[3.5rem] font-bold tracking-tight text-white mb-6 leading-[1.15]">
+              Trusted Elder Care,<br />
               <span className="text-teal-400">Right at Home</span>
             </h1>
 
@@ -320,8 +313,15 @@ function ElderlyHero({ phone, whatsapp }: { phone?: string; whatsapp?: string })
             </div>
           </motion.div>
         </div>
-      </div>
-    </section>
+      </section>
+      <ElderlyServices />
+      <TrustedFeatures />
+      <WhyChooseUs />
+      <ElderlyCtaBand phone={phone} whatsapp={whatsapp} />
+      <ElderlyFaq faqs={displayFaqs} />
+      <ElderlyInlineForm />
+      <ElderlyFooter phone={phone} whatsapp={whatsapp} />
+    </>
   );
 }
 
@@ -636,8 +636,6 @@ function ElderlyFaq({ faqs }: { faqs: any[] }) {
 }
 
 /* ─────────────────────── Inline Form ─────────────────────── */
-
-import { api } from "@/lib/api/client";
 
 function ElderlyInlineForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
