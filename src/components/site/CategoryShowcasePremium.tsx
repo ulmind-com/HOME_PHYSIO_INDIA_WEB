@@ -35,6 +35,7 @@ const fallbacks: Array<{ title: string; description: string; image: string; vari
     description: "In-home rehab, mobility & pain management by expert therapists.",
     image: physioAsset.url,
     variant: "c",
+    dedicatedLink: "/physiotherapy",
   },
   {
     title: "Medical Equipment Rental",
@@ -108,6 +109,8 @@ export function CategoryShowcasePremium() {
         ? "/elderly-care"
         : catNameLower.includes("nurs") || catSlugLower.includes("nurs")
         ? "/nursing-care"
+        : catNameLower.includes("physio") || catSlugLower.includes("physio")
+        ? "/physiotherapy"
         : fb.dedicatedLink ?? null;
 
     return {
