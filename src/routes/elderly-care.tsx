@@ -203,7 +203,6 @@ function ElderlyCarePage() {
       <ElderlyCtaBand phone={phone} whatsapp={whatsapp} />
       <ElderlyFaq faqs={displayFaqs} />
       <ElderlyInlineForm />
-      <ElderlyFooter phone={phone} whatsapp={whatsapp} />
     </>
   );
 }
@@ -752,36 +751,5 @@ function ElderlyInlineForm() {
         </div>
       </div>
     </Section>
-  );
-}
-
-/* ─────────────────────── Footer ─────────────────────── */
-
-function ElderlyFooter({ phone, whatsapp }: { phone?: string; whatsapp?: string }) {
-  return (
-    <footer className="bg-slate-900 pt-16 pb-8 border-t border-white/10">
-      <div className="container-x text-center max-w-2xl mx-auto">
-        <h3 className="font-display text-2xl font-bold text-white mb-4">
-          Nupun Home Health Care Services
-        </h3>
-        <p className="text-white/60 mb-8 leading-relaxed">
-          Providing compassionate and professional home care services for elderly people, patients and families.
-        </p>
-        
-        <div className="flex flex-wrap items-center justify-center gap-4 text-sm font-medium">
-          <a href={phone ? `tel:${phone}` : "tel:+918981289812"} className="text-white hover:text-teal-400 transition-colors">
-            Call Now
-          </a>
-          <span className="text-white/20">|</span>
-          <a href={whatsapp ? `https://wa.me/${whatsapp}` : "#"} className="text-white hover:text-teal-400 transition-colors">
-            WhatsApp Us
-          </a>
-          <span className="text-white/20">|</span>
-          <a href="#book" className="text-white hover:text-teal-400 transition-colors">
-            Book an Attendant
-          </a>
-        </div>
-      </div>
-    </footer>
   );
 }
