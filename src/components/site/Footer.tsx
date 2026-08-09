@@ -101,7 +101,7 @@ export function Footer() {
               <FooterCol title="Menu">
                 <FooterLink to="/">Home</FooterLink>
                 <FooterLink to="/about">About Us</FooterLink>
-                <FooterLink to="/equipment">Equipment</FooterLink>
+                <FooterLink to="/medical-equipment">Equipment</FooterLink>
                 <FooterLink to="/testimonials">Testimonials</FooterLink>
                 <FooterLink to="/blogs">Care Blog</FooterLink>
               </FooterCol>

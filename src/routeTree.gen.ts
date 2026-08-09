@@ -15,6 +15,7 @@ import { Route as BookingRouteImport } from './routes/booking'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ElderlyCareRouteImport } from './routes/elderly-care'
 import { Route as FaqRouteImport } from './routes/faq'
+import { Route as MedicalEquipmentRouteImport } from './routes/medical-equipment'
 import { Route as NursingCareRouteImport } from './routes/nursing-care'
 import { Route as PhysiotherapyRouteImport } from './routes/physiotherapy'
 import { Route as PrivacyRouteImport } from './routes/privacy'
@@ -62,6 +63,11 @@ const ElderlyCareRoute = ElderlyCareRouteImport.update({
 const FaqRoute = FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MedicalEquipmentRoute = MedicalEquipmentRouteImport.update({
+  id: '/medical-equipment',
+  path: '/medical-equipment',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NursingCareRoute = NursingCareRouteImport.update({
@@ -162,6 +168,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/elderly-care': typeof ElderlyCareRoute
   '/faq': typeof FaqRoute
+  '/medical-equipment': typeof MedicalEquipmentRoute
   '/nursing-care': typeof NursingCareRoute
   '/physiotherapy': typeof PhysiotherapyRoute
   '/privacy': typeof PrivacyRoute
@@ -188,6 +195,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/elderly-care': typeof ElderlyCareRoute
   '/faq': typeof FaqRoute
+  '/medical-equipment': typeof MedicalEquipmentRoute
   '/nursing-care': typeof NursingCareRoute
   '/physiotherapy': typeof PhysiotherapyRoute
   '/privacy': typeof PrivacyRoute
@@ -215,6 +223,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/elderly-care': typeof ElderlyCareRoute
   '/faq': typeof FaqRoute
+  '/medical-equipment': typeof MedicalEquipmentRoute
   '/nursing-care': typeof NursingCareRoute
   '/physiotherapy': typeof PhysiotherapyRoute
   '/privacy': typeof PrivacyRoute
@@ -243,6 +252,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/elderly-care'
     | '/faq'
+    | '/medical-equipment'
     | '/nursing-care'
     | '/physiotherapy'
     | '/privacy'
@@ -269,6 +279,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/elderly-care'
     | '/faq'
+    | '/medical-equipment'
     | '/nursing-care'
     | '/physiotherapy'
     | '/privacy'
@@ -295,6 +306,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/elderly-care'
     | '/faq'
+    | '/medical-equipment'
     | '/nursing-care'
     | '/physiotherapy'
     | '/privacy'
@@ -322,6 +334,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   ElderlyCareRoute: typeof ElderlyCareRoute
   FaqRoute: typeof FaqRoute
+  MedicalEquipmentRoute: typeof MedicalEquipmentRoute
   NursingCareRoute: typeof NursingCareRoute
   PhysiotherapyRoute: typeof PhysiotherapyRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -384,6 +397,13 @@ declare module '@tanstack/react-router' {
       path: '/faq'
       fullPath: '/faq'
       preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/medical-equipment': {
+      id: '/medical-equipment'
+      path: '/medical-equipment'
+      fullPath: '/medical-equipment'
+      preLoaderRoute: typeof MedicalEquipmentRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/nursing-care': {
@@ -522,6 +542,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   ElderlyCareRoute: ElderlyCareRoute,
   FaqRoute: FaqRoute,
+  MedicalEquipmentRoute: MedicalEquipmentRoute,
   NursingCareRoute: NursingCareRoute,
   PhysiotherapyRoute: PhysiotherapyRoute,
   PrivacyRoute: PrivacyRoute,

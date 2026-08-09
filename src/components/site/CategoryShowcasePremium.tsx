@@ -42,6 +42,7 @@ const fallbacks: Array<{ title: string; description: string; image: string; vari
     description: "Hospital-grade beds, oxygen, monitors — delivered & installed.",
     image: equipmentAsset.url,
     variant: "d",
+    dedicatedLink: "/medical-equipment",
   },
 ];
 
@@ -111,6 +112,8 @@ export function CategoryShowcasePremium() {
         ? "/nursing-care"
         : catNameLower.includes("physio") || catSlugLower.includes("physio")
         ? "/physiotherapy"
+        : catNameLower.includes("equip") || catSlugLower.includes("equip")
+        ? "/medical-equipment"
         : fb.dedicatedLink ?? null;
 
     return {
