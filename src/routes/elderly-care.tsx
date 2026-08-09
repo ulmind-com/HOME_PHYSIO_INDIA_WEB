@@ -48,44 +48,28 @@ export const Route = createFileRoute("/elderly-care")({
 
 const SERVICES = [
   {
-    icon: Heart,
-    emoji: "👵",
+    image: "/assets/hero-nurse-patient.png",
     title: "Elderly Care",
     description:
       "Compassionate home care and companionship for seniors who need assistance with their daily routine, personal care and comfort.",
-    color: "text-rose-600",
-    bg: "from-rose-50 to-pink-50",
-    iconBg: "bg-rose-100",
   },
   {
-    icon: Bed,
-    emoji: "🛏️",
+    image: "/assets/equip_hospital_bed.png",
     title: "Bedridden Patient Care",
     description:
       "Support for bedridden seniors with personal hygiene, feeding, position changes, mobility assistance and daily supervision.",
-    color: "text-blue-600",
-    bg: "from-blue-50 to-indigo-50",
-    iconBg: "bg-blue-100",
   },
   {
-    icon: PersonStanding,
-    emoji: "🚶",
+    image: "/assets/equip_wheelchair.png",
     title: "Mobility Assistance",
     description:
       "Our attendants assist elderly people with walking, transfers, movement and safe mobility at home to help reduce the risk of falls.",
-    color: "text-emerald-600",
-    bg: "from-emerald-50 to-teal-50",
-    iconBg: "bg-emerald-100",
   },
   {
-    icon: UtensilsCrossed,
-    emoji: "🍲",
+    image: "/assets/home-care-steps.png",
     title: "Daily Living Support",
     description:
       "Assistance with bathing, grooming, hygiene, meals, feeding and other everyday activities that become difficult for elderly people.",
-    color: "text-amber-600",
-    bg: "from-amber-50 to-orange-50",
-    iconBg: "bg-amber-100",
   },
 ];
 
@@ -211,6 +195,8 @@ function ElderlyCarePage() {
       <WhyChooseUs />
       <ElderlyCtaBand phone={phone} whatsapp={whatsapp} />
       <ElderlyFaq faqs={displayFaqs} />
+      <ElderlyInlineForm />
+      <ElderlyFooter phone={phone} whatsapp={whatsapp} />
     </>
   );
 }
@@ -284,15 +270,13 @@ function ElderlyHero({ phone, whatsapp }: { phone?: string; whatsapp?: string })
                   Book an Attendant <ArrowRight className="h-4 w-4" />
                 </button>
               </ElderCareBookingModal>
-              {phone && (
-                <a
-                  href={`tel:${phone}`}
-                  className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 backdrop-blur-md px-6 py-3.5 text-sm font-semibold text-white hover:bg-white/20 transition-all duration-300"
-                >
-                  <Phone className="h-4 w-4" />
-                  Call Now
-                </a>
-              )}
+              <a
+                href={phone ? `tel:${phone}` : "tel:+918981289812"}
+                className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 backdrop-blur-md px-6 py-3.5 text-sm font-semibold text-white hover:bg-white/20 transition-all duration-300"
+              >
+                <Phone className="h-4 w-4" />
+                Call Now
+              </a>
             </div>
           </motion.div>
 
@@ -369,7 +353,6 @@ function ElderlyServices() {
       <div className="container-x">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {SERVICES.map((s, i) => {
-            const Icon = s.icon;
             return (
               <motion.div
                 key={i}
@@ -377,19 +360,20 @@ function ElderlyServices() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                className="group h-full flex flex-col rounded-3xl bg-white border border-border overflow-hidden shadow-sm transition-all duration-400 hover:-translate-y-1.5 hover:shadow-xl"
               >
-                <div className="group h-full flex flex-col rounded-3xl bg-white border border-border p-6 shadow-sm transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)]">
-                  <div
-                    className={`w-12 h-12 rounded-2xl ${s.iconBg} flex items-center justify-center mb-5`}
-                  >
-                    <Icon className={`h-6 w-6 ${s.color}`} strokeWidth={2} />
-                  </div>
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="text-xl">{s.emoji}</span>
-                    <h3 className="font-display text-lg font-bold text-foreground leading-tight">
-                      {s.title}
-                    </h3>
-                  </div>
+                <div className="aspect-[4/3] w-full bg-slate-50 relative overflow-hidden flex items-center justify-center p-4">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent pointer-events-none" />
+                  <img
+                    src={s.image}
+                    alt={s.title}
+                    className="w-full h-full object-contain filter transition-transform duration-700 group-hover:scale-110"
+                  />
+                </div>
+                <div className="p-6 flex flex-col flex-1">
+                  <h3 className="font-display text-xl font-bold text-foreground leading-tight mb-3">
+                    {s.title}
+                  </h3>
                   <p className="text-muted-foreground text-sm leading-relaxed flex-1">
                     {s.description}
                   </p>
@@ -648,5 +632,153 @@ function ElderlyFaq({ faqs }: { faqs: any[] }) {
         </div>
       </div>
     </Section>
+  );
+}
+
+/* ─────────────────────── Inline Form ─────────────────────── */
+
+import { api } from "@/lib/api/client";
+
+function ElderlyInlineForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      full_name: formData.get("fullName") as string,
+      phone_number: formData.get("phone") as string,
+      city: formData.get("city") as string,
+      service_type: formData.get("service") as string,
+    };
+
+    try {
+      await api.post("/elder-care", data);
+      setIsSuccess(true);
+      (e.target as HTMLFormElement).reset();
+      setTimeout(() => setIsSuccess(false), 4000);
+    } catch (error) {
+      console.error("Booking failed:", error);
+      alert("Failed to submit request. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <Section className="py-20 lg:py-28 bg-white" id="book">
+      <div className="container-x max-w-3xl mx-auto">
+        <div className="rounded-[2rem] border border-border bg-surface p-8 md:p-12 shadow-sm">
+          {!isSuccess ? (
+            <>
+              <div className="text-center mb-10">
+                <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
+                  Book an Elderly Care Attendant
+                </h2>
+                <p className="text-muted-foreground text-[15px]">
+                  Fill in your details and our care team will contact you shortly.
+                </p>
+              </div>
+
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="grid md:grid-cols-2 gap-5">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-foreground">Full Name</label>
+                    <input
+                      name="fullName"
+                      required
+                      type="text"
+                      className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-foreground">Phone Number</label>
+                    <input
+                      name="phone"
+                      required
+                      type="tel"
+                      className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-foreground">Select City</label>
+                    <select name="city" required className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary">
+                      <option value="">Select...</option>
+                      <option value="Faridabad">Faridabad</option>
+                      <option value="Delhi">Delhi</option>
+                      <option value="Noida">Noida</option>
+                      <option value="Gurugram">Gurugram</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-foreground">Select Service</label>
+                  <select name="service" required className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary">
+                    <option value="">Select...</option>
+                    <option value="Elderly care">Elderly care</option>
+                    <option value="Patient care">Patient care</option>
+                    <option value="Bedridden">Bedridden</option>
+                    <option value="24 hour attendant">24 hour attendant</option>
+                  </select>
+                </div>
+
+                <div className="pt-2">
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full rounded-xl bg-primary px-6 py-4 text-sm font-semibold text-primary-foreground shadow-lg hover:bg-primary/90 transition-colors"
+                  >
+                    {isSubmitting ? "Submitting..." : "Submit Request"}
+                  </button>
+                </div>
+              </form>
+            </>
+          ) : (
+            <div className="py-16 text-center">
+              <div className="mx-auto mb-4 h-16 w-16 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                <CheckCircle2 className="h-8 w-8" />
+              </div>
+              <h3 className="text-2xl font-bold text-foreground mb-2">Request Submitted!</h3>
+              <p className="text-muted-foreground">We will contact you shortly.</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+/* ─────────────────────── Footer ─────────────────────── */
+
+function ElderlyFooter({ phone, whatsapp }: { phone?: string; whatsapp?: string }) {
+  return (
+    <footer className="bg-slate-900 pt-16 pb-8 border-t border-white/10">
+      <div className="container-x text-center max-w-2xl mx-auto">
+        <h3 className="font-display text-2xl font-bold text-white mb-4">
+          Nupun Home Health Care Services
+        </h3>
+        <p className="text-white/60 mb-8 leading-relaxed">
+          Providing compassionate and professional home care services for elderly people, patients and families.
+        </p>
+        
+        <div className="flex flex-wrap items-center justify-center gap-4 text-sm font-medium">
+          <a href={phone ? `tel:${phone}` : "tel:+918981289812"} className="text-white hover:text-teal-400 transition-colors">
+            Call Now
+          </a>
+          <span className="text-white/20">|</span>
+          <a href={whatsapp ? `https://wa.me/${whatsapp}` : "#"} className="text-white hover:text-teal-400 transition-colors">
+            WhatsApp Us
+          </a>
+          <span className="text-white/20">|</span>
+          <a href="#book" className="text-white hover:text-teal-400 transition-colors">
+            Book an Attendant
+          </a>
+        </div>
+      </div>
+    </footer>
   );
 }
