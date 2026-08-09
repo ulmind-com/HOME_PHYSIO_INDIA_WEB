@@ -483,15 +483,18 @@ function NursingHero({
                 <button
                   className="group inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-[15px] font-semibold text-primary-foreground shadow-sm transition-all duration-300 hover:brightness-110 hover:-translate-y-0.5"
                 >
-                  Book a Nurse <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  Book a Nurse
+                  <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </button>
               </NursingBookingModal>
+
               {phone && (
                 <a
                   href={`tel:${phone}`}
                   className="group inline-flex items-center justify-center gap-2.5 rounded-full border border-white/30 bg-white/10 backdrop-blur-md px-8 py-3.5 text-[15px] font-medium text-white shadow-sm hover:bg-white/20 hover:border-white/50 transition-all duration-300 hover:-translate-y-0.5"
                 >
-                  <Phone className="h-5 w-5 text-[#25D366]" /> Call Now
+                  <Phone className="h-5 w-5 text-[#25D366]" />
+                  Call Now
                 </a>
               )}
             </div>
