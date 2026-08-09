@@ -109,9 +109,9 @@ const EQUIPMENT_CARDS = [
     title: "CPAP Machine",
     description:
       "CPAP equipment for patients who have been prescribed continuous positive airway pressure therapy.",
-    color: "text-amber-600",
-    bg: "from-amber-50 to-yellow-50",
-    iconBg: "bg-amber-100",
+    color: "text-teal-600",
+    bg: "from-teal-50 to-yellow-50",
+    iconBg: "bg-teal-100",
   },
   {
     icon: Box,
@@ -180,9 +180,9 @@ const WHY_CHOOSE = [
     title: "Requirement-Based Guidance",
     description:
       "Tell us about the patient's requirement and our team can guide you regarding the available equipment options.",
-    color: "text-amber-600",
-    bg: "bg-amber-50",
-    iconBg: "bg-amber-100",
+    color: "text-teal-600",
+    bg: "bg-teal-50",
+    iconBg: "bg-teal-100",
   },
   {
     icon: Info,
@@ -363,7 +363,7 @@ function EquipmentHero({ phone }: { phone?: string }) {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/90 mb-5">
-              <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
+              <span className="h-1.5 w-1.5 rounded-full bg-teal-400 animate-pulse" />
               Equipment Rentals
             </div>
 
@@ -383,7 +383,7 @@ function EquipmentHero({ phone }: { phone?: string }) {
 
             <div className="flex flex-wrap gap-3">
               <EquipmentBookingModal>
-                <button className="inline-flex items-center gap-2 rounded-full bg-amber-400 text-slate-900 px-6 py-3 text-sm font-semibold shadow-[0_20px_40px_-10px_rgba(251,191,36,0.4)] hover:bg-amber-300 hover:-translate-y-0.5 transition-all duration-300">
+                <button className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3 text-sm font-semibold shadow-[0_20px_40px_-10px_rgba(0,128,128,0.4)] hover:bg-primary/90 hover:-translate-y-0.5 transition-all duration-300">
                   Check Equipment Availability <ArrowRight className="h-4 w-4" />
                 </button>
               </EquipmentBookingModal>
@@ -406,9 +406,9 @@ function EquipmentHero({ phone }: { phone?: string }) {
             className="hidden lg:block"
           >
             <div className="relative rounded-[2rem] border border-white/15 bg-white/8 backdrop-blur-2xl p-6 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.6)]">
-              <div className="absolute -top-6 -right-6 h-20 w-20 rounded-full bg-amber-400/20 blur-3xl" />
+              <div className="absolute -top-6 -right-6 h-20 w-20 rounded-full bg-teal-400/20 blur-3xl" />
 
-              <div className="grid h-12 w-12 place-items-center rounded-2xl bg-amber-400/20 text-amber-300 border border-amber-400/20 mb-4">
+              <div className="grid h-12 w-12 place-items-center rounded-2xl bg-teal-400/20 text-teal-300 border border-teal-400/20 mb-4">
                 <PackageSearch className="h-6 w-6" strokeWidth={1.5} />
               </div>
 
@@ -431,7 +431,7 @@ function EquipmentHero({ phone }: { phone?: string }) {
                     key={i}
                     className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-2.5 py-1.5"
                   >
-                    <div className="h-1.5 w-1.5 rounded-full bg-amber-400 shrink-0" />
+                    <div className="h-1.5 w-1.5 rounded-full bg-teal-400 shrink-0" />
                     <span className="text-white/80 text-xs font-medium">{item}</span>
                   </div>
                 ))}
@@ -461,7 +461,7 @@ function EquipmentGridSection() {
         className="text-center max-w-2xl mx-auto mb-14"
       >
         <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-5">
-          <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
+          <span className="h-1.5 w-1.5 rounded-full bg-primary" />
           Our Medical Equipment
         </div>
         <h2 className="font-display text-4xl md:text-5xl lg:text-6xl tracking-tight text-foreground mb-4">
@@ -510,8 +510,8 @@ function EquipmentChecklistSection() {
   return (
     <section className="relative py-20 lg:py-28 overflow-hidden bg-gradient-to-br from-slate-900 to-[#1c1209]">
       <div className="absolute inset-0 pointer-events-none" aria-hidden>
-        <div className="absolute top-0 right-[20%] w-80 h-80 bg-amber-500/15 rounded-full blur-[100px]" />
-        <div className="absolute bottom-0 left-[10%] w-64 h-64 bg-orange-600/10 rounded-full blur-[80px]" />
+        <div className="absolute top-0 right-[20%] w-80 h-80 bg-primary/15 rounded-full blur-[100px]" />
+        <div className="absolute bottom-0 left-[10%] w-64 h-64 bg-cyan-600/10 rounded-full blur-[80px]" />
       </div>
 
       <div className="container-x relative z-10">
@@ -523,7 +523,7 @@ function EquipmentChecklistSection() {
             transition={{ duration: 0.7 }}
           >
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-white/70 mb-6">
-              <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
+              <span className="h-1.5 w-1.5 rounded-full bg-teal-400" />
               Trusted Support
             </div>
             <h2 className="font-display text-4xl md:text-5xl text-white tracking-tight leading-tight mb-6">
@@ -550,7 +550,7 @@ function EquipmentChecklistSection() {
                 transition={{ duration: 0.4, delay: i * 0.04 }}
                 className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 backdrop-blur-md px-4 py-3"
               >
-                <div className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-amber-400/25 text-amber-300">
+                <div className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-teal-400/25 text-teal-300">
                   <Check className="h-3.5 w-3.5" strokeWidth={3} />
                 </div>
                 <span className="text-sm font-medium text-white/85">{feat}</span>
@@ -575,7 +575,7 @@ function EquipmentWhyChooseSection() {
         className="text-center max-w-2xl mx-auto mb-14"
       >
         <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-5">
-          <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
+          <span className="h-1.5 w-1.5 rounded-full bg-primary" />
           Why Choose Nupun
         </div>
         <h2 className="font-display text-4xl md:text-5xl tracking-tight text-foreground mb-4">
@@ -630,11 +630,11 @@ function EquipmentHowItWorksSection() {
       <div className="grid gap-8 md:grid-cols-3">
         {HOW_IT_WORKS.map((step, i) => (
           <div key={i} className="relative text-center">
-            <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-amber-100 text-amber-600 font-display text-2xl font-bold mb-6 relative z-10 border-4 border-[#F8F9FA]">
+            <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-teal-100 text-teal-600 font-display text-2xl font-bold mb-6 relative z-10 border-4 border-[#F8F9FA]">
               {i + 1}
             </div>
             {i !== HOW_IT_WORKS.length - 1 && (
-              <div className="hidden md:block absolute top-8 left-1/2 w-full h-[2px] bg-amber-100 -z-0" />
+              <div className="hidden md:block absolute top-8 left-1/2 w-full h-[2px] bg-teal-100 -z-0" />
             )}
             <h3 className="font-display text-xl font-bold text-foreground mb-3">
               {step.title}
@@ -687,7 +687,7 @@ function EquipmentCtaBand({ phone, whatsapp }: { phone?: string; whatsapp?: stri
           </p>
           <div className="flex flex-wrap gap-4">
             <EquipmentBookingModal>
-              <button className="inline-flex items-center gap-2 rounded-full bg-amber-400 text-slate-900 px-8 py-4 text-base font-semibold hover:bg-amber-300 transition-all duration-300 shadow-[0_15px_35px_-10px_rgba(251,191,36,0.4)]">
+              <button className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-8 py-4 text-base font-semibold hover:bg-primary/90 transition-all duration-300 shadow-[0_15px_35px_-10px_rgba(0,128,128,0.4)]">
                 Check Equipment Availability <ArrowRight className="h-5 w-5" />
               </button>
             </EquipmentBookingModal>
@@ -718,16 +718,16 @@ function EquipmentFaqSection() {
       <div className="grid gap-12 lg:grid-cols-2 items-start max-w-6xl mx-auto">
         <div>
           <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-6">
-            <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
+            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
             Common Questions
           </div>
           <h2 className="font-display text-4xl md:text-5xl tracking-tight text-foreground mb-6">
             Frequently Asked{" "}
-            <span className="text-amber-500">Questions</span>
+            <span className="text-primary">Questions</span>
           </h2>
           <div className="flex flex-col gap-3">
             <EquipmentBookingModal>
-              <button className="inline-flex items-center justify-center gap-2 rounded-full bg-amber-500/10 text-amber-600 px-6 py-3 text-sm font-semibold hover:bg-amber-500 hover:text-white transition-colors duration-300 w-fit">
+              <button className="inline-flex items-center justify-center gap-2 rounded-full bg-primary/10 text-teal-600 px-6 py-3 text-sm font-semibold hover:bg-primary hover:text-white transition-colors duration-300 w-fit">
                 Enquire Now →
               </button>
             </EquipmentBookingModal>
@@ -847,7 +847,7 @@ function EquipmentBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?:
                   setDone(false);
                   form.reset();
                 }}
-                className="rounded-full border border-border bg-white px-6 py-2.5 text-sm font-medium hover:border-amber-500 transition-colors"
+                className="rounded-full border border-border bg-white px-6 py-2.5 text-sm font-medium hover:border-teal-500 transition-colors"
               >
                 Request More Equipment
               </button>
@@ -866,7 +866,7 @@ function EquipmentBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?:
                   <input
                     {...form.register("customer_name")}
                     placeholder="Full Name"
-                    className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition focus:border-amber-500 focus:ring-2 focus:ring-amber-500/15"
+                    className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition focus:border-teal-500 focus:ring-2 focus:ring-teal-500/15"
                   />
                   {form.formState.errors.customer_name && (
                     <p className="text-xs text-destructive mt-1">
@@ -879,7 +879,7 @@ function EquipmentBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?:
                   <input
                     {...form.register("customer_phone")}
                     placeholder="Phone Number"
-                    className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition focus:border-amber-500 focus:ring-2 focus:ring-amber-500/15"
+                    className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition focus:border-teal-500 focus:ring-2 focus:ring-teal-500/15"
                   />
                   {form.formState.errors.customer_phone && (
                     <p className="text-xs text-destructive mt-1">
@@ -891,7 +891,7 @@ function EquipmentBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?:
                 <div>
                   <select
                     {...form.register("equipment_name")}
-                    className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition focus:border-amber-500 focus:ring-2 focus:ring-amber-500/15 text-muted-foreground focus:text-foreground"
+                    className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition focus:border-teal-500 focus:ring-2 focus:ring-teal-500/15 text-muted-foreground focus:text-foreground"
                   >
                     <option value="">Select Equipment</option>
                     {EQUIPMENT_OPTIONS.map((s) => (
@@ -910,7 +910,7 @@ function EquipmentBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?:
                 <div>
                   <select
                     {...form.register("duration_days")}
-                    className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition focus:border-amber-500 focus:ring-2 focus:ring-amber-500/15 text-muted-foreground focus:text-foreground"
+                    className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition focus:border-teal-500 focus:ring-2 focus:ring-teal-500/15 text-muted-foreground focus:text-foreground"
                   >
                     <option value="">Required Duration</option>
                     {["1 week", "2 weeks", "1 month", "3 months", "Other"].map((s) => (
@@ -925,7 +925,7 @@ function EquipmentBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?:
                   <input
                     {...form.register("address")}
                     placeholder="Delivery Location"
-                    className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition focus:border-amber-500 focus:ring-2 focus:ring-amber-500/15"
+                    className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition focus:border-teal-500 focus:ring-2 focus:ring-teal-500/15"
                   />
                   {form.formState.errors.address && (
                     <p className="text-xs text-destructive mt-1">
@@ -939,7 +939,7 @@ function EquipmentBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?:
                     {...form.register("message")}
                     placeholder="Patient Requirement / Additional Details"
                     rows={3}
-                    className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition focus:border-amber-500 focus:ring-2 focus:ring-amber-500/15 resize-none"
+                    className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition focus:border-teal-500 focus:ring-2 focus:ring-teal-500/15 resize-none"
                   />
                 </div>
 
@@ -962,7 +962,7 @@ function EquipmentBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?:
 
 function FinalCtaBand({ phone }: { phone?: string }) {
   return (
-    <section className="bg-amber-500 py-16">
+    <section className="bg-primary py-16">
       <div className="container-x text-center max-w-3xl mx-auto">
         <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-4">
           Make Home Care More Comfortable
