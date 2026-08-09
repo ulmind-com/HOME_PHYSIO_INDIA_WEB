@@ -367,7 +367,7 @@ function ElderlyServices() {
                   <img
                     src={s.image}
                     alt={s.title}
-                    className="w-full h-full object-contain filter transition-transform duration-700 group-hover:scale-110"
+                    className="w-full h-full object-contain mix-blend-multiply filter transition-transform duration-700 group-hover:scale-110"
                   />
                 </div>
                 <div className="p-6 flex flex-col flex-1">
