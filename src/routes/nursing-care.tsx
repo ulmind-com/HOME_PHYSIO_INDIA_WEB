@@ -371,9 +371,9 @@ function NursingHero({
   ];
 
   const mobileImages = [
-    "/assets/nurse-hero-mobile-1.png",
-    "/assets/nurse-hero-mobile-2.png",
-    "/assets/nurse-hero-mobile-3.png",
+    "/assets/Home%20Nourse/ChatGPT%20Image%20Aug%209%2C%202026%2C%2011_46_11%20PM.png",
+    "/assets/Home%20Nourse/ChatGPT%20Image%20Aug%209%2C%202026%2C%2011_47_30%20PM.png",
+    "/assets/Home%20Nourse/ChatGPT%20Image%20Aug%209%2C%202026%2C%2011_48_13%20PM.png",
   ];
   
   const [currentIdx, setCurrentIdx] = useState(0);
