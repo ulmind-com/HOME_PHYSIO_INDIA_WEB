@@ -128,7 +128,7 @@ export function ComprehensiveServicesSection() {
     : DEFAULT_SERVICES;
 
   return (
-    <section className="relative w-full bg-background py-20 md:py-28 lg:py-32 overflow-hidden">
+    <section className="relative w-full bg-background pt-10 pb-20 md:pt-16 md:pb-28 lg:pt-16 lg:pb-32 overflow-hidden">
       {/* Decorative background grid & blobs */}
       <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
         <div className="absolute top-1/4 -left-32 h-96 w-96 rounded-full bg-primary/5 blur-[100px]" />

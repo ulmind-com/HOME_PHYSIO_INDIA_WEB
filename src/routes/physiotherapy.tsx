@@ -277,9 +277,18 @@ function PhysioHero({
   whatsapp?: string;
 }) {
   const images = [
-    "/assets/physio-hero-21-9-1.png",
-    "/assets/physio-hero-21-9-2.png",
-    "/assets/physio-hero-21-9-3.png",
+    {
+      desktop: "/assets/physio-hero-21-9-1.png",
+      mobile: "/assets/mobile/physio-hero-9-16-1.png",
+    },
+    {
+      desktop: "/assets/physio-hero-21-9-2.png",
+      mobile: "/assets/mobile/physio-hero-9-16-2.png",
+    },
+    {
+      desktop: "/assets/physio-hero-21-9-3.png",
+      mobile: "/assets/mobile/physio-hero-9-16-3.png",
+    },
   ];
 
   const [currentIdx, setCurrentIdx] = useState(0);
@@ -314,11 +323,14 @@ function PhysioHero({
             }}
             className="absolute inset-0 w-full h-full"
           >
-            <img 
-              src={images[currentIdx]} 
-              alt="Physiotherapy at Home" 
-              className="w-full h-full object-cover object-center"
-            />
+            <picture className="w-full h-full">
+              <source media="(min-width: 768px)" srcSet={images[currentIdx].desktop} />
+              <img 
+                src={images[currentIdx].mobile} 
+                alt="Physiotherapy at Home" 
+                className="w-full h-full object-cover object-center"
+              />
+            </picture>
           </motion.div>
         </AnimatePresence>
       </div>

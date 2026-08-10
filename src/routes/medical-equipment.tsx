@@ -69,7 +69,7 @@ const EQUIPMENT_CARDS = [
     icon: BedDouble,
     image: "/assets/equip_hospital_bed.png",
     emoji: "🛏️",
-    title: "Hospital Bed on Rent",
+    title: "Hospital Bed",
     description:
       "Adjustable hospital beds designed to provide comfortable positioning and easier patient care at home.",
     color: "text-blue-600",
@@ -80,7 +80,7 @@ const EQUIPMENT_CARDS = [
     icon: CircleGauge,
     image: "/assets/equip_wheelchair.png",
     emoji: "🦼",
-    title: "Wheelchair on Rent",
+    title: "Wheelchair",
     description:
       "Mobility support for elderly patients, patients recovering from illness or surgery and people with limited mobility.",
     color: "text-violet-600",
@@ -91,7 +91,7 @@ const EQUIPMENT_CARDS = [
     icon: Wind,
     image: "/assets/equip_oxygen_concentrator.png",
     emoji: "💨",
-    title: "Oxygen Concentrator on Rent",
+    title: "Oxygen Concentrator",
     description:
       "Oxygen concentrator support for patients who have been prescribed supplemental oxygen for use at home.",
     color: "text-cyan-600",
@@ -102,7 +102,7 @@ const EQUIPMENT_CARDS = [
     icon: Stethoscope,
     image: "/assets/equip_bipap_machine.png",
     emoji: "🩺",
-    title: "BiPAP Machine on Rent",
+    title: "BiPAP Machine",
     description:
       "Respiratory support equipment for patients who have been prescribed BiPAP therapy by their healthcare professional.",
     color: "text-rose-600",
@@ -113,7 +113,7 @@ const EQUIPMENT_CARDS = [
     icon: Wind,
     image: "/assets/equip_cpap_machine.png",
     emoji: "🫁",
-    title: "CPAP Machine on Rent",
+    title: "CPAP Machine",
     description:
       "CPAP equipment for patients who have been prescribed continuous positive airway pressure therapy.",
     color: "text-teal-600",
@@ -124,7 +124,7 @@ const EQUIPMENT_CARDS = [
     icon: Box,
     image: "/assets/equip_suction_machine.png",
     emoji: "💧",
-    title: "Suction Machine on Rent",
+    title: "Suction Machine",
     description:
       "Medical suction equipment to assist patients who require secretion-management support at home.",
     color: "text-emerald-600",
@@ -135,7 +135,7 @@ const EQUIPMENT_CARDS = [
     icon: SquareDashedBottom,
     image: "/assets/equip_air_mattress.png",
     emoji: "🛌",
-    title: "Air Mattress on Rent",
+    title: "Air Mattress",
     description:
       "Pressure-relieving mattress support for patients who spend extended periods in bed and require additional comfort and pressure management.",
     color: "text-indigo-600",
@@ -146,7 +146,7 @@ const EQUIPMENT_CARDS = [
     icon: Footprints,
     image: "/assets/walker-rent.png",
     emoji: "🩼",
-    title: "Walker on Rent",
+    title: "Walker",
     description:
       "Walking support for elderly patients and people recovering from surgery, injury or mobility-related conditions.",
     color: "text-emerald-600",
@@ -297,9 +297,18 @@ function MedicalEquipmentPage() {
 
 function EquipmentHero({ phone }: { phone?: string }) {
   const images = [
-    "/assets/equipment-hero-21-9-1.png",
-    "/assets/equipment-hero-21-9-2.png",
-    "/assets/equipment-hero-21-9-3.png",
+    {
+      desktop: "/assets/equipment-hero-21-9-1.png",
+      mobile: "/assets/mobile/equipment-hero-9-16-1.png",
+    },
+    {
+      desktop: "/assets/equipment-hero-21-9-2.png",
+      mobile: "/assets/mobile/equipment-hero-9-16-2.png",
+    },
+    {
+      desktop: "/assets/equipment-hero-21-9-3.png",
+      mobile: "/assets/mobile/equipment-hero-9-16-3.png",
+    },
   ];
 
   const [currentIdx, setCurrentIdx] = useState(0);
@@ -323,10 +332,8 @@ function EquipmentHero({ phone }: { phone?: string }) {
       {/* Hero background image slider */}
       <div className="absolute inset-0 -z-20 w-full h-full bg-[#0a0a0a]">
         <AnimatePresence>
-          <motion.img
+          <motion.div
             key={currentIdx}
-            src={images[currentIdx]}
-            alt="Medical Equipment at Home"
             initial={{ opacity: 0, scale: 1.15 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
@@ -334,8 +341,17 @@ function EquipmentHero({ phone }: { phone?: string }) {
               opacity: { duration: 1.8, ease: "easeInOut" },
               scale: { duration: 8, ease: "easeOut" },
             }}
-            className="absolute inset-0 w-full h-full object-cover object-center"
-          />
+            className="absolute inset-0 w-full h-full"
+          >
+            <picture className="w-full h-full">
+              <source media="(min-width: 768px)" srcSet={images[currentIdx].desktop} />
+              <img 
+                src={images[currentIdx].mobile} 
+                alt="Medical Equipment for Home Care" 
+                className="w-full h-full object-cover object-center"
+              />
+            </picture>
+          </motion.div>
         </AnimatePresence>
       </div>
 
@@ -366,7 +382,7 @@ function EquipmentHero({ phone }: { phone?: string }) {
               Equipment Rentals
             </div>
 
-            <h1 className="font-display text-4xl md:text-5xl lg:text-[3.5rem] font-bold text-white leading-[1.08] tracking-tight mb-4">
+            <h1 className="font-display text-4xl md:text-5xl lg:text-[3.5rem] font-medium text-white leading-[1.08] tracking-tight mb-4">
               Medical Equipment <br />
               for Home Care
             </h1>
@@ -1023,7 +1039,7 @@ function FinalCtaBand({ phone }: { phone?: string }) {
   return (
     <section className="bg-primary py-16">
       <div className="container-x text-center max-w-3xl mx-auto">
-        <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-4">
+        <h2 className="font-display text-3xl md:text-4xl text-white mb-4">
           Make Home Care More Comfortable
         </h2>
         <p className="text-white/90 text-lg mb-8">

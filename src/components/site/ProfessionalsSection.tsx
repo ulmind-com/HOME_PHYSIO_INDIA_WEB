@@ -32,14 +32,7 @@ const DEFAULT_TILES: PeopleTile[] = [
     ctaLabel: "Book a session",
     ctaHref: "/booking",
   },
-  {
-    image: "/assets/equipment/anesthesiology.jpeg",
-    count: "30",
-    title: "Doctors on panel",
-    desc: "Specialist consults on call",
-    ctaLabel: "Consult a doctor",
-    ctaHref: "/booking",
-  },
+
   {
     image: "/assets/equipment/monitoring-2.jpeg",
     count: "200+",
@@ -57,9 +50,9 @@ const FEATURES = [
     Icon: HeartPulseIcon,
   },
   {
-    title: "Specialist Doctors",
-    desc: "On-panel physicians and physiotherapists just a call away, day or night.",
-    Icon: StethoIcon,
+    title: "ICU at Home",
+    desc: "Hospital-grade ICU setup delivered and monitored by expert critical care nurses at home.",
+    Icon: IcuPngIcon,
   },
   {
     title: "24 Hours Service",
@@ -69,7 +62,7 @@ const FEATURES = [
 ];
 
 // Grid order: TR, TL, BR, BL — sweep reads right → left
-const REVEAL_ORDER = [1, 0, 3, 2];
+const REVEAL_ORDER = [1, 0, 2];
 
 const gridVariants: Variants = {
   hidden: {},
@@ -149,7 +142,7 @@ export function ProfessionalsSection() {
               transition={{ duration: 0.55, delay: 0.05 }}
               className="mt-4 md:mt-5 font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.05] tracking-tight"
             >
-              Professionals <span className="text-gradient">dedicated</span> to your health
+              Professionals dedicated to your health
             </motion.h2>
 
             <motion.p
@@ -309,6 +302,17 @@ function StethoIcon({ className = "" }: { className?: string }) {
     </svg>
   );
 }
+function IcuPngIcon({ className = "" }: { className?: string }) {
+  // Override small SVG sizing so the detailed PNG is readable
+  const largerClass = className.replace("h-6 w-6", "h-9 w-9 md:h-10 md:w-10");
+  return (
+    <img 
+      src="/assets/icu-icon.png" 
+      alt="ICU at Home"
+      className={largerClass + " object-contain mix-blend-multiply scale-110"}
+    />
+  );
+}
 function ClockShieldIcon({ className = "" }: { className?: string }) {
   return (
     <svg
@@ -320,9 +324,8 @@ function ClockShieldIcon({ className = "" }: { className?: string }) {
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5l-8-3Z" />
-      <circle cx="12" cy="12" r="3.5" />
-      <path d="M12 10v2.5l1.5 1" />
+      <circle cx="12" cy="12" r="10" />
+      <polyline points="12 6 12 12 16 14" />
     </svg>
   );
 }

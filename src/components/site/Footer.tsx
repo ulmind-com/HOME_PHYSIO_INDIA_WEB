@@ -88,11 +88,7 @@ export function Footer() {
               </div>
             </div>
 
-            <div className="mt-8 md:mt-12 flex flex-col gap-2.5">
-              <div className="text-[13px] text-white font-semibold drop-shadow-md">
-                © {new Date().getFullYear()} {name} - All rights reserved
-              </div>
-            </div>
+
           </div>
 
           {/* Right Column (Links) */}
@@ -155,12 +151,15 @@ export function Footer() {
       </div>
 
       {/* Massive Brand Typography at the Bottom over the image */}
-      <div className="relative z-10 w-full overflow-hidden flex justify-center pt-16 md:pt-32 pb-4 pointer-events-none">
+      <div className="relative z-10 w-full overflow-hidden flex flex-col items-center justify-center pt-12 md:pt-20 pb-4 pointer-events-none">
+        <div className="mb-8 text-[13px] text-white/90 font-medium drop-shadow-md text-center pointer-events-auto">
+          © 2026 Nupun Home Health Care Services. All Rights Reserved.
+        </div>
         <h1 className="font-display text-[26vw] leading-[0.75] font-bold tracking-tighter text-white drop-shadow-2xl select-none whitespace-nowrap opacity-90">
           Nupun
         </h1>
         {/* Gradient fade at the absolute bottom to blend everything out */}
-        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#EAEAEA] to-transparent"></div>
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#EAEAEA] to-transparent -z-10"></div>
       </div>
     </footer>
   );

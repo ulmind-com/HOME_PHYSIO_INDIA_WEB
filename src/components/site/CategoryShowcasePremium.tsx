@@ -24,7 +24,7 @@ const fallbacks: Array<{ title: string; description: string; image: string; vari
     dedicatedLink: "/nursing-care",
   },
   {
-    title: "Elder Care",
+    title: "Elderly Care",
     description: "Compassionate daily companionship and assisted living support.",
     image: elderAsset.url,
     variant: "b",
@@ -34,11 +34,11 @@ const fallbacks: Array<{ title: string; description: string; image: string; vari
     title: "Physiotherapy & Recovery",
     description: "In-home rehab, mobility & pain management by expert therapists.",
     image: physioAsset.url,
-    variant: "c",
+    variant: "b",
     dedicatedLink: "/physiotherapy",
   },
   {
-    title: "Medical Equipment Rental",
+    title: "Medical Equipment",
     description: "Hospital-grade beds, oxygen, monitors — delivered & installed.",
     image: equipmentAsset.url,
     variant: "d",
@@ -127,7 +127,7 @@ export function CategoryShowcasePremium() {
   });
 
   return (
-    <div className="relative z-10 pt-16 lg:pt-24 pb-24 lg:pb-32 overflow-hidden">
+    <div className="relative z-10 pt-16 lg:pt-24 pb-8 lg:pb-12 overflow-hidden">
       {/* Decorative background dots */}
       <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden>
         <div
