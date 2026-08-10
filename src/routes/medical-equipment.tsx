@@ -371,12 +371,8 @@ function EquipmentHero({ phone }: { phone?: string }) {
               for Home Care
             </h1>
 
-            <div className="text-white/80 font-medium text-lg md:text-xl mb-4">
-              Essential medical equipment to support safer, more comfortable and convenient care at home.
-            </div>
-
             <p className="text-white/70 text-base md:text-lg leading-relaxed max-w-xl mb-6">
-              Nupun Home Health Care Services provides essential medical equipment on rent for patients who need comfortable and convenient care at home. Whether you need equipment for a few days, weeks or longer-term use, we help you arrange suitable equipment according to your requirement and availability.
+              Nupun Home Health Care Services provides essential medical equipment on rent to support patients, elderly people and families during home care and recovery. From hospital beds and wheelchairs to oxygen concentrators, BiPAP/CPAP and suction machines, we help you get the equipment you need with convenient rental options and dependable support.
             </p>
 
             <div className="flex flex-col sm:flex-row flex-wrap gap-3">
@@ -510,11 +506,11 @@ function EquipmentGridSection() {
           <span className="h-1.5 w-1.5 rounded-full bg-primary" />
           Our Medical Equipment
         </div>
-        <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground tracking-tight leading-[1.1] mb-6">
-          Medical Equipment Rental Services
+        <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground tracking-tight mb-4">
+          Our Medical Equipment
         </h2>
         <p className="text-muted-foreground text-lg leading-relaxed max-w-2xl mx-auto">
-          Nupun Home Health Care Services provides essential medical equipment on rent for patients who need comfortable and convenient care at home. Whether you need equipment for a few days, weeks or longer-term use, we help you arrange suitable equipment according to your requirement and availability.
+          Explore essential equipment designed to support patients and caregivers with comfortable and convenient home-based care.
         </p>
       </motion.div>
 
@@ -531,8 +527,8 @@ function EquipmentGridSection() {
             >
               <div className="group h-full flex flex-col rounded-2xl bg-white border border-border p-4 sm:p-5 shadow-sm transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_15px_40px_-10px_rgba(0,0,0,0.1)] cursor-default">
                 {s.image ? (
-                  <div className="w-14 h-14 sm:w-16 sm:h-16 mb-3 sm:mb-4 relative -ml-1 mix-blend-multiply">
-                    <img src={s.image} alt={s.title} className="w-full h-full object-contain" />
+                  <div className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-rose-50 mb-4 transform transition-transform group-hover:scale-110 duration-300">
+                    <img src={s.image} alt={s.title} className="w-9 h-9 object-contain mix-blend-multiply" />
                   </div>
                 ) : (
                   <div

@@ -655,10 +655,10 @@ function NursingServicesSection() {
               transition={{ duration: 0.5, delay: (i % 5) * 0.07, ease: [0.22, 1, 0.36, 1] }}
             >
               <div
-                className="group h-full flex flex-col items-center text-center rounded-2xl bg-white border border-black/5 p-6 shadow-sm transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_15px_40px_-10px_rgba(0,0,0,0.1)] cursor-default"
+                className="group h-full flex flex-col items-start text-left rounded-2xl bg-white border border-black/5 p-6 shadow-sm transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_15px_40px_-10px_rgba(0,0,0,0.1)] cursor-default"
               >
-                <div className="grid h-20 w-20 shrink-0 place-items-center rounded-full bg-rose-50 mb-4 transform transition-transform group-hover:scale-110 duration-300">
-                  <span className="text-[3rem] leading-none">{s.emoji}</span>
+                <div className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-rose-50 mb-4 transform transition-transform group-hover:scale-110 duration-300">
+                  <span className="text-4xl leading-none">{s.emoji}</span>
                 </div>
                 <h3 className="font-display text-lg font-semibold text-foreground mb-3 leading-tight tracking-wide">
                   {s.title}

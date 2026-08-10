@@ -554,10 +554,8 @@ function PhysioServicesSection() {
               transition={{ duration: 0.5, delay: (i % 4) * 0.07, ease: [0.22, 1, 0.36, 1] }}
             >
               <div className="group h-full flex flex-col items-start text-left rounded-[1.75rem] bg-white border border-black/5 p-8 shadow-sm transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.08)] cursor-default">
-                <div
-                  className="grid h-[4.5rem] w-[4.5rem] shrink-0 place-items-center rounded-full mb-6"
-                >
-                  <span className="text-[2.5rem] leading-none">{s.emoji}</span>
+                <div className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-rose-50 mb-4 transform transition-transform group-hover:scale-110 duration-300">
+                  <span className="text-4xl leading-none">{s.emoji}</span>
                 </div>
                 <h3 className="font-display text-lg font-semibold text-foreground mb-3 tracking-wide">
                   {s.title}
@@ -669,7 +667,7 @@ function PhysioWhyChooseSection() {
               transition={{ duration: 0.5, delay: (i % 4) * 0.1 }}
               className="group h-full flex flex-col items-start text-left rounded-[1.75rem] bg-white border border-black/5 p-8 shadow-sm transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.08)] cursor-default"
             >
-              <div className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-rose-50 mb-6 transform transition-transform duration-400 group-hover:scale-110 group-hover:rotate-3">
+              <div className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-rose-50 mb-6 transform transition-transform duration-400 group-hover:scale-110 group-hover:rotate-3">
                 <span className="text-3xl leading-none">{item.emoji}</span>
               </div>
               <h3 className="font-display text-xl font-semibold text-foreground mb-3 leading-tight tracking-wide">
@@ -690,8 +688,14 @@ function PhysioWhyChooseSection() {
 
 function PhysioCtaBand({ phone, whatsapp }: { phone?: string; whatsapp?: string }) {
   return (
-    <section className="relative overflow-hidden bg-primary">
-      <div className="absolute inset-0 -z-10" />
+    <section className="relative overflow-hidden">
+      <div
+        className="absolute inset-0 -z-10"
+        style={{
+          background:
+            "linear-gradient(135deg, oklch(0.22 0.08 240) 0%, oklch(0.28 0.06 260) 100%)",
+        }}
+      />
       <div className="absolute inset-0 -z-10 opacity-10 pointer-events-none">
         <div
           style={{
@@ -705,20 +709,20 @@ function PhysioCtaBand({ phone, whatsapp }: { phone?: string; whatsapp?: string 
 
       <div className="container-x py-20 lg:py-24">
         <div className="max-w-3xl">
-          <div className="text-[10px] uppercase tracking-[0.28em] text-white/55 mb-5">
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-white tracking-tight leading-tight mb-3">
             Need Physiotherapy at Home?
-          </div>
-          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-white tracking-tight leading-[1.1] mb-6">
-            Whether your loved one is recovering after surgery or needs rehabilitation,{" "}
-            <em className="not-italic text-teal-300">we can help.</em>
           </h2>
+          <h3 className="text-xl md:text-2xl text-white/90 font-medium mb-6 tracking-wide" style={{ wordSpacing: "0.06em" }}>
+            Whether your loved one is recovering after surgery or needs rehabilitation,{" "}
+            <em className="not-italic text-white">we can help.</em>
+          </h3>
           <p className="text-white/65 text-lg leading-relaxed max-w-2xl mb-10">
             Our team provides convenient home-based physiotherapy focused on mobility, strength,
             balance and functional recovery.
           </p>
           <div className="flex flex-wrap gap-4">
             <PhysioBookingModal>
-              <button className="inline-flex items-center gap-2 rounded-full bg-slate-900 text-white px-8 py-4 text-base font-semibold hover:bg-slate-800 transition-all duration-300 shadow-[0_15px_35px_-10px_rgba(0,0,0,0.4)]">
+              <button className="inline-flex items-center gap-2 rounded-full bg-cyan-400 text-slate-900 px-8 py-4 text-base font-semibold hover:bg-cyan-300 transition-all duration-300 shadow-[0_15px_35px_-10px_rgba(34,211,238,0.4)]">
                 Book a Physiotherapist <ArrowRight className="h-5 w-5" />
               </button>
             </PhysioBookingModal>
