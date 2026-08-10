@@ -8,10 +8,10 @@ import { useCallback, useEffect } from "react";
 import type { Category } from "@/lib/api/types";
 import { categoriesQ } from "@/lib/api/queries";
 import { CategoryCardShape } from "./CategoryCardShape";
-const nursingAsset = { url: "/assets/categories/nursing.jpg" };
+const nursingAsset = { url: "/assets/categories/nursing-v2.jpg" };
 const elderAsset = { url: "/assets/categories/elder.jpg" };
-const physioAsset = { url: "/assets/categories/physio.jpg" };
-const equipmentAsset = { url: "/assets/categories/equipment.jpg" };
+const physioAsset = { url: "/assets/categories/physio-v2.jpg" };
+const equipmentAsset = { url: "/assets/categories/equipment-v2.jpg" };
 
 type Variant = "a" | "b" | "c" | "d";
 
