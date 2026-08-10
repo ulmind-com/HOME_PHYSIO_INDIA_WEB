@@ -144,13 +144,14 @@ const EQUIPMENT_CARDS = [
   },
   {
     icon: Footprints,
+    image: "/assets/walker-rent.png",
     emoji: "🩼",
     title: "Walker on Rent",
     description:
       "Walking support for elderly patients and people recovering from surgery, injury or mobility-related conditions.",
-    color: "text-teal-600",
-    bg: "from-teal-50 to-emerald-50",
-    iconBg: "bg-teal-100",
+    color: "text-emerald-600",
+    bg: "from-emerald-50 to-teal-50",
+    iconBg: "bg-emerald-100",
   },
 ];
 
@@ -167,58 +168,40 @@ const EQUIPMENT_CHECKLIST = [
 
 const WHY_CHOOSE = [
   {
-    icon: Box,
+    emoji: "📦",
     title: "Essential Equipment Options",
     description:
       "Access commonly required medical equipment for patients receiving care at home.",
-    color: "text-blue-600",
-    bg: "bg-blue-50",
-    iconBg: "bg-blue-100",
   },
   {
-    icon: Truck,
+    emoji: "🚚",
     title: "Convenient Home Delivery",
     description:
       "Available equipment can be arranged for delivery to your required location, subject to service availability.",
-    color: "text-emerald-600",
-    bg: "bg-emerald-50",
-    iconBg: "bg-emerald-100",
   },
   {
-    icon: MessageCircleQuestion,
+    emoji: "🧑‍⚕️",
     title: "Requirement-Based Guidance",
     description:
       "Tell us about the patient's requirement and our team can guide you regarding the available equipment options.",
-    color: "text-teal-600",
-    bg: "bg-teal-50",
-    iconBg: "bg-teal-100",
   },
   {
-    icon: Info,
+    emoji: "📱",
     title: "Easy Enquiry Process",
     description:
       "Simply tell us which equipment you need, your location and expected duration of use.",
-    color: "text-violet-600",
-    bg: "bg-violet-50",
-    iconBg: "bg-violet-100",
   },
   {
-    icon: Layers,
+    emoji: "🏡",
     title: "Support for Home Care",
     description:
       "Our medical equipment services can complement nursing care, elderly care, physiotherapy and post-hospitalisation care.",
-    color: "text-cyan-600",
-    bg: "bg-cyan-50",
-    iconBg: "bg-cyan-100",
   },
   {
-    icon: CheckCircle2,
+    emoji: "✅",
     title: "Availability Confirmation",
     description:
       "We confirm equipment availability and applicable charges before proceeding with the booking.",
-    color: "text-rose-600",
-    bg: "bg-rose-50",
-    iconBg: "bg-rose-100",
   },
 ];
 
@@ -546,9 +529,9 @@ function EquipmentGridSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: (i % 4) * 0.07, ease: [0.22, 1, 0.36, 1] }}
             >
-              <div className="group h-full flex flex-col rounded-2xl bg-white border border-border p-5 shadow-sm transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_15px_40px_-10px_rgba(0,0,0,0.1)] cursor-default">
+              <div className="group h-full flex flex-col rounded-2xl bg-white border border-border p-4 sm:p-5 shadow-sm transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_15px_40px_-10px_rgba(0,0,0,0.1)] cursor-default">
                 {s.image ? (
-                  <div className="w-16 h-16 mb-4 relative -ml-1 mix-blend-multiply">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 mb-3 sm:mb-4 relative -ml-1 mix-blend-multiply">
                     <img src={s.image} alt={s.title} className="w-full h-full object-contain" />
                   </div>
                 ) : (
@@ -558,10 +541,10 @@ function EquipmentGridSection() {
                     <Icon className={`h-5 w-5 ${s.color}`} strokeWidth={2} />
                   </div>
                 )}
-                <h3 className="font-display text-base font-semibold text-foreground mb-2 leading-tight">
+                <h3 className="font-display text-lg sm:text-[21px] font-semibold text-foreground mb-2 sm:mb-3 leading-tight tracking-wide">
                   {s.title}
                 </h3>
-                <p className="text-xs leading-relaxed text-muted-foreground flex-1">
+                <p className="text-muted-foreground text-[15px] sm:text-[17px] leading-relaxed font-medium flex-1">
                   {s.description}
                 </p>
               </div>
@@ -577,10 +560,10 @@ function EquipmentGridSection() {
 
 function EquipmentChecklistSection() {
   return (
-    <section className="relative py-20 lg:py-28 overflow-hidden bg-gradient-to-br from-slate-900 to-[#1c1209]">
+    <section className="relative py-20 lg:py-28 overflow-hidden bg-gradient-to-br from-slate-900 to-blue-950">
       <div className="absolute inset-0 pointer-events-none" aria-hidden>
-        <div className="absolute top-0 right-[20%] w-80 h-80 bg-primary/15 rounded-full blur-[100px]" />
-        <div className="absolute bottom-0 left-[10%] w-64 h-64 bg-cyan-600/10 rounded-full blur-[80px]" />
+        <div className="absolute top-0 right-[20%] w-80 h-80 bg-cyan-500/15 rounded-full blur-[100px]" />
+        <div className="absolute bottom-0 left-[10%] w-64 h-64 bg-blue-600/10 rounded-full blur-[80px]" />
       </div>
 
       <div className="container-x relative z-10">
@@ -591,13 +574,12 @@ function EquipmentChecklistSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-white/70 mb-6">
-              <span className="h-1.5 w-1.5 rounded-full bg-teal-400" />
+            <h2 className="font-display text-4xl md:text-5xl text-white tracking-tight leading-tight mb-3">
               Trusted Support
-            </div>
-            <h2 className="font-display text-4xl md:text-5xl text-white tracking-tight leading-tight mb-6">
-              Reliable Equipment for Home Care
             </h2>
+            <h3 className="text-xl md:text-2xl text-white/90 font-medium mb-6">
+              Reliable Equipment for Home Care
+            </h3>
             <p className="text-white/60 text-lg leading-relaxed">
               Choosing the right equipment can make home care more comfortable and manageable. Nupun helps families identify the equipment they need based on the patient's requirements and available options.
             </p>
@@ -608,7 +590,7 @@ function EquipmentChecklistSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="grid grid-cols-1 gap-3"
+            className="grid grid-cols-1 sm:grid-cols-2 gap-3"
           >
             {EQUIPMENT_CHECKLIST.map((feat, i) => (
               <motion.div
@@ -619,7 +601,7 @@ function EquipmentChecklistSection() {
                 transition={{ duration: 0.4, delay: i * 0.04 }}
                 className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 backdrop-blur-md px-4 py-3"
               >
-                <div className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-teal-400/25 text-teal-300">
+                <div className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-cyan-400/25 text-cyan-300">
                   <Check className="h-3.5 w-3.5" strokeWidth={3} />
                 </div>
                 <span className="text-sm font-medium text-white/85">{feat}</span>
@@ -654,7 +636,6 @@ function EquipmentWhyChooseSection() {
 
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {WHY_CHOOSE.map((item, i) => {
-          const Icon = item.icon;
           return (
             <motion.div
               key={item.title}
@@ -662,21 +643,17 @@ function EquipmentWhyChooseSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: (i % 3) * 0.1 }}
-              className={`group flex flex-col items-start gap-4 rounded-[1.75rem] ${item.bg} border border-transparent hover:border-black/5 p-6 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.06)]`}
+              className="group h-full flex flex-col items-start text-left rounded-[1.75rem] bg-white border border-black/5 p-8 shadow-sm transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.08)] cursor-default"
             >
-              <div
-                className={`grid h-14 w-14 shrink-0 place-items-center rounded-2xl ${item.iconBg} ${item.color} transition-transform duration-400 group-hover:scale-110 group-hover:rotate-3`}
-              >
-                <Icon className="h-6 w-6" strokeWidth={2.5} />
+              <div className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-rose-50 mb-6 transform transition-transform duration-400 group-hover:scale-110 group-hover:rotate-3">
+                <span className="text-3xl leading-none">{item.emoji}</span>
               </div>
-              <div>
-                <h3 className="font-display text-lg font-bold text-foreground mb-2">
-                  {item.title}
-                </h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  {item.description}
-                </p>
-              </div>
+              <h3 className="font-display text-xl font-semibold text-foreground mb-3 leading-tight tracking-wide">
+                {item.title}
+              </h3>
+              <p className="text-muted-foreground text-base leading-relaxed font-medium">
+                {item.description}
+              </p>
             </motion.div>
           );
         })}
@@ -705,10 +682,10 @@ function EquipmentHowItWorksSection() {
             {i !== HOW_IT_WORKS.length - 1 && (
               <div className="hidden md:block absolute top-8 left-1/2 w-full h-[2px] bg-teal-100 -z-0" />
             )}
-            <h3 className="font-display text-xl font-bold text-foreground mb-3">
+            <h3 className="font-display text-xl font-medium text-foreground mb-3">
               {step.title}
             </h3>
-            <p className="text-muted-foreground text-sm leading-relaxed">
+            <p className="text-muted-foreground text-[15px] leading-relaxed">
               {step.description}
             </p>
           </div>
@@ -727,7 +704,7 @@ function EquipmentCtaBand({ phone, whatsapp }: { phone?: string; whatsapp?: stri
         className="absolute inset-0 -z-10"
         style={{
           background:
-            "linear-gradient(135deg, #1c1209 0%, #2a1a0f 100%)",
+            "linear-gradient(135deg, oklch(0.22 0.08 240) 0%, oklch(0.28 0.06 260) 100%)",
         }}
       />
       <div className="absolute inset-0 -z-10 opacity-10 pointer-events-none">
@@ -743,20 +720,18 @@ function EquipmentCtaBand({ phone, whatsapp }: { phone?: string; whatsapp?: stri
 
       <div className="container-x py-20 lg:py-24">
         <div className="max-w-3xl">
-          <div className="text-[10px] uppercase tracking-[0.28em] text-white/55 mb-5">
-            Need Medical Equipment?
-          </div>
-          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-white tracking-tight leading-[1.1] mb-6">
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-white tracking-tight leading-tight mb-3">
             Need Medical Equipment at Home?
           </h2>
-          <p className="text-white/65 text-lg leading-relaxed max-w-2xl mb-10">
+          <h3 className="text-xl md:text-2xl text-white/90 font-medium mb-6 tracking-wide" style={{ wordSpacing: "0.06em" }}>
             Whether you need a hospital bed for a bedridden patient, a wheelchair for mobility support, an oxygen concentrator or respiratory equipment, Nupun Home Health Care Services can help you arrange the required equipment according to availability.
-            <br/><br/>
+          </h3>
+          <p className="text-white/65 text-lg leading-relaxed max-w-2xl mb-10">
             Tell us what you need and our team will guide you through the available options.
           </p>
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-col sm:flex-row gap-4">
             <EquipmentBookingModal>
-              <button className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-8 py-4 text-base font-semibold hover:bg-primary/90 transition-all duration-300 shadow-[0_15px_35px_-10px_rgba(0,128,128,0.4)]">
+              <button className="inline-flex items-center justify-center w-full sm:w-auto gap-2 rounded-full bg-cyan-400 text-slate-900 px-8 py-4 text-base font-semibold hover:bg-cyan-300 transition-all duration-300 shadow-[0_15px_35px_-10px_rgba(34,211,238,0.4)]">
                 Check Equipment Availability <ArrowRight className="h-5 w-5" />
               </button>
             </EquipmentBookingModal>
@@ -765,7 +740,7 @@ function EquipmentCtaBand({ phone, whatsapp }: { phone?: string; whatsapp?: stri
                 href={`https://wa.me/${whatsapp}`}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-white/30 text-white px-8 py-4 text-base font-semibold hover:bg-white/10 transition-all duration-300"
+                className="inline-flex items-center justify-center w-full sm:w-auto gap-2 rounded-full border border-white/30 text-white px-8 py-4 text-base font-semibold hover:bg-white/10 transition-all duration-300"
               >
                 WhatsApp Us
               </a>
@@ -934,11 +909,11 @@ function EquipmentBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?:
                 <div>
                   <input
                     {...form.register("customer_name")}
-                    placeholder="Full Name"
-                    className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition focus:border-teal-500 focus:ring-2 focus:ring-teal-500/15"
+                    placeholder="Full name"
+                    className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground"
                   />
                   {form.formState.errors.customer_name && (
-                    <p className="text-xs text-destructive mt-1">
+                    <p className="text-xs text-destructive mt-1.5 pl-1">
                       {form.formState.errors.customer_name.message}
                     </p>
                   )}
@@ -947,79 +922,98 @@ function EquipmentBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?:
                 <div>
                   <input
                     {...form.register("customer_phone")}
-                    placeholder="Phone Number"
-                    className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition focus:border-teal-500 focus:ring-2 focus:ring-teal-500/15"
+                    placeholder="Phone number"
+                    type="tel"
+                    className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground"
                   />
                   {form.formState.errors.customer_phone && (
-                    <p className="text-xs text-destructive mt-1">
+                    <p className="text-xs text-destructive mt-1.5 pl-1">
                       {form.formState.errors.customer_phone.message}
                     </p>
                   )}
                 </div>
 
                 <div>
-                  <select
-                    {...form.register("equipment_name")}
-                    className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition focus:border-teal-500 focus:ring-2 focus:ring-teal-500/15 text-muted-foreground focus:text-foreground"
-                  >
-                    <option value="">Select Equipment</option>
-                    {EQUIPMENT_OPTIONS.map((s) => (
-                      <option key={s} value={s}>
-                        {s}
-                      </option>
-                    ))}
-                  </select>
+                  <div className="relative">
+                    <select
+                      {...form.register("equipment_name")}
+                      className="w-full rounded-full border border-border bg-black/5 px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-muted-foreground focus:text-foreground appearance-none cursor-pointer"
+                    >
+                      <option value="">Select equipment</option>
+                      {EQUIPMENT_OPTIONS.map((e) => (
+                        <option key={e} value={e}>
+                          {e}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                  </div>
                   {form.formState.errors.equipment_name && (
-                    <p className="text-xs text-destructive mt-1">
+                    <p className="text-xs text-destructive mt-1.5 pl-1">
                       {form.formState.errors.equipment_name.message}
                     </p>
                   )}
                 </div>
 
-                <div>
-                  <select
-                    {...form.register("duration_days")}
-                    className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition focus:border-teal-500 focus:ring-2 focus:ring-teal-500/15 text-muted-foreground focus:text-foreground"
-                  >
-                    <option value="">Required Duration</option>
-                    {["1 week", "2 weeks", "1 month", "3 months", "Other"].map((s) => (
-                      <option key={s} value={s}>
-                        {s}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <div className="relative">
+                      <select
+                        {...form.register("address")}
+                        className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-muted-foreground focus:text-foreground appearance-none cursor-pointer"
+                      >
+                        <option value="">Location</option>
+                        {CITIES.map((c) => (
+                          <option key={c} value={c}>
+                            {c}
+                          </option>
+                        ))}
+                      </select>
+                      <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                    </div>
+                    {form.formState.errors.address && (
+                      <p className="text-xs text-destructive mt-1.5 pl-1">
+                        {form.formState.errors.address.message}
+                      </p>
+                    )}
+                  </div>
 
-                <div>
-                  <input
-                    {...form.register("address")}
-                    placeholder="Delivery Location"
-                    className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition focus:border-teal-500 focus:ring-2 focus:ring-teal-500/15"
-                  />
-                  {form.formState.errors.address && (
-                    <p className="text-xs text-destructive mt-1">
-                      {form.formState.errors.address.message}
-                    </p>
-                  )}
+                  <div>
+                    <div className="relative">
+                      <select
+                        {...form.register("duration_days")}
+                        className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-muted-foreground focus:text-foreground appearance-none cursor-pointer"
+                      >
+                        <option value="">Duration</option>
+                        {["1 week", "2 weeks", "1 month", "3 months", "Other"].map((c) => (
+                          <option key={c} value={c}>
+                            {c}
+                          </option>
+                        ))}
+                      </select>
+                      <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                    </div>
+                  </div>
                 </div>
 
                 <div>
                   <textarea
                     {...form.register("message")}
-                    placeholder="Patient Requirement / Additional Details"
+                    placeholder="Patient condition / requirement (optional)"
                     rows={3}
-                    className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition focus:border-teal-500 focus:ring-2 focus:ring-teal-500/15 resize-none"
+                    className="w-full rounded-2xl border border-border bg-transparent px-5 py-3.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground resize-none"
                   />
                 </div>
 
-                <button
-                  type="submit"
-                  disabled={mut.isPending}
-                  className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-foreground px-4 py-3.5 text-sm font-semibold text-background hover:bg-accent transition-colors disabled:opacity-60 mt-2"
-                >
-                  {mut.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
-                  Check Availability
-                </button>
+                <div className="pt-2">
+                  <button
+                    type="submit"
+                    disabled={mut.isPending}
+                    className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-[#0A252E] px-4 py-3.5 text-sm font-semibold text-white hover:bg-[#0A252E]/90 transition-colors disabled:opacity-60"
+                  >
+                    {mut.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : "Check Availability"}
+                  </button>
+                </div>
               </form>
             </>
           )}
