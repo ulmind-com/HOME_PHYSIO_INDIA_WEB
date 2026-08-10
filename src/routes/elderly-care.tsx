@@ -106,33 +106,51 @@ const TRUST_FEATURES = [
 const WHY_CHOOSE = [
   {
     icon: ShieldCheck,
+    emoji: "✅",
     title: "Trained Caregivers",
     desc: "Our attendants are selected and trained to provide dependable assistance to elderly people at home.",
+    color: "text-emerald-600",
+    iconBg: "bg-emerald-100",
   },
   {
     icon: Clock,
+    emoji: "⏰",
     title: "Flexible Care Options",
     desc: "Choose care according to your requirement, including hourly, 8-hour, 12-hour and 24-hour support.",
+    color: "text-sky-600",
+    iconBg: "bg-sky-100",
   },
   {
     icon: Pill,
+    emoji: "💊",
     title: "Medication Support",
     desc: "Caregivers can provide timely medication reminders according to the family's instructions and prescribed routine.",
+    color: "text-rose-600",
+    iconBg: "bg-rose-100",
   },
   {
     icon: MessageCircle,
+    emoji: "💬",
     title: "Family Updates",
     desc: "Families can stay informed about the elderly person's daily routine, care and well-being.",
+    color: "text-amber-600",
+    iconBg: "bg-amber-100",
   },
   {
     icon: Heart,
+    emoji: "💖",
     title: "Personalised Care",
     desc: "Every senior has different needs. We understand the patient's routine and provide care accordingly.",
+    color: "text-pink-600",
+    iconBg: "bg-pink-100",
   },
   {
     icon: CheckCircle2,
+    emoji: "🛡️",
     title: "Safety & Comfort",
     desc: "Our caregivers focus on safe mobility, hygiene, comfort and respectful assistance at home.",
+    color: "text-indigo-600",
+    iconBg: "bg-indigo-100",
   },
 ];
 
@@ -202,7 +220,7 @@ function ElderlyCarePage() {
       f.category?.toLowerCase().includes("senior") ||
       !f.category
   );
-  const displayFaqs = faqs.length > 0 ? faqs.slice(0, 8) : DEFAULT_FAQS;
+  const displayFaqs = DEFAULT_FAQS;
 
   return (
     <>
@@ -310,10 +328,7 @@ function ElderlyHero({ phone, whatsapp }: { phone?: string; whatsapp?: string })
             </h1>
 
             <p className="text-white/70 text-base md:text-lg leading-relaxed max-w-xl mb-6">
-              Nupun Home Health Care Services provides trained and caring attendants for elderly people who need support at home. Our caregivers assist seniors with personal hygiene, mobility, meals, companionship, medication reminders and daily routine activities.
-              <span className="block mt-3">
-                Whether your loved one needs support for a few hours, daytime care, overnight assistance or long-term elderly care, our team provides dependable care according to their individual needs.
-              </span>
+              Nupun Home Health Care Services, we provide caring and personalised support for seniors with their daily needs. Our trained attendants assist with personal care, mobility, meals, companionship and medication reminders, helping elderly people stay comfortable, safe and independent at home.
             </p>
 
             <div className="mt-6 md:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
@@ -615,7 +630,6 @@ function WhyChooseUs() {
       <div className="container-x">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {WHY_CHOOSE.map((item, i) => {
-            const Icon = item.icon;
             return (
               <motion.div
                 key={i}
@@ -624,14 +638,16 @@ function WhyChooseUs() {
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
               >
-                <div className="h-full rounded-3xl border border-border bg-surface/50 p-8 transition-colors hover:bg-surface">
-                  <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
-                    <Icon className="h-7 w-7 text-primary" strokeWidth={2} />
+                <div className="group h-full flex flex-col items-start text-left rounded-[1.75rem] bg-white border border-black/5 p-8 shadow-sm transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.08)] cursor-default">
+                  <div
+                    className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-rose-50 mb-6"
+                  >
+                    <span className="text-3xl leading-none">{item.emoji}</span>
                   </div>
                   <h3 className="font-display text-lg font-semibold text-foreground mb-3 tracking-wide">
                     {item.title}
                   </h3>
-                  <p className="text-muted-foreground leading-relaxed text-base">
+                  <p className="text-muted-foreground text-base leading-relaxed font-medium">
                     {item.desc}
                   </p>
                 </div>
@@ -821,7 +837,7 @@ function ElderlyInlineForm() {
           ) : (
             <>
               <h3 className="font-display text-2xl md:text-3xl tracking-tight text-foreground mb-2">
-                Book an Elderly Care Attendant
+                Book an Attendant
               </h3>
               <p className="text-muted-foreground text-sm mb-8">
                 Fill in your details and our care team will contact you shortly.
@@ -869,7 +885,7 @@ function ElderlyInlineForm() {
                     <select
                       name="service"
                       required
-                      className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-muted-foreground focus:text-foreground appearance-none"
+                      className="w-full rounded-full border border-border bg-black/5 px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-muted-foreground focus:text-foreground appearance-none"
                     >
                       <option value="">Select service</option>
                       <option value="Elderly care">Elderly care</option>

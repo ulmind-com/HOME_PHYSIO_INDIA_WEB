@@ -158,6 +158,7 @@ const PHYSIO_CHECKLIST = [
 const WHY_CHOOSE = [
   {
     icon: Users,
+    emoji: "👥",
     title: "Professional Physiotherapy Support",
     description:
       "Physiotherapy sessions are provided by trained professionals according to the patient's individual needs.",
@@ -167,6 +168,7 @@ const WHY_CHOOSE = [
   },
   {
     icon: HeartPulse,
+    emoji: "❤️",
     title: "Personalised Care Plans",
     description:
       "Exercises and therapy are planned according to the patient's condition, mobility and recovery requirements.",
@@ -176,6 +178,7 @@ const WHY_CHOOSE = [
   },
   {
     icon: Home,
+    emoji: "🏡",
     title: "Care at Your Home",
     description:
       "Patients can receive physiotherapy without the stress and inconvenience of travelling to a clinic.",
@@ -185,6 +188,7 @@ const WHY_CHOOSE = [
   },
   {
     icon: ThumbsUp,
+    emoji: "👍",
     title: "Family-Friendly Care",
     description:
       "Family members can stay informed about the patient's progress and ongoing care requirements.",
@@ -399,7 +403,7 @@ function PhysioHero({
 
             <div className="mt-8 flex flex-wrap gap-6">
               {[
-                { val: "20+", label: "Physiotherapists" },
+                { val: "20 +", label: "Physiotherapists" },
                 { val: "24/7", label: "Availability" },
                 { val: "4 Cities", label: "NCR Coverage" },
               ].map((s) => (
@@ -539,9 +543,8 @@ function PhysioServicesSection() {
         </p>
       </motion.div>
 
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {PHYSIO_SERVICE_CARDS.map((s, i) => {
-          const Icon = s.icon;
           return (
             <motion.div
               key={s.title}
@@ -550,16 +553,16 @@ function PhysioServicesSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: (i % 4) * 0.07, ease: [0.22, 1, 0.36, 1] }}
             >
-              <div className="group h-full flex flex-col rounded-2xl bg-white border border-white p-5 shadow-sm transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_15px_40px_-10px_rgba(0,0,0,0.1)] cursor-default">
+              <div className="group h-full flex flex-col items-start text-left rounded-[1.75rem] bg-white border border-black/5 p-8 shadow-sm transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.08)] cursor-default">
                 <div
-                  className={`w-10 h-10 rounded-xl ${s.iconBg} flex items-center justify-center mb-3`}
+                  className="grid h-[4.5rem] w-[4.5rem] shrink-0 place-items-center rounded-full mb-6"
                 >
-                  <Icon className={`h-5 w-5 ${s.color}`} strokeWidth={2} />
+                  <span className="text-[2.5rem] leading-none">{s.emoji}</span>
                 </div>
-                <h3 className="font-display text-base font-semibold text-foreground mb-2 leading-tight">
+                <h3 className="font-display text-lg font-semibold text-foreground mb-3 tracking-wide">
                   {s.title}
                 </h3>
-                <p className="text-xs leading-relaxed text-muted-foreground flex-1">
+                <p className="text-muted-foreground text-base leading-relaxed font-medium flex-1">
                   {s.description}
                 </p>
               </div>
@@ -655,9 +658,8 @@ function PhysioWhyChooseSection() {
         </p>
       </motion.div>
 
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         {WHY_CHOOSE.map((item, i) => {
-          const Icon = item.icon;
           return (
             <motion.div
               key={item.title}
@@ -665,21 +667,17 @@ function PhysioWhyChooseSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: (i % 4) * 0.1 }}
-              className={`group flex flex-col items-start gap-4 rounded-[1.75rem] ${item.bg} border border-transparent hover:border-black/5 p-6 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.06)]`}
+              className="group h-full flex flex-col items-start text-left rounded-[1.75rem] bg-white border border-black/5 p-8 shadow-sm transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.08)] cursor-default"
             >
-              <div
-                className={`grid h-14 w-14 shrink-0 place-items-center rounded-2xl ${item.iconBg} ${item.color} transition-transform duration-400 group-hover:scale-110 group-hover:rotate-3`}
-              >
-                <Icon className="h-6 w-6" strokeWidth={2.5} />
+              <div className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-rose-50 mb-6 transform transition-transform duration-400 group-hover:scale-110 group-hover:rotate-3">
+                <span className="text-3xl leading-none">{item.emoji}</span>
               </div>
-              <div>
-                <h3 className="font-display text-lg font-bold text-foreground mb-2">
-                  {item.title}
-                </h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  {item.description}
-                </p>
-              </div>
+              <h3 className="font-display text-xl font-semibold text-foreground mb-3 leading-tight tracking-wide">
+                {item.title}
+              </h3>
+              <p className="text-muted-foreground text-base leading-relaxed font-medium">
+                {item.description}
+              </p>
             </motion.div>
           );
         })}
@@ -937,7 +935,7 @@ function PhysioBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: st
                 <div>
                   <select
                     {...form.register("service_name")}
-                    className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-muted-foreground focus:text-foreground"
+                    className="w-full rounded-xl border border-border bg-black/5 px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-muted-foreground focus:text-foreground"
                   >
                     <option value="">Select physiotherapy service</option>
                     {PHYSIO_SERVICES.map((s) => (

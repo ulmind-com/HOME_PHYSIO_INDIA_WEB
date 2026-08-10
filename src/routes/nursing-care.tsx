@@ -171,6 +171,7 @@ const NURSING_CHECKLIST = [
 const WHY_CHOOSE = [
   {
     icon: Users,
+    emoji: "✅",
     title: "Trained Nursing Professionals",
     description: "We connect families with nursing staff suitable for the patient's care requirements and prescribed nursing needs.",
     color: "text-blue-600",
@@ -179,6 +180,7 @@ const WHY_CHOOSE = [
   },
   {
     icon: Home,
+    emoji: "🏡",
     title: "Care at Your Home",
     description: "Receive nursing support without making frequent trips to a clinic or hospital for routine home-care requirements.",
     color: "text-emerald-600",
@@ -187,6 +189,7 @@ const WHY_CHOOSE = [
   },
   {
     icon: HeartPulse,
+    emoji: "❤️",
     title: "Patients-Focused Care",
     description: "Our nursing support is arranged according to the patient's condition, care plan and required duty hours.",
     color: "text-rose-600",
@@ -195,6 +198,7 @@ const WHY_CHOOSE = [
   },
   {
     icon: Clock3,
+    emoji: "⏰",
     title: "Flexible Nursing Visits",
     description: "Nursing visits can be arranged according to the patient's requirement, subject to staff availability and service area.",
     color: "text-violet-600",
@@ -203,6 +207,7 @@ const WHY_CHOOSE = [
   },
   {
     icon: ThumbsUp,
+    emoji: "🤝",
     title: "Family Communication",
     description: "Families can stay informed about the patients' routine care and important observations.",
     color: "text-amber-600",
@@ -211,6 +216,7 @@ const WHY_CHOOSE = [
   },
   {
     icon: Shield,
+    emoji: "🛡️",
     title: "Professional & Respectful Approach",
     description: "We focus on patients comfort, privacy, dignity and proper adherence to the prescribed care instructions.",
     color: "text-teal-600",
@@ -326,7 +332,7 @@ function NursingCarePage() {
       f.category?.toLowerCase().includes("nursing") ||
       !f.category
   );
-  const displayFaqs = faqs.length > 0 ? faqs.slice(0, 10) : DEFAULT_FAQS;
+  const displayFaqs = DEFAULT_FAQS;
 
   return (
     <>
@@ -476,10 +482,7 @@ function NursingHero({
             </h1>
 
             <p className="text-white/70 text-base md:text-lg leading-relaxed max-w-xl mb-6">
-              Nupun Home Health Care Services provides nursing support for patients who need professional medical care in the comfort of their own home. Our nursing services are designed for patients recovering after hospitalisation, managing ongoing health needs, or requiring regular nursing procedures.
-              <span className="block mt-3">
-                From routine monitoring and injections to wound care, catheter care and other prescribed nursing procedures, our team helps families manage patient care with greater convenience and confidence.
-              </span>
+              Nupun Home Health Care Services, our trained nursing professionals provide personalised medical support at home. From routine monitoring and prescribed procedures to wound care, injections and post-hospitalisation support, we help patients receive safe and dependable nursing care in the comfort of their home.
             </p>
 
             <div className="mt-6 md:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
@@ -652,15 +655,15 @@ function NursingServicesSection() {
               transition={{ duration: 0.5, delay: (i % 5) * 0.07, ease: [0.22, 1, 0.36, 1] }}
             >
               <div
-                className={`group h-full flex flex-col rounded-2xl bg-white border border-white p-5 shadow-sm transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_15px_40px_-10px_rgba(0,0,0,0.1)] cursor-default`}
+                className="group h-full flex flex-col items-center text-center rounded-2xl bg-white border border-black/5 p-6 shadow-sm transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_15px_40px_-10px_rgba(0,0,0,0.1)] cursor-default"
               >
-                <div className={`w-12 h-12 rounded-xl ${s.iconBg} flex items-center justify-center mb-3`}>
-                  <Icon className={`h-6 w-6 ${s.color}`} strokeWidth={2} />
+                <div className="grid h-20 w-20 shrink-0 place-items-center rounded-full bg-rose-50 mb-4 transform transition-transform group-hover:scale-110 duration-300">
+                  <span className="text-[3rem] leading-none">{s.emoji}</span>
                 </div>
-                <h3 className="font-display text-lg font-semibold text-foreground mb-2 leading-tight tracking-wide">
+                <h3 className="font-display text-lg font-semibold text-foreground mb-3 leading-tight tracking-wide">
                   {s.title}
                 </h3>
-                <p className="text-base leading-relaxed text-muted-foreground flex-1">
+                <p className="text-muted-foreground text-base leading-relaxed font-medium">
                   {s.description}
                 </p>
               </div>
@@ -762,21 +765,17 @@ function WhyChooseSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: (i % 3) * 0.1 }}
-              className={`group flex items-start gap-5 rounded-[1.75rem] bg-white border border-black/5 shadow-sm p-6 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.08)]`}
+              className="group h-full flex flex-col items-start text-left rounded-[1.75rem] bg-white border border-black/5 p-8 shadow-sm transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.08)] cursor-default"
             >
-              <div
-                className={`grid h-14 w-14 shrink-0 place-items-center rounded-2xl ${item.iconBg} ${item.color} transition-transform duration-400 group-hover:scale-110 group-hover:rotate-3`}
-              >
-                <Icon className="h-6 w-6" strokeWidth={2.5} />
+              <div className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-rose-50 mb-6 transform transition-transform duration-400 group-hover:scale-110 group-hover:rotate-3">
+                <span className="text-3xl leading-none">{item.emoji}</span>
               </div>
-              <div>
-                <h3 className="font-display text-lg font-semibold text-foreground mb-2 leading-tight tracking-wide">
-                  {item.title}
-                </h3>
-                <p className="text-base leading-relaxed text-muted-foreground">
-                  {item.description}
-                </p>
-              </div>
+              <h3 className="font-display text-xl font-semibold text-foreground mb-3 leading-tight tracking-wide">
+                {item.title}
+              </h3>
+              <p className="text-muted-foreground text-base leading-relaxed font-medium">
+                {item.description}
+              </p>
             </motion.div>
           );
         })}
@@ -1089,7 +1088,7 @@ function NursingBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: s
                   <div className="relative">
                     <select
                       {...form.register("service_name")}
-                      className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-muted-foreground focus:text-foreground appearance-none"
+                      className="w-full rounded-full border border-border bg-black/5 px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-muted-foreground focus:text-foreground appearance-none"
                     >
                       <option value="">Select nursing service</option>
                       <option value="Injection Administration">Injection Administration</option>

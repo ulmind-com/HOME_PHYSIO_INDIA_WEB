@@ -265,7 +265,7 @@ export function PhysioBookingModal({
                     <div className="relative">
                       <select
                         {...form.register("service_name")}
-                        className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-muted-foreground focus:text-foreground appearance-none cursor-pointer"
+                        className="w-full rounded-full border border-border bg-black/5 px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-muted-foreground focus:text-foreground appearance-none cursor-pointer"
                       >
                         <option value="">Select physiotherapy service</option>
                         {PHYSIO_SERVICES.map((s) => (
