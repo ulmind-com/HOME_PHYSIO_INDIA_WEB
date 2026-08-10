@@ -285,7 +285,7 @@ export function NursingBookingModal({
                   <div>
                     <textarea
                       {...form.register("patient_condition")}
-                      placeholder="Patients condition / requirement (optional)"
+                      placeholder="Patient condition / requirement (optional)"
                       rows={3}
                       className="w-full rounded-2xl border border-border bg-transparent px-5 py-3.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground resize-none"
                     />

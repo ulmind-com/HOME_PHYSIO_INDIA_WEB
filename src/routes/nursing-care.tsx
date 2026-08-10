@@ -65,7 +65,7 @@ const NURSING_SERVICES = [
     icon: Stethoscope,
     emoji: "🩺",
     title: "Nursing Care at home",
-    description: "Qualified nursing staff provide routine patients care, health monitoring and assistance according to the patients' care requirements and medical instructions.",
+    description: "Qualified nursing staff provide routine patient care, health monitoring and assistance according to the patient's care requirements and medical instructions.",
     color: "text-blue-600",
     bg: "from-blue-50 to-sky-50",
     iconBg: "bg-blue-100",
@@ -172,7 +172,7 @@ const WHY_CHOOSE = [
   {
     icon: Users,
     title: "Trained Nursing Professionals",
-    description: "We connect families with nursing staff suitable for the patients' care requirements and prescribed nursing needs.",
+    description: "We connect families with nursing staff suitable for the patient's care requirements and prescribed nursing needs.",
     color: "text-blue-600",
     bg: "bg-blue-50",
     iconBg: "bg-blue-100",
@@ -188,7 +188,7 @@ const WHY_CHOOSE = [
   {
     icon: HeartPulse,
     title: "Patients-Focused Care",
-    description: "Our nursing support is arranged according to the patients' condition, care plan and required duty hours.",
+    description: "Our nursing support is arranged according to the patient's condition, care plan and required duty hours.",
     color: "text-rose-600",
     bg: "bg-rose-50",
     iconBg: "bg-rose-100",
@@ -196,7 +196,7 @@ const WHY_CHOOSE = [
   {
     icon: Clock3,
     title: "Flexible Nursing Visits",
-    description: "Nursing visits can be arranged according to the patients' requirement, subject to staff availability and service area.",
+    description: "Nursing visits can be arranged according to the patient's requirement, subject to staff availability and service area.",
     color: "text-violet-600",
     bg: "bg-violet-50",
     iconBg: "bg-violet-100",
@@ -273,7 +273,7 @@ const DEFAULT_FAQS = [
     id: "7",
     question: "Do you provide tracheostomy care at home?",
     answer:
-      "Yes. Home nursing support is available for patients requiring routine tracheostomy care, subject to the patients' condition and nursing requirements.",
+      "Yes. Home nursing support is available for patients requiring routine tracheostomy care, subject to the patient's condition and nursing requirements.",
   },
   {
     id: "8",
@@ -478,7 +478,7 @@ function NursingHero({
             <p className="text-white/70 text-base md:text-lg leading-relaxed max-w-xl mb-6">
               Nupun Home Health Care Services provides nursing support for patients who need professional medical care in the comfort of their own home. Our nursing services are designed for patients recovering after hospitalisation, managing ongoing health needs, or requiring regular nursing procedures.
               <span className="block mt-3">
-                From routine monitoring and injections to wound care, catheter care and other prescribed nursing procedures, our team helps families manage patients care with greater convenience and confidence.
+                From routine monitoring and injections to wound care, catheter care and other prescribed nursing procedures, our team helps families manage patient care with greater convenience and confidence.
               </span>
             </p>
 
@@ -697,7 +697,7 @@ function ChecklistSection() {
               Nursing Support Designed Around the Patients
             </h3>
             <p className="text-white/60 text-lg leading-relaxed">
-              Every patients has different care requirements. Our nursing team
+              Every patient has different care requirements. Our nursing team
               follows the care instructions provided by the treating doctor and
               helps families maintain a safe and organised home-care routine.
             </p>
@@ -859,7 +859,7 @@ function NursingCtaBand({ phone, whatsapp }: { phone?: string; whatsapp?: string
             <em className="not-italic text-white">we can help.</em>
           </h3>
           <p className="text-white/65 text-lg leading-relaxed max-w-2xl mb-10">
-            Tell us about the patients and the required nursing service. Our team
+            Tell us about the patient and the required nursing service. Our team
             will guide you regarding the available nursing support option.
           </p>
           <div className="flex flex-wrap gap-4">
@@ -1116,7 +1116,7 @@ function NursingBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: s
                 <div>
                   <textarea
                     {...form.register("patient_condition")}
-                    placeholder="Patients condition / requirement (optional)"
+                    placeholder="Patient condition / requirement (optional)"
                     rows={3}
                     className="w-full rounded-2xl border border-border bg-transparent px-5 py-3.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground resize-none"
                   />
