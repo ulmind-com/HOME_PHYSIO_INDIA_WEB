@@ -65,7 +65,7 @@ const NURSING_SERVICES = [
     icon: Stethoscope,
     emoji: "🩺",
     title: "Nursing Care at home",
-    description: "Qualified nursing staff provide routine patient care, health monitoring and assistance according to the patient's care requirements and medical instructions.",
+    description: "Qualified nursing staff provide routine patients care, health monitoring and assistance according to the patients' care requirements and medical instructions.",
     color: "text-blue-600",
     bg: "from-blue-50 to-sky-50",
     iconBg: "bg-blue-100",
@@ -155,7 +155,7 @@ const NURSING_SERVICES = [
 
 const NURSING_CHECKLIST = [
   "Prescribed nursing procedures at home",
-  "Regular patient monitoring",
+  "Regular patients monitoring",
   "Injection administration",
   "IV infusion and drip support",
   "Wound and dressing care",
@@ -172,7 +172,7 @@ const WHY_CHOOSE = [
   {
     icon: Users,
     title: "Trained Nursing Professionals",
-    description: "We connect families with nursing staff suitable for the patient's care requirements and prescribed nursing needs.",
+    description: "We connect families with nursing staff suitable for the patients' care requirements and prescribed nursing needs.",
     color: "text-blue-600",
     bg: "bg-blue-50",
     iconBg: "bg-blue-100",
@@ -187,8 +187,8 @@ const WHY_CHOOSE = [
   },
   {
     icon: HeartPulse,
-    title: "Patient-Focused Care",
-    description: "Our nursing support is arranged according to the patient's condition, care plan and required duty hours.",
+    title: "Patients-Focused Care",
+    description: "Our nursing support is arranged according to the patients' condition, care plan and required duty hours.",
     color: "text-rose-600",
     bg: "bg-rose-50",
     iconBg: "bg-rose-100",
@@ -196,7 +196,7 @@ const WHY_CHOOSE = [
   {
     icon: Clock3,
     title: "Flexible Nursing Visits",
-    description: "Nursing visits can be arranged according to the patient's requirement, subject to staff availability and service area.",
+    description: "Nursing visits can be arranged according to the patients' requirement, subject to staff availability and service area.",
     color: "text-violet-600",
     bg: "bg-violet-50",
     iconBg: "bg-violet-100",
@@ -204,7 +204,7 @@ const WHY_CHOOSE = [
   {
     icon: ThumbsUp,
     title: "Family Communication",
-    description: "Families can stay informed about the patient's routine care and important observations.",
+    description: "Families can stay informed about the patients' routine care and important observations.",
     color: "text-amber-600",
     bg: "bg-amber-50",
     iconBg: "bg-amber-100",
@@ -212,7 +212,7 @@ const WHY_CHOOSE = [
   {
     icon: Shield,
     title: "Professional & Respectful Approach",
-    description: "We focus on patient comfort, privacy, dignity and proper adherence to the prescribed care instructions.",
+    description: "We focus on patients comfort, privacy, dignity and proper adherence to the prescribed care instructions.",
     color: "text-teal-600",
     bg: "bg-teal-50",
     iconBg: "bg-teal-100",
@@ -261,7 +261,7 @@ const DEFAULT_FAQS = [
     id: "5",
     question: "Can you provide IV drip at home?",
     answer:
-      "Prescribed IV fluids or medications may be administered at home by trained nursing staff when the patient is suitable for home-based care.",
+      "Prescribed IV fluids or medications may be administered at home by trained nursing staff when the patients is suitable for home-based care.",
   },
   {
     id: "6",
@@ -273,7 +273,7 @@ const DEFAULT_FAQS = [
     id: "7",
     question: "Do you provide tracheostomy care at home?",
     answer:
-      "Yes. Home nursing support is available for patients requiring routine tracheostomy care, subject to the patient's condition and nursing requirements.",
+      "Yes. Home nursing support is available for patients requiring routine tracheostomy care, subject to the patients' condition and nursing requirements.",
   },
   {
     id: "8",
@@ -291,7 +291,7 @@ const DEFAULT_FAQS = [
     id: "10",
     question: "How can I book home nursing care?",
     answer:
-      "Contact Nupun Home Health Care Services by phone or WhatsApp. Share the patient's age, condition, location, required service and preferred timing. Our team will guide you regarding the available nursing option.",
+      "Contact Nupun Home Health Care Services by phone or WhatsApp. Share the patients' age, condition, location, required service and preferred timing. Our team will guide you regarding the available nursing option.",
   },
 ];
 
@@ -375,9 +375,9 @@ function NursingHero({
   ];
 
   const mobileImages = [
-    "/assets/Home%20Nourse/ChatGPT%20Image%20Aug%209%2C%202026%2C%2011_46_11%20PM.png",
-    "/assets/Home%20Nourse/ChatGPT%20Image%20Aug%209%2C%202026%2C%2011_47_30%20PM.png",
-    "/assets/Home%20Nourse/ChatGPT%20Image%20Aug%209%2C%202026%2C%2011_48_13%20PM.png",
+    "/assets/Home%20Nourse/mobile-1.png",
+    "/assets/Home%20Nourse/mobile-2.png",
+    "/assets/Home%20Nourse/mobile-3.png",
   ];
   
   const [currentIdx, setCurrentIdx] = useState(0);
@@ -478,7 +478,7 @@ function NursingHero({
             <p className="text-white/70 text-base md:text-lg leading-relaxed max-w-xl mb-6">
               Nupun Home Health Care Services provides nursing support for patients who need professional medical care in the comfort of their own home. Our nursing services are designed for patients recovering after hospitalisation, managing ongoing health needs, or requiring regular nursing procedures.
               <span className="block mt-3">
-                From routine monitoring and injections to wound care, catheter care and other prescribed nursing procedures, our team helps families manage patient care with greater convenience and confidence.
+                From routine monitoring and injections to wound care, catheter care and other prescribed nursing procedures, our team helps families manage patients care with greater convenience and confidence.
               </span>
             </p>
 
@@ -557,7 +557,7 @@ function NursingHero({
               <div className="h-px bg-white/10 mb-4" />
               <p className="text-white/55 text-xs leading-relaxed">
                 From a single nursing visit to regular ongoing nursing support —
-                we arrange the right care for your patient.
+                we arrange the right care for your patients.
               </p>
             </div>
           </motion.div>
@@ -654,13 +654,13 @@ function NursingServicesSection() {
               <div
                 className={`group h-full flex flex-col rounded-2xl bg-white border border-white p-5 shadow-sm transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_15px_40px_-10px_rgba(0,0,0,0.1)] cursor-default`}
               >
-                <div className={`w-10 h-10 rounded-xl ${s.iconBg} flex items-center justify-center mb-3`}>
-                  <Icon className={`h-5 w-5 ${s.color}`} strokeWidth={2} />
+                <div className={`w-12 h-12 rounded-xl ${s.iconBg} flex items-center justify-center mb-3`}>
+                  <Icon className={`h-6 w-6 ${s.color}`} strokeWidth={2} />
                 </div>
-                <h3 className="font-display text-base font-semibold text-foreground mb-2 leading-tight">
+                <h3 className="font-display text-lg font-semibold text-foreground mb-2 leading-tight tracking-wide">
                   {s.title}
                 </h3>
-                <p className="text-xs leading-relaxed text-muted-foreground flex-1">
+                <p className="text-base leading-relaxed text-muted-foreground flex-1">
                   {s.description}
                 </p>
               </div>
@@ -690,15 +690,14 @@ function ChecklistSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-white/70 mb-6">
-              <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
+            <h2 className="font-display text-4xl md:text-5xl text-white tracking-tight leading-tight mb-3">
               What We Cover
-            </div>
-            <h2 className="font-display text-4xl md:text-5xl text-white tracking-tight leading-tight mb-6">
-              Nursing Support Designed Around the Patient
             </h2>
+            <h3 className="text-xl md:text-2xl text-white/90 font-medium mb-6">
+              Nursing Support Designed Around the Patients
+            </h3>
             <p className="text-white/60 text-lg leading-relaxed">
-              Every patient has different care requirements. Our nursing team
+              Every patients has different care requirements. Our nursing team
               follows the care instructions provided by the treating doctor and
               helps families maintain a safe and organised home-care routine.
             </p>
@@ -763,7 +762,7 @@ function WhyChooseSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: (i % 3) * 0.1 }}
-              className={`group flex items-start gap-5 rounded-[1.75rem] ${item.bg} border border-transparent hover:border-black/5 p-6 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.06)]`}
+              className={`group flex items-start gap-5 rounded-[1.75rem] bg-white border border-black/5 shadow-sm p-6 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.08)]`}
             >
               <div
                 className={`grid h-14 w-14 shrink-0 place-items-center rounded-2xl ${item.iconBg} ${item.color} transition-transform duration-400 group-hover:scale-110 group-hover:rotate-3`}
@@ -771,10 +770,10 @@ function WhyChooseSection() {
                 <Icon className="h-6 w-6" strokeWidth={2.5} />
               </div>
               <div>
-                <h3 className="font-display text-lg font-bold text-foreground mb-2">
+                <h3 className="font-display text-lg font-semibold text-foreground mb-2 leading-tight tracking-wide">
                   {item.title}
                 </h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">
+                <p className="text-base leading-relaxed text-muted-foreground">
                   {item.description}
                 </p>
               </div>
@@ -852,15 +851,15 @@ function NursingCtaBand({ phone, whatsapp }: { phone?: string; whatsapp?: string
 
       <div className="container-x py-20 lg:py-24">
         <div className="max-w-3xl">
-          <div className="text-[10px] uppercase tracking-[0.28em] text-white/55 mb-5">
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-white tracking-tight leading-tight mb-3">
             Need a Nurse at Home?
-          </div>
-          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-white tracking-tight leading-[1.1] mb-6">
-            Whether you need a single visit or regular nursing support,{" "}
-            <em className="not-italic text-cyan-300">we can help.</em>
           </h2>
+          <h3 className="text-xl md:text-2xl text-white/90 font-medium mb-6 tracking-wide" style={{ wordSpacing: "0.06em" }}>
+            Whether you need a single visit or regular nursing support,{" "}
+            <em className="not-italic text-white">we can help.</em>
+          </h3>
           <p className="text-white/65 text-lg leading-relaxed max-w-2xl mb-10">
-            Tell us about the patient and the required nursing service. Our team
+            Tell us about the patients and the required nursing service. Our team
             will guide you regarding the available nursing support option.
           </p>
           <div className="flex flex-wrap gap-4">
@@ -976,6 +975,7 @@ const nursingFormSchema = z.object({
   contact_phone: z.string().min(7, "Enter a valid phone number"),
   city: z.string().min(1, "Select a city"),
   service_name: z.string().min(1, "Select a service"),
+  patient_condition: z.string().optional(),
 });
 
 type NursingFormValues = z.infer<typeof nursingFormSchema>;
@@ -989,6 +989,7 @@ function NursingBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: s
       contact_phone: "",
       city: "",
       service_name: "",
+      patient_condition: "",
     },
   });
 
@@ -1029,10 +1030,10 @@ function NursingBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: s
           ) : (
             <>
               <h3 className="font-display text-2xl md:text-3xl tracking-tight text-foreground mb-2">
-                Book an nurse
+                Book a Nurse
               </h3>
               <p className="text-muted-foreground text-sm mb-8">
-                Fill out the form and our nursing team will contact you shortly.
+                Tell us about your requirements and our care team will contact you shortly.
               </p>
 
               <form onSubmit={form.handleSubmit((v) => mut.mutate(v))} className="space-y-4">
@@ -1040,7 +1041,7 @@ function NursingBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: s
                   <input
                     {...form.register("patient_name")}
                     placeholder="Full name"
-                    className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15"
+                    className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground"
                   />
                   {form.formState.errors.patient_name && (
                     <p className="text-xs text-destructive mt-1">
@@ -1053,7 +1054,7 @@ function NursingBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: s
                   <input
                     {...form.register("contact_phone")}
                     placeholder="Phone number"
-                    className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15"
+                    className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground"
                   />
                   {form.formState.errors.contact_phone && (
                     <p className="text-xs text-destructive mt-1">
@@ -1063,17 +1064,20 @@ function NursingBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: s
                 </div>
 
                 <div>
-                  <select
-                    {...form.register("city")}
-                    className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-muted-foreground focus:text-foreground"
-                  >
-                    <option value="">Select city drop-down</option>
-                    {CITIES.map((c) => (
-                      <option key={c} value={c}>
-                        {c}
-                      </option>
-                    ))}
-                  </select>
+                  <div className="relative">
+                    <select
+                      {...form.register("city")}
+                      className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-muted-foreground focus:text-foreground appearance-none"
+                    >
+                      <option value="">Select city</option>
+                      {CITIES.map((c) => (
+                        <option key={c} value={c}>
+                          {c}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                  </div>
                   {form.formState.errors.city && (
                     <p className="text-xs text-destructive mt-1">
                       {form.formState.errors.city.message}
@@ -1082,23 +1086,26 @@ function NursingBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: s
                 </div>
 
                 <div>
-                  <select
-                    {...form.register("service_name")}
-                    className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-muted-foreground focus:text-foreground"
-                  >
-                    <option value="">Select service drop down-Nursing Care at Home</option>
-                    <option value="Injection Administration">Injection Administration</option>
-                    <option value="IV Infusion & Drip Care">IV Infusion & Drip Care</option>
-                    <option value="Wound Dressing Care">Wound Dressing Care</option>
-                    <option value="Catheter Care">Catheter Care</option>
-                    <option value="Ryles Tube Feeding">Ryles Tube Feeding</option>
-                    <option value="Tracheostomy Care">Tracheostomy Care</option>
-                    <option value="Post-Hospitalisation Nursing Care">
-                      Post-Hospitalisation Nursing Care
-                    </option>
-                    <option value="Vital Signs Monitoring">Vital Signs Monitoring</option>
-                    <option value="Other Nursing Requirement">Other Nursing Requirement</option>
-                  </select>
+                  <div className="relative">
+                    <select
+                      {...form.register("service_name")}
+                      className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-muted-foreground focus:text-foreground appearance-none"
+                    >
+                      <option value="">Select nursing service</option>
+                      <option value="Injection Administration">Injection Administration</option>
+                      <option value="IV Infusion & Drip Care">IV Infusion & Drip Care</option>
+                      <option value="Wound Dressing Care">Wound Dressing Care</option>
+                      <option value="Catheter Care">Catheter Care</option>
+                      <option value="Ryles Tube Feeding">Ryles Tube Feeding</option>
+                      <option value="Tracheostomy Care">Tracheostomy Care</option>
+                      <option value="Post-Hospitalisation Nursing Care">
+                        Post-Hospitalisation Nursing Care
+                      </option>
+                      <option value="Vital Signs Monitoring">Vital Signs Monitoring</option>
+                      <option value="Other Nursing Requirement">Other Nursing Requirement</option>
+                    </select>
+                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                  </div>
                   {form.formState.errors.service_name && (
                     <p className="text-xs text-destructive mt-1">
                       {form.formState.errors.service_name.message}
@@ -1106,13 +1113,22 @@ function NursingBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: s
                   )}
                 </div>
 
+                <div>
+                  <textarea
+                    {...form.register("patient_condition")}
+                    placeholder="Patients condition / requirement (optional)"
+                    rows={3}
+                    className="w-full rounded-2xl border border-border bg-transparent px-5 py-3.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground resize-none"
+                  />
+                </div>
+
                 <button
                   type="submit"
                   disabled={mut.isPending}
-                  className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-foreground px-4 py-3.5 text-sm font-semibold text-background hover:bg-accent transition-colors disabled:opacity-60 mt-2"
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-[#0A252E] px-4 py-3.5 text-sm font-semibold text-white hover:bg-[#0A252E]/90 transition-colors disabled:opacity-60 mt-2"
                 >
                   {mut.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
-                  Submit request
+                  Submit Request
                 </button>
               </form>
             </>

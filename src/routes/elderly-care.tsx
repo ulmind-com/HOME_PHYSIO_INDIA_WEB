@@ -10,10 +10,14 @@ import {
   Phone,
   ArrowRight,
   ChevronDown,
+  Loader2,
   Clock,
   Pill,
   MessageCircle,
   ShieldCheck,
+  ArrowUpRight,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { settingsQ, faqsQ } from "@/lib/api/queries";
@@ -25,6 +29,12 @@ const HERO_IMAGES = [
   "/assets/elderly-hero/1.png",
   "/assets/elderly-hero/2.png",
   "/assets/elderly-hero/3.png",
+];
+
+const MOBILE_HERO_IMAGES = [
+  "/assets/elderly-hero-mobile/1.png",
+  "/assets/elderly-hero-mobile/2.png",
+  "/assets/elderly-hero-mobile/3.png",
 ];
 
 export const Route = createFileRoute("/elderly-care")({
@@ -222,33 +232,68 @@ function ElderlyHero({ phone, whatsapp }: { phone?: string; whatsapp?: string })
   return (
     <section className="relative min-h-[100svh] lg:min-h-svh flex items-center overflow-hidden">
       {/* Hero background image slider */}
-      <div className="absolute inset-0 -z-20 w-full h-full bg-[#051114]">
+      <div className="absolute inset-0 -z-20 w-full h-full bg-[#0a0a0a]">
         <AnimatePresence>
-          <motion.img
+          <motion.div
             key={currentIdx}
-            src={HERO_IMAGES[currentIdx]}
-            alt="Trusted Elder Care"
-            initial={{ opacity: 0, scale: 1.15 }}
-            animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, scale: 1 }}
+            animate={{ opacity: 1, scale: 1.15 }}
             exit={{ opacity: 0 }}
-            transition={{
+            transition={{ 
               opacity: { duration: 1.8, ease: "easeInOut" },
-              scale: { duration: 10, ease: "linear" },
+              scale: { duration: 8, ease: "easeOut" }
             }}
-            className="w-full h-full object-cover object-[center_30%]"
-          />
+            className="absolute inset-0 w-full h-full"
+          >
+            <picture>
+              <source media="(max-width: 768px)" srcSet={MOBILE_HERO_IMAGES[currentIdx]} />
+              <img 
+                src={HERO_IMAGES[currentIdx]} 
+                alt="Trusted Elderly Care" 
+                className="w-full h-full object-cover object-[center_30%]"
+              />
+            </picture>
+          </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* Overlays */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-slate-900/95 via-slate-900/60 to-transparent" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent" />
+      {/* Cinematic dark overlay similar to home page hero */}
+      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black/90 via-black/60 to-black/30" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
 
-      <div className="container-x relative z-10 pt-32 pb-20">
-        <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-20 items-center">
+      {/* Dot grid */}
+      <div
+        className="absolute inset-0 -z-10 opacity-[0.08]"
+        style={{
+          backgroundImage: "radial-gradient(white 1px, transparent 1px)",
+          backgroundSize: "32px 32px",
+        }}
+        aria-hidden
+      />
+
+      {/* Cross/plus pattern */}
+      <div className="absolute inset-0 -z-10 opacity-5 pointer-events-none" aria-hidden>
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div
+            key={i}
+            className="absolute text-white font-bold text-4xl"
+            style={{
+              top: `${15 + i * 15}%`,
+              left: `${60 + (i % 3) * 12}%`,
+              transform: `rotate(${i * 12}deg)`,
+            }}
+          >
+            +
+          </div>
+        ))}
+      </div>
+
+      <div className="container-x relative z-10 pt-24 pb-12 lg:pt-28 lg:pb-14">
+        <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 lg:gap-12 items-center">
+          {/* Left content */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -40 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/90 mb-5">
@@ -256,75 +301,150 @@ function ElderlyHero({ phone, whatsapp }: { phone?: string; whatsapp?: string })
               Elderly Care Services
             </div>
 
-            <h1 className="font-display text-4xl md:text-5xl lg:text-[3.5rem] font-bold text-white leading-[1.08] tracking-tight mb-6">
-              Trusted Elder Care, <br />
-              <span className="text-teal-400">Right at Home</span>
+            <h1 
+              className="font-display font-medium text-white tracking-tight leading-[1.1] text-[40px] sm:text-[48px] md:text-[56px] lg:text-[64px] mb-4"
+              style={{ textShadow: "0 4px 40px rgba(0,0,0,0.5)" }}
+            >
+              Trusted Elderly Care <br />
+              Right at Home
             </h1>
 
-            <p className="text-white/80 text-base md:text-lg leading-relaxed max-w-xl mb-6">
+            <p className="text-white/70 text-base md:text-lg leading-relaxed max-w-xl mb-6">
               Nupun Home Health Care Services provides trained and caring attendants for elderly people who need support at home. Our caregivers assist seniors with personal hygiene, mobility, meals, companionship, medication reminders and daily routine activities.
-            </p>
-            <p className="text-white/70 text-base md:text-lg leading-relaxed max-w-xl mb-8">
-              Whether your loved one needs support for a few hours, daytime care, overnight assistance or long-term elderly care, our team provides dependable care according to their individual needs.
+              <span className="block mt-3">
+                Whether your loved one needs support for a few hours, daytime care, overnight assistance or long-term elderly care, our team provides dependable care according to their individual needs.
+              </span>
             </p>
 
-            <div className="flex flex-wrap gap-3">
+            <div className="mt-6 md:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
               <ElderCareBookingModal>
-                <button className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3.5 text-sm font-semibold shadow-[0_20px_40px_-10px_rgba(0,128,128,0.4)] hover:bg-primary/90 hover:-translate-y-0.5 transition-all duration-300">
-                  Book an Attendant <ArrowRight className="h-4 w-4" />
+                <button
+                  className="group inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-[15px] font-semibold text-primary-foreground shadow-sm transition-all duration-300 hover:brightness-110 hover:-translate-y-0.5"
+                >
+                  Book an Attendant
+                  <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </button>
               </ElderCareBookingModal>
+
               <a
                 href={phone ? `tel:${phone}` : "tel:+918981289812"}
-                className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 backdrop-blur-md px-6 py-3.5 text-sm font-semibold text-white hover:bg-white/20 transition-all duration-300"
+                className="group inline-flex items-center justify-center gap-2.5 rounded-full border border-white/30 bg-white/10 backdrop-blur-md px-8 py-3.5 text-[15px] font-medium text-white shadow-sm hover:bg-white/20 hover:border-white/50 transition-all duration-300 hover:-translate-y-0.5"
               >
-                <Phone className="h-4 w-4" />
+                <Phone className="h-5 w-5 text-[#25D366]" />
                 Call Now
               </a>
             </div>
+
+            <div className="mt-8 flex flex-wrap gap-6">
+              {[
+                { val: <>100<span className="ml-0.5">+</span></>, label: "Caregivers" },
+                { val: "24/7", label: "Availability" },
+                { val: "4 Cities", label: "NCR Coverage" },
+              ].map((s) => (
+                <div key={s.label}>
+                  <div className="text-xl font-display font-bold text-white">{s.val}</div>
+                  <div className="text-xs text-white/55 mt-0.5">{s.label}</div>
+                </div>
+              ))}
+            </div>
           </motion.div>
 
-          {/* Right side floating card */}
+          {/* Right: Glass card */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, rotate: -2 }}
-            animate={{ opacity: 1, scale: 1, rotate: 0 }}
-            transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="hidden lg:block relative"
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            className="hidden lg:block"
           >
-            <div className="relative rounded-[2.5rem] border border-white/30 bg-white/5 backdrop-blur-lg p-8 shadow-[0_8px_32px_0_rgba(255,255,255,0.15)] overflow-hidden group">
-              <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-50 pointer-events-none" />
-              <div className="absolute -top-10 -right-10 h-32 w-32 rounded-full bg-primary/20 blur-[50px] transition-transform duration-700 group-hover:scale-150" />
-              <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-blue-500/10 blur-[50px] transition-transform duration-700 group-hover:scale-150" />
-              
-              <div className="relative z-10">
-                <div className="grid h-14 w-14 place-items-center rounded-2xl bg-primary/20 text-teal-300 border border-primary/20 mb-6">
-                  <Heart className="h-7 w-7" />
-                </div>
-                
-                <h3 className="text-2xl font-display font-semibold text-white mb-3">
-                  Compassionate Care
-                </h3>
-                <p className="text-white/60 leading-relaxed text-[15px] mb-8">
-                  We provide reliable elderly care at home to help seniors live safely, comfortably and independently with the support they need.
-                </p>
+            <div className="relative rounded-[2rem] border border-white/15 bg-white/8 backdrop-blur-2xl p-6 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.6)]">
+              <div className="absolute -top-6 -right-6 h-20 w-20 rounded-full bg-primary/20 blur-3xl" />
 
-                <div className="space-y-3">
-                  {["Trained Attendants", "24/7 Support Available", "Personalised Care"].map(
-                    (feature) => (
-                      <div
-                        key={feature}
-                        className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-2.5"
-                      >
-                        <div className="h-1.5 w-1.5 rounded-full bg-primary shrink-0" />
-                        <span className="text-sm font-medium text-white/80">{feature}</span>
-                      </div>
-                    )
-                  )}
-                </div>
+              <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/20 text-teal-300 border border-primary/20 mb-4">
+                <Heart className="h-6 w-6" strokeWidth={1.5} />
               </div>
+
+              <div className="text-white/50 text-xs uppercase tracking-[0.2em] font-semibold mb-4">
+                Compassionate Care
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 mb-5">
+                {[
+                  "Personal Hygiene",
+                  "Mobility Support",
+                  "Companionship",
+                  "Medication Reminder",
+                  "Feeding Assistance",
+                  "Routine Checking",
+                  "24/7 Support",
+                  "Trained Attendants",
+                ].map((item, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-2.5 py-1.5"
+                  >
+                    <div className="h-1.5 w-1.5 rounded-full bg-primary shrink-0" />
+                    <span className="text-white/80 text-xs font-medium">{item}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="h-px bg-white/10 mb-4" />
+              <p className="text-white/55 text-xs leading-relaxed">
+                We provide reliable elderly care at home to help seniors live safely, comfortably and independently with the support they need.
+              </p>
             </div>
           </motion.div>
         </div>
+
+        {/* Progress Dots + Navigation */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2, duration: 1 }}
+          className="flex items-center gap-5 mt-10 lg:mt-8 w-full lg:justify-end"
+        >
+          {/* Arrow Nav */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setCurrentIdx(((currentIdx - 1) % HERO_IMAGES.length + HERO_IMAGES.length) % HERO_IMAGES.length)}
+              className="grid h-12 w-12 place-items-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition-all hover:bg-white/20 hover:border-white/40"
+              aria-label="Previous slide"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+            <button
+              onClick={() => setCurrentIdx((currentIdx + 1) % HERO_IMAGES.length)}
+              className="grid h-12 w-12 place-items-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition-all hover:bg-white/20 hover:border-white/40"
+              aria-label="Next slide"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
+          </div>
+
+          {/* Progress Bars */}
+          <div className="flex items-center gap-2">
+            {HERO_IMAGES.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrentIdx(i)}
+                className="group relative h-1.5 overflow-hidden rounded-full transition-all duration-500"
+                style={{ width: i === currentIdx ? 48 : 20 }}
+                aria-label={`Go to slide ${i + 1}`}
+              >
+                <span className="absolute inset-0 rounded-full bg-white/30" />
+                {i === currentIdx && (
+                  <motion.span
+                    className="absolute inset-0 rounded-full bg-primary"
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ duration: 6, ease: "linear" }}
+                    style={{ transformOrigin: "left" }}
+                  />
+                )}
+              </button>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );
@@ -346,7 +466,7 @@ function ElderlyServices() {
             <span className="h-1.5 w-1.5 rounded-full bg-primary" />
             Our Services
           </div>
-          <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground tracking-tight leading-[1.1] mb-6">
+          <h2 className="font-display text-4xl md:text-5xl font-semibold text-foreground tracking-tight leading-[1.1] mb-6">
             Our Elderly Care Services
           </h2>
           <p className="text-muted-foreground text-lg leading-relaxed">
@@ -376,10 +496,10 @@ function ElderlyServices() {
                   />
                 </div>
                 <div className="p-6 flex flex-col flex-1">
-                  <h3 className="font-display text-xl font-bold text-foreground leading-tight mb-3">
+                  <h3 className="font-display text-lg font-semibold text-foreground mb-2 leading-tight tracking-wide">
                     {s.title}
                   </h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed flex-1">
+                  <p className="text-muted-foreground text-base leading-relaxed flex-1">
                     {s.description}
                   </p>
                 </div>
@@ -413,7 +533,7 @@ function TrustedFeatures() {
               Trusted Care
             </div>
             
-            <h2 className="font-display text-3xl md:text-5xl font-bold text-white tracking-tight leading-[1.1] mb-6">
+            <h2 className="font-display text-3xl md:text-5xl font-semibold text-white tracking-tight leading-[1.1] mb-6">
               Trusted Elderly Care Services
             </h2>
             <p className="text-white/70 text-lg leading-relaxed mb-6">
@@ -452,7 +572,7 @@ function TrustedFeatures() {
             </div>
             
             {/* Floating badge */}
-            <div className="absolute -bottom-8 -left-8 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 p-5 shadow-2xl">
+            <div className="absolute -bottom-4 -left-2 sm:-left-4 md:-bottom-8 md:-left-8 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 p-4 md:p-5 shadow-2xl">
               <div className="flex items-center gap-4">
                 <div className="grid h-12 w-12 place-items-center rounded-xl bg-primary/20 text-teal-300">
                   <Heart className="h-6 w-6" />
@@ -486,7 +606,7 @@ function WhyChooseUs() {
             <span className="h-1.5 w-1.5 rounded-full bg-primary" />
             Why Choose Us
           </div>
-          <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground tracking-tight leading-[1.1]">
+          <h2 className="font-display text-4xl md:text-5xl font-semibold text-foreground tracking-tight leading-[1.1]">
             Why Choose Nupun Home Health Care Services?
           </h2>
         </motion.div>
@@ -505,13 +625,13 @@ function WhyChooseUs() {
                 transition={{ duration: 0.5, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
               >
                 <div className="h-full rounded-3xl border border-border bg-surface/50 p-8 transition-colors hover:bg-surface">
-                  <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
-                    <Icon className="h-6 w-6 text-primary" strokeWidth={2} />
+                  <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
+                    <Icon className="h-7 w-7 text-primary" strokeWidth={2} />
                   </div>
-                  <h3 className="font-display text-xl font-bold text-foreground mb-3">
+                  <h3 className="font-display text-lg font-semibold text-foreground mb-3 tracking-wide">
                     {item.title}
                   </h3>
-                  <p className="text-muted-foreground leading-relaxed text-[15px]">
+                  <p className="text-muted-foreground leading-relaxed text-base">
                     {item.desc}
                   </p>
                 </div>
@@ -528,8 +648,14 @@ function WhyChooseUs() {
 
 function ElderlyCtaBand({ phone, whatsapp }: { phone?: string; whatsapp?: string }) {
   return (
-    <section className="relative overflow-hidden bg-primary">
-      <div className="absolute inset-0 -z-10" />
+    <section className="relative overflow-hidden">
+      <div
+        className="absolute inset-0 -z-10"
+        style={{
+          background:
+            "linear-gradient(135deg, oklch(0.22 0.08 240) 0%, oklch(0.28 0.06 260) 100%)",
+        }}
+      />
       <div className="absolute inset-0 -z-10 opacity-10 pointer-events-none">
         <div
           style={{
@@ -542,19 +668,22 @@ function ElderlyCtaBand({ phone, whatsapp }: { phone?: string; whatsapp?: string
       </div>
 
       <div className="container-x py-20 lg:py-24">
-        <div className="max-w-3xl mx-auto text-center">
-          <div className="text-[10px] font-semibold uppercase tracking-[0.28em] text-white/60 mb-5">
+        <div className="max-w-3xl">
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-white tracking-tight leading-tight mb-3">
             Need Elderly Care at Home?
-          </div>
-          <h2 className="font-display text-4xl md:text-5xl text-white tracking-tight leading-[1.1] mb-6">
-            If your parent, grandparent or loved one needs help with daily activities, personal care, mobility, meals or companionship, <strong className="font-bold">Nupun is here to help.</strong>
           </h2>
-          <p className="text-white/80 text-lg leading-relaxed max-w-2xl mx-auto mb-10">
-            Get a trained caregiver according to your family's requirement and schedule.
+          <h3 className="text-xl md:text-2xl text-white/90 font-medium mb-6 tracking-wide" style={{ wordSpacing: "0.06em" }}>
+            If your loved one needs help with daily activities or personal care,{" "}
+            <em className="not-italic text-white">we can help.</em>
+          </h3>
+          <p className="text-white/65 text-lg leading-relaxed max-w-2xl mb-10">
+            Get a trained caregiver according to your family's requirement and schedule. Our team will guide you regarding the best available options.
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
+          <div className="flex flex-wrap gap-4">
             <ElderCareBookingModal>
-              <button className="inline-flex items-center gap-2 rounded-full bg-slate-900 text-white px-8 py-4 text-base font-semibold hover:bg-slate-800 transition-all duration-300 shadow-xl">
+              <button
+                className="inline-flex items-center gap-2 rounded-full bg-cyan-400 text-slate-900 px-8 py-4 text-base font-semibold hover:bg-cyan-300 transition-all duration-300 shadow-[0_15px_35px_-10px_rgba(34,211,238,0.4)]"
+              >
                 Book Elderly Care <ArrowRight className="h-5 w-5" />
               </button>
             </ElderCareBookingModal>
@@ -563,8 +692,7 @@ function ElderlyCtaBand({ phone, whatsapp }: { phone?: string; whatsapp?: string
                 href={`tel:${phone}`}
                 className="inline-flex items-center gap-2 rounded-full border border-white/30 text-white px-8 py-4 text-base font-semibold hover:bg-white/10 transition-all duration-300"
               >
-                <Phone className="h-5 w-5" />
-                Request a Callback
+                <Phone className="h-5 w-5" /> Request a Callback
               </a>
             )}
           </div>
@@ -589,7 +717,7 @@ function ElderlyFaq({ faqs }: { faqs: any[] }) {
             <span className="h-1.5 w-1.5 rounded-full bg-primary" />
             FAQ
           </div>
-          <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground tracking-tight leading-[1.1]">
+          <h2 className="font-display text-4xl md:text-5xl font-semibold text-foreground tracking-tight leading-[1.1]">
             Frequently Asked Questions
           </h2>
         </div>
@@ -606,7 +734,7 @@ function ElderlyFaq({ faqs }: { faqs: any[] }) {
                   onClick={() => setOpenId(isOpen ? null : faq.id)}
                   className="w-full flex items-center justify-between p-6 text-left"
                 >
-                  <span className="font-display text-lg font-bold text-foreground pr-8">
+                  <span className="font-display text-lg font-semibold text-foreground pr-8">
                     {faq.question}
                   </span>
                   <div
@@ -656,6 +784,7 @@ function ElderlyInlineForm() {
       phone_number: formData.get("phone") as string,
       city: formData.get("city") as string,
       service_type: formData.get("service") as string,
+      patient_condition: formData.get("patient_condition") as string,
     };
 
     try {
@@ -672,82 +801,105 @@ function ElderlyInlineForm() {
   };
 
   return (
-    <Section className="py-20 lg:py-28 bg-white" id="book">
-      <div className="container-x max-w-3xl mx-auto">
-        <div className="rounded-[2rem] border border-border bg-surface p-8 md:p-12 shadow-sm">
-          {!isSuccess ? (
-            <>
-              <div className="text-center mb-10">
-                <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
-                  Book an Elderly Care Attendant
-                </h2>
-                <p className="text-muted-foreground text-[15px]">
-                  Fill in your details and our care team will contact you shortly.
-                </p>
+    <Section className="py-20 lg:py-28 bg-[#F8F9FA]" id="book">
+      <div className="container-x max-w-md mx-auto">
+        <div className="rounded-2xl border border-border bg-white p-6 md:p-8 shadow-sm">
+          {isSuccess ? (
+            <div className="py-16 text-center">
+              <div className="mx-auto mb-4 h-16 w-16 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                <CheckCircle2 className="h-8 w-8" />
               </div>
+              <h3 className="font-display text-2xl mb-2">Request Submitted!</h3>
+              <p className="text-muted-foreground mb-6">We will contact you shortly.</p>
+              <button
+                onClick={() => setIsSuccess(false)}
+                className="rounded-full border border-border bg-white px-6 py-2.5 text-sm font-medium hover:border-primary transition-colors"
+              >
+                Book Another
+              </button>
+            </div>
+          ) : (
+            <>
+              <h3 className="font-display text-2xl md:text-3xl tracking-tight text-foreground mb-2">
+                Book an Elderly Care Attendant
+              </h3>
+              <p className="text-muted-foreground text-sm mb-8">
+                Fill in your details and our care team will contact you shortly.
+              </p>
 
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div className="grid md:grid-cols-2 gap-5">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-foreground">Full Name</label>
-                    <input
-                      name="fullName"
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <input
+                    name="fullName"
+                    required
+                    placeholder="Full name"
+                    className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground"
+                  />
+                </div>
+
+                <div>
+                  <input
+                    name="phone"
+                    required
+                    type="tel"
+                    placeholder="Phone number"
+                    className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground"
+                  />
+                </div>
+
+                <div>
+                  <div className="relative">
+                    <select
+                      name="city"
                       required
-                      type="text"
-                      className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-foreground">Phone Number</label>
-                    <input
-                      name="phone"
-                      required
-                      type="tel"
-                      className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-foreground">Select City</label>
-                    <select name="city" required className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary">
-                      <option value="">Select...</option>
+                      className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-muted-foreground focus:text-foreground appearance-none"
+                    >
+                      <option value="">Select city</option>
                       <option value="Faridabad">Faridabad</option>
                       <option value="Delhi">Delhi</option>
                       <option value="Noida">Noida</option>
                       <option value="Gurugram">Gurugram</option>
                     </select>
+                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-foreground">Select Service</label>
-                  <select name="service" required className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary">
-                    <option value="">Select...</option>
-                    <option value="Elderly care">Elderly care</option>
-                    <option value="Patient care">Patient care</option>
-                    <option value="Bedridden">Bedridden</option>
-                    <option value="24 hour attendant">24 hour attendant</option>
-                  </select>
+                <div>
+                  <div className="relative">
+                    <select
+                      name="service"
+                      required
+                      className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-muted-foreground focus:text-foreground appearance-none"
+                    >
+                      <option value="">Select service</option>
+                      <option value="Elderly care">Elderly care</option>
+                      <option value="Patient care">Patient care</option>
+                      <option value="Bedridden">Bedridden</option>
+                      <option value="24 hour attendant">24 hour attendant</option>
+                    </select>
+                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                  </div>
                 </div>
 
-                <div className="pt-2">
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full rounded-xl bg-primary px-6 py-4 text-sm font-semibold text-primary-foreground shadow-lg hover:bg-primary/90 transition-colors"
-                  >
-                    {isSubmitting ? "Submitting..." : "Submit Request"}
-                  </button>
+                <div>
+                  <textarea
+                    name="patient_condition"
+                    placeholder="Patient condition / requirement (optional)"
+                    rows={3}
+                    className="w-full rounded-2xl border border-border bg-transparent px-5 py-3.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground resize-none"
+                  />
                 </div>
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-[#0A252E] px-4 py-3.5 text-sm font-semibold text-white hover:bg-[#0A252E]/90 transition-colors disabled:opacity-60 mt-2"
+                >
+                  {isSubmitting && <Loader2 className="h-4 w-4 animate-spin" />}
+                  Submit Request
+                </button>
               </form>
             </>
-          ) : (
-            <div className="py-16 text-center">
-              <div className="mx-auto mb-4 h-16 w-16 rounded-full bg-green-100 flex items-center justify-center text-green-600">
-                <CheckCircle2 className="h-8 w-8" />
-              </div>
-              <h3 className="text-2xl font-bold text-foreground mb-2">Request Submitted!</h3>
-              <p className="text-muted-foreground">We will contact you shortly.</p>
-            </div>
           )}
         </div>
       </div>

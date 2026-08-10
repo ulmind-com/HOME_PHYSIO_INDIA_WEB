@@ -25,8 +25,11 @@ import {
   PersonStanding,
   ThumbsUp,
   Loader2,
+  ArrowUpRight,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { faqsQ, settingsQ } from "@/lib/api/queries";
 import { CITIES } from "@/components/forms/BookingForm";
 import { PhysioBookingModal, PHYSIO_SERVICES } from "@/components/forms/PhysioBookingModal";
@@ -277,35 +280,46 @@ function PhysioHero({
 
   const [currentIdx, setCurrentIdx] = useState(0);
 
+  const go = useCallback(
+    (next: number) => {
+      setCurrentIdx(((next % images.length) + images.length) % images.length);
+    },
+    [images.length]
+  );
+
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentIdx((prev) => (prev + 1) % images.length);
+      go(currentIdx + 1);
     }, 5500);
     return () => clearInterval(timer);
-  }, [images.length]);
+  }, [currentIdx, go]);
 
   return (
     <section className="relative min-h-[100svh] lg:min-h-svh flex items-center overflow-hidden">
       {/* Hero background image slider */}
       <div className="absolute inset-0 -z-20 w-full h-full bg-[#0a0a0a]">
         <AnimatePresence>
-          <motion.img
+          <motion.div
             key={currentIdx}
-            src={images[currentIdx]}
-            alt="Physiotherapy at Home"
-            initial={{ opacity: 0, scale: 1.15 }}
-            animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, scale: 1 }}
+            animate={{ opacity: 1, scale: 1.15 }}
             exit={{ opacity: 0 }}
-            transition={{
+            transition={{ 
               opacity: { duration: 1.8, ease: "easeInOut" },
-              scale: { duration: 8, ease: "easeOut" },
+              scale: { duration: 8, ease: "easeOut" }
             }}
-            className="absolute inset-0 w-full h-full object-cover object-center"
-          />
+            className="absolute inset-0 w-full h-full"
+          >
+            <img 
+              src={images[currentIdx]} 
+              alt="Physiotherapy at Home" 
+              className="w-full h-full object-cover object-center"
+            />
+          </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* Cinematic dark overlay */}
+      {/* Cinematic dark overlay similar to home page hero */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black/90 via-black/60 to-black/30" />
       <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
 
@@ -349,7 +363,10 @@ function PhysioHero({
               Physiotherapy & Recovery
             </div>
 
-            <h1 className="font-display text-4xl md:text-5xl lg:text-[3.5rem] font-bold text-white leading-[1.08] tracking-tight mb-4">
+            <h1 
+              className="font-display font-medium text-white tracking-tight leading-[1.1] text-[40px] sm:text-[48px] md:text-[56px] lg:text-[64px] mb-4"
+              style={{ textShadow: "0 4px 40px rgba(0,0,0,0.5)" }}
+            >
               Physiotherapy <br />
               at Home{" "}
             </h1>
@@ -361,20 +378,23 @@ function PhysioHero({
               rehabilitation and improving day-to-day independence.
             </p>
 
-            <div className="flex flex-wrap gap-3">
+            <div className="mt-6 md:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
               <PhysioBookingModal>
-                <button className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3 text-sm font-semibold shadow-[0_20px_40px_-10px_rgba(52,211,153,0.4)] hover:bg-primary/90 hover:-translate-y-0.5 transition-all duration-300">
-                  Book a Physiotherapist <ArrowRight className="h-4 w-4" />
+                <button
+                  className="group inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-[15px] font-semibold text-primary-foreground shadow-sm transition-all duration-300 hover:brightness-110 hover:-translate-y-0.5"
+                >
+                  Book a Physiotherapist
+                  <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </button>
               </PhysioBookingModal>
-              {phone && (
-                <a
-                  href={`tel:${phone}`}
-                  className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 backdrop-blur-md px-6 py-3 text-sm font-semibold text-white hover:bg-white/20 transition-all duration-300"
-                >
-                  <Phone className="h-4 w-4" /> Call Now
-                </a>
-              )}
+
+              <a
+                href={`tel:${phone || "+919876543210"}`}
+                className="group inline-flex items-center justify-center gap-2.5 rounded-full border border-white/30 bg-white/10 backdrop-blur-md px-8 py-3.5 text-[15px] font-medium text-white shadow-sm hover:bg-white/20 hover:border-white/50 transition-all duration-300 hover:-translate-y-0.5"
+              >
+                <Phone className="h-5 w-5 text-[#25D366]" />
+                Call Now
+              </a>
             </div>
 
             <div className="mt-8 flex flex-wrap gap-6">
@@ -438,6 +458,58 @@ function PhysioHero({
             </div>
           </motion.div>
         </div>
+
+        {/* Progress Dots + Navigation (Matches Home Hero) */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2, duration: 1 }}
+          className="flex items-center gap-5 mt-10 lg:mt-8 w-full lg:justify-end"
+        >
+          {/* Arrow Nav */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => go(currentIdx - 1)}
+              className="grid h-12 w-12 place-items-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition-all hover:bg-white/20 hover:border-white/40"
+              aria-label="Previous slide"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+            <button
+              onClick={() => go(currentIdx + 1)}
+              className="grid h-12 w-12 place-items-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition-all hover:bg-white/20 hover:border-white/40"
+              aria-label="Next slide"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
+          </div>
+
+          {/* Progress Bars */}
+          <div className="flex items-center gap-2">
+            {images.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => go(i)}
+                className="group relative h-1.5 overflow-hidden rounded-full transition-all duration-500"
+                style={{ width: i === currentIdx ? 48 : 20 }}
+                aria-label={`Go to slide ${i + 1}`}
+              >
+                <div
+                  className="absolute inset-0 bg-white/20"
+                />
+                {i === currentIdx && (
+                  <motion.div
+                    className="absolute inset-0 bg-white"
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ duration: 5.5, ease: "linear" }}
+                    style={{ transformOrigin: "left" }}
+                  />
+                )}
+              </button>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );
@@ -517,13 +589,12 @@ function PhysioChecklistSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-white/70 mb-6">
-              <span className="h-1.5 w-1.5 rounded-full bg-teal-400" />
+            <h2 className="font-display text-4xl md:text-5xl text-white tracking-tight leading-tight mb-3">
               What We Cover
-            </div>
-            <h2 className="font-display text-4xl md:text-5xl text-white tracking-tight leading-tight mb-6">
-              Trusted Physiotherapy Care at Home
             </h2>
+            <h3 className="text-xl md:text-2xl text-white/90 font-medium mb-6">
+              Trusted Physiotherapy Care at Home
+            </h3>
             <p className="text-white/60 text-lg leading-relaxed">
               At Nupun Home Health Care Services, our physiotherapy support is focused on safe,
               personalised and convenient care at home. Each session is planned according to the

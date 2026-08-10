@@ -39,10 +39,10 @@ const DEFAULT_SERVICES: ServiceStaticCard[] = [
   },
   {
     id: "elder",
-    eyebrow: "Elder Care",
+    eyebrow: "Elderly Care",
     title: "Compassionate Senior Care",
     description:
-      "Dedicated attendants and qualified nurses providing 24/7 assisted elder care — combining medical assistance, hygiene, mobility support, and emotional companionship.",
+      "Dedicated attendants and qualified nurses providing 24/7 assisted elderly care — combining medical assistance, hygiene, mobility support, and emotional companionship.",
     image: "/assets/hero-slide-2.jpeg",
     badge: "24/7 Assistance",
     highlight: "200+ Verified Attendants",
@@ -52,7 +52,7 @@ const DEFAULT_SERVICES: ServiceStaticCard[] = [
       "Timed Medication & Vitals Monitoring",
       "Specialized Memory & Dementia Support",
     ],
-    buttonText: "Explore Elder Care",
+    buttonText: "Explore Elderly Care",
     buttonLink: "/elderly-care",
   },
   {

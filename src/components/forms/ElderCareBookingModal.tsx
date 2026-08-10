@@ -6,7 +6,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { User, Phone, CheckCircle2, Loader2, CalendarHeart, Clock, HeartHandshake } from "lucide-react";
+import { CheckCircle2, Loader2 } from "lucide-react";
 import { api } from "@/lib/api/client";
 
 const ELDER_SERVICES = [
@@ -40,6 +40,7 @@ export function ElderCareBookingModal({ children }: { children: React.ReactNode 
       phone_number: formData.get("phone") as string,
       city: formData.get("city") as string,
       service_type: formData.get("service") as string,
+      patient_condition: formData.get("patient_condition") as string,
     };
 
     try {
@@ -62,144 +63,151 @@ export function ElderCareBookingModal({ children }: { children: React.ReactNode 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="max-w-[480px] w-full p-0 overflow-hidden rounded-[1.75rem] border border-white/15 bg-transparent shadow-[0_50px_100px_-30px_rgba(0,0,0,0.5)] sm:h-auto h-[100dvh] flex flex-col justify-center gap-0">
-        {/* Glassmorphism Background */}
-        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-[#0c1c20] via-[#0f2a24] to-[#0a1818] backdrop-blur-3xl" />
-        
-        {/* Decorative elements */}
-        <div className="absolute -top-20 -right-20 h-40 w-40 rounded-full bg-primary/15 blur-[80px] pointer-events-none" />
-        <div className="absolute -bottom-16 -left-16 h-36 w-36 rounded-full bg-teal-600/10 blur-[60px] pointer-events-none" />
+      <DialogContent className="max-w-[480px] w-[95vw] overflow-hidden rounded-[1.75rem] border border-border bg-white p-6 md:p-8 shadow-2xl sm:h-auto h-auto max-h-[90dvh] overflow-y-auto">
+        <DialogTitle className="sr-only">Book an Attendant</DialogTitle>
 
-        <div className="flex-1 overflow-y-auto overflow-x-hidden p-6 sm:p-8 custom-scrollbar">
+        <div className="relative pt-2 pb-2">
           {!isSuccess ? (
-            <div className="relative">
-              <div className="text-center mb-8">
-                <div className="inline-flex items-center justify-center p-3 rounded-2xl bg-white/5 border border-white/10 mb-5 relative">
-                  <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full" />
-                  <HeartHandshake className="w-8 h-8 text-primary relative z-10" />
-                </div>
-                <DialogTitle className="text-2xl font-display font-bold text-white mb-2">
+            <div>
+              <div className="mb-6">
+                <h3 className="font-display text-2xl md:text-3xl tracking-tight text-foreground mb-2">
                   Book an Attendant
-                </DialogTitle>
-                <p className="text-white/60 text-sm">
+                </h3>
+                <p className="text-muted-foreground text-sm">
                   Fill in your details and our care team will contact you shortly.
                 </p>
               </div>
 
               <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
                 {/* Name */}
-                <div className="space-y-1.5">
-                  <label className="text-[13px] font-medium text-white/80 pl-1">
-                    Full Name
-                  </label>
-                  <div className="relative group">
-                    <User className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-white/40 group-focus-within:text-primary transition-colors" />
-                    <input
-                      required
-                      type="text"
-                      name="fullName"
-                      placeholder="Enter full name"
-                      className="w-full rounded-xl border border-white/10 bg-white/[0.06] pl-11 pr-4 py-3.5 text-sm text-white placeholder-white/35 outline-none transition-all duration-300 focus:border-primary/50 focus:bg-white/[0.08] focus:shadow-[0_0_0_3px_rgba(0,128,128,0.08)]"
-                    />
-                  </div>
+                <div>
+                  <input
+                    required
+                    type="text"
+                    name="fullName"
+                    placeholder="Full name"
+                    className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground"
+                  />
                 </div>
 
                 {/* Phone */}
-                <div className="space-y-1.5">
-                  <label className="text-[13px] font-medium text-white/80 pl-1">
-                    Phone Number
-                  </label>
-                  <div className="relative group">
-                    <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-white/40 group-focus-within:text-primary transition-colors" />
-                    <input
+                <div>
+                  <input
+                    required
+                    type="tel"
+                    name="phone"
+                    placeholder="Phone number"
+                    pattern="[0-9]{10}"
+                    maxLength={10}
+                    className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground"
+                  />
+                </div>
+
+                {/* City Selection */}
+                <div>
+                  <div className="relative">
+                    <select
                       required
-                      type="tel"
-                      name="phone"
-                      placeholder="10-digit mobile number"
-                      pattern="[0-9]{10}"
-                      maxLength={10}
-                      className="w-full rounded-xl border border-white/10 bg-white/[0.06] pl-11 pr-4 py-3.5 text-sm text-white placeholder-white/35 outline-none transition-all duration-300 focus:border-primary/50 focus:bg-white/[0.08] focus:shadow-[0_0_0_3px_rgba(0,128,128,0.08)]"
-                    />
+                      name="city"
+                      className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-muted-foreground focus:text-foreground appearance-none cursor-pointer"
+                    >
+                      <option value="">Select city</option>
+                      {CITIES.map((c) => (
+                        <option key={c} value={c}>
+                          {c}
+                        </option>
+                      ))}
+                    </select>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none"
+                    >
+                      <path d="m6 9 6 6 6-6" />
+                    </svg>
                   </div>
                 </div>
 
                 {/* Service Selection */}
-                <div className="space-y-1.5">
-                  <label className="text-[13px] font-medium text-white/80 pl-1">
-                    Select Service
-                  </label>
-                  <div className="relative group">
-                    <HeartHandshake className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-white/40 group-focus-within:text-primary transition-colors z-10" />
+                <div>
+                  <div className="relative">
                     <select
                       required
                       name="service"
-                      className="w-full rounded-xl border border-white/10 bg-white/[0.06] pl-11 pr-4 py-3.5 text-sm text-white/60 focus:text-white outline-none transition-all duration-300 focus:border-primary/50 focus:bg-white/[0.08] focus:shadow-[0_0_0_3px_rgba(0,128,128,0.08)] appearance-none cursor-pointer"
+                      className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-muted-foreground focus:text-foreground appearance-none cursor-pointer"
                     >
-                      <option value="" className="bg-[#0f2a1f] text-white/50">
-                        Select required service...
-                      </option>
+                      <option value="">Select required service</option>
                       {ELDER_SERVICES.map((c) => (
-                        <option key={c} value={c} className="bg-[#0f2a1f] text-white">
+                        <option key={c} value={c}>
                           {c}
                         </option>
                       ))}
                     </select>
-                  </div>
-                </div>
-
-                {/* City Selection */}
-                <div className="space-y-1.5">
-                  <label className="text-[13px] font-medium text-white/80 pl-1">
-                    Select City
-                  </label>
-                  <div className="relative group">
-                    <CalendarHeart className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-white/40 group-focus-within:text-primary transition-colors z-10" />
-                    <select
-                      required
-                      name="city"
-                      className="w-full rounded-xl border border-white/10 bg-white/[0.06] pl-11 pr-4 py-3.5 text-sm text-white/60 focus:text-white outline-none transition-all duration-300 focus:border-primary/50 focus:bg-white/[0.08] focus:shadow-[0_0_0_3px_rgba(0,128,128,0.08)] appearance-none cursor-pointer"
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none"
                     >
-                      <option value="" className="bg-[#0f2a1f] text-white/50">
-                        Select city...
-                      </option>
-                      {CITIES.map((c) => (
-                        <option key={c} value={c} className="bg-[#0f2a1f] text-white">
-                          {c}
-                        </option>
-                      ))}
-                    </select>
+                      <path d="m6 9 6 6 6-6" />
+                    </svg>
                   </div>
                 </div>
 
-                <div className="pt-4">
+                {/* Patient Condition */}
+                <div>
+                  <textarea
+                    name="patient_condition"
+                    placeholder="Patient condition / requirement (optional)"
+                    rows={3}
+                    className="w-full rounded-2xl border border-border bg-transparent px-5 py-3.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground resize-none"
+                  />
+                </div>
+
+                <div className="pt-2">
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="group w-full relative inline-flex items-center justify-center gap-2.5 rounded-xl bg-primary px-6 py-4 text-[15px] font-semibold text-primary-foreground shadow-[0_20px_40px_-12px_rgba(0,128,128,0.35)] transition-all duration-300 hover:shadow-[0_25px_50px_-12px_rgba(0,128,128,0.45)] hover:-translate-y-0.5 disabled:opacity-60 disabled:pointer-events-none overflow-hidden"
+                    className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-[#0A252E] px-4 py-3.5 text-sm font-semibold text-white hover:bg-[#0A252E]/90 transition-colors disabled:opacity-60"
                   >
-                    {isSubmitting ? (
-                      <Loader2 className="h-5 w-5 animate-spin" />
-                    ) : (
-                      <>
-                        Submit Request
-                        <CheckCircle2 className="h-5 w-5 opacity-70 group-hover:opacity-100 transition-opacity" />
-                      </>
-                    )}
+                    {isSubmitting && <Loader2 className="h-4.5 w-4.5 animate-spin" />}
+                    {isSubmitting ? "Submitting..." : "Submit Request"}
                   </button>
                 </div>
               </form>
             </div>
           ) : (
-            <div className="h-full flex flex-col items-center justify-center text-center py-10">
-              <div className="h-20 w-20 rounded-full bg-emerald-500/10 text-emerald-400 grid place-items-center mb-6 border border-emerald-500/20">
-                <CheckCircle2 className="h-10 w-10" />
+            <div className="text-center py-8">
+              <div className="mx-auto mb-6 relative">
+                <div className="h-20 w-20 mx-auto rounded-full bg-green-100 grid place-items-center">
+                  <CheckCircle2 className="h-10 w-10 text-green-600" strokeWidth={2} />
+                </div>
               </div>
-              <h3 className="text-2xl font-display font-bold text-white mb-3">
+              <h3 className="font-display text-2xl md:text-3xl font-semibold text-foreground mb-2">
                 Request Received!
               </h3>
-              <p className="text-white/60 text-[15px] max-w-[280px] mx-auto leading-relaxed">
+              <p className="text-muted-foreground text-sm leading-relaxed max-w-xs mx-auto mb-8">
                 Thank you. Our care team will contact you shortly to confirm the details.
               </p>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="rounded-full border border-border bg-white px-8 py-3 text-sm font-medium text-foreground hover:border-primary transition-colors duration-300"
+              >
+                Close
+              </button>
             </div>
           )}
         </div>
