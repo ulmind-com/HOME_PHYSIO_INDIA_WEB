@@ -398,7 +398,7 @@ function EquipmentHero({ phone }: { phone?: string }) {
 
             <div className="flex flex-col sm:flex-row flex-wrap gap-3">
               <EquipmentBookingModal>
-                <button className="inline-flex items-center justify-center gap-2 rounded-full bg-teal-400 text-teal-950 px-6 py-3.5 sm:py-3 text-[15px] font-semibold shadow-[0_20px_40px_-10px_rgba(45,212,191,0.3)] hover:bg-teal-300 hover:-translate-y-0.5 transition-all duration-300 w-full sm:w-auto">
+                <button className="inline-flex items-center justify-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3.5 sm:py-3 text-[15px] font-semibold shadow-[0_20px_40px_-10px_rgba(0,128,128,0.4)] hover:bg-primary/90 hover:-translate-y-0.5 transition-all duration-300 w-full sm:w-auto">
                   Check Availability <ArrowRight className="h-4 w-4" />
                 </button>
               </EquipmentBookingModal>
