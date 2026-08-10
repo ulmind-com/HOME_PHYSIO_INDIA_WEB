@@ -26,8 +26,10 @@ import {
   Info,
   Layers,
   Loader2,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { settingsQ } from "@/lib/api/queries";
 import { CITIES } from "@/components/forms/BookingForm";
 import {
@@ -319,12 +321,19 @@ function EquipmentHero({ phone }: { phone?: string }) {
 
   const [currentIdx, setCurrentIdx] = useState(0);
 
+  const go = useCallback(
+    (next: number) => {
+      setCurrentIdx(((next % images.length) + images.length) % images.length);
+    },
+    [images.length]
+  );
+
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentIdx((prev) => (prev + 1) % images.length);
+      go(currentIdx + 1);
     }, 5500);
     return () => clearInterval(timer);
-  }, [images.length]);
+  }, [currentIdx, go]);
 
   return (
     <section className="relative min-h-[100svh] lg:min-h-svh flex items-center overflow-hidden">
@@ -387,20 +396,18 @@ function EquipmentHero({ phone }: { phone?: string }) {
               Nupun Home Health Care Services provides essential medical equipment on rent for patients who need comfortable and convenient care at home. Whether you need equipment for a few days, weeks or longer-term use, we help you arrange suitable equipment according to your requirement and availability.
             </p>
 
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-col sm:flex-row flex-wrap gap-3">
               <EquipmentBookingModal>
-                <button className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3 text-sm font-semibold shadow-[0_20px_40px_-10px_rgba(0,128,128,0.4)] hover:bg-primary/90 hover:-translate-y-0.5 transition-all duration-300">
-                  Check Equipment Availability <ArrowRight className="h-4 w-4" />
+                <button className="inline-flex items-center justify-center gap-2 rounded-full bg-teal-400 text-teal-950 px-6 py-3.5 sm:py-3 text-[15px] font-semibold shadow-[0_20px_40px_-10px_rgba(45,212,191,0.3)] hover:bg-teal-300 hover:-translate-y-0.5 transition-all duration-300 w-full sm:w-auto">
+                  Check Availability <ArrowRight className="h-4 w-4" />
                 </button>
               </EquipmentBookingModal>
-              {phone && (
-                <a
-                  href={`tel:${phone}`}
-                  className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 backdrop-blur-md px-6 py-3 text-sm font-semibold text-white hover:bg-white/20 transition-all duration-300"
-                >
-                  <Phone className="h-4 w-4" /> Call Now
-                </a>
-              )}
+              <a
+                href={`tel:${phone || "+918100346590"}`}
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/30 bg-white/10 backdrop-blur-md px-6 py-3.5 sm:py-3 text-[15px] font-semibold text-white hover:bg-white/20 transition-all duration-300 w-full sm:w-auto"
+              >
+                <Phone className="h-4 w-4" /> Call Now
+              </a>
             </div>
           </motion.div>
 
@@ -450,6 +457,56 @@ function EquipmentHero({ phone }: { phone?: string }) {
             </div>
           </motion.div>
         </div>
+
+        {/* Progress Dots + Navigation (Matches Home Hero) */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          className="flex items-center gap-5 mt-10 lg:mt-8 w-full lg:justify-end"
+        >
+          {/* Arrow Nav */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => go(currentIdx - 1)}
+              className="grid h-12 w-12 place-items-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition-all hover:bg-white/20 hover:border-white/40"
+              aria-label="Previous slide"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+            <button
+              onClick={() => go(currentIdx + 1)}
+              className="grid h-12 w-12 place-items-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition-all hover:bg-white/20 hover:border-white/40"
+              aria-label="Next slide"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
+          </div>
+
+          {/* Progress Bars */}
+          <div className="flex items-center gap-2">
+            {images.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => go(i)}
+                className="group relative h-1.5 overflow-hidden rounded-full transition-all duration-500"
+                style={{ width: i === currentIdx ? 48 : 20 }}
+                aria-label={`Go to slide ${i + 1}`}
+              >
+                <span className="absolute inset-0 rounded-full bg-white/30" />
+                {i === currentIdx && (
+                  <motion.span
+                    className="absolute inset-0 rounded-full bg-teal-400"
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ duration: 5.5, ease: "linear" }}
+                    style={{ transformOrigin: "left" }}
+                  />
+                )}
+              </button>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );
