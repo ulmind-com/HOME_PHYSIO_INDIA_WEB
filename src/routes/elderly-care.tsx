@@ -352,7 +352,7 @@ function ElderlyHero({ phone, whatsapp }: { phone?: string; whatsapp?: string })
 
             <div className="mt-8 flex flex-wrap gap-6">
               {[
-                { val: <>100<span className="ml-0.5">+</span></>, label: "Caregivers" },
+                { val: <>250<span className="ml-0.5">+</span></>, label: "Caregivers" },
                 { val: "24/7", label: "Availability" },
                 { val: "4 Cities", label: "NCR Coverage" },
               ].map((s) => (

@@ -415,7 +415,7 @@ function PhysioHero({
 
             <div className="mt-8 flex flex-wrap gap-6">
               {[
-                { val: "20 +", label: "Physiotherapists" },
+                { val: "35 +", label: "Physiotherapists" },
                 { val: "24/7", label: "Availability" },
                 { val: "4 Cities", label: "NCR Coverage" },
               ].map((s) => (
