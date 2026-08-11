@@ -286,7 +286,7 @@ function AboutPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="relative overflow-hidden rounded-[2.5rem] bg-[#f8f9fa] border border-black/5 p-10 lg:p-14 shadow-sm group transition-all hover:shadow-md"
+              className="relative overflow-hidden rounded-[2.5rem] bg-[#f8f9fa] border border-black/5 p-6 md:p-10 lg:p-14 shadow-sm group transition-all hover:shadow-md"
             >
               <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary mb-8">
                 <Clock className="h-6 w-6" />
@@ -298,9 +298,9 @@ function AboutPage() {
                 Care staff can be arranged according to your requirement, including:
               </p>
               
-              <div className="flex flex-wrap gap-4 mb-6">
+              <div className="flex flex-wrap gap-2 sm:gap-4 mb-6">
                 {["8 Hours", "12 Hours", "24 Hours"].map((opt) => (
-                  <div key={opt} className="rounded-xl bg-white border border-black/5 px-6 py-3 text-foreground font-bold tracking-wide shadow-sm">
+                  <div key={opt} className="rounded-xl bg-white border border-black/5 px-4 py-2 sm:px-6 sm:py-3 text-foreground font-bold tracking-wide shadow-sm text-sm sm:text-base">
                     {opt}
                   </div>
                 ))}
@@ -317,7 +317,7 @@ function AboutPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="relative overflow-hidden rounded-[2.5rem] bg-[#f8f9fa] border border-black/5 p-10 lg:p-14 shadow-sm group transition-all hover:shadow-md"
+              className="relative overflow-hidden rounded-[2.5rem] bg-[#f8f9fa] border border-black/5 p-6 md:p-10 lg:p-14 shadow-sm group transition-all hover:shadow-md"
             >
               <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-teal-500/10 text-teal-600 mb-8">
                 <MapPin className="h-6 w-6" />
@@ -329,11 +329,11 @@ function AboutPage() {
                 Nupun Home Health Care Services provides home healthcare support across:
               </p>
               
-              <div className="grid grid-cols-2 gap-4 mb-6">
+              <div className="grid grid-cols-2 gap-2 sm:gap-4 mb-6">
                 {LOCATIONS.map((loc) => (
-                  <div key={loc} className="flex items-center gap-3 rounded-xl bg-white border-l-2 border-primary border-y border-r border-black/5 p-4 shadow-sm hover:border-l-4 transition-all duration-300">
-                    <MapPin className="h-4 w-4 text-primary" />
-                    <span className="text-foreground font-bold tracking-wide">{loc}</span>
+                  <div key={loc} className="flex items-center gap-2 sm:gap-3 rounded-xl bg-white border-l-2 border-primary border-y border-r border-black/5 p-3 sm:p-4 shadow-sm hover:border-l-4 transition-all duration-300">
+                    <MapPin className="h-4 w-4 text-primary shrink-0" />
+                    <span className="text-foreground font-bold tracking-wide text-sm sm:text-base">{loc}</span>
                   </div>
                 ))}
               </div>
