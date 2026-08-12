@@ -1,4 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { triggerBookingSuccess } from "@/components/site/GlobalBookingSuccess";
 import { useQuery } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -806,6 +807,7 @@ function ElderlyInlineForm() {
     try {
       await api.post("/elder-care", data);
       setIsSuccess(true);
+      triggerBookingSuccess();
       (e.target as HTMLFormElement).reset();
       setTimeout(() => setIsSuccess(false), 4000);
     } catch (error) {

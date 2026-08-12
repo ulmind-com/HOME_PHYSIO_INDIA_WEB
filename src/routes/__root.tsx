@@ -15,6 +15,7 @@ import { Header } from "../components/site/Header";
 import { Footer } from "../components/site/Footer";
 import { WhatsAppWidget } from "../components/site/WhatsAppWidget";
 import { DynamicSeo } from "../components/site/DynamicSeo";
+import { GlobalBookingSuccess } from "../components/site/GlobalBookingSuccess";
 import { Toaster } from "../components/ui/sonner";
 import { useQuery } from "@tanstack/react-query";
 import { settingsQ } from "../lib/api/queries";
@@ -203,6 +204,7 @@ function RootComponent() {
         <Footer />
       </div>
       <WhatsAppWidget />
+      <GlobalBookingSuccess />
       <Toaster position="top-center" richColors />
     </QueryClientProvider>
   );

@@ -18,7 +18,8 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { api } from "@/lib/api/client";
-import { settingsQ } from "@/lib/api/queries";
+import { settingsQ, equipmentQ } from "@/lib/api/queries";
+import { triggerBookingSuccess } from "@/components/site/GlobalBookingSuccess";
 import { CITIES } from "@/components/forms/BookingForm";
 import {
   Dialog,
@@ -115,6 +116,7 @@ export function EquipmentBookingModal({
     onSuccess: (res) => {
       setRefCode(res?.reference ?? "");
       setDone(true);
+      triggerBookingSuccess();
       toast.success("Equipment request received.");
     },
     onError: (err: Error) => toast.error(err.message || "Something went wrong."),

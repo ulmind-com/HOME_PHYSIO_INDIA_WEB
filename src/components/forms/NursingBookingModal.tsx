@@ -21,6 +21,8 @@ import {
 } from "lucide-react";
 import { api } from "@/lib/api/client";
 import { settingsQ } from "@/lib/api/queries";
+import { Button } from "@/components/ui/button";
+import { triggerBookingSuccess } from "@/components/site/GlobalBookingSuccess";
 import { CITIES } from "@/components/forms/BookingForm";
 import {
   Dialog,
@@ -97,6 +99,7 @@ export function NursingBookingModal({
     onSuccess: (res) => {
       setRefCode(res?.reference ?? "");
       setDone(true);
+      triggerBookingSuccess();
       toast.success("Booking received — we'll contact you shortly.");
     },
     onError: (err: Error) => toast.error(err.message || "Something went wrong."),

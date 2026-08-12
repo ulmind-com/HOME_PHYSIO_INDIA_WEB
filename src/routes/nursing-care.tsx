@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { triggerBookingSuccess } from "@/components/site/GlobalBookingSuccess";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
 import { useForm } from "react-hook-form";
@@ -1001,6 +1002,7 @@ function NursingBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: s
       }),
     onSuccess: () => {
       setDone(true);
+      triggerBookingSuccess();
       toast.success("Booking received — we'll contact you shortly.");
     },
     onError: (err: Error) => toast.error(err.message || "Something went wrong."),

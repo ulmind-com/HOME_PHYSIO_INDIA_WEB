@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { CheckCircle2, ChevronLeft, ChevronRight, Loader2, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { api } from "@/lib/api/client";
+import { triggerBookingSuccess } from "@/components/site/GlobalBookingSuccess";
 import { servicesQ } from "@/lib/api/queries";
 import { cn } from "@/lib/utils";
 
@@ -83,6 +84,7 @@ export function BookingForm({
     mutationFn: (data: Values) => api.post("/bookings", data),
     onSuccess: () => {
       setDone(true);
+      triggerBookingSuccess();
       toast.success("Booking received — we'll call you shortly.");
     },
     onError: (err: Error) => toast.error(err.message || "Something went wrong. Please try again."),
