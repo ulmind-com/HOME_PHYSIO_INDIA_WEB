@@ -154,7 +154,7 @@ export function Hero() {
             alt="Premium Home Health Care"
             className={`h-full w-full object-cover ${
               current === 0
-                ? "object-center md:object-[50%_35%] lg:object-[50%_38%]"
+                ? "object-center md:object-[50%_40%] lg:object-[50%_45%]"
                 : "object-center md:object-[50%_25%] lg:object-[50%_28%]"
             }`}
             style={{
