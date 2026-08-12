@@ -152,7 +152,11 @@ export function Hero() {
           <img
             src={bg}
             alt="Premium Home Health Care"
-            className="h-full w-full object-cover object-center md:object-[50%_25%] lg:object-[50%_28%]"
+            className={`h-full w-full object-cover ${
+              current === 0
+                ? "object-center md:object-[50%_15%] lg:object-[50%_15%]"
+                : "object-center md:object-[50%_25%] lg:object-[50%_28%]"
+            }`}
             style={{
               animation: `heroKenBurns ${SLIDE_DURATION}ms ease-out forwards`,
             }}
