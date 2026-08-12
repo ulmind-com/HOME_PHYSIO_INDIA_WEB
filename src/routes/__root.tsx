@@ -14,6 +14,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "../components/site/Header";
 import { Footer } from "../components/site/Footer";
 import { WhatsAppWidget } from "../components/site/WhatsAppWidget";
+import { DynamicSeo } from "../components/site/DynamicSeo";
 import { Toaster } from "../components/ui/sonner";
 import { useQuery } from "@tanstack/react-query";
 import { settingsQ } from "../lib/api/queries";
@@ -183,6 +184,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeInjector />
+      <DynamicSeo />
       <div className="flex min-h-dvh flex-col">
         <Header />
         <main className="flex-1">

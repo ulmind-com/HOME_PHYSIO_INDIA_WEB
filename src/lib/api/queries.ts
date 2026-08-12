@@ -6,6 +6,7 @@ import type {
   Equipment,
   Faq,
   ReviewSummary,
+  SeoMeta,
   Service,
   Settings,
   SocialLinks,
@@ -134,5 +135,13 @@ export const reviewSummaryQ = () =>
   queryOptions({
     queryKey: ["review-summary"],
     queryFn: ({ signal }) => api.get<ReviewSummary>("/reviews/summary", undefined, signal),
+    staleTime: FIVE_MIN,
+  });
+
+export const seoQ = (pageKey: string) =>
+  queryOptions({
+    queryKey: ["seo", pageKey],
+    queryFn: ({ signal }) =>
+      api.get<SeoMeta>("/settings/seo", { page_key: pageKey }, signal).catch(() => null),
     staleTime: FIVE_MIN,
   });
