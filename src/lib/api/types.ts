@@ -220,7 +220,7 @@ export type Settings = {
   // Home About section (dynamic)
   home_about_heading?: string | null;
   home_about_description?: string | null;
-  home_about_features?: { title: string; description: string; icon: string }[];
+  home_about_features?: { title: string; description: string; icon: string; icon_image?: string | null }[];
   home_about_tiles?: {
     image: string;
     count: string;

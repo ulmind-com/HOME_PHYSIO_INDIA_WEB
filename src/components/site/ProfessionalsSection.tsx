@@ -12,6 +12,7 @@ type FeatureItem = {
   title: string;
   description: string;
   icon: string;
+  icon_image?: string | null;
 };
 
 type TileItem = {
@@ -114,7 +115,18 @@ const overlayItem: Variants = {
 
 /* ---------- Icon resolver ---------- */
 
-function FeatureIcon({ icon, className = "" }: { icon: string; className?: string }) {
+function FeatureIcon({ icon, iconImage, className = "" }: { icon: string; iconImage?: string | null; className?: string }) {
+  // If an uploaded image URL exists, use it directly
+  if (iconImage) {
+    return (
+      <img
+        src={iconImage}
+        alt=""
+        className={className.replace("h-6 w-6", "h-9 w-9 md:h-10 md:w-10") + " object-contain scale-110"}
+      />
+    );
+  }
+
   switch (icon) {
     case "icu":
       return (
@@ -235,7 +247,7 @@ export function ProfessionalsSection() {
                   <div className="relative shrink-0">
                     <div className="absolute inset-0 rounded-2xl bg-primary/15 blur-md" />
                     <div className="relative grid h-11 w-11 md:h-14 md:w-14 place-items-center rounded-xl md:rounded-2xl glass border border-primary/20">
-                      <FeatureIcon icon={f.icon} className="h-6 w-6 text-primary" />
+                      <FeatureIcon icon={f.icon} iconImage={f.icon_image} className="h-6 w-6 text-primary" />
                     </div>
                   </div>
                   <div>
