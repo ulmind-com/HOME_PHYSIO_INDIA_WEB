@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { CheckCircle2, Loader2 } from "lucide-react";
 import { api } from "@/lib/api/client";
+import { triggerBookingSuccess } from "@/components/site/GlobalBookingSuccess";
 
 const ELDER_SERVICES = [
   "Elderly care",
@@ -46,6 +47,7 @@ export function ElderCareBookingModal({ children }: { children: React.ReactNode 
     try {
       await api.post("/elder-care", data);
       setIsSuccess(true);
+      triggerBookingSuccess();
       if (formRef.current) formRef.current.reset();
       
       setTimeout(() => {
