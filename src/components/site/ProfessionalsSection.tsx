@@ -77,7 +77,7 @@ const DEFAULT_TILES: TileItem[] = [
     cta_link: "/booking",
   },
   {
-    image: "/assets/medical-equipment-home.jpg",
+    image: "/assets/home_medical_support.png",
     count: "50+",
     title: "Home Medical Support",
     description: "Injections, blood tests, catheter & oxygen",
@@ -295,7 +295,7 @@ export function ProfessionalsSection() {
                     className="absolute inset-x-0 bottom-0 p-3 sm:p-4 md:p-5 text-white"
                   >
                     <motion.div variants={overlayItem}>
-                      <span className="inline-flex items-center rounded-full bg-white/15 backdrop-blur-md border border-white/25 px-2 sm:px-2.5 py-0.5 text-[10px] sm:text-[11px] font-medium tracking-wide">
+                      <span className="inline-flex items-center rounded-full bg-primary text-white border border-white/20 px-2 sm:px-2.5 py-0.5 text-[10px] sm:text-[11px] font-bold tracking-wide shadow-sm">
                         {t.count}
                       </span>
                     </motion.div>
