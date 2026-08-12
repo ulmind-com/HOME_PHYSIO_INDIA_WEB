@@ -35,16 +35,20 @@ export function Footer() {
           {/* Left Column (Brand & CTA) */}
           <div className="lg:col-span-5 flex flex-col items-start">
             <div className="flex items-center gap-3 mb-5 md:mb-8">
-              <div className="h-10 w-10 rounded-[14px] bg-gradient-to-br from-primary to-accent grid place-items-center shadow-lg shadow-primary/20">
-                <svg
-                  viewBox="0 0 24 24"
-                  className="h-5 w-5 text-white"
-                  fill="currentColor"
-                  aria-hidden
-                >
-                  <path d="M12 21s-7-4.35-9.5-8.5C.85 9.5 2.4 5.5 6 5c2.05-.28 3.7.9 6 3 2.3-2.1 3.95-3.28 6-3 3.6.5 5.15 4.5 3.5 7.5C19 16.65 12 21 12 21Z" />
-                </svg>
-              </div>
+              {settings?.logo ? (
+                <img src={settings.logo} alt={name} className="h-10 w-10 object-contain rounded-lg" />
+              ) : (
+                <div className="h-10 w-10 rounded-[14px] bg-gradient-to-br from-primary to-accent grid place-items-center shadow-lg shadow-primary/20">
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="h-5 w-5 text-white"
+                    fill="currentColor"
+                    aria-hidden
+                  >
+                    <path d="M12 21s-7-4.35-9.5-8.5C.85 9.5 2.4 5.5 6 5c2.05-.28 3.7.9 6 3 2.3-2.1 3.95-3.28 6-3 3.6.5 5.15 4.5 3.5 7.5C19 16.65 12 21 12 21Z" />
+                  </svg>
+                </div>
+              )}
               <div className="font-display text-xl tracking-tight text-foreground">{name}</div>
             </div>
 
@@ -153,10 +157,10 @@ export function Footer() {
       {/* Massive Brand Typography at the Bottom over the image */}
       <div className="relative z-10 w-full overflow-hidden flex flex-col items-center justify-center pt-12 md:pt-20 pb-4 pointer-events-none">
         <div className="mb-8 text-[13px] text-white/90 font-medium drop-shadow-md text-center pointer-events-auto">
-          © 2026 Nupun Home Health Care Services. All Rights Reserved.
+          © {new Date().getFullYear()} {name}. All Rights Reserved.
         </div>
         <h1 className="font-display text-[26vw] leading-[0.75] font-bold tracking-tighter text-white drop-shadow-2xl select-none whitespace-nowrap opacity-90">
-          Nupun
+          {name.split(" ")[0] || "Nupun"}
         </h1>
         {/* Gradient fade at the absolute bottom to blend everything out */}
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#EAEAEA] to-transparent -z-10"></div>

@@ -164,6 +164,16 @@ function RootShell({ children }: { children: ReactNode }) {
 function ThemeInjector() {
   const { data: settings } = useQuery(settingsQ());
 
+  useEffect(() => {
+    if (settings?.favicon) {
+      const link: HTMLLinkElement = document.querySelector("link[rel*='icon']") || document.createElement('link');
+      link.type = 'image/x-icon';
+      link.rel = 'shortcut icon';
+      link.href = settings.favicon;
+      document.head.appendChild(link);
+    }
+  }, [settings?.favicon]);
+
   if (!settings?.theme_primary && !settings?.theme_accent) return null;
 
   return (

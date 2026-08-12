@@ -1,6 +1,11 @@
 import { motion } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
+import { settingsQ } from "@/lib/api/queries";
 
 export function WhatsAppWidget() {
+  const { data: settings } = useQuery(settingsQ());
+  const whatsappNumber = (settings?.whatsapp ?? settings?.phone)?.replace(/\D/g, "") || "919876543210";
+
   return (
     <motion.div
       initial={{ scale: 0, opacity: 0 }}
@@ -9,7 +14,7 @@ export function WhatsAppWidget() {
       className="fixed bottom-6 right-6 z-50 md:bottom-8 md:right-8"
     >
       <a
-        href="https://wa.me/919876543210"
+        href={`https://wa.me/${whatsappNumber}`}
         target="_blank"
         rel="noopener noreferrer"
         className="group relative flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:scale-110 hover:shadow-xl hover:shadow-[#25D366]/40 focus:outline-none focus:ring-4 focus:ring-[#25D366]/50 md:h-16 md:w-16"
