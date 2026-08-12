@@ -14,26 +14,6 @@ const NAV = [
   { to: "/contact", label: "Contact" },
 ] as const;
 
-const MOBILE_EXTRA = [
-  { to: "/elderly-care", label: "Elderly Care" },
-  { to: "/nursing-care", label: "Nursing Care" },
-  { to: "/blog", label: "Blog" },
-  { to: "/careers", label: "Careers" },
-] as const;
-
-// Mobile menu order: group service pages together, then informational pages
-const MOBILE_NAV = [
-  { to: "/", label: "Home" },
-  { to: "/about", label: "About" },
-  { to: "/services", label: "Services" },
-  { to: "/medical-equipment", label: "Equipment" },
-  { to: "/nursing-care", label: "Nursing Care" },
-  { to: "/elderly-care", label: "Elderly Care" },
-  { to: "/careers", label: "Careers" },
-  { to: "/faq", label: "FAQ's" },
-  { to: "/blogs", label: "Blogs" },
-  { to: "/contact", label: "Contact" },
-] as const;
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -180,7 +160,7 @@ export function Header() {
               className="lg:hidden mt-2 rounded-3xl bg-white/30 backdrop-blur-2xl backdrop-saturate-150 border border-white/50 shadow-[0_20px_50px_-20px_rgba(15,80,80,0.35)] origin-top overflow-hidden"
             >
               <div className="py-3 px-3 grid gap-1">
-                {MOBILE_NAV.map((item) => (
+                {NAV.map((item) => (
                   <Link
                     key={item.to}
                     to={item.to}
