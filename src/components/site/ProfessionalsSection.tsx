@@ -116,11 +116,11 @@ const overlayItem: Variants = {
 /* ---------- Icon resolver ---------- */
 
 function FeatureIcon({ icon, iconImage, className = "" }: { icon: string; iconImage?: string | null; className?: string }) {
-  // If an uploaded image URL exists, use it directly
   if (iconImage) {
+    const src = typeof iconImage === "object" ? (iconImage as any).url : iconImage;
     return (
       <img
-        src={iconImage}
+        src={src}
         alt=""
         className={className.replace("h-6 w-6", "h-9 w-9 md:h-10 md:w-10") + " object-contain scale-110"}
       />
@@ -295,7 +295,7 @@ export function ProfessionalsSection() {
                 >
                   <div className="aspect-[4/5] w-full">
                     <img
-                      src={t.image}
+                      src={typeof t.image === "object" ? (t.image as any)?.url : (t.image || "/assets/nursing.webp")}
                       alt={t.title}
                       loading="lazy"
                       className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
