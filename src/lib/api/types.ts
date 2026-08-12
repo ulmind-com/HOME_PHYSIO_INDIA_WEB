@@ -217,6 +217,19 @@ export type Settings = {
   // Professionals / Team
   team_tiles?: { image: string; count: string; title: string; desc: string }[];
 
+  // Home About section (dynamic)
+  home_about_heading?: string | null;
+  home_about_description?: string | null;
+  home_about_features?: { title: string; description: string; icon: string }[];
+  home_about_tiles?: {
+    image: string;
+    count: string;
+    title: string;
+    description: string;
+    cta_label: string;
+    cta_link: string;
+  }[];
+
   // CareTeam Slider (Home Page)
   care_team_slides?: {
     image: string;
