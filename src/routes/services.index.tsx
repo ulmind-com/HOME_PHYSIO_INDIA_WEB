@@ -45,44 +45,24 @@ export const Route = createFileRoute("/services/")({
 
 const WHY = [
   {
-    icon: ShieldCheck,
+    emoji: "🛡️",
     title: "Verified Professionals",
     detail: "Background-verified and trained caregivers, nurses, and attendants.",
-    theme: {
-      bg: "bg-emerald-50/70 dark:bg-emerald-950/20",
-      iconBg: "bg-emerald-100 dark:bg-emerald-900/40",
-      iconColor: "text-emerald-600 dark:text-emerald-400",
-    },
   },
   {
-    icon: Clock3,
+    emoji: "🕒",
     title: "Flexible Hourly Care",
     detail: "Book care for a few hours, overnight, or as per your requirement.",
-    theme: {
-      bg: "bg-blue-50/70 dark:bg-blue-950/20",
-      iconBg: "bg-blue-100 dark:bg-blue-900/40",
-      iconColor: "text-blue-600 dark:text-blue-400",
-    },
   },
   {
-    icon: BellRing,
+    emoji: "🔔",
     title: "Medication Alerts",
     detail: "Timely reminders to help patients stay on track with medications.",
-    theme: {
-      bg: "bg-fuchsia-50/70 dark:bg-fuchsia-950/20",
-      iconBg: "bg-fuchsia-100 dark:bg-fuchsia-900/40",
-      iconColor: "text-fuchsia-600 dark:text-fuchsia-400",
-    },
   },
   {
-    icon: Zap,
+    emoji: "⚡",
     title: "Quick Service Support",
     detail: "Fast caregiver deployment and responsive assistance when you need it most.",
-    theme: {
-      bg: "bg-orange-50/70 dark:bg-orange-950/20",
-      iconBg: "bg-orange-100 dark:bg-orange-900/40",
-      iconColor: "text-orange-600 dark:text-orange-400",
-    },
   },
 ];
 
@@ -226,10 +206,9 @@ function ServicesIndex() {
           <div className="grid gap-5 lg:grid-cols-2 xl:grid-cols-4">
             {(settings?.why_choose_items?.length ? settings.why_choose_items : WHY).map((item, i) => {
               const baseItem = item as any;
-              const Icon = baseItem.icon || WHY[i % WHY.length].icon;
+              const emoji = baseItem.emoji || WHY[i % WHY.length].emoji;
               const title = baseItem.title;
               const detail = baseItem.detail;
-              const theme = baseItem.theme || WHY[i % WHY.length].theme;
 
               return (
                 <motion.div
@@ -238,13 +217,11 @@ function ServicesIndex() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                  className={`group flex items-center gap-5 rounded-[24px] ${theme.bg} p-6 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] border border-transparent hover:border-black/5 dark:hover:border-white/5`}
+                  className="group flex flex-col items-start gap-4 rounded-[24px] bg-white border border-border p-6 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] hover:border-primary/20"
                 >
-                  {/* Icon Circle */}
-                  <div
-                    className={`grid h-16 w-16 shrink-0 place-items-center rounded-full ${theme.iconBg} ${theme.iconColor} transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-inner`}
-                  >
-                    <Icon className="h-7 w-7" strokeWidth={2.5} />
+                  {/* Emoji Circle */}
+                  <div className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-primary/5 text-2xl transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-sm border border-primary/10">
+                    {emoji}
                   </div>
 
                   {/* Content */}
@@ -252,7 +229,7 @@ function ServicesIndex() {
                     <h3 className="font-display text-lg font-bold leading-tight tracking-tight text-foreground">
                       {title}
                     </h3>
-                    <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground line-clamp-3 pr-2">
+                    <p className="mt-2 text-[13.5px] leading-relaxed text-muted-foreground line-clamp-3">
                       {detail}
                     </p>
                   </div>
