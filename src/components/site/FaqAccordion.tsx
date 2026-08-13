@@ -3,10 +3,7 @@ import { Plus, Minus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 15 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as const } },
-};
+
 
 export function FaqAccordion({ items }: { items: Faq[] }) {
   const [openId, setOpenId] = useState<string | null>(null);
@@ -16,8 +13,7 @@ export function FaqAccordion({ items }: { items: Faq[] }) {
       {items.map((f) => {
         const isOpen = openId === f.id;
         return (
-          <motion.div
-            variants={itemVariants}
+          <div
             key={f.id}
             className={`overflow-hidden rounded-xl transition-all duration-300 mb-3 ${
               isOpen
@@ -59,7 +55,7 @@ export function FaqAccordion({ items }: { items: Faq[] }) {
                 </motion.div>
               )}
             </AnimatePresence>
-          </motion.div>
+          </div>
         );
       })}
     </div>
