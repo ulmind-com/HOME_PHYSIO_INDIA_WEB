@@ -226,7 +226,7 @@ function ServicesIndex() {
 
                   {/* Content */}
                   <div>
-                    <h3 className="font-display text-lg font-bold leading-tight tracking-tight text-foreground">
+                    <h3 className="font-display text-[17px] font-semibold leading-tight tracking-tight text-foreground">
                       {title}
                     </h3>
                     <p className="mt-2 text-[13.5px] leading-relaxed text-muted-foreground line-clamp-3">
