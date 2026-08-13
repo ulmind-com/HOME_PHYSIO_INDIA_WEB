@@ -243,7 +243,7 @@ export function ComprehensiveServicesSection() {
                 {/* CTA Button */}
                 <div className="mt-5 pt-4 border-t border-border/50">
                   <NursingBookingModal 
-                    defaultService={service.title}
+                    defaultService=""
                     modalTitle={`Book ${service.title}`}
                     modalDescription="Fill out the details and our team will reach out within minutes."
                     serviceOptions={service.features}
