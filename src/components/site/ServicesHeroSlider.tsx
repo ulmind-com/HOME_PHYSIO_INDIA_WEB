@@ -125,7 +125,7 @@ const buttonVariant = {
 /* ── Component ────────────────────────────────────────────────────── */
 export function ServicesHeroSlider({ slides: dynamicSlides }: { slides?: HeroSlide[] }) {
   const { data: settings } = useQuery(settingsQ());
-  const whatsapp = settings?.contact_whatsapp || "919327647839";
+  const whatsapp = settings?.whatsapp || "919327647839";
 
   const slides = dynamicSlides && dynamicSlides.length > 0 ? dynamicSlides : FALLBACK_SLIDES;
 
