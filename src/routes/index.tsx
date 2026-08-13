@@ -16,7 +16,7 @@ import { ComprehensiveServicesSection } from "@/components/site/ComprehensiveSer
 import { HowItWorksSection } from "@/components/site/HowItWorksSection";
 import { ProfessionalsSection } from "@/components/site/ProfessionalsSection";
 import { PremiumScrollReveal } from "@/components/site/PremiumScrollReveal";
-import { WhyChooseUsSection } from "@/components/site/WhyChooseUsSection";
+
 import { CommitmentSection } from "@/components/site/CommitmentSection";
 
 export const Route = createFileRoute("/")({
@@ -82,10 +82,7 @@ function Home() {
         <ReviewsSection />
       </PremiumScrollReveal>
 
-      {/* Why Choose Nupun Section */}
-      <PremiumScrollReveal>
-        <WhyChooseUsSection />
-      </PremiumScrollReveal>
+
 
       {/* Commitment to Excellence Section */}
       <PremiumScrollReveal>
