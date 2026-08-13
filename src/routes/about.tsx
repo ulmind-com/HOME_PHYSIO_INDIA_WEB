@@ -169,7 +169,7 @@ function AboutPage() {
       </div>
 
       {/* ── Services (Premium Glassmorphism Grid) ────────────────────────────────────────── */}
-      <Section className="py-20 lg:py-28 bg-[#f8f9fa] relative overflow-hidden">
+      <Section className="pt-16 pb-12 lg:pt-20 lg:pb-16 bg-[#f8f9fa] relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-teal-500/5 rounded-full blur-[80px] pointer-events-none" />
 
@@ -218,7 +218,7 @@ function AboutPage() {
       </Section>
 
       {/* ── Medical Equipment ─────────────────────────────────────── */}
-      <Section className="py-20 lg:py-28 bg-white relative overflow-hidden">
+      <Section className="pt-12 pb-16 lg:pt-16 lg:pb-20 bg-white relative overflow-hidden">
         <div className="container-x">
           <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center">
             <div className="lg:col-span-5">
@@ -278,7 +278,7 @@ function AboutPage() {
       </Section>
 
       {/* ── Flexible Care & Locations (Clean Light Mode) ───────────────────────────── */}
-      <Section className="py-20 lg:py-28 bg-white relative overflow-hidden">
+      <Section className="pt-10 pb-16 lg:pt-12 lg:pb-20 bg-white relative overflow-hidden">
         <div className="container-x relative z-10">
           <div className="grid lg:grid-cols-2 gap-8 md:gap-12">
             {/* Flexible Care */}
