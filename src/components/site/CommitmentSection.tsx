@@ -95,7 +95,7 @@ export function CommitmentSection() {
             <span className="h-1.5 w-1.5 rounded-full bg-primary" />
             Our Promise
           </div>
-          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-semibold tracking-tight text-foreground leading-[1.15]">
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-medium tracking-tight text-foreground leading-[1.15]">
             Why Choose{" "}
             <span className="relative inline-block">
               <span className="relative z-10 text-primary">Nupun</span>
@@ -132,7 +132,7 @@ export function CommitmentSection() {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="mb-8"
             >
-              <h3 className="font-display text-2xl md:text-3xl font-semibold text-foreground tracking-tight">
+              <h3 className="font-display text-2xl md:text-3xl font-medium text-foreground tracking-tight">
                 Our Commitment to Excellence
               </h3>
             </motion.div>
