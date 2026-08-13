@@ -890,13 +890,10 @@ function ElderlyInlineForm() {
                       className="w-full rounded-full border border-border bg-black/5 px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-muted-foreground focus:text-foreground appearance-none"
                     >
                       <option value="">Select service</option>
-                      <option value="8, 12 & 24 Hour Elderly Care">8, 12 & 24 Hour Elderly Care</option>
-                      <option value="Personal Hygiene & Sponging">Personal Hygiene & Sponging</option>
-                      <option value="Diaper & Toileting Care">Diaper & Toileting Care</option>
-                      <option value="Feeding & Medicine Assistance">Feeding & Medicine Assistance</option>
-                      <option value="Walking & Mobility Support">Walking & Mobility Support</option>
-                      <option value="Bedridden Patient Care">Bedridden Patient Care</option>
-                      <option value="Companionship & Daily Support">Companionship & Daily Support</option>
+                      <option value="Elderly care">Elderly care</option>
+                      <option value="Patient care">Patient care</option>
+                      <option value="Bedridden Care">Bedridden Care</option>
+                      <option value="24 Hours attendant">24 Hours attendant</option>
                     </select>
                     <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
                   </div>
