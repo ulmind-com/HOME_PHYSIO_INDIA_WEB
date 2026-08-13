@@ -183,7 +183,7 @@ export function ProfessionalsSection() {
   const backdrop = backdropAsset.url;
 
   return (
-    <Section className="relative overflow-hidden pt-12 pb-8 md:pt-20 md:pb-10 lg:pt-28 lg:pb-16">
+    <Section className="relative overflow-hidden pt-0 pb-8 md:pt-0 md:pb-10 lg:pt-0 lg:pb-16">
       <div className="relative isolate overflow-hidden rounded-[2rem] border border-primary/10 shadow-[var(--shadow-elegant)]">
         {/* Full-section photo backdrop (replaces the dark shape) */}
         <motion.img
