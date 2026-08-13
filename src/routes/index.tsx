@@ -170,7 +170,7 @@ function TestimonialsSection() {
   ]);
 
   return (
-    <Section className="overflow-hidden pb-4">
+    <Section className="overflow-hidden pb-4 pt-10 lg:pt-12">
       <SectionHeader eyebrow="Testimonials & Reviews" title="They Say About Nupun" />
       <div className="mt-10 -mx-4 md:-mx-8">
         <div className="overflow-hidden cursor-grab active:cursor-grabbing" ref={emblaRef}>
@@ -245,7 +245,7 @@ function BlogVideosSection() {
   ]);
 
   return (
-    <Section className="overflow-hidden">
+    <Section className="overflow-hidden pb-10 lg:pb-12">
       <div className="flex items-end justify-between mb-10">
         <SectionHeader eyebrow="Care Blog" title="Latest from Our Care Blog" />
         <Link to="/blog" className="text-sm font-medium text-accent hover:underline mb-8">
