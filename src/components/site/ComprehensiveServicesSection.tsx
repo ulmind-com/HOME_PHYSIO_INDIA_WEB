@@ -11,6 +11,7 @@ type ServiceCard = {
   buttonText: string;
   buttonLink?: string;
   selectLabel: string;
+  formOptions?: string[];
 };
 
 const SERVICES: ServiceCard[] = [
@@ -37,6 +38,15 @@ const SERVICES: ServiceCard[] = [
     title: "Elderly Care",
     image: "/assets/services/elderly-care.png",
     features: [
+      "8, 12 & 24 Hour Elderly Care",
+      "Personal Hygiene & Sponging",
+      "Diaper & Toileting Care",
+      "Feeding & Medicine Assistance",
+      "Walking & Mobility Support",
+      "Bedridden Patient Care",
+      "Companionship & Daily Support",
+    ],
+    formOptions: [
       "Elderly care",
       "Patient care",
       "Bedridden Care",
@@ -243,7 +253,7 @@ export function ComprehensiveServicesSection() {
                     defaultService=""
                     modalTitle={`Book ${service.title}`}
                     modalDescription="Fill out the details and our team will reach out within minutes."
-                    serviceOptions={service.features}
+                    serviceOptions={service.formOptions || service.features}
                     selectPlaceholder={service.selectLabel}
                   >
                     <button className="group/btn w-full relative overflow-hidden rounded-full bg-primary px-5 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:bg-primary/90 hover:-translate-y-0.5 hover:shadow-md">
