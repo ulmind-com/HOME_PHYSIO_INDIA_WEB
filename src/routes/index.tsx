@@ -263,7 +263,7 @@ function BlogVideosSection() {
             {bItems.map((b, i) => (
               <div
                 key={`${b.id}-${i}`}
-                className="min-w-0 flex-[0_0_85%] sm:flex-[0_0_50%] md:flex-[0_0_35%] lg:flex-[0_0_28%] pr-4 md:pr-6 pb-4"
+                className="min-w-0 flex-[0_0_70%] sm:flex-[0_0_50%] md:flex-[0_0_35%] lg:flex-[0_0_28%] pr-4 md:pr-6 pb-4"
               >
                 <BlogCard blog={b} />
               </div>

@@ -11,7 +11,7 @@ export function BlogCard({ blog }: { blog: Blog }) {
       params={{ slug: blog.slug }}
       className="group flex flex-col overflow-hidden rounded-3xl border border-border bg-surface hover-glow hover:border-primary/60"
     >
-      <div className="aspect-[16/10] overflow-hidden bg-primary-soft">
+      <div className="aspect-[16/9] md:aspect-[16/10] overflow-hidden bg-primary-soft">
         {cover ? (
           <img
             src={cover}
@@ -26,17 +26,17 @@ export function BlogCard({ blog }: { blog: Blog }) {
           </div>
         )}
       </div>
-      <div className="p-6 flex-1 flex flex-col">
+      <div className="p-4 md:p-6 flex-1 flex flex-col">
         {blog.category_name && (
           <div className="text-xs uppercase tracking-[0.18em] text-accent">
             {blog.category_name}
           </div>
         )}
-        <h3 className="mt-2 font-display text-xl leading-snug line-clamp-2">{blog.title}</h3>
+        <h3 className="mt-1.5 md:mt-2 font-display text-base md:text-xl leading-snug line-clamp-2">{blog.title}</h3>
         {blog.excerpt && (
-          <p className="mt-3 text-sm text-muted-foreground line-clamp-3">{blog.excerpt}</p>
+          <p className="mt-2 md:mt-3 text-xs md:text-sm text-muted-foreground line-clamp-2 md:line-clamp-3">{blog.excerpt}</p>
         )}
-        <div className="mt-auto pt-5 flex items-center gap-3 text-xs text-muted-foreground">
+        <div className="mt-auto pt-3 md:pt-5 flex items-center gap-2 md:gap-3 text-[11px] md:text-xs text-muted-foreground">
           {blog.author_name && <span>{blog.author_name}</span>}
           {date && (
             <span>
