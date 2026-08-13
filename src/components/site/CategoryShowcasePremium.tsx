@@ -8,10 +8,10 @@ import { useCallback, useEffect } from "react";
 import type { Category } from "@/lib/api/types";
 import { categoriesQ } from "@/lib/api/queries";
 import { CategoryCardShape } from "./CategoryCardShape";
-const nursingAsset = { url: "/assets/categories/nursing-v2.jpg" };
-const elderAsset = { url: "/assets/categories/elder.jpg" };
-const physioAsset = { url: "/assets/categories/physio-v2.jpg" };
-const equipmentAsset = { url: "/assets/categories/equipment-v2.jpg" };
+const nursingAsset = { url: "/assets/categories/nursing-v2.jpg?v=2" };
+const elderAsset = { url: "/assets/categories/elder.jpg?v=2" };
+const physioAsset = { url: "/assets/categories/physio-v2.jpg?v=2" };
+const equipmentAsset = { url: "/assets/categories/equipment-v2.jpg?v=2" };
 
 type Variant = "a" | "b" | "c" | "d";
 
@@ -98,9 +98,13 @@ export function CategoryShowcasePremium() {
     const cat = categories[i];
     
     // Extract string URL if it's an ImageAsset object
-    const imageStr = cat?.image 
+    let imageStr = cat?.image 
       ? (typeof cat.image === "string" ? cat.image : cat.image.url) 
       : fb.image;
+
+    if (imageStr && !imageStr.includes("?")) {
+      imageStr = `${imageStr}?v=2`;
+    }
 
     // Detect dedicated landing pages by slug or name matching
     const catNameLower = (cat?.name ?? "").toLowerCase();
