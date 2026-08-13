@@ -78,6 +78,7 @@ export function NursingBookingModal({
   modalDescription?: string;
   serviceOptions?: string[];
   selectPlaceholder?: string;
+  source?: string;
 }) {
   const resolvedTitle = modalTitle || "Book a Nurse";
   const resolvedDescription = modalDescription || "Tell us about your requirements and our care team will contact you shortly.";
@@ -105,6 +106,7 @@ export function NursingBookingModal({
     mutationFn: (data: NursingFormValues) =>
       api.post<{ reference?: string }>("/bookings", {
         ...data,
+        source: source,
         preferred_date: new Date().toISOString().split("T")[0],
         address: "Pending (Provided via Quick Form)",
       }),
