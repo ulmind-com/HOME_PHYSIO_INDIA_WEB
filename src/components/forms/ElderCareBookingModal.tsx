@@ -11,10 +11,13 @@ import { api } from "@/lib/api/client";
 import { triggerBookingSuccess } from "@/components/site/GlobalBookingSuccess";
 
 const ELDER_SERVICES = [
-  "Elderly care",
-  "Patient care",
-  "Bedridden",
-  "24 hour attendant"
+  "8, 12 & 24 Hour Elderly Care",
+  "Personal Hygiene & Sponging",
+  "Diaper & Toileting Care",
+  "Feeding & Medicine Assistance",
+  "Walking & Mobility Support",
+  "Bedridden Patient Care",
+  "Companionship & Daily Support"
 ];
 
 const CITIES = [
