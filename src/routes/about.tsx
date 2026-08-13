@@ -245,7 +245,7 @@ function AboutPage() {
                 initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
                 className="hidden lg:block relative h-64 w-full rounded-[2rem] overflow-hidden border border-black/5 shadow-2xl group"
               >
-                 <img src="/assets/medical-equipment-home.jpg" alt="Medical Equipment" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onError={(e) => e.currentTarget.src = "/assets/services/bedridden_care.png"} />
+                 <img src="/assets/services/equipment-rental.png" alt="Medical Equipment" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onError={(e) => e.currentTarget.src = "/assets/equip.jpeg"} />
                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                  <div className="absolute bottom-6 left-6 right-6">
                     <div className="text-white font-semibold text-xl">High Quality Equipment</div>
