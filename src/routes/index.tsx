@@ -182,7 +182,7 @@ function TestimonialsSection() {
             {[...items, ...items, ...items].map((t, i) => (
               <div
                 key={`${t.id}-${i}`}
-                className="min-w-0 flex-[0_0_85%] sm:flex-[0_0_50%] md:flex-[0_0_35%] lg:flex-[0_0_28%] pr-4 md:pr-6"
+                className="min-w-0 flex-[0_0_72%] sm:flex-[0_0_50%] md:flex-[0_0_35%] lg:flex-[0_0_28%] pr-4 md:pr-6"
               >
                 <TestimonialCard t={t} />
               </div>
