@@ -870,7 +870,7 @@ function ElderlyInlineForm() {
                     <select
                       name="city"
                       required
-                      className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-muted-foreground focus:text-foreground appearance-none"
+                      className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-foreground appearance-none"
                     >
                       <option value="">Select city</option>
                       <option value="Faridabad">Faridabad</option>
@@ -887,7 +887,7 @@ function ElderlyInlineForm() {
                     <select
                       name="service"
                       required
-                      className="w-full rounded-full border border-border bg-black/5 px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-muted-foreground focus:text-foreground appearance-none"
+                      className="w-full rounded-full border border-border bg-black/5 px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-foreground appearance-none"
                     >
                       <option value="">Select service</option>
                       <option value="Elderly care">Elderly care</option>

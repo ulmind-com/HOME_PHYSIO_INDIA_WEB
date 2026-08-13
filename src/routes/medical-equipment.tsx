@@ -949,7 +949,7 @@ function EquipmentBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?:
                   <div className="relative">
                     <select
                       {...form.register("equipment_name")}
-                      className="w-full rounded-full border border-border bg-black/5 px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-muted-foreground focus:text-foreground appearance-none cursor-pointer"
+                      className="w-full rounded-full border border-border bg-black/5 px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-foreground appearance-none cursor-pointer"
                     >
                       <option value="">Select equipment</option>
                       {EQUIPMENT_OPTIONS.map((e) => (
@@ -972,7 +972,7 @@ function EquipmentBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?:
                     <div className="relative">
                       <select
                         {...form.register("address")}
-                        className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-muted-foreground focus:text-foreground appearance-none cursor-pointer"
+                        className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-foreground appearance-none cursor-pointer"
                       >
                         <option value="">Location</option>
                         {CITIES.map((c) => (
@@ -994,7 +994,7 @@ function EquipmentBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?:
                     <div className="relative">
                       <select
                         {...form.register("duration_days")}
-                        className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-muted-foreground focus:text-foreground appearance-none cursor-pointer"
+                        className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-foreground appearance-none cursor-pointer"
                       >
                         <option value="">Duration</option>
                         {["1 week", "2 weeks", "1 month", "3 months", "Other"].map((c) => (

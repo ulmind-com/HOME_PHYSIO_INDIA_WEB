@@ -934,7 +934,7 @@ function PhysioBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: st
                 <div>
                   <select
                     {...form.register("city")}
-                    className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-muted-foreground focus:text-foreground"
+                    className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-foreground"
                   >
                     <option value="">Select city</option>
                     {CITIES.map((c) => (
@@ -953,7 +953,7 @@ function PhysioBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: st
                 <div>
                   <select
                     {...form.register("service_name")}
-                    className="w-full rounded-xl border border-border bg-black/5 px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-muted-foreground focus:text-foreground"
+                    className="w-full rounded-xl border border-border bg-black/5 px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-foreground"
                   >
                     <option value="">Select physiotherapy service</option>
                     {PHYSIO_SERVICES.map((s) => (
