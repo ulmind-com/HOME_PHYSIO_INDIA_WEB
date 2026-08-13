@@ -70,16 +70,19 @@ export function NursingBookingModal({
   modalTitle,
   modalDescription,
   serviceOptions,
+  selectPlaceholder,
 }: {
   children: React.ReactNode;
   defaultService?: string;
   modalTitle?: string;
   modalDescription?: string;
   serviceOptions?: string[];
+  selectPlaceholder?: string;
 }) {
   const resolvedTitle = modalTitle || "Book a Nurse";
   const resolvedDescription = modalDescription || "Tell us about your requirements and our care team will contact you shortly.";
   const resolvedServices = serviceOptions || NURSING_SERVICES;
+  const resolvedPlaceholder = selectPlaceholder || "Select nursing service";
   const [open, setOpen] = useState(false);
   const [done, setDone] = useState(false);
   const [refCode, setRefCode] = useState("");
@@ -277,7 +280,7 @@ export function NursingBookingModal({
                         {...form.register("service_name")}
                         className="w-full rounded-full border border-border bg-black/5 px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-muted-foreground focus:text-foreground appearance-none cursor-pointer"
                       >
-                        <option value="">Select service</option>
+                        <option value="">{resolvedPlaceholder}</option>
                         {resolvedServices.map((s) => (
                           <option key={s} value={s}>
                             {s}

@@ -10,6 +10,7 @@ type ServiceCard = {
   features: string[];
   buttonText: string;
   buttonLink?: string;
+  selectLabel: string;
 };
 
 const SERVICES: ServiceCard[] = [
@@ -29,6 +30,7 @@ const SERVICES: ServiceCard[] = [
     ],
     buttonText: "Book Nursing Care",
     buttonLink: "/nursing-care",
+    selectLabel: "Select nursing service",
   },
   {
     id: "elderly",
@@ -45,6 +47,7 @@ const SERVICES: ServiceCard[] = [
     ],
     buttonText: "Book Elderly Care",
     buttonLink: "/elderly-care",
+    selectLabel: "Select elderly care service",
   },
   {
     id: "mother-baby",
@@ -59,6 +62,7 @@ const SERVICES: ServiceCard[] = [
       "Newborn Daily Care",
     ],
     buttonText: "Book Mother & Baby Care",
+    selectLabel: "Select mother & baby care service",
   },
   {
     id: "physio",
@@ -75,6 +79,7 @@ const SERVICES: ServiceCard[] = [
     ],
     buttonText: "Book Physiotherapy",
     buttonLink: "/physiotherapy",
+    selectLabel: "Select physiotherapy service",
   },
   {
     id: "equipment",
@@ -90,6 +95,7 @@ const SERVICES: ServiceCard[] = [
     ],
     buttonText: "Rent Equipment",
     buttonLink: "/medical-equipment",
+    selectLabel: "Select equipment type",
   },
   {
     id: "icu",
@@ -105,6 +111,7 @@ const SERVICES: ServiceCard[] = [
       "Critical Care Coordination",
     ],
     buttonText: "Book ICU Setup",
+    selectLabel: "Select ICU service",
   },
   {
     id: "sample",
@@ -118,6 +125,7 @@ const SERVICES: ServiceCard[] = [
       "Safe Sample Handling & Lab Coordination",
     ],
     buttonText: "Book Sample Collection",
+    selectLabel: "Select sample collection service",
   },
 ];
 
@@ -239,6 +247,7 @@ export function ComprehensiveServicesSection() {
                     modalTitle={`Book ${service.title}`}
                     modalDescription="Fill out the details and our team will reach out within minutes."
                     serviceOptions={service.features}
+                    selectPlaceholder={service.selectLabel}
                   >
                     <button className="group/btn w-full relative overflow-hidden rounded-full bg-primary px-5 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:bg-primary/90 hover:-translate-y-0.5 hover:shadow-md">
                       <span className="relative z-10 flex items-center justify-center gap-2">
