@@ -37,7 +37,7 @@ export function HowItWorksSection({ illustration }: { illustration?: string }) {
   }));
 
   return (
-    <section className="relative isolate overflow-hidden bg-background pt-24 pb-12 lg:pt-32 lg:pb-16">
+    <section className="relative isolate overflow-hidden bg-background pt-10 pb-12 lg:pt-12 lg:pb-16">
       {/* Ambient background */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <div
