@@ -10,8 +10,11 @@ import { categoriesQ } from "@/lib/api/queries";
 import { CategoryCardShape } from "./CategoryCardShape";
 const nursingAsset = { url: "/assets/categories/nursing-v2.jpg?v=2" };
 const elderAsset = { url: "/assets/categories/elder.jpg?v=2" };
+const motherBabyAsset = { url: "/assets/categories/mother-baby.png" };
 const physioAsset = { url: "/assets/categories/physio-v2.jpg?v=2" };
 const equipmentAsset = { url: "/assets/categories/equipment-v2.jpg?v=2" };
+const icuSetupAsset = { url: "/assets/categories/icu-setup.png" };
+const homeSampleAsset = { url: "/assets/categories/home-sample.png" };
 
 type Variant = "a" | "b" | "c" | "d";
 
@@ -31,6 +34,12 @@ const fallbacks: Array<{ title: string; description: string; image: string; vari
     dedicatedLink: "/elderly-care",
   },
   {
+    title: "Mother & Baby Care",
+    description: "Expert postnatal care for new mothers & newborns — feeding support, baby care & recovery.",
+    image: motherBabyAsset.url,
+    variant: "c",
+  },
+  {
     title: "Physiotherapy & Recovery",
     description: "In-home rehab, mobility & pain management by expert therapists.",
     image: physioAsset.url,
@@ -38,16 +47,28 @@ const fallbacks: Array<{ title: string; description: string; image: string; vari
     dedicatedLink: "/physiotherapy",
   },
   {
-    title: "Medical Equipment",
+    title: "Medical Equipment Rental",
     description: "Hospital-grade beds, oxygen, monitors — delivered & installed.",
     image: equipmentAsset.url,
     variant: "d",
     dedicatedLink: "/medical-equipment",
   },
+  {
+    title: "ICU Setup",
+    description: "Complete home ICU setup with ventilators, monitors & trained ICU nurses round the clock.",
+    image: icuSetupAsset.url,
+    variant: "a",
+  },
+  {
+    title: "Home Sample Collection",
+    description: "Convenient at-home blood tests & lab sample collection by certified phlebotomists.",
+    image: homeSampleAsset.url,
+    variant: "c",
+  },
 ];
 
 export function CategoryShowcasePremium() {
-  const { data: categoriesData } = useQuery(categoriesQ({ limit: 8 }));
+  const { data: categoriesData } = useQuery(categoriesQ({ limit: 10 }));
   const categories = categoriesData?.items ?? [];
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { align: "start", loop: true, containScroll: "trimSnaps", breakpoints: { "(max-width: 767px)": { active: false } } },
@@ -176,7 +197,7 @@ export function CategoryShowcasePremium() {
         </div>
         <div className="flex flex-col items-start md:items-end gap-6 text-left md:text-right">
           <p className="max-w-md text-base leading-relaxed text-muted-foreground">
-            Four pillars of premium home care — each designed around your family's unique rhythm and
+            Seven pillars of premium home care — each designed around your family's unique rhythm and
             delivered by verified professionals.
           </p>
           <div className="flex items-center gap-2">
@@ -255,7 +276,7 @@ export function CategoryShowcasePremium() {
               return (
                 <motion.div
                   key={item.title + i}
-                  className="min-w-0 w-full md:w-auto md:flex-[0_0_50%] lg:flex-[0_0_42%] md:pl-6 lg:pl-8"
+                  className="min-w-0 w-full md:w-auto md:flex-[0_0_50%] lg:flex-[0_0_38%] md:pl-6 lg:pl-8"
                   initial={{ opacity: 0, y: 40 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-60px" }}
