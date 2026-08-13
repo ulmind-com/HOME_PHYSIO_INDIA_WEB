@@ -1,65 +1,209 @@
 import { motion } from "framer-motion";
-import { BadgeCheck } from "lucide-react";
+import { BadgeCheck, Shield, Clock, Users, HeartPulse, MessageCircle, Award } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { settingsQ } from "@/lib/api/queries";
+import { imgUrl } from "@/lib/utils";
 
 const DEFAULT_COMMITMENTS = [
-  "2-hour caregiver replacement SLA",
-  "Background-verified & trained staff",
-  "Clinical oversight on invasive care",
-  "Transparent hourly / daily pricing",
-  "WhatsApp shift updates & vitals",
-  "24/7 care desk, always reachable",
+  {
+    icon: "clock",
+    text: "2-hour caregiver replacement SLA",
+  },
+  {
+    icon: "shield",
+    text: "Background-verified & trained staff",
+  },
+  {
+    icon: "heartpulse",
+    text: "Clinical oversight on invasive care",
+  },
+  {
+    icon: "award",
+    text: "Transparent hourly / daily pricing",
+  },
+  {
+    icon: "message",
+    text: "WhatsApp shift updates & vitals",
+  },
+  {
+    icon: "users",
+    text: "24/7 care desk, always reachable",
+  },
 ];
+
+const ICON_MAP: Record<string, React.ElementType> = {
+  clock: Clock,
+  shield: Shield,
+  heartpulse: HeartPulse,
+  award: Award,
+  message: MessageCircle,
+  users: Users,
+  default: BadgeCheck,
+};
+
+const stagger = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08 } },
+};
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 22 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const },
+  },
+};
 
 export function CommitmentSection() {
   const { data: settings } = useQuery(settingsQ());
-  const COMMITMENTS = settings?.about_commitments?.length
-    ? settings.about_commitments
+
+  const commitmentItems = settings?.about_commitments?.length
+    ? settings.about_commitments.map((text) => ({ icon: "default", text }))
     : DEFAULT_COMMITMENTS;
 
+  // Dynamic image from admin panel, fallback to default
+  const rawImg = settings?.commitment_image;
+  const teamImage = imgUrl(rawImg) || "/assets/commitment-team.png";
+
   return (
-    <section className="relative overflow-hidden rounded-[2.5rem] mx-4 lg:mx-auto max-w-[1400px] shadow-2xl shadow-primary/20 my-16">
-      {/* Background Image */}
-      <div className="absolute inset-0 -z-20">
-        <img
-          src="/assets/hero-slide-1.jpeg"
-          alt="Commitment to excellence"
-          className="w-full h-full object-cover object-center"
+    <section className="relative w-full overflow-hidden bg-gradient-to-br from-[#f7fafa] via-white to-[#f0f7f6] py-16 md:py-24 lg:py-28">
+      {/* Decorative elements */}
+      <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+        <div className="absolute -top-40 -right-40 h-[500px] w-[500px] rounded-full bg-primary/[0.04] blur-[100px]" />
+        <div className="absolute -bottom-40 -left-40 h-[400px] w-[400px] rounded-full bg-accent/[0.04] blur-[100px]" />
+        {/* Dot pattern */}
+        <div
+          className="absolute right-[8%] top-[15%] h-32 w-32 opacity-[0.08] text-primary"
+          style={{
+            backgroundImage: "radial-gradient(currentColor 1.2px, transparent 1.2px)",
+            backgroundSize: "14px 14px",
+          }}
         />
       </div>
-      {/* Premium Gradient Overlay */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#179686]/95 via-[#117669]/90 to-[#0A4A41]/95 mix-blend-multiply" />
-      <div className="absolute inset-0 -z-10 bg-primary/40 backdrop-blur-[2px]" />
-      <div className="container-x py-20 text-primary-foreground lg:py-28">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
-          <div>
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/15 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em]">
-              <BadgeCheck className="h-3.5 w-3.5" /> Our commitment to excellence
-            </div>
-            <h2 className="font-display text-4xl tracking-tight md:text-5xl">
-              Standards we won't compromise on.
-            </h2>
-            <p className="mt-5 max-w-lg text-white/80">
-              We go beyond standard care to protect your peace of mind and your loved one's
-              well-being — every visit, every time.
-            </p>
+
+      <div className="container-x relative z-10">
+        {/* Top Section — Why Choose Nupun */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mx-auto mb-14 md:mb-20 max-w-3xl text-center"
+        >
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-accent backdrop-blur">
+            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+            Our Promise
           </div>
-          <div className="grid gap-3 sm:grid-cols-2">
-            {COMMITMENTS.map((c, i) => (
-              <motion.div
-                key={c}
-                initial={{ opacity: 0, y: 14 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.45, delay: i * 0.05 }}
-                className="flex items-start gap-3 rounded-2xl border border-white/15 bg-white/10 p-4 text-sm backdrop-blur"
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-semibold tracking-tight text-foreground leading-[1.15]">
+            Why Choose{" "}
+            <span className="relative inline-block">
+              <span className="relative z-10 text-primary">Nupun</span>
+              <svg
+                className="absolute -bottom-2 left-0 h-3 w-full text-primary/30"
+                viewBox="0 0 200 12"
+                fill="none"
+                aria-hidden="true"
               >
-                <BadgeCheck className="mt-0.5 h-4 w-4 shrink-0 text-white" />
-                <span className="text-white/90">{c}</span>
-              </motion.div>
-            ))}
+                <path
+                  d="M2 8 Q 50 -2, 100 6 T 198 4"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </span>{" "}
+            Home Care?
+          </h2>
+          <p className="mt-6 text-base md:text-lg leading-relaxed text-muted-foreground max-w-2xl mx-auto">
+            We go beyond standard care to ensure your peace of mind and your loved one's well-being
+            — every visit, every time.
+          </p>
+        </motion.div>
+
+        {/* Bottom — Commitments Grid + Image */}
+        <div className="grid items-center gap-10 lg:gap-16 lg:grid-cols-[1fr_auto]">
+          {/* Left — Commitment Cards */}
+          <div>
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="mb-8"
+            >
+              <h3 className="font-display text-2xl md:text-3xl font-semibold text-foreground tracking-tight">
+                Our Commitment to Excellence
+              </h3>
+            </motion.div>
+
+            <motion.div
+              variants={stagger}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-60px" }}
+              className="grid gap-3 sm:gap-4 sm:grid-cols-2"
+            >
+              {commitmentItems.map((item, i) => {
+                const IconComp = ICON_MAP[item.icon] || ICON_MAP.default;
+                return (
+                  <motion.div
+                    key={i}
+                    variants={fadeUp}
+                    className="group flex items-start gap-4 rounded-2xl border border-border/60 bg-white/80 p-5 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.06)] backdrop-blur-sm transition-all duration-300 hover:shadow-[0_8px_30px_-8px_rgba(0,0,0,0.1)] hover:-translate-y-0.5 hover:border-primary/30"
+                  >
+                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-white">
+                      <IconComp className="h-5 w-5" strokeWidth={2} />
+                    </div>
+                    <span className="text-[15px] font-medium leading-snug text-foreground/90 pt-2">
+                      {item.text}
+                    </span>
+                  </motion.div>
+                );
+              })}
+            </motion.div>
           </div>
+
+          {/* Right — Team Image (dynamic from admin panel) */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, x: 30 }}
+            whileInView={{ opacity: 1, scale: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="relative mx-auto lg:mx-0 w-full max-w-md lg:max-w-[420px]"
+          >
+            {/* Decorative frame elements */}
+            <div className="absolute -inset-3 rounded-[2rem] bg-gradient-to-br from-primary/20 via-primary/5 to-accent/10 -z-10 blur-sm" />
+            <div className="absolute -top-4 -right-4 h-20 w-20 rounded-full bg-primary/10 -z-10" />
+            <div className="absolute -bottom-4 -left-4 h-16 w-16 rounded-full bg-accent/10 -z-10" />
+
+            <div className="overflow-hidden rounded-[1.5rem] border-2 border-white shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)]">
+              <img
+                src={teamImage}
+                alt="Nupun Home Health Care Team"
+                loading="lazy"
+                decoding="async"
+                className="w-full h-auto object-cover aspect-[4/3]"
+              />
+            </div>
+
+            {/* Floating badge */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.5, duration: 0.5 }}
+              className="absolute -bottom-5 -left-5 md:-left-8 z-10 flex items-center gap-2.5 rounded-2xl border border-border/60 bg-white px-4 py-3 shadow-lg"
+            >
+              <div className="grid h-9 w-9 place-items-center rounded-xl bg-primary text-white">
+                <Shield className="h-4.5 w-4.5" strokeWidth={2.5} />
+              </div>
+              <div>
+                <div className="text-sm font-bold text-foreground leading-none">100%</div>
+                <div className="text-[11px] text-muted-foreground mt-0.5">Verified Staff</div>
+              </div>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
     </section>

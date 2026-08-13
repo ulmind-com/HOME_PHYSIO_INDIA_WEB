@@ -210,6 +210,7 @@ export type Settings = {
   about_stats?: { value: string; label: string }[];
   about_values?: { title: string; body: string }[];
   about_commitments?: string[];
+  commitment_image?: string | ImageAsset | null;
 
   // How It Works
   how_it_works_steps?: { title: string; body: string }[];

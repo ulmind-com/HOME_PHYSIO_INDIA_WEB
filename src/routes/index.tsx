@@ -82,9 +82,7 @@ function Home() {
         <ReviewsSection />
       </PremiumScrollReveal>
 
-
-
-      {/* Commitment to Excellence Section */}
+      {/* Why Choose Nupun + Commitment to Excellence */}
       <PremiumScrollReveal>
         <CommitmentSection />
       </PremiumScrollReveal>
