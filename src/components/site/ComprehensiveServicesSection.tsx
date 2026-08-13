@@ -234,7 +234,12 @@ export function ComprehensiveServicesSection() {
 
                 {/* CTA Button */}
                 <div className="mt-5 pt-4 border-t border-border/50">
-                  <NursingBookingModal defaultService={service.title}>
+                  <NursingBookingModal 
+                    defaultService={service.title}
+                    modalTitle={`Book ${service.title}`}
+                    modalDescription="Fill out the details and our team will reach out within minutes."
+                    serviceOptions={service.features}
+                  >
                     <button className="group/btn w-full relative overflow-hidden rounded-full bg-primary px-5 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:bg-primary/90 hover:-translate-y-0.5 hover:shadow-md">
                       <span className="relative z-10 flex items-center justify-center gap-2">
                         {service.buttonText}

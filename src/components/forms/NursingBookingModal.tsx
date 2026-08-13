@@ -67,10 +67,19 @@ const fieldAnim = {
 export function NursingBookingModal({
   children,
   defaultService = "",
+  modalTitle,
+  modalDescription,
+  serviceOptions,
 }: {
   children: React.ReactNode;
   defaultService?: string;
+  modalTitle?: string;
+  modalDescription?: string;
+  serviceOptions?: string[];
 }) {
+  const resolvedTitle = modalTitle || "Book a Nurse";
+  const resolvedDescription = modalDescription || "Tell us about your requirements and our care team will contact you shortly.";
+  const resolvedServices = serviceOptions || NURSING_SERVICES;
   const [open, setOpen] = useState(false);
   const [done, setDone] = useState(false);
   const [refCode, setRefCode] = useState("");
@@ -121,7 +130,7 @@ export function NursingBookingModal({
     >
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-w-[480px] w-[95vw] overflow-hidden rounded-[1.75rem] border border-border bg-white p-6 md:p-8 shadow-2xl sm:h-auto h-auto max-h-[90dvh] overflow-y-auto">
-        <DialogTitle className="sr-only">Book a Nurse</DialogTitle>
+        <DialogTitle className="sr-only">{resolvedTitle}</DialogTitle>
         
         <div className="relative pt-2 pb-2">
           <AnimatePresence mode="wait">
@@ -201,10 +210,10 @@ export function NursingBookingModal({
                 {/* Header */}
                 <div className="mb-6">
                   <h3 className="font-display text-2xl md:text-3xl tracking-tight text-foreground mb-2">
-                    Book a Nurse
+                    {resolvedTitle}
                   </h3>
                   <p className="text-muted-foreground text-sm">
-                    Tell us about your requirements and our care team will contact you shortly.
+                    {resolvedDescription}
                   </p>
                 </div>
 
@@ -268,8 +277,8 @@ export function NursingBookingModal({
                         {...form.register("service_name")}
                         className="w-full rounded-full border border-border bg-black/5 px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-muted-foreground focus:text-foreground appearance-none cursor-pointer"
                       >
-                        <option value="">Select nursing service</option>
-                        {NURSING_SERVICES.map((s) => (
+                        <option value="">Select service</option>
+                        {resolvedServices.map((s) => (
                           <option key={s} value={s}>
                             {s}
                           </option>
