@@ -71,20 +71,21 @@ function Home() {
         <BlogVideosSection />
       </PremiumScrollReveal>
 
-      {/* 6. They Say About Nupun (Testimonials & Reviews) */}
+      {/* 6. They Say About Nupun (Testimonials) */}
       <PremiumScrollReveal>
         <TestimonialsSection />
-      </PremiumScrollReveal>
-      <PremiumScrollReveal>
-        <VideoTestimonialsSection />
-      </PremiumScrollReveal>
-      <PremiumScrollReveal>
-        <ReviewsSection />
       </PremiumScrollReveal>
 
       {/* Why Choose Nupun + Commitment to Excellence */}
       <PremiumScrollReveal>
         <CommitmentSection />
+      </PremiumScrollReveal>
+
+      <PremiumScrollReveal>
+        <VideoTestimonialsSection />
+      </PremiumScrollReveal>
+      <PremiumScrollReveal>
+        <ReviewsSection />
       </PremiumScrollReveal>
 
       {/* 8. FAQ's Section */}
