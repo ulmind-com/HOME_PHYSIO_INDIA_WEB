@@ -245,7 +245,7 @@ function BlogVideosSection() {
   ]);
 
   return (
-    <Section className="overflow-hidden pb-10 lg:pb-12">
+    <Section className="overflow-hidden pt-10 pb-10 lg:pt-12 lg:pb-12">
       <div className="flex items-end justify-between mb-10">
         <SectionHeader eyebrow="Care Blog" title="Latest from Our Care Blog" />
         <Link to="/blog" className="text-sm font-medium text-accent hover:underline mb-8">
