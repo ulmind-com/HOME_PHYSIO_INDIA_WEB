@@ -7,39 +7,68 @@ import { settingsQ } from "@/lib/api/queries";
 import type { HeroSlide } from "@/lib/api/types";
 
 /* ── Default / fallback slides (static assets) ────────────────────── */
-const FALLBACK_SLIDES: HeroSlide[] = [
+type LocalHeroSlide = HeroSlide & {
+  bgDesktop?: string;
+  bgMobile?: string;
+};
+
+const FALLBACK_SLIDES: LocalHeroSlide[] = [
   {
-    title: "Trusted Home Healthcare Services",
-    subtitle:
-      "Compassionate and reliable home healthcare for seniors, patients and recovering individuals in the comfort of their homes.",
-    button_text: "Book a Consult",
-    button_link: "/booking",
-    background_image: { url: "/assets/hero-slide-1.jpeg" },
+    title: "Expert Home Nursing Care",
+    subtitle: "Compassionate and reliable home healthcare with professional nurses available 24/7.",
+    button_text: "Book a Nurse",
+    button_link: "/services/home-nursing-care",
+    bgDesktop: "/assets/hero-desktop/hero_desktop_1_nursing_1786737139820.jpg",
+    bgMobile: "/assets/hero-mobile/hero_mobile_1_nursing_1786737195851.jpg",
   },
   {
-    title: "Expert Nursing Care at Home",
-    subtitle:
-      "From trained attendants and nursing to physiotherapy — flexible care with hourly, short-term and long-term options.",
-    button_text: "Explore Services",
-    button_link: "/services#catalogue",
-    background_image: { url: "/assets/hero-slide-2.jpeg" },
+    title: "Compassionate Elderly Care",
+    subtitle: "Dedicated caregivers providing dignified, patient-centred elder care in the comfort of home.",
+    button_text: "Book an Attendant",
+    button_link: "/services/elderly-care",
+    bgDesktop: "/assets/hero-desktop/hero_desktop_2_elderly_1786737273511.jpg",
+    bgMobile: "/assets/hero-mobile/hero_mobile_2_elderly_1786737290173.jpg",
   },
   {
-    title: "Post-Surgery Recovery Support",
-    subtitle:
-      "Medically supervised recovery care delivered at home, ensuring comfort and faster healing with professional oversight.",
-    button_text: "Get Started",
-    button_link: "/booking",
-    background_image: { url: "/assets/hero-slide-3.jpeg" },
+    title: "Mother & Baby Care",
+    subtitle: "Specialized postnatal care to ensure the health and comfort of both mother and newborn.",
+    button_text: "Book Newborn Care",
+    button_link: "/services/mother-and-baby-care",
+    bgDesktop: "/assets/hero-desktop/hero_desktop_3_mother_baby_1786737385210.jpg",
+    bgMobile: "/assets/hero-mobile/hero_mobile_3_mother_baby_1786737410186.jpg",
   },
   {
-    title: "Compassionate Elder Care",
-    subtitle:
-      "Dedicated caregivers providing dignified, patient-centred elder care — because your loved ones deserve the very best.",
-    button_text: "Talk to an Advisor",
+    title: "Physiotherapy & Recovery",
+    subtitle: "Medically supervised recovery care and physiotherapy delivered at home for faster healing.",
+    button_text: "Book a Physiotherapist",
+    button_link: "/services/physiotherapy-and-recovery",
+    bgDesktop: "/assets/hero-desktop/hero_desktop_4_physio_1786737419510.jpg",
+    bgMobile: "/assets/hero-mobile/hero_mobile_4_physio_1786737469387.jpg",
+  },
+  {
+    title: "Medical Equipment Rental",
+    subtitle: "High-quality, sanitized medical equipment like hospital beds and oxygen concentrators delivered to your home.",
+    button_text: "Rent Equipment Now",
+    button_link: "/equipment",
+    bgDesktop: "/assets/hero-desktop/hero_desktop_5_equipment_1786737493628.jpg",
+    bgMobile: "/assets/hero-mobile/hero_mobile_5_equipment_1786737520362.jpg",
+  },
+  {
+    title: "Professional ICU Setup",
+    subtitle: "Complete ICU-level care and equipment setup at home for critically ill patients.",
+    button_text: "Request ICU Setup",
     button_link: "/contact",
-    background_image: { url: "/assets/hero-slide-4.jpeg" },
+    bgDesktop: "/assets/hero-desktop/hero_desktop_6_icu_1786737546853.jpg",
+    bgMobile: "/assets/hero-mobile/hero_mobile_6_icu_1786737784974.jpg",
   },
+  {
+    title: "Home Sample Collection",
+    subtitle: "Safe and hygienic diagnostic sample collection right from your doorstep by professional phlebotomists.",
+    button_text: "Book Home Lab Test",
+    button_link: "/services/home-sample-collection",
+    bgDesktop: "/assets/hero-nurse-patient.png",
+    bgMobile: "/assets/hero-nurse-patient.png",
+  }
 ];
 
 const SLIDE_DURATION = 6000; // ms per slide
@@ -170,14 +199,17 @@ export function ServicesHeroSlider({ slides: dynamicSlides }: { slides?: HeroSli
           className="absolute inset-0 -z-20"
           style={{ transformStyle: "preserve-3d" }}
         >
-          <img
-            src={bg}
-            alt={slide.title ?? ""}
-            className="h-full w-full object-cover object-center"
-            style={{
-              animation: `heroKenBurns ${SLIDE_DURATION}ms ease-out forwards`,
-            }}
-          />
+          <picture>
+            <source media="(max-width: 768px)" srcSet={(slide as any).bgMobile || bg} />
+            <img
+              src={(slide as any).bgDesktop || bg}
+              alt={slide.title ?? ""}
+              className="h-full w-full object-cover object-center"
+              style={{
+                animation: `heroKenBurns ${SLIDE_DURATION}ms ease-out forwards`,
+              }}
+            />
+          </picture>
         </motion.div>
       </AnimatePresence>
 
