@@ -10,6 +10,7 @@ import type {
   Service,
   Settings,
   SocialLinks,
+  StaffMember,
   Testimonial,
   Video,
   Category,
@@ -143,5 +144,17 @@ export const seoQ = (pageKey: string) =>
     queryKey: ["seo", pageKey],
     queryFn: ({ signal }) =>
       api.get<SeoMeta>("/settings/seo", { page_key: pageKey }, signal).catch(() => null),
+    staleTime: FIVE_MIN,
+  });
+
+export const staffQ = (params: { limit?: number; category?: string } = {}) =>
+  queryOptions({
+    queryKey: ["staff", params],
+    queryFn: ({ signal }) =>
+      api.get<Paginated<StaffMember>>(
+        "/staff",
+        { page_size: params.limit ?? 50, is_active: true, category: params.category },
+        signal,
+      ),
     staleTime: FIVE_MIN,
   });

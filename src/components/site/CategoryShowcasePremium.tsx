@@ -156,7 +156,7 @@ export function CategoryShowcasePremium() {
   }, [emblaApi]);
 
   return (
-    <div className="relative z-10 pt-16 lg:pt-24 pb-8 lg:pb-12 overflow-hidden">
+    <div className="relative z-10 pt-4 lg:pt-4 pb-8 lg:pb-12 overflow-hidden">
       {/* Decorative background dots */}
       <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden>
         <div
@@ -175,36 +175,35 @@ export function CategoryShowcasePremium() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="container-x mb-14 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end"
+        className="container-x mb-14 flex flex-col items-center text-center"
       >
-        <div className="flex-1">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-accent backdrop-blur">
-            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-            What we specialize in
-          </div>
-          <h3 className="relative font-display text-4xl tracking-tight md:text-5xl lg:text-6xl">
-            Our Categories
-            <svg
-              className="absolute -bottom-3 left-0 h-3 w-40 text-primary"
-              viewBox="0 0 160 12"
-              fill="none"
-              aria-hidden
-            >
-              <path
-                d="M2 8 Q 40 -2, 80 6 T 158 4"
-                stroke="currentColor"
-                strokeWidth="3"
-                strokeLinecap="round"
-              />
-            </svg>
-          </h3>
+        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-accent backdrop-blur">
+          <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+          What we specialize in
         </div>
-        <div className="flex flex-col items-start md:items-end gap-6 text-left md:text-right">
-          <p className="max-w-md text-base leading-relaxed text-muted-foreground">
-            Seven pillars of premium home care — each designed around your family's unique rhythm and
-            delivered by verified professionals.
-          </p>
-          <div className="flex items-center gap-2">
+        <h3 className="relative font-display text-4xl tracking-tight md:text-5xl lg:text-6xl flex justify-center">
+          Our Categories
+          <svg
+            className="absolute -bottom-3 left-1/2 -translate-x-1/2 h-3 w-40 text-primary"
+            viewBox="0 0 160 12"
+            fill="none"
+            aria-hidden
+          >
+            <path
+              d="M2 8 Q 40 -2, 80 6 T 158 4"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+            />
+          </svg>
+        </h3>
+
+        <div className="mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground">
+          Seven pillars of premium home care — each designed around your family's unique rhythm and
+          delivered by verified professionals.
+        </div>
+        
+        <div className="mt-8 flex items-center gap-2">
             <button
               onClick={scrollPrev}
               className="grid h-12 w-12 place-items-center rounded-full border border-border bg-surface text-foreground transition-all hover:border-primary/40 hover:bg-primary/5 hover:text-primary"
@@ -220,7 +219,6 @@ export function CategoryShowcasePremium() {
               <ChevronRight className="h-5 w-5" />
             </button>
           </div>
-        </div>
       </motion.div>
 
       {/* Carousel */}

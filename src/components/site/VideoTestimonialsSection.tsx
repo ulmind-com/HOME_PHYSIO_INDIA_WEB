@@ -78,7 +78,7 @@ export function VideoTestimonialsSection() {
 
           {/* Right: heading + marquee */}
           <div className="lg:col-span-7">
-            <h2 className="font-display text-3xl md:text-4xl font-bold leading-[1.1]">
+            <h2 className="font-display text-3xl md:text-4xl leading-[1.1]">
               What They Say About <span className="text-primary">Nupun Home Care</span>
             </h2>
             <p className="mt-3 max-w-lg text-sm md:text-base text-muted-foreground">

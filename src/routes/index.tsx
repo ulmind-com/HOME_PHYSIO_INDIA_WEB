@@ -21,6 +21,7 @@ import { ProfessionalsSection } from "@/components/site/ProfessionalsSection";
 import { PremiumScrollReveal } from "@/components/site/PremiumScrollReveal";
 
 import { CommitmentSection } from "@/components/site/CommitmentSection";
+import { OurStaffSection } from "@/components/site/OurStaffSection";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -50,6 +51,11 @@ function Home() {
       {/* 1. Hero Page / Top Banner */}
       <Hero />
       <TrustBar />
+
+      {/* 1.5. Our Staff Section */}
+      <PremiumScrollReveal>
+        <OurStaffSection />
+      </PremiumScrollReveal>
 
       {/* 2. Our Categories Section (Quick view icons/boxes) */}
       <PremiumScrollReveal>
@@ -201,7 +207,7 @@ function TestimonialsSection() {
 
   return (
     <Section className="overflow-hidden pb-4 pt-2 lg:pt-4">
-      <SectionHeader eyebrow="Testimonials & Reviews" title="They Say About Nupun" />
+      <SectionHeader eyebrow="Testimonials & Reviews" title="They Say About Nupun" align="center" />
       <div className="mt-10 -mx-4 md:-mx-8">
         <div className="overflow-hidden cursor-grab active:cursor-grabbing" ref={emblaRef}>
           <div className="flex pl-4 md:pl-8">
@@ -318,8 +324,12 @@ function BlogVideosSection() {
 
   return (
     <Section className="overflow-hidden pt-10 pb-2 lg:pt-12 lg:pb-4">
-      <div className="flex items-end justify-between mb-10">
-        <SectionHeader eyebrow="Care Blog" title="Latest from Our Care Blog" />
+      <div className="md:flex items-end justify-between mb-10">
+        <SectionHeader
+          eyebrow="Care Blog"
+          title="Latest from Our Care Blog"
+          align="center"
+        />
         <Link to="/blog" className="hidden text-sm font-medium text-primary hover:underline md:flex items-center gap-1 group">
           All posts <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
         </Link>
@@ -432,7 +442,7 @@ function FaqSection() {
               hidden: { opacity: 0, y: 20 },
               show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
             }}
-            className="font-display text-3xl md:text-4xl lg:text-[2.75rem] font-bold text-foreground mb-6 leading-tight tracking-tight"
+            className="font-display text-3xl md:text-4xl lg:text-[2.75rem] text-foreground mb-6 leading-tight tracking-tight"
           >
             Frequently Asked
             <br />

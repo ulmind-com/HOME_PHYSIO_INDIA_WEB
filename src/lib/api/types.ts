@@ -284,3 +284,22 @@ export type ReviewSummary = {
   distribution: Record<string, number>;
   google_reviews_link?: string | null;
 };
+
+export type StaffMember = {
+  id: string;
+  name: string;
+  photo?: ImageAsset | null;
+  category: string;
+  rating: number;
+  service_label: string;
+  price_7_days?: number | null;
+  price_15_days?: number | null;
+  price_30_days?: number | null;
+  experience?: string | null;
+  bio?: string | null;
+  is_featured: boolean;
+  is_active: boolean;
+  order: number;
+  created_at?: string;
+  updated_at?: string;
+};
