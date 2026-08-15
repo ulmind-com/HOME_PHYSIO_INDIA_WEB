@@ -175,15 +175,37 @@ function ThemeInjector() {
     }
   }, [settings?.favicon]);
 
-  if (!settings?.theme_primary && !settings?.theme_accent) return null;
+  // Load Google Font dynamically
+  useEffect(() => {
+    if (!settings?.font_family) return;
+    const fontId = 'dynamic-google-font';
+    const existing = document.getElementById(fontId);
+    if (existing) existing.remove();
+
+    const fontName = settings.font_family.replace(/ /g, '+');
+    const link = document.createElement('link');
+    link.id = fontId;
+    link.rel = 'stylesheet';
+    link.href = `https://fonts.googleapis.com/css2?family=${fontName}:wght@300;400;500;600;700;800;900&display=swap`;
+    document.head.appendChild(link);
+  }, [settings?.font_family]);
+
+  const hasTheme = settings?.theme_primary || settings?.theme_accent || settings?.font_family;
+  if (!hasTheme) return null;
+
+  const fontCss = settings?.font_family
+    ? `--font-sans: '${settings.font_family}', system-ui, sans-serif; --font-display: '${settings.font_family}', system-ui, sans-serif;`
+    : "";
 
   return (
     <style
       dangerouslySetInnerHTML={{
         __html: `:root {
-        ${settings.theme_primary ? `--primary: ${settings.theme_primary}; --ring: ${settings.theme_primary};` : ""}
-        ${settings.theme_accent ? `--accent: ${settings.theme_accent};` : ""}
-      }`,
+        ${settings?.theme_primary ? `--primary: ${settings.theme_primary}; --ring: ${settings.theme_primary};` : ""}
+        ${settings?.theme_accent ? `--accent: ${settings.theme_accent};` : ""}
+        ${fontCss}
+      }
+      ${settings?.font_family ? `body, * { font-family: '${settings.font_family}', system-ui, sans-serif !important; } .font-display { font-family: '${settings.font_family}', system-ui, sans-serif !important; }` : ""}`,
       }}
     />
   );
