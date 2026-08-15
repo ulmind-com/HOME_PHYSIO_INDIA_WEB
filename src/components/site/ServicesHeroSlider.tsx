@@ -5,6 +5,10 @@ import { ArrowUpRight, ArrowRight, ChevronLeft, ChevronRight } from "lucide-reac
 import { useQuery } from "@tanstack/react-query";
 import { settingsQ } from "@/lib/api/queries";
 import type { HeroSlide } from "@/lib/api/types";
+import { ElderCareBookingModal } from "@/components/forms/ElderCareBookingModal";
+import { EquipmentBookingModal } from "@/components/forms/EquipmentBookingModal";
+import { NursingBookingModal } from "@/components/forms/NursingBookingModal";
+import { PhysioBookingModal } from "@/components/forms/PhysioBookingModal";
 
 /* ── Default / fallback slides (static assets) ────────────────────── */
 type LocalHeroSlide = HeroSlide & {
@@ -159,6 +163,7 @@ export function ServicesHeroSlider({ slides: dynamicSlides }: { slides?: HeroSli
   const slides = dynamicSlides && dynamicSlides.length > 0 ? dynamicSlides : FALLBACK_SLIDES;
 
   const [[current, direction], setCurrent] = useState([0, 0]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval>>(null);
   const pausedRef = useRef(false);
 
@@ -171,13 +176,14 @@ export function ServicesHeroSlider({ slides: dynamicSlides }: { slides?: HeroSli
 
   /* Auto-advance */
   useEffect(() => {
+    if (isModalOpen) return;
     timerRef.current = setInterval(() => {
       go(current + 1, 1);
     }, SLIDE_DURATION);
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [current, go]);
+  }, [current, go, isModalOpen]);
 
   const slide = slides[current];
   const bg = slide.background_image?.url || "/assets/hero-slide-1.jpeg";
@@ -274,13 +280,37 @@ export function ServicesHeroSlider({ slides: dynamicSlides }: { slides?: HeroSli
 
             {/* CTA Buttons */}
             <motion.div variants={buttonVariant} className="mt-6 md:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-              <Link
-                to={slide.button_link || "/booking"}
-                className="group inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-[15px] font-semibold text-primary-foreground shadow-sm transition-all duration-300 hover:brightness-110 hover:-translate-y-0.5"
-              >
-                {slide.button_text || "Book Trusted Care"}
-                <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </Link>
+              {(() => {
+                const link = slide.button_link || "";
+                const btnContent = (
+                  <button
+                    type="button"
+                    className="group inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-[15px] font-semibold text-primary-foreground shadow-sm transition-all duration-300 hover:brightness-110 hover:-translate-y-0.5"
+                  >
+                    {slide.button_text || "Book Trusted Care"}
+                    <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </button>
+                );
+
+                if (link.includes("elderly")) {
+                  return <ElderCareBookingModal onOpenChange={setIsModalOpen}>{btnContent}</ElderCareBookingModal>;
+                }
+                if (link.includes("nursing") || link.includes("mother") || link.includes("icu")) {
+                  return <NursingBookingModal onOpenChange={setIsModalOpen}>{btnContent}</NursingBookingModal>;
+                }
+                if (link.includes("physio")) {
+                  return <PhysioBookingModal onOpenChange={setIsModalOpen}>{btnContent}</PhysioBookingModal>;
+                }
+                if (link.includes("equipment")) {
+                  return <EquipmentBookingModal onOpenChange={setIsModalOpen}>{btnContent}</EquipmentBookingModal>;
+                }
+
+                return (
+                  <Link to={link || "/booking"}>
+                    {btnContent}
+                  </Link>
+                );
+              })()}
 
               <a
                 href={`https://wa.me/${whatsapp}`}

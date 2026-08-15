@@ -260,20 +260,7 @@ export function ProfessionalsSection() {
               ))}
             </ul>
 
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="mt-10"
-            >
-              <Link
-                to="/about"
-                className="inline-flex items-center gap-2 rounded-full bg-primary px-5 md:px-7 py-3 md:py-3.5 text-xs md:text-sm font-medium text-primary-foreground shadow-[var(--shadow-elegant)] hover:gap-3 transition-all"
-              >
-                View More About Us <ArrowRight className="h-4 w-4" />
-              </Link>
-            </motion.div>
+
           </div>
 
           {/* RIGHT — 2×2 image tiles grid */}
@@ -323,15 +310,6 @@ export function ProfessionalsSection() {
                     >
                       {t.description}
                     </motion.p>
-                    <motion.div variants={overlayItem} className="mt-2 sm:mt-3 pointer-events-auto">
-                      <Link
-                        to={t.cta_link}
-                        className="inline-flex items-center gap-1 sm:gap-1.5 rounded-full bg-white/95 text-foreground px-2.5 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-[11px] font-medium hover:bg-primary hover:text-primary-foreground transition-colors"
-                      >
-                        {t.cta_label}
-                        <ArrowRight className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
-                      </Link>
-                    </motion.div>
                   </motion.div>
                 </motion.article>
               );

@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
+import useEmblaCarousel from "embla-carousel-react";
+import AutoScroll from "embla-carousel-auto-scroll";
 import { videosQ } from "@/lib/api/queries";
 import { VideoCard } from "@/components/site/cards/VideoCard";
 import { VideoPlayerModal } from "@/components/site/VideoPlayerModal";
 import type { Video } from "@/lib/api/types";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const WALL = "/assets/testimonials-wall.jpg";
 
@@ -12,6 +15,43 @@ export function VideoTestimonialsSection() {
   const { data } = useQuery(videosQ({ limit: 24 }));
   const items = data?.items ?? [];
   const [playing, setPlaying] = useState<Video | null>(null);
+
+  const isMobile = useIsMobile();
+  const plugins = !isMobile ? [
+    AutoScroll({
+      playOnInit: true,
+      speed: 1.2,
+      stopOnInteraction: false,
+      stopOnMouseEnter: true,
+      direction: "forward",
+    })
+  ] : [];
+
+  const [emblaRef, emblaApi] = useEmblaCarousel({ 
+    loop: true, 
+    dragFree: !isMobile, 
+    align: "start" 
+  }, plugins);
+
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
+
+  const onInit = useCallback((emblaApi: any) => {
+    setScrollSnaps(emblaApi.scrollSnapList());
+  }, []);
+
+  const onSelect = useCallback((emblaApi: any) => {
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, []);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onInit(emblaApi);
+    onSelect(emblaApi);
+    emblaApi.on("reInit", onInit);
+    emblaApi.on("reInit", onSelect);
+    emblaApi.on("select", onSelect);
+  }, [emblaApi, onInit, onSelect]);
 
   if (!items.length) return null;
 
@@ -49,18 +89,30 @@ export function VideoTestimonialsSection() {
               <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 md:w-16 bg-gradient-to-r from-background to-transparent" />
               <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 md:w-16 bg-gradient-to-l from-background to-transparent" />
 
-              <motion.div
-                className="flex gap-4 w-max"
-                animate={{ x: ["0%", "-50%"] }}
-                transition={{ duration, ease: "linear", repeat: Infinity }}
-                style={{ willChange: "transform" }}
-              >
-                {loop.map((v, i) => (
-                  <div key={`${v.id}-${i}`} className="w-[170px] md:w-[190px] shrink-0">
-                    <VideoCard v={v} onPlay={setPlaying} variant="testimonial" aspect="9/16" />
-                  </div>
-                ))}
-              </motion.div>
+              <div className="overflow-hidden cursor-grab active:cursor-grabbing" ref={emblaRef}>
+                <div className="flex gap-4">
+                  {loop.map((v, i) => (
+                    <div key={`${v.id}-${i}`} className="min-w-0 flex-[0_0_170px] md:flex-[0_0_190px]">
+                      <VideoCard v={v} onPlay={setPlaying} variant="testimonial" aspect="9/16" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              {isMobile && (
+                <div className="flex justify-center gap-2 mt-6 relative z-20">
+                  {scrollSnaps.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => emblaApi?.scrollTo(index)}
+                      className={`h-2 rounded-full transition-all duration-300 ${
+                        index === selectedIndex ? "w-6 bg-primary" : "w-2 bg-primary/20"
+                      }`}
+                      aria-label={`Go to slide ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>

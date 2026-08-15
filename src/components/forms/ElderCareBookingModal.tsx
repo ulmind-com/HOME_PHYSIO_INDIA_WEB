@@ -24,12 +24,17 @@ const CITIES = [
   "Gurugram"
 ];
 
-export function ElderCareBookingModal({ children }: { children: React.ReactNode }) {
+export function ElderCareBookingModal({ children, onOpenChange }: { children: React.ReactNode; onOpenChange?: (open: boolean) => void }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
   const formRef = useRef<HTMLFormElement>(null);
+
+  const handleOpenChange = (newOpen: boolean) => {
+    setIsOpen(newOpen);
+    onOpenChange?.(newOpen);
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -52,7 +57,7 @@ export function ElderCareBookingModal({ children }: { children: React.ReactNode 
       
       setTimeout(() => {
         setIsSuccess(false);
-        setIsOpen(false);
+        handleOpenChange(false);
       }, 3000);
     } catch (error) {
       console.error("Booking failed:", error);
@@ -63,7 +68,7 @@ export function ElderCareBookingModal({ children }: { children: React.ReactNode 
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-w-[480px] w-[95vw] overflow-hidden rounded-[1.75rem] border border-border bg-white p-6 md:p-8 shadow-2xl sm:h-auto h-auto max-h-[90dvh] overflow-y-auto">
         <DialogTitle className="sr-only">Book an Attendant</DialogTitle>
@@ -205,7 +210,7 @@ export function ElderCareBookingModal({ children }: { children: React.ReactNode 
                 Thank you. Our care team will contact you shortly to confirm the details.
               </p>
               <button
-                onClick={() => setIsOpen(false)}
+                onClick={() => handleOpenChange(false)}
                 className="rounded-full border border-border bg-white px-8 py-3 text-sm font-medium text-foreground hover:border-primary transition-colors duration-300"
               >
                 Close

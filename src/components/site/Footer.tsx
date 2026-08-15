@@ -1,7 +1,29 @@
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { settingsQ, socialQ, servicesQ } from "@/lib/api/queries";
-import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
+const FacebookIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="currentColor">
+    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+  </svg>
+);
+
+const InstagramIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="currentColor">
+    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+  </svg>
+);
+
+const TwitterIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="currentColor">
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+  </svg>
+);
+
+const YoutubeIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="currentColor">
+    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.5 12 3.5 12 3.5s-7.505 0-9.377.55a3.015 3.015 0 0 0-2.122 2.136C0 8.07 0 12 0 12s0 3.93.498 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.55 9.377.55 9.377.55s7.505 0 9.377-.55a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+  </svg>
+);
 
 export function Footer() {
   const { data: settings } = useQuery(settingsQ());
@@ -12,22 +34,21 @@ export function Footer() {
   const services = servicesData?.items ?? [];
 
   return (
-    <footer className="relative mt-0 bg-[#F2F0EC] pt-16 pb-0 sm:pt-20 flex flex-col">
+    <footer className="relative mt-0 bg-black sm:bg-[#F2F0EC] pt-16 pb-0 sm:pt-20 flex flex-col">
       {/* Background Image at the bottom half */}
       <div
-        className="absolute inset-x-0 bottom-0 h-[80%] z-0 pointer-events-none"
-        style={{
-          WebkitMaskImage: "linear-gradient(to bottom, transparent, black 35%)",
-          maskImage: "linear-gradient(to bottom, transparent, black 35%)",
-        }}
+        className="absolute inset-x-0 bottom-0 h-full sm:h-[80%] z-0 pointer-events-none [mask-image:none] sm:[mask-image:linear-gradient(to_bottom,transparent,black_35%)] [-webkit-mask-image:none] sm:[-webkit-mask-image:linear-gradient(to_bottom,transparent,black_35%)]"
       >
-        <img
-          src={settings?.footer_image || "/assets/hero-slide-2.jpeg"}
-          alt=""
-          className="w-full h-full object-cover object-[center_30%]"
-        />
+        <picture>
+          <source media="(max-width: 639px)" srcSet="/assets/footer_mobile_bg.jpg" />
+          <img
+            src={settings?.footer_image || "/assets/hero-slide-2.jpeg"}
+            alt=""
+            className="w-full h-full object-cover object-[center_30%] opacity-60 sm:opacity-100"
+          />
+        </picture>
         {/* Darken/tint the image slightly so white text pops */}
-        <div className="absolute inset-0 bg-black/10 mix-blend-multiply"></div>
+        <div className="absolute inset-0 bg-black/10 mix-blend-multiply sm:block hidden"></div>
       </div>
 
       <div className="container-x relative z-10 flex flex-col justify-between flex-grow">
@@ -49,44 +70,40 @@ export function Footer() {
                   </svg>
                 </div>
               )}
-              <div className="font-display text-xl tracking-tight text-foreground">{name}</div>
+              <div className="font-display text-xl tracking-tight text-white sm:text-foreground">{name}</div>
             </div>
 
-            <h3 className="font-display text-xl sm:text-2xl md:text-3xl tracking-tight text-foreground mb-3 md:mb-4 leading-[1.15]">
-              {settings?.tagline || "Your premium home healthcare partner"}
-            </h3>
+            {settings?.tagline && (
+              <h3 className="font-display text-xl sm:text-2xl md:text-3xl tracking-tight text-white sm:text-foreground mb-3 md:mb-4 leading-[1.15]">
+                {settings.tagline}
+              </h3>
+            )}
 
-            <p className="text-[13px] md:text-[15px] leading-relaxed text-muted-foreground max-w-md mb-6 md:mb-8">
-              {settings?.footer_description ||
-                `${name} brings expert doctors, compassionate nurses, and hospital-grade equipment directly to your doorstep. Verified professionals ensuring your loved ones get the care they deserve.`}
-            </p>
-
-            <Link
-              to="/booking"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-black px-5 md:px-6 py-3 md:py-3.5 text-xs md:text-sm font-semibold text-white shadow-xl shadow-black/10 hover:bg-black/80 hover:-translate-y-0.5 transition-all duration-300"
-            >
-              Book an Appointment
-            </Link>
+            {settings?.footer_description && (
+              <p className="text-[13px] md:text-[15px] leading-relaxed text-white/80 sm:text-muted-foreground max-w-md mb-6 md:mb-8">
+                {settings.footer_description}
+              </p>
+            )}
 
             <div className="mt-6 md:mt-10">
-              <h4 className="text-[15px] font-semibold text-foreground mb-4">
+              <h4 className="text-[15px] font-semibold text-white sm:text-foreground mb-4">
                 Follow our social media
               </h4>
               <div className="flex gap-3">
-                {social?.facebook && <SocialIcon Icon={Facebook} href={social.facebook} />}
-                {social?.instagram && <SocialIcon Icon={Instagram} href={social.instagram} />}
-                {social?.twitter && <SocialIcon Icon={Twitter} href={social.twitter} />}
-                {social?.youtube && <SocialIcon Icon={Youtube} href={social.youtube} />}
+                {social?.facebook && <SocialIcon Icon={FacebookIcon} href={social.facebook} />}
+                {social?.instagram && <SocialIcon Icon={InstagramIcon} href={social.instagram} />}
+                {social?.twitter && <SocialIcon Icon={TwitterIcon} href={social.twitter} />}
+                {social?.youtube && <SocialIcon Icon={YoutubeIcon} href={social.youtube} />}
                 {/* Fallback if no social links from API */}
                 {!social?.facebook &&
                   !social?.instagram &&
                   !social?.twitter &&
                   !social?.youtube && (
                     <>
-                      <SocialIcon Icon={Facebook} href="#" />
-                      <SocialIcon Icon={Instagram} href="#" />
-                      <SocialIcon Icon={Twitter} href="#" />
-                      <SocialIcon Icon={Youtube} href="#" />
+                      <SocialIcon Icon={FacebookIcon} href="#" />
+                      <SocialIcon Icon={InstagramIcon} href="#" />
+                      <SocialIcon Icon={TwitterIcon} href="#" />
+                      <SocialIcon Icon={YoutubeIcon} href="#" />
                     </>
                   )}
               </div>
@@ -172,7 +189,7 @@ export function Footer() {
 function FooterCol({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="flex flex-col">
-      <div className="text-base font-semibold text-foreground mb-6">{title}</div>
+      <div className="text-base font-semibold text-white sm:text-foreground mb-6">{title}</div>
       <div className="flex flex-col gap-4">{children}</div>
     </div>
   );
@@ -182,7 +199,7 @@ function FooterLink({ to, children }: { to: string; children: React.ReactNode })
   return (
     <Link
       to={to}
-      className="text-[15px] font-medium text-muted-foreground hover:text-primary transition-colors"
+      className="text-[15px] font-medium text-white/80 sm:text-muted-foreground hover:text-white sm:hover:text-primary transition-colors"
     >
       {children}
     </Link>
@@ -201,7 +218,7 @@ function SocialIcon({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="w-9 h-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-accent hover:text-accent-foreground transition-colors shadow-sm"
+      className="w-9 h-9 rounded-full bg-white/20 sm:bg-primary text-white sm:text-primary-foreground flex items-center justify-center hover:bg-white/40 sm:hover:bg-accent sm:hover:text-accent-foreground transition-colors shadow-sm"
     >
       <Icon className="w-4 h-4" fill="currentColor" />
     </a>

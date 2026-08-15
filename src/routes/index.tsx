@@ -1,3 +1,6 @@
+import { useEffect, useState, useCallback } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { ArrowRight } from "lucide-react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
@@ -159,15 +162,42 @@ function TestimonialsSection() {
   const rawItems = data?.items ?? [];
   const items = rawItems.length ? rawItems : DEFAULT_TESTIMONIALS;
 
-  const [emblaRef] = useEmblaCarousel({ loop: true, dragFree: true, align: "start" }, [
+  const isMobile = useIsMobile();
+  const plugins = !isMobile ? [
     AutoScroll({
       playOnInit: true,
       speed: 1.2,
       stopOnInteraction: false,
       stopOnMouseEnter: true,
       direction: "forward",
-    }),
-  ]);
+    })
+  ] : [];
+
+  const [emblaRef, emblaApi] = useEmblaCarousel({ 
+    loop: true, 
+    dragFree: !isMobile, 
+    align: "start" 
+  }, plugins);
+
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
+
+  const onInit = useCallback((emblaApi: any) => {
+    setScrollSnaps(emblaApi.scrollSnapList());
+  }, []);
+
+  const onSelect = useCallback((emblaApi: any) => {
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, []);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onInit(emblaApi);
+    onSelect(emblaApi);
+    emblaApi.on("reInit", onInit);
+    emblaApi.on("reInit", onSelect);
+    emblaApi.on("select", onSelect);
+  }, [emblaApi, onInit, onSelect]);
 
   return (
     <Section className="overflow-hidden pb-4 pt-2 lg:pt-4">
@@ -178,7 +208,7 @@ function TestimonialsSection() {
             {[...items, ...items, ...items].map((t, i) => (
               <div
                 key={`${t.id}-${i}`}
-                className="min-w-0 flex-[0_0_72%] sm:flex-[0_0_50%] md:flex-[0_0_35%] lg:flex-[0_0_28%] pr-4 md:pr-6"
+                className="min-w-0 flex-[0_0_85%] sm:flex-[0_0_50%] md:flex-[0_0_35%] lg:flex-[0_0_28%] pr-4 md:pr-6"
               >
                 <TestimonialCard t={t} />
               </div>
@@ -186,6 +216,21 @@ function TestimonialsSection() {
           </div>
         </div>
       </div>
+      
+      {isMobile && (
+        <div className="flex justify-center gap-2 mt-6">
+          {scrollSnaps.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => emblaApi?.scrollTo(index)}
+              className={`h-2 rounded-full transition-all duration-300 ${
+                index === selectedIndex ? "w-6 bg-primary" : "w-2 bg-primary/20"
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
+      )}
     </Section>
   );
 }
@@ -234,22 +279,49 @@ function BlogVideosSection() {
   const rawItems = blogs?.items ?? [];
   const bItems = rawItems.length ? rawItems : [...DEFAULT_BLOGS, ...DEFAULT_BLOGS];
 
-  const [emblaRef] = useEmblaCarousel({ loop: true, dragFree: true, align: "start" }, [
+  const isMobile = useIsMobile();
+  const plugins = !isMobile ? [
     AutoScroll({
       playOnInit: true,
       speed: 1.2,
       stopOnInteraction: false,
       stopOnMouseEnter: true,
       direction: "forward",
-    }),
-  ]);
+    })
+  ] : [];
+
+  const [emblaRef, emblaApi] = useEmblaCarousel({ 
+    loop: true, 
+    dragFree: !isMobile, 
+    align: "start" 
+  }, plugins);
+
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
+
+  const onInit = useCallback((emblaApi: any) => {
+    setScrollSnaps(emblaApi.scrollSnapList());
+  }, []);
+
+  const onSelect = useCallback((emblaApi: any) => {
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, []);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onInit(emblaApi);
+    onSelect(emblaApi);
+    emblaApi.on("reInit", onInit);
+    emblaApi.on("reInit", onSelect);
+    emblaApi.on("select", onSelect);
+  }, [emblaApi, onInit, onSelect]);
 
   return (
     <Section className="overflow-hidden pt-10 pb-2 lg:pt-12 lg:pb-4">
       <div className="flex items-end justify-between mb-10">
         <SectionHeader eyebrow="Care Blog" title="Latest from Our Care Blog" />
-        <Link to="/blog" className="text-sm font-medium text-accent hover:underline mb-8">
-          All posts →
+        <Link to="/blog" className="hidden text-sm font-medium text-primary hover:underline md:flex items-center gap-1 group">
+          All posts <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
         </Link>
       </div>
 
@@ -259,13 +331,34 @@ function BlogVideosSection() {
             {bItems.map((b, i) => (
               <div
                 key={`${b.id}-${i}`}
-                className="min-w-0 flex-[0_0_70%] sm:flex-[0_0_50%] md:flex-[0_0_35%] lg:flex-[0_0_28%] pr-4 md:pr-6 pb-4"
+                className="min-w-0 flex-[0_0_85%] sm:flex-[0_0_50%] md:flex-[0_0_35%] lg:flex-[0_0_30%] pr-4 md:pr-6"
               >
                 <BlogCard blog={b} />
               </div>
             ))}
           </div>
         </div>
+      </div>
+      
+      {isMobile && (
+        <div className="flex justify-center gap-2 mt-6">
+          {scrollSnaps.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => emblaApi?.scrollTo(index)}
+              className={`h-2 rounded-full transition-all duration-300 ${
+                index === selectedIndex ? "w-6 bg-primary" : "w-2 bg-primary/20"
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
+      )}
+      
+      <div className="mt-8 flex justify-center md:hidden">
+        <Link to="/blog" className="text-sm font-medium text-primary hover:underline flex items-center gap-1 group">
+          All posts <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+        </Link>
       </div>
     </Section>
   );

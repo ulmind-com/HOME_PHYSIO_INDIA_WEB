@@ -48,7 +48,7 @@ export const EQUIPMENT_OPTIONS = [
   "Suction Machine",
   "Air Mattress",
   "Walker",
-  "Other",
+  "Others",
 ];
 
 const fieldAnim = {
@@ -64,12 +64,19 @@ const fieldAnim = {
 export function EquipmentBookingModal({
   children,
   defaultEquipment = "",
+  onOpenChange,
 }: {
   children: React.ReactNode;
   defaultEquipment?: string;
+  onOpenChange?: (open: boolean) => void;
 }) {
   const [open, setOpen] = useState(false);
   const [done, setDone] = useState(false);
+  
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen);
+    onOpenChange?.(newOpen);
+  };
   const [refCode, setRefCode] = useState("");
 
   const { data: settings } = useQuery(settingsQ());
@@ -126,7 +133,7 @@ export function EquipmentBookingModal({
     <Dialog
       open={open}
       onOpenChange={(val) => {
-        setOpen(val);
+        handleOpenChange(val);
         if (!val) {
           setTimeout(() => {
             setDone(false);
@@ -199,7 +206,7 @@ export function EquipmentBookingModal({
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.6 }}
-                  onClick={() => setOpen(false)}
+                  onClick={() => handleOpenChange(false)}
                   className="rounded-full border border-border bg-white px-8 py-3 text-sm font-medium text-foreground hover:border-primary transition-colors duration-300"
                 >
                   Close

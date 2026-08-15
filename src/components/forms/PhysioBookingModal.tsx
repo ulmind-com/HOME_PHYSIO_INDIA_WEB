@@ -40,7 +40,7 @@ export const PHYSIO_SERVICES = [
   "Geriatric Physiotherapy",
   "Mobility & Balance Training",
   "Pain Management & Exercise Therapy",
-  "Other",
+  "Others",
 ];
 
 const fieldAnim = {
@@ -56,12 +56,19 @@ const fieldAnim = {
 export function PhysioBookingModal({
   children,
   defaultService = "",
+  onOpenChange,
 }: {
   children: React.ReactNode;
   defaultService?: string;
+  onOpenChange?: (open: boolean) => void;
 }) {
   const [open, setOpen] = useState(false);
   const [done, setDone] = useState(false);
+
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen);
+    onOpenChange?.(newOpen);
+  };
   const [refCode, setRefCode] = useState("");
 
   const { data: settings } = useQuery(settingsQ());
@@ -98,7 +105,7 @@ export function PhysioBookingModal({
     <Dialog
       open={open}
       onOpenChange={(val) => {
-        setOpen(val);
+        handleOpenChange(val);
         if (!val) {
           setTimeout(() => {
             setDone(false);
@@ -171,7 +178,7 @@ export function PhysioBookingModal({
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.6 }}
-                  onClick={() => setOpen(false)}
+                  onClick={() => handleOpenChange(false)}
                   className="rounded-full border border-border bg-white px-8 py-3 text-sm font-medium text-foreground hover:border-primary transition-colors duration-300"
                 >
                   Close

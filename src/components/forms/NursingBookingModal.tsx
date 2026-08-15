@@ -51,7 +51,7 @@ const NURSING_SERVICES = [
   "Post-Hospitalisation Nursing Care",
   "Vital Signs Monitoring",
   "Bed Sore Care",
-  "Other Nursing Requirement",
+  "Others",
 ];
 
 const fieldAnim = {
@@ -72,6 +72,7 @@ export function NursingBookingModal({
   serviceOptions,
   selectPlaceholder,
   source,
+  onOpenChange,
 }: {
   children: React.ReactNode;
   defaultService?: string;
@@ -80,6 +81,7 @@ export function NursingBookingModal({
   serviceOptions?: string[];
   selectPlaceholder?: string;
   source?: string;
+  onOpenChange?: (open: boolean) => void;
 }) {
   const resolvedTitle = modalTitle || "Book a Nurse";
   const resolvedDescription = modalDescription || "Tell us about your requirements and our care team will contact you shortly.";
@@ -88,6 +90,11 @@ export function NursingBookingModal({
   const [open, setOpen] = useState(false);
   const [done, setDone] = useState(false);
   const [refCode, setRefCode] = useState("");
+
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen);
+    onOpenChange?.(newOpen);
+  };
 
   const { data: settings } = useQuery(settingsQ());
   const phone = settings?.phone?.replace(/[^\\d+]/g, "");
@@ -124,7 +131,7 @@ export function NursingBookingModal({
     <Dialog
       open={open}
       onOpenChange={(val) => {
-        setOpen(val);
+        handleOpenChange(val);
         if (!val) {
           setTimeout(() => {
             setDone(false);
@@ -198,7 +205,7 @@ export function NursingBookingModal({
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.6 }}
-                  onClick={() => setOpen(false)}
+                  onClick={() => handleOpenChange(false)}
                   className="rounded-full border border-border bg-white px-8 py-3 text-sm font-medium text-foreground hover:border-primary transition-colors duration-300"
                 >
                   Close

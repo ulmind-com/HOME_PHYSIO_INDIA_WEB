@@ -67,9 +67,49 @@ const fallbacks: Array<{ title: string; description: string; image: string; vari
   },
 ];
 
-export function CategoryShowcasePremium() {
+export function usePremiumCategories() {
   const { data: categoriesData } = useQuery(categoriesQ({ limit: 10 }));
   const categories = categoriesData?.items ?? [];
+
+  return fallbacks.map((fb, i) => {
+    const cat = categories[i];
+    
+    // Extract string URL if it's an ImageAsset object
+    let imageStr = cat?.image 
+      ? (typeof cat.image === "string" ? cat.image : cat.image.url) 
+      : fb.image;
+
+    if (imageStr && !imageStr.includes("?")) {
+      imageStr = `${imageStr}?v=2`;
+    }
+
+    // Detect dedicated landing pages by slug or name matching
+    const catNameLower = (cat?.name ?? "").toLowerCase();
+    const catSlugLower = (cat?.slug ?? "").toLowerCase();
+    const dedicatedLink =
+      catNameLower.includes("elder") || catNameLower.includes("senior") || catSlugLower.includes("elder")
+        ? "/elderly-care"
+        : catNameLower.includes("nurs") || catSlugLower.includes("nurs")
+        ? "/nursing-care"
+        : catNameLower.includes("physio") || catSlugLower.includes("physio")
+        ? "/physiotherapy"
+        : catNameLower.includes("equip") || catSlugLower.includes("equip")
+        ? "/medical-equipment"
+        : fb.dedicatedLink ?? null;
+
+    return {
+      title: cat?.name || fb.title,
+      description: cat?.description || fb.description,
+      image: imageStr || fb.image,
+      slug: cat?.slug || "",
+      variant: fb.variant,
+      dedicatedLink,
+    };
+  });
+}
+
+export function CategoryShowcasePremium() {
+  const items = usePremiumCategories();
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { align: "start", loop: true, containScroll: "trimSnaps", breakpoints: { "(max-width: 767px)": { active: false } } },
     [
@@ -114,42 +154,6 @@ export function CategoryShowcasePremium() {
       emblaApi.off("settle", onSettle);
     };
   }, [emblaApi]);
-
-  const items = fallbacks.map((fb, i) => {
-    const cat = categories[i];
-    
-    // Extract string URL if it's an ImageAsset object
-    let imageStr = cat?.image 
-      ? (typeof cat.image === "string" ? cat.image : cat.image.url) 
-      : fb.image;
-
-    if (imageStr && !imageStr.includes("?")) {
-      imageStr = `${imageStr}?v=2`;
-    }
-
-    // Detect dedicated landing pages by slug or name matching
-    const catNameLower = (cat?.name ?? "").toLowerCase();
-    const catSlugLower = (cat?.slug ?? "").toLowerCase();
-    const dedicatedLink =
-      catNameLower.includes("elder") || catNameLower.includes("senior") || catSlugLower.includes("elder")
-        ? "/elderly-care"
-        : catNameLower.includes("nurs") || catSlugLower.includes("nurs")
-        ? "/nursing-care"
-        : catNameLower.includes("physio") || catSlugLower.includes("physio")
-        ? "/physiotherapy"
-        : catNameLower.includes("equip") || catSlugLower.includes("equip")
-        ? "/medical-equipment"
-        : fb.dedicatedLink ?? null;
-
-    return {
-      title: cat?.name || fb.title,
-      description: cat?.description || fb.description,
-      image: imageStr || fb.image,
-      slug: cat?.slug || "",
-      variant: fb.variant,
-      dedicatedLink,
-    };
-  });
 
   return (
     <div className="relative z-10 pt-16 lg:pt-24 pb-8 lg:pb-12 overflow-hidden">

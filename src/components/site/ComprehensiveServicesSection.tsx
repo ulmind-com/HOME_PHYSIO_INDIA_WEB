@@ -32,6 +32,17 @@ const SERVICES: ServiceCard[] = [
     buttonText: "Book Nursing Care",
     buttonLink: "/nursing-care",
     selectLabel: "Select nursing service",
+    formOptions: [
+      "Skilled Nursing Care at Home",
+      "Injection & IV Drip Services",
+      "Wound & Bed Sore Dressing",
+      "Catheter Insertion & Care",
+      "Ryles Tube Insertion & Feeding",
+      "Tracheostomy Care",
+      "Post-Hospitalization Care",
+      "BP & Sugar Monitoring",
+      "Others",
+    ],
   },
   {
     id: "elderly",
@@ -70,6 +81,15 @@ const SERVICES: ServiceCard[] = [
     ],
     buttonText: "Book Mother & Baby Care",
     selectLabel: "Select mother & baby care service",
+    formOptions: [
+      "New Mother Care",
+      "Baby Care & Assistance",
+      "Mother Hygiene & Personal Care",
+      "Feeding Support",
+      "Postnatal Care Support",
+      "Newborn Daily Care",
+      "Others",
+    ],
   },
   {
     id: "physio",
@@ -87,6 +107,16 @@ const SERVICES: ServiceCard[] = [
     buttonText: "Book Physiotherapy",
     buttonLink: "/physiotherapy",
     selectLabel: "Select physiotherapy service",
+    formOptions: [
+      "Physiotherapy at Home",
+      "Post-Surgery Rehabilitation",
+      "Stroke Rehabilitation",
+      "Mobility & Walking Training",
+      "Pain Management",
+      "Senior Physiotherapy",
+      "Exercise & Recovery Programs",
+      "Others",
+    ],
   },
   {
     id: "equipment",
@@ -103,6 +133,15 @@ const SERVICES: ServiceCard[] = [
     buttonText: "Rent Equipment",
     buttonLink: "/medical-equipment",
     selectLabel: "Select equipment type",
+    formOptions: [
+      "Hospital Beds",
+      "Wheelchairs",
+      "Oxygen Concentrators",
+      "BiPAP & CPAP Machines",
+      "Suction Machines",
+      "Patient Care & Mobility Equipment",
+      "Others",
+    ],
   },
   {
     id: "icu",
@@ -119,6 +158,16 @@ const SERVICES: ServiceCard[] = [
     ],
     buttonText: "Book ICU Setup",
     selectLabel: "Select ICU service",
+    formOptions: [
+      "Home ICU Setup",
+      "ICU Bed & Essential Equipment",
+      "Oxygen Support",
+      "Suction Support",
+      "Monitoring Equipment",
+      "Trained Nursing Support",
+      "Critical Care Coordination",
+      "Others",
+    ],
   },
   {
     id: "sample",
@@ -133,6 +182,14 @@ const SERVICES: ServiceCard[] = [
     ],
     buttonText: "Book Sample Collection",
     selectLabel: "Select sample collection service",
+    formOptions: [
+      "Blood Sample Collection",
+      "Urine Sample Collection",
+      "Other Routine Diagnostic Samples",
+      "Home Collection Service",
+      "Safe Sample Handling & Lab Coordination",
+      "Others",
+    ],
   },
 ];
 

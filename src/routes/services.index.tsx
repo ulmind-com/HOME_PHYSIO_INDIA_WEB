@@ -19,6 +19,7 @@ import { FaqAccordion } from "@/components/site/FaqAccordion";
 import { ServiceCardPro } from "@/components/site/cards/ServiceCardPro";
 import { VideoTestimonialsSection } from "@/components/site/VideoTestimonialsSection";
 import { ServicesHeroSlider } from "@/components/site/ServicesHeroSlider";
+import { usePremiumCategories } from "@/components/site/CategoryShowcasePremium";
 
 export const Route = createFileRoute("/services/")({
   head: () => ({
@@ -79,11 +80,80 @@ const CONDITIONS = [
   "ICU-at-Home",
 ];
 
+function CategoryCardGridItem({ cat, index }: { cat: any; index: number }) {
+  const linkProps = cat.dedicatedLink
+    ? { to: cat.dedicatedLink }
+    : cat.slug
+    ? { to: "/services/$slug", params: { slug: cat.slug } }
+    : { to: "/services" };
+
+  return (
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-[28px] border border-white/60 bg-white/40 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.04),inset_0_0_0_1px_rgba(255,255,255,0.6)] transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] hover:-translate-y-2 hover:shadow-[0_40px_80px_rgba(0,0,0,0.08),inset_0_0_0_1px_rgba(255,255,255,1)] hover:bg-white/60">
+      <div className="absolute -right-16 -top-16 z-0 h-64 w-64 rounded-full bg-primary/20 blur-[50px] transition-all duration-700 group-hover:scale-150 group-hover:bg-primary/30" />
+      <div className="absolute -bottom-16 -left-16 z-0 h-64 w-64 rounded-full bg-accent/20 blur-[50px] transition-all duration-700 group-hover:scale-150 group-hover:bg-accent/30" />
+
+      <div className="relative z-10 p-2.5">
+        <Link
+          {...(linkProps as any)}
+          className="relative block aspect-[16/11] overflow-hidden rounded-[20px] shadow-[0_4px_20px_rgba(0,0,0,0.05)]"
+        >
+          <img
+            src={cat.image}
+            alt={cat.title}
+            loading="lazy"
+            decoding="async"
+            className="h-full w-full object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(0.2,0.8,0.2,1)] group-hover:scale-110"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/0 to-black/10 opacity-70 transition-opacity duration-500 group-hover:opacity-40" />
+          <span className="absolute left-3 top-3 rounded-full border border-white/30 bg-white/20 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-white shadow-[0_4px_12px_rgba(0,0,0,0.1)] backdrop-blur-md">
+            Category
+          </span>
+        </Link>
+      </div>
+
+      <div className="relative z-10 flex flex-1 flex-col px-6 pb-6 pt-2">
+        <h3 className="font-display text-[22px] leading-tight tracking-tight text-foreground transition-colors group-hover:text-primary">
+          {cat.title}
+        </h3>
+
+        {cat.description && (
+          <p className="mt-2.5 text-[14px] leading-relaxed text-muted-foreground line-clamp-2">
+            {cat.description}
+          </p>
+        )}
+
+        <div className="mt-auto pt-7 flex items-center justify-between gap-3">
+          <Link
+            {...(linkProps as any)}
+            className="group/link inline-flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-[0.1em] text-muted-foreground transition-colors hover:text-primary"
+          >
+            Details
+            <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover/link:translate-x-1" />
+          </Link>
+
+          <Link
+            to="/booking"
+            search={{ service: cat.slug }}
+            className="group/btn relative overflow-hidden rounded-xl bg-foreground px-5 py-2.5 text-sm font-semibold text-background shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary hover:shadow-[0_10px_20px_var(--color-primary),0.3)]"
+          >
+            <span className="relative z-10">
+              {cat.title.length <= 18 ? `Book ${cat.title}` : "Book Now"}
+            </span>
+            <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-[800ms] ease-out group-hover/btn:translate-x-full" />
+          </Link>
+        </div>
+      </div>
+    </article>
+  );
+}
+
 function ServicesIndex() {
   const { data, isLoading } = useQuery(servicesQ({ limit: 60 }));
   const { data: tData } = useQuery(testimonialsQ({ limit: 8 }));
   const { data: fData } = useQuery(faqsQ({ limit: 8 }));
   const { data: settings } = useQuery(settingsQ());
+  
+  const premiumCategories = usePremiumCategories();
 
   const items = data?.items ?? [];
   const testimonials = tData?.items ?? [];
@@ -155,6 +225,20 @@ function ServicesIndex() {
                 key={i}
                 className="h-[360px] rounded-[1.5rem] border border-border bg-surface animate-pulse"
               />
+            ))}
+          </div>
+        ) : active === "all" && premiumCategories.length ? (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {premiumCategories.map((cat, i) => (
+              <motion.div
+                key={cat.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.5, delay: (i % 4) * 0.06, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <CategoryCardGridItem cat={cat} index={i} />
+              </motion.div>
             ))}
           </div>
         ) : filtered.length ? (
