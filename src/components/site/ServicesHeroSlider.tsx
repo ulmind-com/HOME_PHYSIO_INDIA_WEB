@@ -11,67 +11,63 @@ import { NursingBookingModal } from "@/components/forms/NursingBookingModal";
 import { PhysioBookingModal } from "@/components/forms/PhysioBookingModal";
 
 /* ── Default / fallback slides (static assets) ────────────────────── */
-type LocalHeroSlide = HeroSlide & {
-  bgDesktop?: string;
-  bgMobile?: string;
-};
 
-const FALLBACK_SLIDES: LocalHeroSlide[] = [
+const FALLBACK_SLIDES: HeroSlide[] = [
   {
     title: "Expert Home Nursing Care",
     subtitle: "Compassionate and reliable home healthcare with professional nurses available 24/7.",
     button_text: "Book a Nurse",
     button_link: "/services/home-nursing-care",
-    bgDesktop: "/assets/hero-desktop/hero_desktop_1_nursing_1786737139820.jpg",
-    bgMobile: "/assets/hero-mobile/hero_mobile_1_nursing_1786737195851.jpg",
+    image_desktop: { url: "/assets/hero-desktop/hero_desktop_1_nursing_1786737139820.jpg" },
+    image_mobile: { url: "/assets/hero-mobile/hero_mobile_1_nursing_1786737195851.jpg" },
   },
   {
     title: "Compassionate Elderly Care",
     subtitle: "Dedicated caregivers providing dignified, patient-centred elder care in the comfort of home.",
     button_text: "Book an Attendant",
     button_link: "/services/elderly-care",
-    bgDesktop: "/assets/hero-desktop/hero_desktop_2_elderly_1786737273511.jpg",
-    bgMobile: "/assets/hero-mobile/hero_mobile_2_elderly_1786737290173.jpg",
+    image_desktop: { url: "/assets/hero-desktop/hero_desktop_2_elderly_1786737273511.jpg" },
+    image_mobile: { url: "/assets/hero-mobile/hero_mobile_2_elderly_1786737290173.jpg" },
   },
   {
     title: "Mother & Baby Care",
     subtitle: "Specialized postnatal care to ensure the health and comfort of both mother and newborn.",
     button_text: "Book Newborn Care",
     button_link: "/services/mother-and-baby-care",
-    bgDesktop: "/assets/hero-desktop/hero_desktop_3_mother_baby_1786737385210.jpg",
-    bgMobile: "/assets/hero-mobile/hero_mobile_3_mother_baby_1786737410186.jpg",
+    image_desktop: { url: "/assets/hero-desktop/hero_desktop_3_mother_baby_1786737385210.jpg" },
+    image_mobile: { url: "/assets/hero-mobile/hero_mobile_3_mother_baby_1786737410186.jpg" },
   },
   {
     title: "Physiotherapy & Recovery",
     subtitle: "Medically supervised recovery care and physiotherapy delivered at home for faster healing.",
     button_text: "Book a Physiotherapist",
     button_link: "/services/physiotherapy-and-recovery",
-    bgDesktop: "/assets/hero-desktop/hero_desktop_4_physio_1786737419510.jpg",
-    bgMobile: "/assets/hero-mobile/hero_mobile_4_physio_1786737469387.jpg",
+    image_desktop: { url: "/assets/hero-desktop/hero_desktop_4_physio_1786737419510.jpg" },
+    image_mobile: { url: "/assets/hero-mobile/hero_mobile_4_physio_1786737469387.jpg" },
   },
   {
     title: "Medical Equipment Rental",
     subtitle: "High-quality, sanitized medical equipment like hospital beds and oxygen concentrators delivered to your home.",
     button_text: "Rent Equipment Now",
     button_link: "/equipment",
-    bgDesktop: "/assets/hero-desktop/hero_desktop_5_equipment_1786737493628.jpg",
-    bgMobile: "/assets/hero-mobile/hero_mobile_5_equipment_1786737520362.jpg",
+    image_desktop: { url: "/assets/hero-desktop/hero_desktop_5_equipment_1786737493628.jpg" },
+    image_mobile: { url: "/assets/hero-mobile/hero_mobile_5_equipment_1786737520362.jpg" },
   },
   {
     title: "Professional ICU Setup",
     subtitle: "Complete ICU-level care and equipment setup at home for critically ill patients.",
     button_text: "Request ICU Setup",
     button_link: "/contact",
-    bgDesktop: "/assets/hero-desktop/hero_desktop_6_icu_1786737546853.jpg",
-    bgMobile: "/assets/hero-mobile/hero_mobile_6_icu_1786737784974.jpg",
+    image_desktop: { url: "/assets/hero-desktop/hero_desktop_6_icu_1786737546853.jpg" },
+    image_mobile: { url: "/assets/hero-mobile/hero_mobile_6_icu_1786737784974.jpg" },
   },
   {
     title: "Home Sample Collection",
     subtitle: "Safe and hygienic diagnostic sample collection right from your doorstep by professional phlebotomists.",
     button_text: "Book Home Lab Test",
     button_link: "/services/home-sample-collection",
-    bgDesktop: "/assets/hero-nurse-patient.png",
-    bgMobile: "/assets/hero-nurse-patient.png",
+    image_desktop: { url: "/assets/hero-nurse-patient.png" },
+    image_mobile: { url: "/assets/hero-nurse-patient.png" },
   }
 ];
 
@@ -186,7 +182,8 @@ export function ServicesHeroSlider({ slides: dynamicSlides }: { slides?: HeroSli
   }, [current, go, isModalOpen]);
 
   const slide = slides[current];
-  const bg = slide.background_image?.url || "/assets/hero-slide-1.jpeg";
+  const desktopUrl = slide.image_desktop?.url || "/assets/hero-slide-1.jpeg";
+  const mobileUrl = slide.image_mobile?.url || desktopUrl;
 
   return (
     <section
@@ -206,9 +203,9 @@ export function ServicesHeroSlider({ slides: dynamicSlides }: { slides?: HeroSli
           style={{ transformStyle: "preserve-3d" }}
         >
           <picture>
-            <source media="(max-width: 768px)" srcSet={(slide as any).bgMobile || bg} />
+            <source media="(max-width: 768px)" srcSet={mobileUrl} />
             <img
-              src={(slide as any).bgDesktop || bg}
+              src={desktopUrl}
               alt={slide.title ?? ""}
               className="h-full w-full object-cover object-center"
               style={{

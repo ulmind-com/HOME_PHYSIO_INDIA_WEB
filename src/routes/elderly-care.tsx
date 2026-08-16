@@ -21,7 +21,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { useState, useEffect } from "react";
-import { settingsQ, faqsQ } from "@/lib/api/queries";
+import { settingsQ, faqsQ, categoriesQ } from "@/lib/api/queries";
 import { ElderCareBookingModal } from "@/components/forms/ElderCareBookingModal";
 import { Section } from "@/components/site/Section";
 import { api } from "@/lib/api/client";
@@ -212,6 +212,14 @@ function ElderlyCarePage() {
   const { data: settings } = useQuery(settingsQ());
   const { data: faqData } = useQuery(faqsQ({ limit: 20 }));
 
+  const { data: catData } = useQuery(categoriesQ({ limit: 100 }));
+  const category = (catData?.items ?? []).find(
+    (c) =>
+      c.name.toLowerCase().includes("elder") ||
+      c.name.toLowerCase().includes("senior") ||
+      c.slug?.toLowerCase().includes("elder")
+  );
+
   const phone = settings?.phone?.replace(/[^\d+]/g, "");
   const whatsapp = (settings?.whatsapp ?? settings?.phone)?.replace(/\D/g, "");
 
@@ -225,7 +233,7 @@ function ElderlyCarePage() {
 
   return (
     <>
-      <ElderlyHero phone={phone} whatsapp={whatsapp} />
+      <ElderlyHero phone={phone} whatsapp={whatsapp} category={category} />
       <ElderlyServices />
       <TrustedFeatures />
       <WhyChooseUs />
@@ -238,12 +246,41 @@ function ElderlyCarePage() {
 
 /* ─────────────────────── Hero ─────────────────────── */
 
-function ElderlyHero({ phone, whatsapp }: { phone?: string; whatsapp?: string }) {
+function ElderlyHero({ phone, whatsapp, category }: { phone?: string; whatsapp?: string; category?: any }) {
   const [currentIdx, setCurrentIdx] = useState(0);
+
+  const heroBadge = category?.hero_badge || "Elderly Care Services";
+  const heroTitle = category?.hero_title || "Trusted Elderly Care \nRight at Home";
+  const heroDescription = category?.hero_description || "Nupun Home Health Care Services, we provide caring and personalised support for seniors with their daily needs. Our trained attendants assist with personal care, mobility, meals, companionship and medication reminders, helping elderly people stay comfortable, safe and independent at home.";
+  const heroCtaPrimaryText = category?.hero_cta_primary_text || "Book an Attendant";
+  const heroCtaSecondaryText = category?.hero_cta_secondary_text || "Call Now";
+  const heroStats = category?.hero_stats?.length ? category.hero_stats : [
+    { val: "250+", label: "Caregivers" },
+    { val: "24/7", label: "Availability" },
+    { val: "4 Cities", label: "NCR Coverage" },
+  ];
+  
+  const heroImageStr = category?.hero_image
+    ? typeof category.hero_image === "string"
+      ? category.hero_image
+      : category.hero_image.url
+    : null;
+
+  const images = category?.hero_images?.length 
+    ? category.hero_images.map((img: any) => typeof img === "string" ? img : img.url)
+    : [
+        heroImageStr || HERO_IMAGES[0],
+        HERO_IMAGES[1],
+        HERO_IMAGES[2],
+      ];
+
+  const mobileImages = category?.hero_images_mobile?.length
+    ? category.hero_images_mobile.map((img: any) => typeof img === "string" ? img : img.url)
+    : MOBILE_HERO_IMAGES;
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentIdx((prev) => (prev + 1) % HERO_IMAGES.length);
+      setCurrentIdx((prev) => (prev + 1) % images.length);
     }, 6000);
     return () => clearInterval(timer);
   }, []);
@@ -265,9 +302,9 @@ function ElderlyHero({ phone, whatsapp }: { phone?: string; whatsapp?: string })
             className="absolute inset-0 w-full h-full"
           >
             <picture>
-              <source media="(max-width: 768px)" srcSet={MOBILE_HERO_IMAGES[currentIdx]} />
+              <source media="(max-width: 768px)" srcSet={mobileImages[currentIdx]} />
               <img 
-                src={HERO_IMAGES[currentIdx]} 
+                src={images[currentIdx]} 
                 alt="Trusted Elderly Care" 
                 className="w-full h-full object-cover object-[center_30%]"
               />
@@ -317,19 +354,18 @@ function ElderlyHero({ phone, whatsapp }: { phone?: string; whatsapp?: string })
           >
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/90 mb-5">
               <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-              Elderly Care Services
+              {heroBadge}
             </div>
 
             <h1 
-              className="font-display font-medium text-white tracking-tight leading-[1.1] text-[40px] sm:text-[48px] md:text-[56px] lg:text-[64px] mb-4"
+              className="font-display font-medium text-white tracking-tight leading-[1.1] text-[40px] sm:text-[48px] md:text-[56px] lg:text-[64px] mb-4 whitespace-pre-line"
               style={{ textShadow: "0 4px 40px rgba(0,0,0,0.5)" }}
             >
-              Trusted Elderly Care <br />
-              Right at Home
+              {heroTitle}
             </h1>
 
             <p className="text-white/70 text-base md:text-lg leading-relaxed max-w-xl mb-6">
-              Nupun Home Health Care Services, we provide caring and personalised support for seniors with their daily needs. Our trained attendants assist with personal care, mobility, meals, companionship and medication reminders, helping elderly people stay comfortable, safe and independent at home.
+              {heroDescription}
             </p>
 
             <div className="mt-6 md:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
@@ -337,7 +373,7 @@ function ElderlyHero({ phone, whatsapp }: { phone?: string; whatsapp?: string })
                 <button
                   className="group inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-[15px] font-semibold text-primary-foreground shadow-sm transition-all duration-300 hover:brightness-110 hover:-translate-y-0.5"
                 >
-                  Book an Attendant
+                  {heroCtaPrimaryText}
                   <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </button>
               </ElderCareBookingModal>
@@ -347,18 +383,14 @@ function ElderlyHero({ phone, whatsapp }: { phone?: string; whatsapp?: string })
                 className="group inline-flex items-center justify-center gap-2.5 rounded-full border border-white/30 bg-white/10 backdrop-blur-md px-8 py-3.5 text-[15px] font-medium text-white shadow-sm hover:bg-white/20 hover:border-white/50 transition-all duration-300 hover:-translate-y-0.5"
               >
                 <Phone className="h-5 w-5 text-[#25D366]" />
-                Call Now
+                {heroCtaSecondaryText}
               </a>
             </div>
 
             <div className="mt-8 flex flex-wrap gap-6">
-              {[
-                { val: <>250<span className="ml-0.5">+</span></>, label: "Caregivers" },
-                { val: "24/7", label: "Availability" },
-                { val: "4 Cities", label: "NCR Coverage" },
-              ].map((s) => (
+              {heroStats.map((s: any) => (
                 <div key={s.label}>
-                  <div className="text-xl font-display font-bold text-white">{s.val}</div>
+                  <div className="text-xl font-display font-bold text-white">{s.val || s.value}</div>
                   <div className="text-xs text-white/55 mt-0.5">{s.label}</div>
                 </div>
               ))}
@@ -422,14 +454,14 @@ function ElderlyHero({ phone, whatsapp }: { phone?: string; whatsapp?: string })
           {/* Arrow Nav */}
           <div className="flex items-center gap-2">
             <button
-              onClick={() => setCurrentIdx(((currentIdx - 1) % HERO_IMAGES.length + HERO_IMAGES.length) % HERO_IMAGES.length)}
+              onClick={() => setCurrentIdx(((currentIdx - 1) % images.length + images.length) % images.length)}
               className="grid h-12 w-12 place-items-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition-all hover:bg-white/20 hover:border-white/40"
               aria-label="Previous slide"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
             <button
-              onClick={() => setCurrentIdx((currentIdx + 1) % HERO_IMAGES.length)}
+              onClick={() => setCurrentIdx((currentIdx + 1) % images.length)}
               className="grid h-12 w-12 place-items-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition-all hover:bg-white/20 hover:border-white/40"
               aria-label="Next slide"
             >
@@ -439,7 +471,7 @@ function ElderlyHero({ phone, whatsapp }: { phone?: string; whatsapp?: string })
 
           {/* Progress Bars */}
           <div className="flex items-center gap-2">
-            {HERO_IMAGES.map((_, i) => (
+            {images.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setCurrentIdx(i)}

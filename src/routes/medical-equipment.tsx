@@ -30,7 +30,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
-import { settingsQ } from "@/lib/api/queries";
+import { settingsQ, categoriesQ, equipmentQ } from "@/lib/api/queries";
 import { CITIES } from "@/components/forms/BookingForm";
 import {
   EquipmentBookingModal,
@@ -63,97 +63,6 @@ export const Route = createFileRoute("/medical-equipment")({
 });
 
 /* ─────────────────────── Static data ─────────────────────── */
-
-const EQUIPMENT_CARDS = [
-  {
-    icon: BedDouble,
-    image: "/assets/equip_hospital_bed.png",
-    emoji: "🛏️",
-    title: "Hospital Bed",
-    description:
-      "Adjustable hospital beds designed to provide comfortable positioning and easier patient care at home.",
-    color: "text-blue-600",
-    bg: "from-blue-50 to-sky-50",
-    iconBg: "bg-blue-100",
-  },
-  {
-    icon: CircleGauge,
-    image: "/assets/equip_wheelchair.png",
-    emoji: "🦼",
-    title: "Wheelchair",
-    description:
-      "Mobility support for elderly patients, patients recovering from illness or surgery and people with limited mobility.",
-    color: "text-violet-600",
-    bg: "from-violet-50 to-purple-50",
-    iconBg: "bg-violet-100",
-  },
-  {
-    icon: Wind,
-    image: "/assets/equip_oxygen_concentrator.png",
-    emoji: "💨",
-    title: "Oxygen Concentrator",
-    description:
-      "Oxygen concentrator support for patients who have been prescribed supplemental oxygen for use at home.",
-    color: "text-cyan-600",
-    bg: "from-cyan-50 to-teal-50",
-    iconBg: "bg-cyan-100",
-  },
-  {
-    icon: Stethoscope,
-    image: "/assets/equip_bipap_machine.png",
-    emoji: "🩺",
-    title: "BiPAP Machine",
-    description:
-      "Respiratory support equipment for patients who have been prescribed BiPAP therapy by their healthcare professional.",
-    color: "text-rose-600",
-    bg: "from-rose-50 to-pink-50",
-    iconBg: "bg-rose-100",
-  },
-  {
-    icon: Wind,
-    image: "/assets/equip_cpap_machine.png",
-    emoji: "🫁",
-    title: "CPAP Machine",
-    description:
-      "CPAP equipment for patients who have been prescribed continuous positive airway pressure therapy.",
-    color: "text-teal-600",
-    bg: "from-teal-50 to-yellow-50",
-    iconBg: "bg-teal-100",
-  },
-  {
-    icon: Box,
-    image: "/assets/equip_suction_machine.png",
-    emoji: "💧",
-    title: "Suction Machine",
-    description:
-      "Medical suction equipment to assist patients who require secretion-management support at home.",
-    color: "text-emerald-600",
-    bg: "from-emerald-50 to-green-50",
-    iconBg: "bg-emerald-100",
-  },
-  {
-    icon: SquareDashedBottom,
-    image: "/assets/equip_air_mattress.png",
-    emoji: "🛌",
-    title: "Air Mattress",
-    description:
-      "Pressure-relieving mattress support for patients who spend extended periods in bed and require additional comfort and pressure management.",
-    color: "text-indigo-600",
-    bg: "from-indigo-50 to-blue-50",
-    iconBg: "bg-indigo-100",
-  },
-  {
-    icon: Footprints,
-    image: "/assets/walker-rent.png",
-    emoji: "🩼",
-    title: "Walker",
-    description:
-      "Walking support for elderly patients and people recovering from surgery, injury or mobility-related conditions.",
-    color: "text-emerald-600",
-    bg: "from-emerald-50 to-teal-50",
-    iconBg: "bg-emerald-100",
-  },
-];
 
 const EQUIPMENT_CHECKLIST = [
   "Essential equipment for home-based patient care",
@@ -278,9 +187,16 @@ function MedicalEquipmentPage() {
   const phone = settings?.phone?.replace(/[^\d+]/g, "");
   const whatsapp = (settings?.whatsapp ?? settings?.phone)?.replace(/\D/g, "");
 
+  const { data: catData } = useQuery(categoriesQ({ limit: 100 }));
+  const category = (catData?.items ?? []).find(
+    (c) =>
+      c.name.toLowerCase().includes("equipment") ||
+      c.slug?.toLowerCase().includes("equipment")
+  );
+
   return (
     <>
-      <EquipmentHero phone={phone} />
+      <EquipmentHero phone={phone} category={category} />
       <EquipmentGridSection />
       <EquipmentChecklistSection />
       <EquipmentWhyChooseSection />
@@ -295,21 +211,47 @@ function MedicalEquipmentPage() {
 
 /* ─────────────────────── Hero ─────────────────────── */
 
-function EquipmentHero({ phone }: { phone?: string }) {
-  const images = [
-    {
-      desktop: "/assets/equipment-hero-21-9-1.png",
-      mobile: "/assets/mobile/equipment-hero-9-16-1.png",
-    },
-    {
-      desktop: "/assets/equipment-hero-21-9-2.png",
-      mobile: "/assets/mobile/equipment-hero-9-16-2.png",
-    },
-    {
-      desktop: "/assets/equipment-hero-21-9-3.png",
-      mobile: "/assets/mobile/equipment-hero-9-16-3.png",
-    },
-  ];
+function EquipmentHero({ phone, category }: { phone?: string; category?: any }) {
+  const heroBadge = category?.hero_badge || "Equipment Rentals";
+  const heroTitle = category?.hero_title || "Medical Equipment \nfor Home Care";
+  const heroDescription = category?.hero_description || "Nupun Home Health Care Services provides essential medical equipment on rent to support patients, elderly people and families during home care and recovery. From hospital beds and wheelchairs to oxygen concentrators, BiPAP/CPAP and suction machines, we help you get the equipment you need with convenient rental options and dependable support.";
+  const heroCtaPrimaryText = category?.hero_cta_primary_text || "Check Availability";
+  const heroCtaSecondaryText = category?.hero_cta_secondary_text || "Call Now";
+  
+  const heroImageStr = category?.hero_image
+    ? typeof category.hero_image === "string"
+      ? category.hero_image
+      : category.hero_image.url
+    : null;
+
+  const images = category?.hero_images?.length 
+    ? category.hero_images.map((img: any) => ({
+        desktop: typeof img === "string" ? img : img.url,
+        mobile: typeof img === "string" ? img : img.url,
+      }))
+    : [
+        {
+          desktop: heroImageStr || "/assets/equipment-hero-21-9-1.png",
+          mobile: "/assets/mobile/equipment-hero-9-16-1.png",
+        },
+        {
+          desktop: "/assets/equipment-hero-21-9-2.png",
+          mobile: "/assets/mobile/equipment-hero-9-16-2.png",
+        },
+        {
+          desktop: "/assets/equipment-hero-21-9-3.png",
+          mobile: "/assets/mobile/equipment-hero-9-16-3.png",
+        },
+      ];
+
+  if (category?.hero_images_mobile?.length) {
+    images.forEach((img: any, i: number) => {
+      const mobImg = category.hero_images_mobile[i];
+      if (mobImg) {
+        img.mobile = typeof mobImg === "string" ? mobImg : mobImg.url;
+      }
+    });
+  }
 
   const [currentIdx, setCurrentIdx] = useState(0);
 
@@ -379,29 +321,28 @@ function EquipmentHero({ phone }: { phone?: string }) {
           >
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/90 mb-5">
               <span className="h-1.5 w-1.5 rounded-full bg-teal-400 animate-pulse" />
-              Equipment Rentals
+              {heroBadge}
             </div>
 
-            <h1 className="font-display text-4xl md:text-5xl lg:text-[3.5rem] font-medium text-white leading-[1.08] tracking-tight mb-4">
-              Medical Equipment <br />
-              for Home Care
+            <h1 className="font-display text-4xl md:text-5xl lg:text-[3.5rem] font-medium text-white leading-[1.08] tracking-tight mb-4 whitespace-pre-line">
+              {heroTitle}
             </h1>
 
             <p className="text-white/70 text-base md:text-lg leading-relaxed max-w-xl mb-6">
-              Nupun Home Health Care Services provides essential medical equipment on rent to support patients, elderly people and families during home care and recovery. From hospital beds and wheelchairs to oxygen concentrators, BiPAP/CPAP and suction machines, we help you get the equipment you need with convenient rental options and dependable support.
+              {heroDescription}
             </p>
 
             <div className="flex flex-col sm:flex-row flex-wrap gap-3">
               <EquipmentBookingModal>
                 <button className="inline-flex items-center justify-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3.5 sm:py-3 text-[15px] font-semibold shadow-[0_20px_40px_-10px_rgba(0,128,128,0.4)] hover:bg-primary/90 hover:-translate-y-0.5 transition-all duration-300 w-full sm:w-auto">
-                  Check Availability <ArrowRight className="h-4 w-4" />
+                  {heroCtaPrimaryText} <ArrowRight className="h-4 w-4" />
                 </button>
               </EquipmentBookingModal>
               <a
                 href={`tel:${phone || "+918100346590"}`}
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-white/30 bg-white/10 backdrop-blur-md px-6 py-3.5 sm:py-3 text-[15px] font-semibold text-white hover:bg-white/20 transition-all duration-300 w-full sm:w-auto"
               >
-                <Phone className="h-4 w-4" /> Call Now
+                <Phone className="h-4 w-4" /> {heroCtaSecondaryText}
               </a>
             </div>
           </motion.div>
@@ -510,6 +451,9 @@ function EquipmentHero({ phone }: { phone?: string }) {
 /* ─────────────────────── Equipment Grid ─────────────────────── */
 
 function EquipmentGridSection() {
+  const { data: equipData } = useQuery(equipmentQ({ limit: 100 }));
+  const equipments = equipData?.items ?? [];
+
   return (
     <Section className="py-20 lg:py-28">
       <motion.div
@@ -531,33 +475,37 @@ function EquipmentGridSection() {
       </motion.div>
 
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {EQUIPMENT_CARDS.map((s, i) => {
-          const Icon = s.icon;
+        {equipments.map((item, i) => {
+          const imgUrl = typeof item.featured_image === "string" ? item.featured_image : item.featured_image?.url;
+          const iconBg = item.specifications?.iconBg || "bg-gray-100";
+          const color = item.specifications?.color || "text-gray-600";
+          const emoji = item.specifications?.emoji || "📦";
+
           return (
             <motion.div
-              key={s.title}
+              key={item.id}
               initial={{ opacity: 0, y: 25 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: (i % 4) * 0.07, ease: [0.22, 1, 0.36, 1] }}
             >
               <div className="group h-full flex flex-col rounded-2xl bg-white border border-border p-4 sm:p-5 shadow-sm transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_15px_40px_-10px_rgba(0,0,0,0.1)] cursor-default">
-                {s.image ? (
+                {imgUrl ? (
                   <div className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-rose-50 mb-4 transform transition-transform group-hover:scale-110 duration-300">
-                    <img src={s.image} alt={s.title} className="w-9 h-9 object-contain mix-blend-multiply" />
+                    <img src={imgUrl} alt={item.name} className="w-9 h-9 object-contain mix-blend-multiply" />
                   </div>
                 ) : (
                   <div
-                    className={`w-10 h-10 rounded-xl ${s.iconBg} flex items-center justify-center mb-3`}
+                    className={`w-10 h-10 rounded-xl ${iconBg} flex items-center justify-center mb-3`}
                   >
-                    <Icon className={`h-5 w-5 ${s.color}`} strokeWidth={2} />
+                    <span className={`text-xl ${color}`}>{emoji}</span>
                   </div>
                 )}
                 <h3 className="font-display text-lg sm:text-[21px] font-semibold text-foreground mb-2 sm:mb-3 leading-tight tracking-wide">
-                  {s.title}
+                  {item.name}
                 </h3>
                 <p className="text-muted-foreground text-[15px] sm:text-[17px] leading-relaxed font-medium flex-1">
-                  {s.description}
+                  {item.description || item.short_description}
                 </p>
               </div>
             </motion.div>

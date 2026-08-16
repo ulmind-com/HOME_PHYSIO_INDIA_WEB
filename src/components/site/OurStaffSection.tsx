@@ -29,92 +29,71 @@ function StaffCard({ staff }: { staff: StaffMember }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
       transition={{ duration: 0.35, ease: "easeOut" }}
-      className="group relative flex flex-col overflow-hidden rounded-2xl border border-border/60 bg-white shadow-[0_2px_20px_rgba(0,0,0,0.06)] transition-all duration-300 hover:shadow-[0_8px_40px_rgba(0,0,0,0.12)] hover:border-primary/40 hover:-translate-y-1"
+      className="group relative flex flex-col overflow-hidden rounded-[20px] border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-1"
     >
       {/* Photo */}
-      <div className="relative aspect-square overflow-hidden bg-gray-50">
+      <div className="relative aspect-[5/4] w-full overflow-hidden bg-gray-100">
         {photo ? (
           <img
             src={photo}
             alt={staff.name}
             loading="lazy"
             decoding="async"
-            className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
+            className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-4xl font-bold text-primary/20">
+          <div className="flex h-full items-center justify-center text-4xl font-bold text-gray-300">
             {staff.name.charAt(0)}
           </div>
         )}
-        
-        {/* Premium gradient overlay */}
-        <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/20 to-transparent" />
       </div>
 
       {/* Content */}
-      <div className="flex flex-1 flex-col p-4 gap-3">
+      <div className="flex flex-1 flex-col p-4">
         {/* Name & Rating */}
-        <div className="flex flex-col items-center gap-1.5">
-          <h3 className="text-base font-bold text-gray-900 leading-tight text-center">{staff.name}</h3>
+        <div className="flex flex-col items-center gap-1.5 mb-5">
+          <h3 className="text-[15px] font-semibold text-gray-800 text-center">{staff.name}</h3>
           
           <div className="flex items-center justify-center gap-0.5">
             {Array.from({ length: 5 }).map((_, i) => (
               <Star 
                 key={i} 
                 className={`h-3.5 w-3.5 ${
-                  i < Math.round(staff.rating) ? "fill-amber-400 text-amber-400" : "fill-gray-200 text-gray-200"
+                  i < Math.round(staff.rating) ? "fill-[#ffb800] text-[#ffb800]" : "fill-gray-200 text-gray-200"
                 }`} 
               />
             ))}
-            <span className="ml-1 text-xs font-semibold text-gray-700">{staff.rating}</span>
+            <span className="ml-1 text-[13px] font-medium text-gray-700">{staff.rating}</span>
           </div>
         </div>
 
         {/* Duration Tabs */}
-        <div className="flex gap-1 rounded-lg bg-gray-100 p-1 mt-1">
+        <div className="flex justify-center gap-6 mb-3">
           {(["7", "15", "30"] as Duration[]).map((d) => (
             <button
               key={d}
               onClick={() => setDuration(d)}
-              className={`relative flex-1 rounded-md py-1.5 text-[11px] font-semibold transition-all duration-200 ${
-                duration === d
-                  ? "text-white"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
+              className="text-[13px] transition-colors"
             >
-              {duration === d && (
-                <motion.div
-                  layoutId={`duration-${staff.id}`}
-                  className="absolute inset-0 rounded-md bg-primary shadow-sm"
-                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                />
+              {duration === d ? (
+                <span className="text-primary font-bold">{d} Days</span>
+              ) : (
+                <span className="text-gray-500 font-medium">{d} Days</span>
               )}
-              <span className="relative z-10">{d} Days</span>
             </button>
           ))}
         </div>
 
         {/* Service Label */}
         {staff.service_label && (
-           <p className="text-xs text-center text-gray-500 line-clamp-1">
+           <p className="text-[12px] text-center text-gray-500 mb-6">
              {staff.service_label}
            </p>
         )}
 
-        {/* Price + CTA */}
-        <div className="mt-auto flex items-center justify-between pt-2 border-t border-gray-100">
-          <div className="flex items-center gap-1">
-            <span className="text-xs text-gray-500 font-medium">Price:</span>
-            <span className="text-sm font-bold text-gray-900">
-              {price != null ? (
-                <>₹{price.toLocaleString("en-IN")}</>
-              ) : (
-                <span className="text-xs text-gray-400">—</span>
-              )}
-            </span>
-          </div>
-
-          <button className="inline-flex items-center justify-center rounded-full bg-primary px-4 py-1.5 text-xs font-bold text-white transition-all duration-200 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/25 uppercase tracking-wide">
+        {/* CTA (Centered) */}
+        <div className="mt-auto flex justify-center pt-1 pb-1">
+          <button className="rounded-full bg-primary px-8 py-2 text-[12px] font-bold text-white transition-all duration-200 hover:bg-primary/90 uppercase tracking-wide shadow-sm hover:shadow-md hover:-translate-y-0.5">
             Book Now
           </button>
         </div>
@@ -216,11 +195,7 @@ export function OurStaffSection() {
   return (
     <Section className="pt-4 pb-8 lg:pt-8 lg:pb-4">
       <div className="mb-6 max-w-3xl mx-auto text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-muted-foreground mb-2">
-          <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-          Our Staff
-        </div>
-        <h2 className="font-display text-3xl md:text-4xl lg:text-5xl tracking-tight">Meet Our Expert Caregivers</h2>
+        <h2 className="font-display text-3xl md:text-4xl lg:text-5xl tracking-tight">Our Staff</h2>
       </div>
 
       {/* Category Tabs */}

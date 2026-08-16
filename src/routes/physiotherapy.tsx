@@ -31,7 +31,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
-import { faqsQ, settingsQ } from "@/lib/api/queries";
+import { faqsQ, settingsQ, categoriesQ } from "@/lib/api/queries";
 import { CITIES } from "@/components/forms/BookingForm";
 import { PhysioBookingModal, PHYSIO_SERVICES } from "@/components/forms/PhysioBookingModal";
 import { Section } from "@/components/site/Section";
@@ -255,9 +255,16 @@ function PhysiotherapyPage() {
   );
   const displayFaqs = faqs.length > 0 ? faqs.slice(0, 10) : DEFAULT_FAQS;
 
+  const { data: catData } = useQuery(categoriesQ({ limit: 100 }));
+  const category = (catData?.items ?? []).find(
+    (c) =>
+      c.name.toLowerCase().includes("physio") ||
+      c.slug?.toLowerCase().includes("physio")
+  );
+
   return (
     <>
-      <PhysioHero phone={phone} whatsapp={whatsapp} />
+      <PhysioHero phone={phone} whatsapp={whatsapp} category={category} />
       <PhysioServicesSection />
       <PhysioChecklistSection />
       <PhysioWhyChooseSection />
@@ -273,24 +280,56 @@ function PhysiotherapyPage() {
 function PhysioHero({
   phone,
   whatsapp,
+  category,
 }: {
   phone?: string;
   whatsapp?: string;
+  category?: any;
 }) {
-  const images = [
-    {
-      desktop: "/assets/physio-hero-21-9-1.png",
-      mobile: "/assets/mobile/physio-hero-9-16-1.png",
-    },
-    {
-      desktop: "/assets/physio-hero-21-9-2.png",
-      mobile: "/assets/mobile/physio-hero-9-16-2.png",
-    },
-    {
-      desktop: "/assets/physio-hero-21-9-3.png",
-      mobile: "/assets/mobile/physio-hero-9-16-3.png",
-    },
+  const heroBadge = category?.hero_badge || "Physiotherapy & Recovery";
+  const heroTitle = category?.hero_title || "Physiotherapy \nat Home";
+  const heroDescription = category?.hero_description || "Nupun Home Health Care Services provides personalised physiotherapy at home for elderly patients, post-surgery patients, bedridden patients and people recovering from illness or injury. Our physiotherapists focus on safe movement, pain management, rehabilitation and improving day-to-day independence.";
+  const heroCtaPrimaryText = category?.hero_cta_primary_text || "Book a Physiotherapist";
+  const heroCtaSecondaryText = category?.hero_cta_secondary_text || "Call Now";
+  const heroStats = category?.hero_stats?.length ? category.hero_stats : [
+    { val: "35 +", label: "Physiotherapists" },
+    { val: "24/7", label: "Availability" },
+    { val: "4 Cities", label: "NCR Coverage" },
   ];
+  
+  const heroImageStr = category?.hero_image
+    ? typeof category.hero_image === "string"
+      ? category.hero_image
+      : category.hero_image.url
+    : null;
+  const images = category?.hero_images?.length 
+    ? category.hero_images.map((img: any) => ({
+        desktop: typeof img === "string" ? img : img.url,
+        mobile: typeof img === "string" ? img : img.url,
+      }))
+    : [
+        {
+          desktop: heroImageStr || "/assets/physio-hero-21-9-1.png",
+          mobile: "/assets/mobile/physio-hero-9-16-1.png",
+        },
+        {
+          desktop: "/assets/physio-hero-21-9-2.png",
+          mobile: "/assets/mobile/physio-hero-9-16-2.png",
+        },
+        {
+          desktop: "/assets/physio-hero-21-9-3.png",
+          mobile: "/assets/mobile/physio-hero-9-16-3.png",
+        },
+      ];
+
+  if (category?.hero_images_mobile?.length) {
+    images.forEach((img: any, i: number) => {
+      const mobImg = category.hero_images_mobile[i];
+      if (mobImg) {
+        img.mobile = typeof mobImg === "string" ? mobImg : mobImg.url;
+      }
+    });
+  }
 
   const [currentIdx, setCurrentIdx] = useState(0);
 
@@ -377,22 +416,18 @@ function PhysioHero({
           >
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/90 mb-5">
               <span className="h-1.5 w-1.5 rounded-full bg-teal-400 animate-pulse" />
-              Physiotherapy & Recovery
+              {heroBadge}
             </div>
 
             <h1 
-              className="font-display font-medium text-white tracking-tight leading-[1.1] text-[40px] sm:text-[48px] md:text-[56px] lg:text-[64px] mb-4"
+              className="font-display font-medium text-white tracking-tight leading-[1.1] text-[40px] sm:text-[48px] md:text-[56px] lg:text-[64px] mb-4 whitespace-pre-line"
               style={{ textShadow: "0 4px 40px rgba(0,0,0,0.5)" }}
             >
-              Physiotherapy <br />
-              at Home{" "}
+              {heroTitle}
             </h1>
 
             <p className="text-white/70 text-base md:text-lg leading-relaxed max-w-xl mb-6">
-              Nupun Home Health Care Services provides personalised physiotherapy at home for
-              elderly patients, post-surgery patients, bedridden patients and people recovering
-              from illness or injury. Our physiotherapists focus on safe movement, pain management,
-              rehabilitation and improving day-to-day independence.
+              {heroDescription}
             </p>
 
             <div className="mt-6 md:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
@@ -400,7 +435,7 @@ function PhysioHero({
                 <button
                   className="group inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-[15px] font-semibold text-primary-foreground shadow-sm transition-all duration-300 hover:brightness-110 hover:-translate-y-0.5"
                 >
-                  Book a Physiotherapist
+                  {heroCtaPrimaryText}
                   <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </button>
               </PhysioBookingModal>
@@ -410,18 +445,14 @@ function PhysioHero({
                 className="group inline-flex items-center justify-center gap-2.5 rounded-full border border-white/30 bg-white/10 backdrop-blur-md px-8 py-3.5 text-[15px] font-medium text-white shadow-sm hover:bg-white/20 hover:border-white/50 transition-all duration-300 hover:-translate-y-0.5"
               >
                 <Phone className="h-5 w-5 text-[#25D366]" />
-                Call Now
+                {heroCtaSecondaryText}
               </a>
             </div>
 
             <div className="mt-8 flex flex-wrap gap-6">
-              {[
-                { val: "35 +", label: "Physiotherapists" },
-                { val: "24/7", label: "Availability" },
-                { val: "4 Cities", label: "NCR Coverage" },
-              ].map((s) => (
+              {heroStats.map((s: any) => (
                 <div key={s.label}>
-                  <div className="text-xl font-display font-bold text-white">{s.val}</div>
+                  <div className="text-xl font-display font-bold text-white">{s.val || s.value}</div>
                   <div className="text-xs text-white/55 mt-0.5">{s.label}</div>
                 </div>
               ))}

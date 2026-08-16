@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { settingsQ } from "@/lib/api/queries";
 import { Counter } from "@/components/site/ui/Counter";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const HERO_IMAGES = [
   "/assets/premium-hero-new-1.png",
@@ -81,6 +82,7 @@ const fadeUp = {
 export function Hero() {
   const navigate = useNavigate();
   const { data: settings } = useQuery(settingsQ());
+  const isMobile = useIsMobile();
 
   const rawNumber = settings?.whatsapp || settings?.phone || "919876543210";
   const whatsapp = rawNumber.replace(/\D/g, "");
@@ -91,10 +93,19 @@ export function Hero() {
     settings?.hero_description ||
     "Trusted Home Nursing, Patient Attendant, Elderly Care, ICU Care, Physiotherapy, Medical Equipment Rental, Services at Home across Faridabad, Gurugram, Noida & Delhi.";
 
+  const ctaPrimaryText = settings?.hero_cta_primary_text || "Book Trusted Care";
+  const ctaSecondaryText = settings?.hero_cta_secondary_text || "WhatsApp Us";
+
   const homeHero = settings?.home_hero;
-  const sliderImages = homeHero?.slider_images?.length
+
+  // Use mobile images on mobile devices if available, fallback to desktop images
+  const mobileImages = homeHero?.slider_images_mobile?.length
+    ? homeHero.slider_images_mobile.map((img) => img.url)
+    : null;
+  const desktopImages = homeHero?.slider_images?.length
     ? homeHero.slider_images.map((img) => img.url)
     : HERO_IMAGES;
+  const sliderImages = (isMobile && mobileImages) ? mobileImages : desktopImages;
 
   const defaultStats = [
     { value: 1500, suffix: "+", label: "Family Served" },
@@ -236,7 +247,7 @@ export function Hero() {
                 onClick={() => navigate({ to: "/booking" })}
                 className="group inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-[15px] font-semibold text-primary-foreground shadow-sm transition-all duration-300 hover:brightness-110 hover:-translate-y-0.5"
               >
-                Book Trusted Care
+                {ctaPrimaryText}
                 <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </button>
 
@@ -247,7 +258,7 @@ export function Hero() {
                 className="group inline-flex items-center justify-center gap-2.5 rounded-full border border-white/30 bg-white/10 backdrop-blur-md px-8 py-3.5 text-[15px] font-medium text-white shadow-sm hover:bg-white/20 hover:border-white/50 transition-all duration-300 hover:-translate-y-0.5"
               >
                 <WhatsappIcon className="h-5 w-5 text-[#25D366]" />
-                WhatsApp Us
+                {ctaSecondaryText}
               </a>
             </motion.div>
 

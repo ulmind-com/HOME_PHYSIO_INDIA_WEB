@@ -69,10 +69,10 @@ const fallbacks: Array<{ title: string; description: string; image: string; vari
 
 export function usePremiumCategories() {
   const { data: categoriesData } = useQuery(categoriesQ({ limit: 10 }));
-  const categories = categoriesData?.items ?? [];
+  const categories = [...(categoriesData?.items ?? [])].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
   return fallbacks.map((fb, i) => {
-    const cat = categories[i];
+    const cat = categories.find(c => c.name?.toLowerCase() === fb.title.toLowerCase()) || categories[i];
     
     // Extract string URL if it's an ImageAsset object
     let imageStr = cat?.image 

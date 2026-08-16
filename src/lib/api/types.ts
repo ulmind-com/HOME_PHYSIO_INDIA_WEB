@@ -14,6 +14,14 @@ export type Category = {
   description?: string | null;
   image?: string | ImageAsset | null;
   hero_image?: string | ImageAsset | null;
+  hero_badge?: string | null;
+  hero_title?: string | null;
+  hero_description?: string | null;
+  hero_cta_primary_text?: string | null;
+  hero_cta_secondary_text?: string | null;
+  hero_images?: ImageAsset[];
+  hero_images_mobile?: ImageAsset[];
+  hero_stats?: { value: string; label: string }[];
   order?: number;
   is_active?: boolean;
   created_at?: string;
@@ -150,7 +158,8 @@ export type HeroSlide = {
   subtitle?: string | null;
   button_text?: string | null;
   button_link?: string | null;
-  background_image?: ImageAsset | null;
+  image_desktop?: ImageAsset | null;
+  image_mobile?: ImageAsset | null;
   order?: number;
 };
 
@@ -173,6 +182,7 @@ export type HomeHero = {
   trust_badge_quote?: string | null;
   trust_badge_avatars?: ImageAsset[];
   slider_images?: ImageAsset[];
+  slider_images_mobile?: ImageAsset[];
   stats?: HomeHeroStat[];
 };
 
@@ -198,6 +208,8 @@ export type Settings = {
   hero_headline?: string | null;
   hero_subtitle?: string | null;
   hero_description?: string | null;
+  hero_cta_primary_text?: string | null;
+  hero_cta_secondary_text?: string | null;
   hero_image?: string | ImageAsset | null;
   hero_stats?: { value: string; label: string }[];
 
@@ -211,7 +223,14 @@ export type Settings = {
   about_stats?: { value: string; label: string }[];
   about_values?: { title: string; body: string }[];
   about_commitments?: string[];
+  commitment_items?: { icon: string; text: string }[];
   commitment_image?: string | ImageAsset | null;
+  why_choose_eyebrow?: string | null;
+  why_choose_title?: string | null;
+  why_choose_description?: string | null;
+  commitment_subtitle?: string | null;
+  commitment_badge_value?: string | null;
+  commitment_badge_label?: string | null;
 
   // How It Works
   how_it_works_steps?: { title: string; body: string }[];
@@ -268,6 +287,22 @@ export type Settings = {
   // Services Page
   why_choose_items?: { title: string; detail: string }[];
   conditions_list?: string[];
+
+  // Comprehensive Services (Home page)
+  comprehensive_services_eyebrow?: string | null;
+  comprehensive_services_title?: string | null;
+  comprehensive_services_description?: string | null;
+  comprehensive_services?: {
+    id?: string | null;
+    title: string;
+    image?: string | ImageAsset | null;
+    features: string[];
+    button_text: string;
+    button_link?: string | null;
+    select_label: string;
+    form_options: string[];
+    order: number;
+  }[];
 };
 
 export type SocialLinks = {

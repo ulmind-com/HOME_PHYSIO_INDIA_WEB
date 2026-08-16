@@ -30,6 +30,47 @@ function AboutPage() {
   const phone = settings?.phone?.replace(/[^\d+]/g, "") || "919876543210";
   const whatsapp = (settings?.whatsapp ?? settings?.phone)?.replace(/\D/g, "") || "919876543210";
 
+  // Hero section data
+  const heroBadge = settings?.about_hero_badge || "HOME PAGE – ABOUT NUPUN";
+  const heroTitle = settings?.about_hero_title || "Care That Comes Home";
+  const heroDescription = settings?.about_hero_description || "Nupun Home Health Care Services provides reliable healthcare and personal care support at home for patients, elderly people and families. We help you arrange suitable care according to the patient's condition, care requirements and preferred duty hours.\n\nOur services are designed to make home healthcare more comfortable, convenient and dependable for families.";
+  const heroImage = typeof settings?.about_hero_image === "string"
+    ? settings.about_hero_image
+    : settings?.about_hero_image?.url ||
+      "/assets/Get professional and compassionate elderly care at home in Ranchi (2)-Picsart-BackgroundRemover.jpeg";
+
+  // Founders data
+  const founders: Array<{ name: string; role: string; image: string; description: string }> =
+    (settings as any)?.about_founders?.length
+      ? (settings as any).about_founders.map((f: any) => ({
+          name: f.name,
+          role: f.role,
+          image: typeof f.image === "string" ? f.image : f.image?.url || "https://i.pravatar.cc/300",
+          description: f.description,
+        }))
+      : [
+          {
+            name: "Sandeep Anand",
+            role: "Founder, Nupun Home Health Care",
+            image: "https://i.pravatar.cc/300?u=sandeep",
+            description:
+              "With over two decades of leadership experience across PepsiCo, ITC, GSK, and Walmart, and an MBA from SP Jain (SPJIMR), Sandeep has built and managed large-scale operations where reliability is non-negotiable.\n\nThe vision for Nupun is deeply personal, emerging from his experience navigating the lack of organized elderly care during his parents' terminal illnesses. He combines operational excellence with emotional purpose to create care that is structured, dependable, and reassuring for families.",
+          },
+          {
+            name: "Megha Gandhi",
+            role: "Co-Founder, Nupun Home Health Care",
+            image: "https://i.pravatar.cc/300?u=megha",
+            description:
+              "Having managed business leadership roles across YES Bank, HDFC Bank, and Axis Bank, Megha has spent her career working closely with senior citizens. This professional background, coupled with the personal loss of her mother, deeply shaped her commitment to dignity and empathy.\n\nAt Nupun, Megha leads with compassion, ensuring that every service is personal, respectful, and built on a foundation of absolute trust to redefine the elder care experience.",
+          },
+        ];
+
+  // Address data
+  const addressName = (settings as any)?.about_address_name || "Nupun Home Health Care";
+  const addressLine1 = (settings as any)?.about_address_line1 || "5th Floor, Tower-C, Unitech Cyber Park";
+  const addressLine2 = (settings as any)?.about_address_line2 || "Sector-39, Gurgaon, India – 122003";
+  const mapEmbedUrl = (settings as any)?.about_map_embed_url || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3508.8105740698165!2d77.04258837617478!3d28.424982693444062!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d228f4116c271%3A0xc34b3dc04c5e3d74!2sUnitech%20Cyber%20Park!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin";
+
   return (
     <>
       {/* ── Custom Split Hero (Preserved layout, updated content) ──────────────── */}
@@ -44,7 +85,7 @@ function AboutPage() {
               initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
               className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1.5 md:px-4 md:py-2 text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] text-primary"
             >
-              <ShieldCheck className="h-4 w-4" fill="currentColor" /> HOME PAGE – ABOUT NUPUN
+              <ShieldCheck className="h-4 w-4" fill="currentColor" /> {heroBadge}
             </motion.div>
 
             {/* Title */}
@@ -52,7 +93,7 @@ function AboutPage() {
               initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }}
               className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight text-foreground"
             >
-              Care That Comes Home
+              {heroTitle}
             </motion.h1>
 
             {/* Description */}
@@ -60,12 +101,9 @@ function AboutPage() {
               initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}
               className="space-y-4 text-base md:text-lg text-foreground/80 max-w-lg leading-relaxed font-medium"
             >
-              <p>
-                Nupun Home Health Care Services provides reliable healthcare and personal care support at home for patients, elderly people and families. We help you arrange suitable care according to the patient's condition, care requirements and preferred duty hours.
-              </p>
-              <p>
-                Our services are designed to make home healthcare more comfortable, convenient and dependable for families.
-              </p>
+              {heroDescription.split("\n\n").map((para, idx) => (
+                <p key={idx}>{para}</p>
+              ))}
             </motion.div>
 
             {/* Actions */}
@@ -97,13 +135,8 @@ function AboutPage() {
         {/* Right Image */}
         <div className="relative h-[400px] w-full lg:absolute lg:right-0 lg:top-0 lg:h-full lg:w-[45%] xl:w-[50%] -z-10">
           <img
-            src={
-              typeof settings?.about_hero_image === "string"
-                ? settings.about_hero_image
-                : settings?.about_hero_image?.url ||
-                  "/assets/Get professional and compassionate elderly care at home in Ranchi (2)-Picsart-BackgroundRemover.jpeg"
-            }
-            alt="Care That Comes Home"
+            src={heroImage}
+            alt={heroTitle}
             className="w-full h-full object-cover object-top"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-[#fafafa] via-[#fafafa]/50 to-transparent lg:w-48" />
@@ -119,55 +152,28 @@ function AboutPage() {
           </h2>
 
           <div className="max-w-4xl mx-auto space-y-8">
-            {/* Founder 1 */}
-            <div className="bg-white rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-8 md:p-10 lg:p-12 flex flex-col md:flex-row gap-8 lg:gap-12 items-center md:items-start border border-black/5">
-              <img
-                src="https://i.pravatar.cc/300?u=sandeep"
-                alt="Sandeep Anand"
-                className="w-40 h-40 md:w-48 md:h-48 rounded-full object-cover shrink-0 shadow-sm"
-              />
-              <div className="text-center md:text-left">
-                <h3 className="text-2xl md:text-[28px] font-medium tracking-tight text-foreground mb-1">
-                  Sandeep Anand
-                </h3>
-                <div className="text-primary font-medium text-sm md:text-base mb-6 tracking-wide">
-                  Founder, Nupun Home Health Care
-                </div>
-                <div className="text-gray-700 text-base md:text-[17px] leading-relaxed space-y-4 font-medium">
-                  <p>
-                    With over two decades of leadership experience across PepsiCo, ITC, GSK, and Walmart, and an MBA from SP Jain (SPJIMR), Sandeep has built and managed large-scale operations where reliability is non-negotiable.
-                  </p>
-                  <p>
-                    The vision for Nupun is deeply personal, emerging from his experience navigating the lack of organized elderly care during his parents' terminal illnesses. He combines operational excellence with emotional purpose to create care that is structured, dependable, and reassuring for families.
-                  </p>
+            {founders.map((founder, idx) => (
+              <div key={idx} className="bg-white rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-8 md:p-10 lg:p-12 flex flex-col md:flex-row gap-8 lg:gap-12 items-center md:items-start border border-black/5">
+                <img
+                  src={founder.image}
+                  alt={founder.name}
+                  className="w-40 h-40 md:w-48 md:h-48 rounded-full object-cover shrink-0 shadow-sm"
+                />
+                <div className="text-center md:text-left">
+                  <h3 className="text-2xl md:text-[28px] font-medium tracking-tight text-foreground mb-1">
+                    {founder.name}
+                  </h3>
+                  <div className="text-primary font-medium text-sm md:text-base mb-6 tracking-wide">
+                    {founder.role}
+                  </div>
+                  <div className="text-gray-700 text-base md:text-[17px] leading-relaxed space-y-4 font-medium">
+                    {founder.description.split("\n\n").map((para, pIdx) => (
+                      <p key={pIdx}>{para}</p>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-
-            {/* Founder 2 */}
-            <div className="bg-white rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-8 md:p-10 lg:p-12 flex flex-col md:flex-row gap-8 lg:gap-12 items-center md:items-start border border-black/5">
-              <img
-                src="https://i.pravatar.cc/300?u=megha"
-                alt="Megha Gandhi"
-                className="w-40 h-40 md:w-48 md:h-48 rounded-full object-cover shrink-0 shadow-sm"
-              />
-              <div className="text-center md:text-left">
-                <h3 className="text-2xl md:text-[28px] font-medium tracking-tight text-foreground mb-1">
-                  Megha Gandhi
-                </h3>
-                <div className="text-primary font-medium text-sm md:text-base mb-6 tracking-wide">
-                  Co-Founder, Nupun Home Health Care
-                </div>
-                <div className="text-gray-700 text-base md:text-[17px] leading-relaxed space-y-4 font-medium">
-                  <p>
-                    Having managed business leadership roles across YES Bank, HDFC Bank, and Axis Bank, Megha has spent her career working closely with senior citizens. This professional background, coupled with the personal loss of her mother, deeply shaped her commitment to dignity and empathy.
-                  </p>
-                  <p>
-                    At Nupun, Megha leads with compassion, ensuring that every service is personal, respectful, and built on a foundation of absolute trust to redefine the elder care experience.
-                  </p>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </Section>
@@ -182,12 +188,12 @@ function AboutPage() {
                 Our Address
               </h2>
               <div className="space-y-1">
-                <h4 className="text-xl md:text-2xl font-medium tracking-tight text-foreground mb-2">Nupun Home Health Care</h4>
+                <h4 className="text-xl md:text-2xl font-medium tracking-tight text-foreground mb-2">{addressName}</h4>
                 <p className="text-gray-700 text-lg md:text-xl font-medium">
-                  5th Floor, Tower-C, Unitech Cyber Park
+                  {addressLine1}
                 </p>
                 <p className="text-gray-700 text-lg md:text-xl font-medium">
-                  Sector-39, Gurgaon, India – 122003
+                  {addressLine2}
                 </p>
               </div>
             </div>
@@ -195,7 +201,7 @@ function AboutPage() {
             {/* Map */}
             <div className="w-full h-[250px] md:h-[350px] rounded-2xl md:rounded-[2rem] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-black/5">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3508.8105740698165!2d77.04258837617478!3d28.424982693444062!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d228f4116c271%3A0xc34b3dc04c5e3d74!2sUnitech%20Cyber%20Park!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+                src={mapEmbedUrl}
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}

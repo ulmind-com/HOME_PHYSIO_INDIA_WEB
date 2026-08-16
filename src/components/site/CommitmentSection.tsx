@@ -58,13 +58,29 @@ const fadeUp = {
 export function CommitmentSection() {
   const { data: settings } = useQuery(settingsQ());
 
-  const commitmentItems = settings?.about_commitments?.length
+  // Section header — dynamic with fallback
+  const eyebrow = settings?.why_choose_eyebrow || "Our Promise";
+  const sectionTitle = settings?.why_choose_title || "Why Choose Nupun Home Care?";
+  const sectionDescription =
+    settings?.why_choose_description ||
+    "We go beyond standard care to ensure your peace of mind and your loved one\u2019s well-being \u2014 every visit, every time.";
+  const commitmentSubtitle = settings?.commitment_subtitle || "Our Commitment to Excellence";
+  const badgeValue = settings?.commitment_badge_value || "100%";
+  const badgeLabel = settings?.commitment_badge_label || "Verified Staff";
+
+  // Commitment items — prefer new commitment_items (with icons), fallback to about_commitments (text only), then defaults
+  const commitmentItems = settings?.commitment_items?.length
+    ? settings.commitment_items
+    : settings?.about_commitments?.length
     ? settings.about_commitments.map((text) => ({ icon: "default", text }))
     : DEFAULT_COMMITMENTS;
 
   // Dynamic image from admin panel, fallback to default
   const rawImg = settings?.commitment_image;
   const teamImage = imgUrl(rawImg) || "/assets/commitment-team.png";
+
+  // Parse title to highlight the brand name
+  const titleParts = sectionTitle.split(/(Nupun)/i);
 
   return (
     <section className="relative w-full overflow-hidden bg-gradient-to-br from-[#f7fafa] via-white to-[#f0f7f6] py-16 md:py-24 lg:py-28">
@@ -83,7 +99,7 @@ export function CommitmentSection() {
       </div>
 
       <div className="container-x relative z-10">
-        {/* Top Section — Why Choose Nupun */}
+        {/* Top Section — Why Choose */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -93,31 +109,34 @@ export function CommitmentSection() {
         >
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-accent backdrop-blur">
             <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-            Our Promise
+            {eyebrow}
           </div>
           <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-medium tracking-tight text-foreground leading-[1.15]">
-            Why Choose{" "}
-            <span className="relative inline-block">
-              <span className="relative z-10 text-primary">Nupun</span>
-              <svg
-                className="absolute -bottom-2 left-0 h-3 w-full text-primary/30"
-                viewBox="0 0 200 12"
-                fill="none"
-                aria-hidden="true"
-              >
-                <path
-                  d="M2 8 Q 50 -2, 100 6 T 198 4"
-                  stroke="currentColor"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </span>{" "}
-            Home Care?
+            {titleParts.map((part, i) =>
+              part.toLowerCase() === "nupun" ? (
+                <span key={i} className="relative inline-block">
+                  <span className="relative z-10 text-primary">{part}</span>
+                  <svg
+                    className="absolute -bottom-2 left-0 h-3 w-full text-primary/30"
+                    viewBox="0 0 200 12"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M2 8 Q 50 -2, 100 6 T 198 4"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </span>
+              ) : (
+                <span key={i}>{part}</span>
+              )
+            )}
           </h2>
           <p className="mt-6 text-base md:text-lg leading-relaxed text-muted-foreground max-w-2xl mx-auto">
-            We go beyond standard care to ensure your peace of mind and your loved one's well-being
-            — every visit, every time.
+            {sectionDescription}
           </p>
         </motion.div>
 
@@ -133,7 +152,7 @@ export function CommitmentSection() {
               className="mb-8"
             >
               <h3 className="font-display text-2xl md:text-3xl font-medium text-foreground tracking-tight">
-                Our Commitment to Excellence
+                {commitmentSubtitle}
               </h3>
             </motion.div>
 
@@ -199,8 +218,8 @@ export function CommitmentSection() {
                 <Shield className="h-4.5 w-4.5" strokeWidth={2.5} />
               </div>
               <div>
-                <div className="text-sm font-bold text-foreground leading-none">100%</div>
-                <div className="text-[11px] text-muted-foreground mt-0.5">Verified Staff</div>
+                <div className="text-sm font-bold text-foreground leading-none">{badgeValue}</div>
+                <div className="text-[11px] text-muted-foreground mt-0.5">{badgeLabel}</div>
               </div>
             </motion.div>
           </motion.div>

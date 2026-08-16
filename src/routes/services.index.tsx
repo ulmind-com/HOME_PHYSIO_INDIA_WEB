@@ -155,7 +155,9 @@ function ServicesIndex() {
   
   const premiumCategories = usePremiumCategories();
 
-  const items = data?.items ?? [];
+  const items = useMemo(() => {
+    return (data?.items ?? []).sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+  }, [data]);
   const testimonials = tData?.items ?? [];
   const faqs = fData?.items ?? [];
 
