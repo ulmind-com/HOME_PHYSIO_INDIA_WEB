@@ -199,7 +199,7 @@ function FooterLink({ to, children }: { to: string; children: React.ReactNode })
   return (
     <Link
       to={to}
-      className="text-[15px] font-medium text-white/80 sm:text-muted-foreground hover:text-white sm:hover:text-primary transition-colors"
+      className="text-[15px] font-medium text-white/80 sm:text-gray-800 hover:text-white sm:hover:text-primary transition-colors"
     >
       {children}
     </Link>
