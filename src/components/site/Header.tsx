@@ -64,13 +64,13 @@ export function Header() {
             "shadow-[0_20px_50px_-20px_rgba(15,80,80,0.35)]",
             onDarkHero
               ? "bg-white/10 border border-white/25"
-              : "bg-white/30 border border-white/50",
+              : "bg-white/90 border border-border/40",
           )}
         >
           <div
             className={cn(
               "pointer-events-none absolute inset-x-0 top-0 h-1/2 rounded-full bg-gradient-to-b to-transparent",
-              onDarkHero ? "from-white/15" : "from-white/50",
+              onDarkHero ? "from-white/15" : "from-white/60",
             )}
           />
           <Link to="/" className="relative flex items-center gap-2.5 shrink-0">
@@ -165,7 +165,7 @@ export function Header() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -15, scale: 0.98 }}
               transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-              className="lg:hidden mt-2 rounded-3xl bg-white/30 backdrop-blur-2xl backdrop-saturate-150 border border-white/50 shadow-[0_20px_50px_-20px_rgba(15,80,80,0.35)] origin-top overflow-hidden"
+              className="lg:hidden mt-2 rounded-3xl bg-white/90 backdrop-blur-3xl backdrop-saturate-150 border border-border/40 shadow-[0_20px_50px_-20px_rgba(15,80,80,0.35)] origin-top overflow-hidden"
             >
               <div className="py-3 px-3 grid gap-1">
                 {NAV.map((item) => (
