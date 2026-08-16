@@ -136,11 +136,13 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="flex flex-col sm:flex-row justify-between items-center mt-16 border-t border-white/10 pt-6">
+        <div className="flex flex-col sm:flex-row justify-between items-center mt-16 border-t border-white/10 pt-6 pb-6">
           <div className="text-[13px] text-white/60 font-medium text-center sm:text-left mb-4 sm:mb-0">
             © {new Date().getFullYear()} {name}. All Rights Reserved.
           </div>
-          <WebVitalsTracker />
+          <div className="mr-14 sm:mr-16">
+            <WebVitalsTracker />
+          </div>
         </div>
       </div>
     </footer>
