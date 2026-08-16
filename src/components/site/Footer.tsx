@@ -155,9 +155,9 @@ export function Footer() {
                 href="https://www.ulmind.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2.5 text-[13px] font-sans text-white/90 sm:text-muted-foreground group cursor-pointer transition-colors sm:hover:text-foreground"
+                className="flex items-center gap-2.5 text-[13px] font-sans text-white/90 sm:text-gray-800 group cursor-pointer transition-colors sm:hover:text-black font-medium"
               >
-                <span className="opacity-80 transition-opacity group-hover:opacity-100">
+                <span className="transition-opacity group-hover:opacity-100">
                   Designed and Developed by
                 </span>
                 <img
