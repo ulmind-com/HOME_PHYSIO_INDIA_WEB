@@ -335,10 +335,10 @@ export function ComprehensiveServicesSection() {
                     if (service.id === "equipment") {
                       return <EquipmentBookingModal>{btnContent}</EquipmentBookingModal>;
                     }
-                    if (service.id === "icu-setup") {
+                    if (service.id === "icu") {
                       return <IcuBookingModal>{btnContent}</IcuBookingModal>;
                     }
-                    if (service.id === "home-sample") {
+                    if (service.id === "sample") {
                       return <LabBookingModal>{btnContent}</LabBookingModal>;
                     }
                     return (
