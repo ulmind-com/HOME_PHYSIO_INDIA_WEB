@@ -2,6 +2,10 @@ import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { ArrowRight, Check } from "lucide-react";
 import { NursingBookingModal } from "@/components/forms/NursingBookingModal";
+import { MotherBabyBookingModal } from "@/components/forms/MotherBabyBookingModal";
+import { ElderCareBookingModal } from "@/components/forms/ElderCareBookingModal";
+import { PhysioBookingModal } from "@/components/forms/PhysioBookingModal";
+import { EquipmentBookingModal } from "@/components/forms/EquipmentBookingModal";
 
 type ServiceCard = {
   id: string;
@@ -306,22 +310,42 @@ export function ComprehensiveServicesSection() {
 
                 {/* CTA Button */}
                 <div className="mt-5 pt-4 border-t border-border/50">
-                  <NursingBookingModal 
-                    defaultService=""
-                    modalTitle={`Book ${service.title}`}
-                    modalDescription="Fill out the details and our team will reach out within minutes."
-                    serviceOptions={service.formOptions || service.features}
-                    selectPlaceholder={service.selectLabel}
-                    source="Comprehensive"
-                  >
-                    <button className="group/btn w-full relative overflow-hidden rounded-full bg-primary px-5 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:bg-primary/90 hover:-translate-y-0.5 hover:shadow-md">
-                      <span className="relative z-10 flex items-center justify-center gap-2">
-                        {service.buttonText}
-                        <ArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
-                      </span>
-                      <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-[800ms] ease-out group-hover/btn:translate-x-full" />
-                    </button>
-                  </NursingBookingModal>
+                  {(() => {
+                    const btnContent = (
+                      <button className="group/btn w-full relative overflow-hidden rounded-full bg-primary px-5 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:bg-primary/90 hover:-translate-y-0.5 hover:shadow-md">
+                        <span className="relative z-10 flex items-center justify-center gap-2">
+                          {service.buttonText}
+                          <ArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
+                        </span>
+                        <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-[800ms] ease-out group-hover/btn:translate-x-full" />
+                      </button>
+                    );
+
+                    if (service.id === "mother-baby") {
+                      return <MotherBabyBookingModal>{btnContent}</MotherBabyBookingModal>;
+                    }
+                    if (service.id === "elderly") {
+                      return <ElderCareBookingModal>{btnContent}</ElderCareBookingModal>;
+                    }
+                    if (service.id === "physio") {
+                      return <PhysioBookingModal>{btnContent}</PhysioBookingModal>;
+                    }
+                    if (service.id === "equipment") {
+                      return <EquipmentBookingModal>{btnContent}</EquipmentBookingModal>;
+                    }
+                    return (
+                      <NursingBookingModal 
+                        defaultService=""
+                        modalTitle={`Book ${service.title}`}
+                        modalDescription="Fill out the details and our team will reach out within minutes."
+                        serviceOptions={service.formOptions || service.features}
+                        selectPlaceholder={service.selectLabel}
+                        source="Comprehensive"
+                      >
+                        {btnContent}
+                      </NursingBookingModal>
+                    );
+                  })()}
                 </div>
               </div>
             </motion.article>
