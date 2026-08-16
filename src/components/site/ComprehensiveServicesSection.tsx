@@ -1,4 +1,6 @@
 import { Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { settingsQ } from "@/lib/api/queries";
 import { motion } from "framer-motion";
 import { ArrowRight, Check } from "lucide-react";
 import { NursingBookingModal } from "@/components/forms/NursingBookingModal";
@@ -215,6 +217,23 @@ const cardItem = {
 };
 
 export function ComprehensiveServicesSection() {
+  const { data: settings } = useQuery(settingsQ());
+
+  const activeServices: ServiceCard[] = settings?.comprehensive_services?.length
+    ? settings.comprehensive_services
+        .sort((a, b) => (a.order || 0) - (b.order || 0))
+        .map((s: any) => ({
+          id: s.id || "",
+          title: s.title || "",
+          image: typeof s.image === "string" ? s.image : s.image?.url || "",
+          features: s.features || [],
+          buttonText: s.button_text || "",
+          buttonLink: s.button_link || "",
+          selectLabel: s.select_label || s.form_dropdown_label || "",
+          formOptions: s.form_options || s.features || [],
+        }))
+    : SERVICES;
+
   return (
     <section className="relative w-full bg-background pt-10 pb-20 md:pt-16 md:pb-28 lg:pt-16 lg:pb-32 overflow-hidden">
       {/* Decorative background blobs */}
@@ -272,7 +291,7 @@ export function ComprehensiveServicesSection() {
           viewport={{ once: true, margin: "-60px" }}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-7 max-w-[1400px] mx-auto"
         >
-          {SERVICES.map((service) => (
+          {activeServices.map((service) => (
             <motion.article
               key={service.id}
               variants={cardItem}
