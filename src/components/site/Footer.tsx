@@ -35,23 +35,7 @@ export function Footer() {
   const services = servicesData?.items ?? [];
 
   return (
-    <footer className="relative mt-0 bg-black sm:bg-[#F2F0EC] pt-16 pb-0 sm:pt-20 flex flex-col">
-      {/* Background Image at the bottom half */}
-      <div
-        className="absolute inset-x-0 bottom-0 h-full sm:h-[80%] z-0 pointer-events-none [mask-image:none] sm:[mask-image:linear-gradient(to_bottom,transparent,black_35%)] [-webkit-mask-image:none] sm:[-webkit-mask-image:linear-gradient(to_bottom,transparent,black_35%)]"
-      >
-        <picture>
-          <source media="(max-width: 639px)" srcSet="/assets/footer_mobile_bg.jpg" />
-          <img
-            src={settings?.footer_image || "/assets/hero-slide-2.jpeg"}
-            alt=""
-            className="w-full h-full object-cover object-[center_30%] opacity-60 sm:opacity-100"
-          />
-        </picture>
-        {/* Darken/tint the image slightly so white text pops */}
-        <div className="absolute inset-0 bg-black/10 mix-blend-multiply sm:block hidden"></div>
-      </div>
-
+    <footer className="relative mt-0 bg-[#F2F0EC] pt-16 pb-10 flex flex-col border-t border-border/50">
       <div className="container-x relative z-10 flex flex-col justify-between flex-grow">
         <div className="grid gap-10 md:gap-16 lg:grid-cols-12">
           {/* Left Column (Brand & CTA) */}
@@ -71,23 +55,23 @@ export function Footer() {
                   </svg>
                 </div>
               )}
-              <div className="font-display text-xl tracking-tight text-white sm:text-foreground">{name}</div>
+              <div className="font-display text-xl tracking-tight text-foreground">{name}</div>
             </div>
 
             {settings?.tagline && (
-              <h3 className="font-display text-xl sm:text-2xl md:text-3xl tracking-tight text-white sm:text-foreground mb-3 md:mb-4 leading-[1.15]">
+              <h3 className="font-display text-xl sm:text-2xl md:text-3xl tracking-tight text-foreground mb-3 md:mb-4 leading-[1.15]">
                 {settings.tagline}
               </h3>
             )}
 
             {settings?.footer_description && (
-              <p className="text-[13px] md:text-[15px] leading-relaxed text-white/80 sm:text-muted-foreground max-w-md mb-6 md:mb-8">
+              <p className="text-[13px] md:text-[15px] leading-relaxed text-muted-foreground max-w-md mb-6 md:mb-8">
                 {settings.footer_description}
               </p>
             )}
 
-            <div className="mt-6 md:mt-10">
-              <h4 className="text-[15px] font-medium text-white sm:text-foreground mb-4">
+            <div className="mt-2 md:mt-4">
+              <h4 className="text-[15px] font-medium text-foreground mb-4">
                 Follow our social media
               </h4>
               <div className="flex gap-3">
@@ -109,8 +93,6 @@ export function Footer() {
                   )}
               </div>
             </div>
-
-
           </div>
 
           {/* Right Column (Links) */}
@@ -151,23 +133,14 @@ export function Footer() {
               </FooterCol>
             </div>
 
-            <div className="flex justify-start sm:justify-end mt-12 sm:mt-auto sm:translate-y-6">
+            <div className="flex flex-col sm:flex-row justify-between items-center sm:items-end mt-16 border-t border-border/60 pt-6">
+              <div className="text-[13px] text-muted-foreground font-medium text-center sm:text-left mb-4 sm:mb-0">
+                © {new Date().getFullYear()} {name}. All Rights Reserved.
+              </div>
               <WebVitalsTracker />
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Massive Brand Typography at the Bottom over the image */}
-      <div className="relative z-10 w-full overflow-hidden flex flex-col items-center justify-center pt-12 md:pt-20 pb-4 pointer-events-none">
-        <div className="mb-8 text-[13px] text-white/90 font-medium drop-shadow-md text-center pointer-events-auto">
-          © {new Date().getFullYear()} {name}. All Rights Reserved.
-        </div>
-        <h1 className="font-display text-[26vw] leading-[0.75] font-bold tracking-tighter text-white drop-shadow-2xl select-none whitespace-nowrap opacity-90">
-          {name.split(" ")[0] || "Nupun"}
-        </h1>
-        {/* Gradient fade at the absolute bottom to blend everything out */}
-        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#EAEAEA] to-transparent -z-10"></div>
       </div>
     </footer>
   );
@@ -176,7 +149,7 @@ export function Footer() {
 function FooterCol({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="flex flex-col">
-      <div className="text-base font-semibold text-white sm:text-foreground mb-6">{title}</div>
+      <div className="text-base font-semibold text-foreground mb-6">{title}</div>
       <div className="flex flex-col gap-4">{children}</div>
     </div>
   );
@@ -186,7 +159,7 @@ function FooterLink({ to, children }: { to: string; children: React.ReactNode })
   return (
     <Link
       to={to}
-      className="text-[15px] font-medium text-white/80 sm:text-gray-800 hover:text-white sm:hover:text-primary transition-colors"
+      className="text-[15px] font-medium text-muted-foreground hover:text-primary transition-colors"
     >
       {children}
     </Link>
@@ -197,7 +170,7 @@ function SocialIcon({
   Icon,
   href,
 }: {
-  Icon: any /* eslint-disable-line @typescript-eslint/no-explicit-any */ /* eslint-disable-line @typescript-eslint/no-explicit-any */;
+  Icon: any /* eslint-disable-line @typescript-eslint/no-explicit-any */;
   href: string;
 }) {
   return (
@@ -205,7 +178,7 @@ function SocialIcon({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="w-9 h-9 rounded-full bg-white/20 sm:bg-primary text-white sm:text-primary-foreground flex items-center justify-center hover:bg-white/40 sm:hover:bg-accent sm:hover:text-accent-foreground transition-colors shadow-sm"
+      className="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors shadow-sm"
     >
       <Icon className="w-4 h-4" fill="currentColor" />
     </a>
