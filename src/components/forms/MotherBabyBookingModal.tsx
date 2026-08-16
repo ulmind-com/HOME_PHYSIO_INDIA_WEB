@@ -222,7 +222,7 @@ export function MotherBabyBookingModal({
                     <div className="relative">
                       <select
                         {...form.register("service_package")}
-                        className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-foreground appearance-none cursor-pointer"
+                        className="w-full rounded-full border border-primary/20 bg-primary/5 px-5 py-3.5 pr-10 text-sm outline-none transition hover:bg-primary/10 hover:border-primary/30 focus:border-primary focus:ring-2 focus:ring-primary/15 text-foreground appearance-none cursor-pointer"
                       >
                         <option value="">Select Service Package</option>
                         {SERVICE_PACKAGES.map((s) => (
@@ -245,7 +245,7 @@ export function MotherBabyBookingModal({
                     <div className="relative">
                       <select
                         {...form.register("shift_required")}
-                        className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-foreground appearance-none cursor-pointer"
+                        className="w-full rounded-full border border-primary/20 bg-primary/5 px-5 py-3.5 pr-10 text-sm outline-none transition hover:bg-primary/10 hover:border-primary/30 focus:border-primary focus:ring-2 focus:ring-primary/15 text-foreground appearance-none cursor-pointer"
                       >
                         <option value="">Select Shift Required</option>
                         {SHIFTS.map((s) => (
