@@ -86,7 +86,7 @@ export function Footer() {
             )}
 
             <div className="mt-6 md:mt-10">
-              <h4 className="text-[15px] font-semibold text-white sm:text-foreground mb-4">
+              <h4 className="text-[15px] font-medium text-white sm:text-foreground mb-4">
                 Follow our social media
               </h4>
               <div className="flex gap-3">
