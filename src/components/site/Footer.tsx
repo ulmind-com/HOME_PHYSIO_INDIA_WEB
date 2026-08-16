@@ -96,7 +96,7 @@ export function Footer() {
           </div>
 
           {/* Right Column (Links) */}
-          <div className="lg:col-span-6 lg:col-start-7 flex flex-col justify-between h-full">
+          <div className="lg:col-span-6 lg:col-start-7 flex flex-col h-full">
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 md:gap-x-8 gap-y-8 md:gap-y-12">
               <FooterCol title="Menu">
                 <FooterLink to="/">Home</FooterLink>
@@ -132,14 +132,15 @@ export function Footer() {
                 <FooterLink to="/refund-policy">Refund Policy</FooterLink>
               </FooterCol>
             </div>
-
-            <div className="flex flex-col sm:flex-row justify-between items-center sm:items-end mt-16 border-t border-white/10 pt-6">
-              <div className="text-[13px] text-white/60 font-medium text-center sm:text-left mb-4 sm:mb-0">
-                © {new Date().getFullYear()} {name}. All Rights Reserved.
-              </div>
-              <WebVitalsTracker />
-            </div>
           </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="flex flex-col sm:flex-row justify-between items-center mt-16 border-t border-white/10 pt-6">
+          <div className="text-[13px] text-white/60 font-medium text-center sm:text-left mb-4 sm:mb-0">
+            © {new Date().getFullYear()} {name}. All Rights Reserved.
+          </div>
+          <WebVitalsTracker />
         </div>
       </div>
     </footer>
