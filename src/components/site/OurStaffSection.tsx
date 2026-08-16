@@ -52,7 +52,7 @@ function StaffCard({ staff }: { staff: StaffMember }) {
       <div className="flex flex-1 flex-col p-4">
         {/* Name & Rating */}
         <div className="flex flex-col items-center gap-1.5 mb-5">
-          <h3 className="text-[15px] font-semibold text-gray-800 text-center">{staff.name}</h3>
+          <h3 className="text-[15px] font-medium text-gray-800 text-center">{staff.name}</h3>
           
           <div className="flex items-center justify-center gap-0.5">
             {Array.from({ length: 5 }).map((_, i) => (
