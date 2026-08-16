@@ -6,6 +6,8 @@ import { MotherBabyBookingModal } from "@/components/forms/MotherBabyBookingModa
 import { ElderCareBookingModal } from "@/components/forms/ElderCareBookingModal";
 import { PhysioBookingModal } from "@/components/forms/PhysioBookingModal";
 import { EquipmentBookingModal } from "@/components/forms/EquipmentBookingModal";
+import { IcuBookingModal } from "@/components/forms/IcuBookingModal";
+import { LabBookingModal } from "@/components/forms/LabBookingModal";
 
 type ServiceCard = {
   id: string;
@@ -332,6 +334,12 @@ export function ComprehensiveServicesSection() {
                     }
                     if (service.id === "equipment") {
                       return <EquipmentBookingModal>{btnContent}</EquipmentBookingModal>;
+                    }
+                    if (service.id === "icu-setup") {
+                      return <IcuBookingModal>{btnContent}</IcuBookingModal>;
+                    }
+                    if (service.id === "home-sample") {
+                      return <LabBookingModal>{btnContent}</LabBookingModal>;
                     }
                     return (
                       <NursingBookingModal 

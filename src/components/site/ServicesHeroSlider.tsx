@@ -9,6 +9,8 @@ import { ElderCareBookingModal } from "@/components/forms/ElderCareBookingModal"
 import { EquipmentBookingModal } from "@/components/forms/EquipmentBookingModal";
 import { NursingBookingModal } from "@/components/forms/NursingBookingModal";
 import { MotherBabyBookingModal } from "@/components/forms/MotherBabyBookingModal";
+import { IcuBookingModal } from "@/components/forms/IcuBookingModal";
+import { LabBookingModal } from "@/components/forms/LabBookingModal";
 import { PhysioBookingModal } from "@/components/forms/PhysioBookingModal";
 
 /* ── Default / fallback slides (static assets) ────────────────────── */
@@ -296,7 +298,14 @@ export function ServicesHeroSlider({ slides: dynamicSlides }: { slides?: HeroSli
                 if (link.includes("mother")) {
                   return <MotherBabyBookingModal onOpenChange={setIsModalOpen}>{btnContent}</MotherBabyBookingModal>;
                 }
-                if (link.includes("nursing") || link.includes("icu")) {
+                const t = (slide.title || "").toLowerCase();
+                if (t.includes("icu") || link.includes("icu")) {
+                  return <IcuBookingModal onOpenChange={setIsModalOpen}>{btnContent}</IcuBookingModal>;
+                }
+                if (t.includes("sample") || link.includes("sample")) {
+                  return <LabBookingModal onOpenChange={setIsModalOpen}>{btnContent}</LabBookingModal>;
+                }
+                if (link.includes("nursing")) {
                   return <NursingBookingModal onOpenChange={setIsModalOpen}>{btnContent}</NursingBookingModal>;
                 }
                 if (link.includes("physio")) {
