@@ -149,9 +149,9 @@ export function CommitmentSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="mb-8"
+              className="mb-8 text-center lg:text-left"
             >
-              <h3 className="font-display text-2xl md:text-3xl font-medium text-foreground tracking-tight">
+              <h3 className="font-display text-xl md:text-2xl font-medium text-foreground tracking-tight">
                 {commitmentSubtitle}
               </h3>
             </motion.div>
