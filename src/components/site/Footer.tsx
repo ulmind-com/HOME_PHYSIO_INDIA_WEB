@@ -107,21 +107,13 @@ export function Footer() {
               </FooterCol>
 
               <FooterCol title="Services">
-                {services.length > 0 ? (
-                  services.map((s) => (
-                    <FooterLink key={s.id} to={`/services`}>
-                      {s.title}
-                    </FooterLink>
-                  ))
-                ) : (
-                  <>
-                    <FooterLink to="/elderly-care">Elderly Care</FooterLink>
-                    <FooterLink to="/nursing-care">Nursing Care</FooterLink>
-                    <FooterLink to="/services">Physiotherapy</FooterLink>
-                    <FooterLink to="/services">Rehabilitation</FooterLink>
-                    <FooterLink to="/services">Medical Equipment</FooterLink>
-                  </>
-                )}
+                <FooterLink to="/nursing-care">Home Nursing Care</FooterLink>
+                <FooterLink to="/elderly-care">Elderly Care</FooterLink>
+                <FooterLink to="/services">Mother & Baby Care</FooterLink>
+                <FooterLink to="/physiotherapy">Physiotherapy & Recovery</FooterLink>
+                <FooterLink to="/medical-equipment">Medical Equipment Rental</FooterLink>
+                <FooterLink to="/services">ICU Setup</FooterLink>
+                <FooterLink to="/services">Home Sample Collection</FooterLink>
               </FooterCol>
 
               <FooterCol title="Support">
