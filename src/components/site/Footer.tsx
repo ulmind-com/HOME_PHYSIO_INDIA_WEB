@@ -35,7 +35,7 @@ export function Footer() {
   const services = servicesData?.items ?? [];
 
   return (
-    <footer className="relative mt-0 bg-[#F2F0EC] pt-16 pb-10 flex flex-col border-t border-border/50">
+    <footer className="relative mt-0 bg-dark pt-16 pb-10 flex flex-col border-t border-border/10">
       <div className="container-x relative z-10 flex flex-col justify-between flex-grow">
         <div className="grid gap-10 md:gap-16 lg:grid-cols-12">
           {/* Left Column (Brand & CTA) */}
@@ -55,23 +55,23 @@ export function Footer() {
                   </svg>
                 </div>
               )}
-              <div className="font-display text-xl tracking-tight text-foreground">{name}</div>
+              <div className="font-display text-xl tracking-tight text-white">{name}</div>
             </div>
 
             {settings?.tagline && (
-              <h3 className="font-display text-xl sm:text-2xl md:text-3xl tracking-tight text-foreground mb-3 md:mb-4 leading-[1.15]">
+              <h3 className="font-display text-xl sm:text-2xl md:text-3xl tracking-tight text-white mb-3 md:mb-4 leading-[1.15]">
                 {settings.tagline}
               </h3>
             )}
 
             {settings?.footer_description && (
-              <p className="text-[13px] md:text-[15px] leading-relaxed text-muted-foreground max-w-md mb-6 md:mb-8">
+              <p className="text-[13px] md:text-[15px] leading-relaxed text-white/70 max-w-md mb-6 md:mb-8">
                 {settings.footer_description}
               </p>
             )}
 
             <div className="mt-2 md:mt-4">
-              <h4 className="text-[15px] font-medium text-foreground mb-4">
+              <h4 className="text-[15px] font-medium text-white mb-4">
                 Follow our social media
               </h4>
               <div className="flex gap-3">
@@ -133,8 +133,8 @@ export function Footer() {
               </FooterCol>
             </div>
 
-            <div className="flex flex-col sm:flex-row justify-between items-center sm:items-end mt-16 border-t border-border/60 pt-6">
-              <div className="text-[13px] text-muted-foreground font-medium text-center sm:text-left mb-4 sm:mb-0">
+            <div className="flex flex-col sm:flex-row justify-between items-center sm:items-end mt-16 border-t border-white/10 pt-6">
+              <div className="text-[13px] text-white/60 font-medium text-center sm:text-left mb-4 sm:mb-0">
                 © {new Date().getFullYear()} {name}. All Rights Reserved.
               </div>
               <WebVitalsTracker />
@@ -149,7 +149,7 @@ export function Footer() {
 function FooterCol({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="flex flex-col">
-      <div className="text-base font-semibold text-foreground mb-6">{title}</div>
+      <div className="text-base font-semibold text-white mb-6">{title}</div>
       <div className="flex flex-col gap-4">{children}</div>
     </div>
   );
@@ -159,7 +159,7 @@ function FooterLink({ to, children }: { to: string; children: React.ReactNode })
   return (
     <Link
       to={to}
-      className="text-[15px] font-medium text-muted-foreground hover:text-primary transition-colors"
+      className="text-[15px] font-medium text-white/70 hover:text-white transition-colors"
     >
       {children}
     </Link>
@@ -178,7 +178,7 @@ function SocialIcon({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors shadow-sm"
+      className="w-9 h-9 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors shadow-sm"
     >
       <Icon className="w-4 h-4" fill="currentColor" />
     </a>
