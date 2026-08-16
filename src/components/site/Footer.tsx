@@ -151,7 +151,7 @@ export function Footer() {
               </FooterCol>
             </div>
 
-            <div className="flex justify-start sm:justify-end mt-12 sm:mt-auto">
+            <div className="flex justify-start sm:justify-end mt-12 sm:mt-auto sm:translate-y-6">
               <WebVitalsTracker />
             </div>
           </div>
