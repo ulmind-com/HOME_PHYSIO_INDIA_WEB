@@ -310,7 +310,6 @@ export type SocialLinks = {
   instagram?: string | null;
   linkedin?: string | null;
   youtube?: string | null;
-  twitter?: string | null;
   whatsapp?: string | null;
 };
 
