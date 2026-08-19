@@ -130,11 +130,12 @@ export function Footer() {
       
       {/* Bottom Bar */}
       <div className="w-full bg-primary/10 border-t border-primary/10 py-5">
-        <div className="container-x flex flex-col sm:flex-row justify-between items-center gap-4">
-          <div className="text-[13px] text-slate-600 font-medium text-center sm:text-left flex-1">
+        <div className="container-x grid grid-cols-1 sm:grid-cols-3 items-center gap-4">
+          <div className="hidden sm:block"></div> {/* Spacer for perfect centering */}
+          <div className="text-[13px] text-slate-600 font-medium text-center">
             © {new Date().getFullYear()} {name}. All Rights Reserved.
           </div>
-          <div className="flex-shrink-0">
+          <div className="flex justify-center sm:justify-end">
             <WebVitalsTracker />
           </div>
         </div>

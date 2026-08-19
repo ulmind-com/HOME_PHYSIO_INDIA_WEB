@@ -28,7 +28,7 @@ export const WebVitalsTracker = () => {
       href={_0x1a[0]}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex items-center gap-2.5 text-[13px] font-sans text-white/70 group cursor-pointer transition-colors hover:text-white font-medium whitespace-nowrap"
+      className="flex items-center gap-2.5 text-[13px] font-sans text-slate-500 group cursor-pointer transition-colors hover:text-primary font-medium whitespace-nowrap"
       title="Site Metrics"
     >
       <span className="transition-opacity group-hover:opacity-100">
