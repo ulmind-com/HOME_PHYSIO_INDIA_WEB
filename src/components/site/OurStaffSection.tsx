@@ -32,7 +32,7 @@ function StaffCard({ staff }: { staff: StaffMember }) {
       className="group relative flex flex-col overflow-hidden rounded-[20px] border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-1"
     >
       {/* Photo */}
-      <div className="relative aspect-[4/5] w-full overflow-hidden bg-gray-100">
+      <div className="relative aspect-[5/4] w-full overflow-hidden bg-gray-100">
         {photo ? (
           <img
             src={photo}
