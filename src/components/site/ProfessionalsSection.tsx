@@ -52,7 +52,7 @@ const DEFAULT_FEATURES: FeatureItem[] = [
   },
 ];const DEFAULT_TILES: TileItem[] = [
   {
-    image: "/assets/nursing.webp",
+    image: "/assets/categories/nursing.jpg",
     count: "200+",
     title: "Home Nursing Care",
     description: "Round-the-clock bedside medical care",
@@ -60,7 +60,7 @@ const DEFAULT_FEATURES: FeatureItem[] = [
     cta_link: "/booking",
   },
   {
-    image: "/assets/equipment/ultrasound.jpeg",
+    image: "/assets/categories/elder.jpg",
     count: "150+",
     title: "Elderly Care",
     description: "Daily living support & elderly companionship",
@@ -68,7 +68,7 @@ const DEFAULT_FEATURES: FeatureItem[] = [
     cta_link: "/booking",
   },
   {
-    image: "/assets/home_medical_support.png",
+    image: "/assets/categories/mother-baby.png",
     count: "50+",
     title: "Mother & Baby Care",
     description: "Post-delivery care for mother & newborn",
@@ -76,7 +76,7 @@ const DEFAULT_FEATURES: FeatureItem[] = [
     cta_link: "/booking",
   },
   {
-    image: "/assets/equipment/monitoring-1.jpeg",
+    image: "/assets/categories/physio.jpg",
     count: "45+",
     title: "Physiotherapy & Recovery",
     description: "In-home rehab & pain recovery",
@@ -84,7 +84,7 @@ const DEFAULT_FEATURES: FeatureItem[] = [
     cta_link: "/booking",
   },
   {
-    image: "/assets/equipment/ultrasound.jpeg",
+    image: "/assets/categories/equipment.jpg",
     count: "100+",
     title: "Medical Equipment",
     description: "Rental medical equipment at home",
@@ -92,7 +92,7 @@ const DEFAULT_FEATURES: FeatureItem[] = [
     cta_link: "/medical-equipment",
   },
   {
-    image: "/assets/icu.jpg",
+    image: "/assets/categories/icu-setup.png",
     count: "30+",
     title: "ICU Setup",
     description: "Hospital-grade ICU setup delivered",
@@ -100,7 +100,7 @@ const DEFAULT_FEATURES: FeatureItem[] = [
     cta_link: "/booking",
   },
   {
-    image: "/assets/home_medical_support.png",
+    image: "/assets/categories/home-sample.png",
     count: "500+",
     title: "Home Sample Collection",
     description: "Lab tests from the comfort of home",
