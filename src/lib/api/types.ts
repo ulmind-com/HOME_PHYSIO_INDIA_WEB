@@ -204,6 +204,8 @@ export type Settings = {
   services_hero?: ServicesHero | null;
   home_hero?: HomeHero | null;
 
+  videos_wall_image?: ImageAsset | null;
+
   // Hero section
   hero_headline?: string | null;
   hero_subtitle?: string | null;

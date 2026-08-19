@@ -3,18 +3,20 @@ import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
 import AutoScroll from "embla-carousel-auto-scroll";
-import { videosQ } from "@/lib/api/queries";
+import { videosQ, settingsQ } from "@/lib/api/queries";
 import { VideoCard } from "@/components/site/cards/VideoCard";
 import { VideoPlayerModal } from "@/components/site/VideoPlayerModal";
 import type { Video } from "@/lib/api/types";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-const WALL = "/assets/testimonials-wall.jpg";
+const DEFAULT_WALL = "/assets/testimonials-wall.jpg";
 
 export function VideoTestimonialsSection() {
+  const { data: settings } = useQuery(settingsQ());
   const { data } = useQuery(videosQ({ limit: 24 }));
   const items = data?.items ?? [];
   const [playing, setPlaying] = useState<Video | null>(null);
+  const wallImage = settings?.videos_wall_image?.url || DEFAULT_WALL;
 
   const isMobile = useIsMobile();
   const plugins = !isMobile ? [
@@ -66,7 +68,7 @@ export function VideoTestimonialsSection() {
           <div className="lg:col-span-5">
             <div className="overflow-hidden rounded-[2rem] shadow-[var(--shadow-elegant)]">
               <img
-                src={WALL}
+                src={wallImage}
                 alt="Wall of family photos and thank-you notes"
                 loading="lazy"
                 width={800}
