@@ -35,11 +35,11 @@ export function Footer() {
   const services = servicesData?.items ?? [];
 
   return (
-    <footer className="relative mt-0 bg-dark pt-16 pb-10 flex flex-col border-t border-border/10">
+    <footer className="relative mt-0 bg-[#FAFAFA] pt-16 pb-0 flex flex-col border-t border-black/5">
       <div className="container-x relative z-10 flex flex-col justify-between flex-grow">
-        <div className="grid gap-10 md:gap-16 lg:grid-cols-12">
+        <div className="grid gap-12 md:gap-16 lg:grid-cols-12 pb-12">
           {/* Left Column (Brand & CTA) */}
-          <div className="lg:col-span-5 flex flex-col items-start">
+          <div className="lg:col-span-4 flex flex-col items-start">
             <div className="flex items-center gap-3 mb-5 md:mb-8">
               {settings?.logo ? (
                 <img src={settings.logo} alt={name} className="h-10 w-10 object-contain rounded-lg" />
@@ -55,23 +55,23 @@ export function Footer() {
                   </svg>
                 </div>
               )}
-              <div className="font-display text-xl tracking-tight text-white">{name}</div>
+              <div className="font-display text-xl tracking-tight text-foreground font-semibold">{name}</div>
             </div>
 
             {settings?.tagline && (
-              <h3 className="font-display text-xl sm:text-2xl md:text-3xl tracking-tight text-white mb-3 md:mb-4 leading-[1.15]">
+              <h3 className="font-display text-xl sm:text-2xl tracking-tight text-foreground mb-3 md:mb-4 leading-[1.15] font-medium">
                 {settings.tagline}
               </h3>
             )}
 
             {settings?.footer_description && (
-              <p className="text-[13px] md:text-[15px] leading-relaxed text-white/70 max-w-md mb-6 md:mb-8">
+              <p className="text-[14px] md:text-[15px] leading-relaxed text-slate-600 max-w-sm mb-6 md:mb-8">
                 {settings.footer_description}
               </p>
             )}
 
             <div className="mt-2 md:mt-4">
-              <h4 className="text-[15px] font-medium text-white mb-4">
+              <h4 className="text-[15px] font-semibold text-foreground mb-4">
                 Follow our social media
               </h4>
               <div className="flex gap-3">
@@ -96,8 +96,8 @@ export function Footer() {
           </div>
 
           {/* Right Column (Links) */}
-          <div className="lg:col-span-6 lg:col-start-7 flex flex-col h-full">
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 md:gap-x-8 gap-y-8 md:gap-y-12">
+          <div className="lg:col-span-8 flex flex-col h-full pt-2">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 md:gap-x-12 gap-y-8 md:gap-y-12">
               <FooterCol title="Menu">
                 <FooterLink to="/">Home</FooterLink>
                 <FooterLink to="/about">About Us</FooterLink>
@@ -126,13 +126,15 @@ export function Footer() {
             </div>
           </div>
         </div>
-
-        {/* Bottom Bar */}
-        <div className="flex flex-col sm:flex-row justify-between items-center mt-16 border-t border-white/10 pt-6 pb-6">
-          <div className="text-[13px] text-white/60 font-medium text-center sm:text-left mb-4 sm:mb-0">
+      </div>
+      
+      {/* Bottom Bar */}
+      <div className="w-full bg-slate-100 border-t border-black/5 py-5">
+        <div className="container-x flex flex-col sm:flex-row justify-between items-center gap-4">
+          <div className="text-[13px] text-slate-500 font-medium text-center sm:text-left flex-1">
             © {new Date().getFullYear()} {name}. All Rights Reserved.
           </div>
-          <div className="mr-14 sm:mr-16">
+          <div className="flex-shrink-0">
             <WebVitalsTracker />
           </div>
         </div>
@@ -144,8 +146,8 @@ export function Footer() {
 function FooterCol({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="flex flex-col">
-      <div className="text-base font-semibold text-white mb-6">{title}</div>
-      <div className="flex flex-col gap-4">{children}</div>
+      <div className="text-[16px] font-bold text-foreground mb-6">{title}</div>
+      <div className="flex flex-col gap-3.5">{children}</div>
     </div>
   );
 }
@@ -154,7 +156,7 @@ function FooterLink({ to, children }: { to: string; children: React.ReactNode })
   return (
     <Link
       to={to}
-      className="text-[15px] font-medium text-white/70 hover:text-white transition-colors"
+      className="text-[14px] font-medium text-slate-600 hover:text-primary hover:-translate-y-0.5 transition-all duration-200 block"
     >
       {children}
     </Link>
@@ -173,7 +175,7 @@ function SocialIcon({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="w-9 h-9 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors shadow-sm"
+      className="w-9 h-9 rounded-full bg-black/5 text-slate-600 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-1"
     >
       <Icon className="w-4 h-4" fill="currentColor" />
     </a>
