@@ -26,18 +26,22 @@ export const Route = createFileRoute("/about")({
 
 function AboutPage() {
   const { data: settings } = useQuery(settingsQ());
-  
-  const phone = settings?.phone?.replace(/[^\d+]/g, "") || "919876543210";
-  const whatsapp = (settings?.whatsapp ?? settings?.phone)?.replace(/\D/g, "") || "919876543210";
 
   // Hero section data
-  const heroBadge = settings?.about_hero_badge || "HOME PAGE – ABOUT NUPUN";
-  const heroTitle = settings?.about_hero_title || "Care That Comes Home";
-  const heroDescription = settings?.about_hero_description || "Nupun Home Health Care Services provides reliable healthcare and personal care support at home for patients, elderly people and families. We help you arrange suitable care according to the patient's condition, care requirements and preferred duty hours.\n\nOur services are designed to make home healthcare more comfortable, convenient and dependable for families.";
-  const heroImage = typeof settings?.about_hero_image === "string"
-    ? settings.about_hero_image
-    : settings?.about_hero_image?.url ||
-      "/assets/Get professional and compassionate elderly care at home in Ranchi (2)-Picsart-BackgroundRemover.jpeg";
+  const heroTitle = settings?.about_hero_title || "ABOUT NUPUN";
+  const heroDescription = settings?.about_hero_description || "Nupun Home Health Care Services provides reliable and compassionate healthcare support in the comfort of your home.\n\nWe connect families with trained and verified nurses, caregivers and healthcare professionals, offering personalized care based on each patient needs.\n\n. Flexible care options designed around your requirements.\n. Professional nursing, elderly care, physiotherapy and recovery support.\n. Patient - focused care with safety, dignity and compassion.\n. Reliable support for patient and families throughout their care journey.";
+
+  // Split description into text and bullets
+  const lines = heroDescription.split('\n').map((l: string) => l.trim()).filter(Boolean);
+  const leftText: string[] = [];
+  const rightBullets: string[] = [];
+  lines.forEach((line: string) => {
+    if (line.match(/^[.\-•]/)) {
+      rightBullets.push(line.replace(/^[.\-•]\s*/, ''));
+    } else {
+      leftText.push(line);
+    }
+  });
 
   // Founders data
   const founders: Array<{ name: string; role: string; image: string; description: string }> =
@@ -73,25 +77,17 @@ function AboutPage() {
 
   return (
     <>
-      {/* ── Custom Split Hero (Preserved layout, updated content) ──────────────── */}
-      <div className="relative isolate overflow-hidden bg-[#fafafa]">
-        <div className="absolute top-0 right-0 -z-10 w-full h-full opacity-30 bg-gradient-to-l from-primary/10 to-transparent" />
+      {/* ── Custom Split Hero ──────────────── */}
+      <div className="relative isolate overflow-hidden bg-primary text-primary-foreground">
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent opacity-50" />
 
-        <div className="container-x pt-24 pb-12 md:pb-16 lg:pt-28 lg:pb-20 grid lg:grid-cols-12 gap-6 lg:gap-6 items-center">
+        <div className="container-x pt-24 pb-20 md:pt-32 md:pb-28 lg:pt-36 lg:pb-32 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Left Content */}
-          <div className="space-y-6 lg:col-span-7 xl:col-span-6 lg:pr-6">
-            {/* Badge */}
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1.5 md:px-4 md:py-2 text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] text-primary"
-            >
-              <ShieldCheck className="h-4 w-4" fill="currentColor" /> {heroBadge}
-            </motion.div>
-
+          <div className="space-y-8 lg:pr-6">
             {/* Title */}
             <motion.h1 
               initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }}
-              className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight text-foreground"
+              className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] tracking-tight text-white uppercase"
             >
               {heroTitle}
             </motion.h1>
@@ -99,48 +95,40 @@ function AboutPage() {
             {/* Description */}
             <motion.div 
               initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}
-              className="space-y-4 text-base md:text-lg text-foreground/80 max-w-lg leading-relaxed font-medium"
+              className="space-y-6 text-base md:text-[19px] text-white/90 max-w-xl leading-relaxed font-medium"
             >
-              {heroDescription.split("\n\n").map((para, idx) => (
+              {leftText.map((para, idx) => (
                 <p key={idx}>{para}</p>
               ))}
             </motion.div>
-
-            {/* Actions */}
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }}
-              className="mt-6 md:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4"
-            >
-              <a
-                href={`tel:${phone}`}
-                className="group inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-[15px] font-semibold text-primary-foreground shadow-sm transition-all duration-300 hover:brightness-110 hover:-translate-y-0.5"
-              >
-                <Phone className="h-5 w-5" /> Call Now
-              </a>
-              <a
-                href={`https://wa.me/${whatsapp}`}
-                target="_blank"
-                rel="noreferrer"
-                className="group inline-flex items-center justify-center gap-2.5 rounded-full border border-black/10 bg-white px-8 py-3.5 text-[15px] font-medium text-foreground shadow-sm hover:bg-black/5 hover:border-black/20 transition-all duration-300 hover:-translate-y-0.5"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5 text-[#25D366]">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                </svg>
-                WhatsApp Us
-              </a>
-            </motion.div>
           </div>
-        </div>
 
-        {/* Right Image */}
-        <div className="relative h-[400px] w-full lg:absolute lg:right-0 lg:top-0 lg:h-full lg:w-[45%] xl:w-[50%] -z-10">
-          <img
-            src={heroImage}
-            alt={heroTitle}
-            className="w-full h-full object-cover object-top"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#fafafa] via-[#fafafa]/50 to-transparent lg:w-48" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#fafafa] via-transparent to-transparent lg:hidden" />
+          {/* Right Content - Bullets */}
+          {rightBullets.length > 0 && (
+            <div className="relative pl-2 md:pl-0 lg:pl-10">
+              {/* Vertical dotted line connecting bullets */}
+              <div className="absolute left-[19px] lg:left-[51px] top-4 bottom-4 w-px border-l-2 border-dashed border-white/30 hidden md:block"></div>
+              
+              <div className="space-y-8 md:space-y-12">
+                {rightBullets.map((bullet, idx) => (
+                  <motion.div 
+                    key={idx}
+                    initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.3 + (idx * 0.1) }}
+                    className="relative flex items-start gap-5 md:gap-6"
+                  >
+                    {/* Bullet point circle */}
+                    <div className="relative z-10 flex-shrink-0 w-6 h-6 md:w-8 md:h-8 rounded-full bg-white/10 flex items-center justify-center backdrop-blur-sm mt-0.5 border border-white/20">
+                       <div className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white shadow-sm"></div>
+                    </div>
+                    {/* Text */}
+                    <p className="text-base md:text-lg text-white/95 font-medium leading-relaxed">
+                      {bullet}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
