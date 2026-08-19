@@ -35,7 +35,7 @@ export function Footer() {
   const services = servicesData?.items ?? [];
 
   return (
-    <footer className="relative mt-0 bg-[#FAFAFA] pt-16 pb-0 flex flex-col border-t border-black/5">
+    <footer className="relative mt-0 bg-primary/5 pt-16 pb-0 flex flex-col border-t border-primary/10">
       <div className="container-x relative z-10 flex flex-col justify-between flex-grow">
         <div className="grid gap-12 md:gap-16 lg:grid-cols-12 pb-12">
           {/* Left Column (Brand & CTA) */}
@@ -129,9 +129,9 @@ export function Footer() {
       </div>
       
       {/* Bottom Bar */}
-      <div className="w-full bg-slate-100 border-t border-black/5 py-5">
+      <div className="w-full bg-primary/10 border-t border-primary/10 py-5">
         <div className="container-x flex flex-col sm:flex-row justify-between items-center gap-4">
-          <div className="text-[13px] text-slate-500 font-medium text-center sm:text-left flex-1">
+          <div className="text-[13px] text-slate-600 font-medium text-center sm:text-left flex-1">
             © {new Date().getFullYear()} {name}. All Rights Reserved.
           </div>
           <div className="flex-shrink-0">
