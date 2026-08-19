@@ -39,15 +39,15 @@ export function Footer() {
       <div className="container-x relative z-10 flex flex-col justify-between flex-grow">
         <div className="grid gap-12 md:gap-16 lg:grid-cols-12 pb-12">
           {/* Left Column (Brand & CTA) */}
-          <div className="lg:col-span-4 flex flex-col items-start">
-            <div className="flex items-center gap-3 mb-5 md:mb-8">
+          <div className="lg:col-span-4 flex flex-col items-center lg:items-start text-center lg:text-left">
+            <div className="flex items-center justify-center lg:justify-start gap-3 mb-5 md:mb-8">
               {settings?.logo ? (
-                <img src={settings.logo} alt={name} className="h-10 w-10 object-contain rounded-lg" />
+                <img src={settings.logo} alt={name} className="h-12 w-12 object-contain rounded-lg" />
               ) : (
-                <div className="h-10 w-10 rounded-[14px] bg-gradient-to-br from-primary to-accent grid place-items-center shadow-lg shadow-primary/20">
+                <div className="h-12 w-12 rounded-[14px] bg-gradient-to-br from-primary to-accent grid place-items-center shadow-lg shadow-primary/20">
                   <svg
                     viewBox="0 0 24 24"
-                    className="h-5 w-5 text-white"
+                    className="h-6 w-6 text-white"
                     fill="currentColor"
                     aria-hidden
                   >
@@ -55,7 +55,7 @@ export function Footer() {
                   </svg>
                 </div>
               )}
-              <div className="font-display text-xl tracking-tight text-foreground font-semibold">{name}</div>
+              <div className="font-display text-2xl tracking-tight text-foreground font-bold">{name}</div>
             </div>
 
             {settings?.tagline && (
@@ -65,16 +65,16 @@ export function Footer() {
             )}
 
             {settings?.footer_description && (
-              <p className="text-[14px] md:text-[15px] leading-relaxed text-slate-600 max-w-sm mb-6 md:mb-8">
+              <p className="text-[14.5px] leading-relaxed text-slate-600 max-w-sm mb-8 md:mb-10">
                 {settings.footer_description}
               </p>
             )}
 
-            <div className="mt-2 md:mt-4">
-              <h4 className="text-[15px] font-semibold text-foreground mb-4">
+            <div className="mt-auto w-full">
+              <h4 className="text-[14px] font-semibold tracking-wide uppercase text-foreground/70 mb-5">
                 Follow our social media
               </h4>
-              <div className="flex gap-3">
+              <div className="flex justify-center lg:justify-start gap-4">
                 {social?.facebook && <SocialIcon Icon={FacebookIcon} href={social.facebook} />}
                 {social?.instagram && <SocialIcon Icon={InstagramIcon} href={social.instagram} />}
                 {social?.linkedin && <SocialIcon Icon={LinkedinIcon} href={social.linkedin} />}
@@ -97,7 +97,7 @@ export function Footer() {
 
           {/* Right Column (Links) */}
           <div className="lg:col-span-8 flex flex-col h-full pt-2">
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 md:gap-x-12 gap-y-8 md:gap-y-12">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-4 sm:gap-x-8 gap-y-12">
               <FooterCol title="Menu">
                 <FooterLink to="/">Home</FooterLink>
                 <FooterLink to="/about">About Us</FooterLink>
@@ -116,7 +116,7 @@ export function Footer() {
                 <FooterLink to="/services">Home Sample Collection</FooterLink>
               </FooterCol>
 
-              <FooterCol title="Support">
+              <FooterCol title="Support" className="col-span-2 sm:col-span-1">
                 <FooterLink to="/contact">Contact Us</FooterLink>
                 <FooterLink to="/faq">FAQ</FooterLink>
                 <FooterLink to="/privacy">Privacy Policy</FooterLink>
@@ -129,13 +129,13 @@ export function Footer() {
       </div>
       
       {/* Bottom Bar */}
-      <div className="w-full bg-primary/10 border-t border-primary/10 py-5">
-        <div className="container-x grid grid-cols-1 sm:grid-cols-3 items-center gap-4">
-          <div className="hidden sm:block"></div> {/* Spacer for perfect centering */}
+      <div className="w-full bg-primary/10 border-t border-primary/10 pt-6 pb-28 md:py-6">
+        <div className="container-x grid grid-cols-1 md:grid-cols-3 items-center gap-6 md:gap-4">
+          <div className="hidden md:block"></div> {/* Spacer for perfect centering */}
           <div className="text-[13px] text-slate-600 font-medium text-center">
             © {new Date().getFullYear()} {name}. All Rights Reserved.
           </div>
-          <div className="flex justify-center sm:justify-end">
+          <div className="flex justify-center md:justify-end">
             <WebVitalsTracker />
           </div>
         </div>
@@ -144,9 +144,9 @@ export function Footer() {
   );
 }
 
-function FooterCol({ title, children }: { title: string; children: React.ReactNode }) {
+function FooterCol({ title, children, className }: { title: string; children: React.ReactNode; className?: string }) {
   return (
-    <div className="flex flex-col">
+    <div className={`flex flex-col ${className || ""}`}>
       <div className="text-[16px] font-bold text-foreground mb-6">{title}</div>
       <div className="flex flex-col gap-3.5">{children}</div>
     </div>
