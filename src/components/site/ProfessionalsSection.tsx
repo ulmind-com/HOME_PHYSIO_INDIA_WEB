@@ -50,39 +50,61 @@ const DEFAULT_FEATURES: FeatureItem[] = [
       "A dedicated care advisor monitors your case round-the-clock and is always one call away.",
     icon: "clock",
   },
-];
-
-const DEFAULT_TILES: TileItem[] = [
+];const DEFAULT_TILES: TileItem[] = [
   {
-    image: "/assets/equipment/ultrasound.jpeg",
-    count: "120+",
-    title: "Registered Nurses",
-    description: "Round-the-clock bedside medical care",
-    cta_label: "Meet the nurses",
-    cta_link: "/about",
-  },
-  {
-    image: "/assets/equipment/monitoring-2.jpeg",
+    image: "/assets/nursing.webp",
     count: "200+",
-    title: "Care Attendants",
-    description: "Daily living support & elderly companionship",
-    cta_label: "Get an attendant",
+    title: "Home Nursing Care",
+    description: "Round-the-clock bedside medical care",
+    cta_label: "Book Now",
     cta_link: "/booking",
   },
   {
-    image: "/assets/equipment/monitoring-1.jpeg",
-    count: "45+",
-    title: "Physiotherapists",
-    description: "In-home rehab & pain recovery",
-    cta_label: "Book a session",
+    image: "/assets/equipment/ultrasound.jpeg",
+    count: "150+",
+    title: "Elderly Care",
+    description: "Daily living support & elderly companionship",
+    cta_label: "Book Now",
     cta_link: "/booking",
   },
   {
     image: "/assets/home_medical_support.png",
     count: "50+",
-    title: "Home Medical Support",
-    description: "Injections, blood tests, catheter & oxygen",
-    cta_label: "Book a service",
+    title: "Mother & Baby Care",
+    description: "Post-delivery care for mother & newborn",
+    cta_label: "Book Now",
+    cta_link: "/booking",
+  },
+  {
+    image: "/assets/equipment/monitoring-1.jpeg",
+    count: "45+",
+    title: "Physiotherapy & Recovery",
+    description: "In-home rehab & pain recovery",
+    cta_label: "Book Now",
+    cta_link: "/booking",
+  },
+  {
+    image: "/assets/equipment/ultrasound.jpeg",
+    count: "100+",
+    title: "Medical Equipment",
+    description: "Rental medical equipment at home",
+    cta_label: "Book Now",
+    cta_link: "/medical-equipment",
+  },
+  {
+    image: "/assets/icu.jpg",
+    count: "30+",
+    title: "ICU Setup",
+    description: "Hospital-grade ICU setup delivered",
+    cta_label: "Book Now",
+    cta_link: "/booking",
+  },
+  {
+    image: "/assets/home_medical_support.png",
+    count: "500+",
+    title: "Home Sample Collection",
+    description: "Lab tests from the comfort of home",
+    cta_label: "Book Now",
     cta_link: "/booking",
   },
 ];
@@ -259,28 +281,26 @@ export function ProfessionalsSection() {
                 </motion.li>
               ))}
             </ul>
-
-
           </div>
 
-          {/* RIGHT — 2×2 image tiles grid */}
+          {/* RIGHT — image tiles grid */}
           <motion.div
             variants={gridVariants}
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, amount: 0.3 }}
-            className="grid grid-cols-2 gap-3 sm:gap-4"
+            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-2 sm:gap-3"
           >
             {tiles.map((t, idx) => {
-              // Offset odd rows slightly for editorial feel
-              const offset = idx >= 2 ? "sm:mt-4" : "";
+              // Create an interesting masonry-like layout
+              const offset = idx % 2 === 1 ? "sm:mt-4" : "";
               return (
                 <motion.article
                   key={t.title + idx}
                   variants={tileVariants}
-                  className={`group relative overflow-hidden rounded-2xl sm:rounded-3xl border border-primary/10 shadow-[var(--shadow-elegant)] ${offset}`}
+                  className={`group relative overflow-hidden rounded-xl sm:rounded-2xl border border-primary/10 shadow-[var(--shadow-elegant)] ${offset}`}
                 >
-                  <div className="aspect-[4/5] w-full">
+                  <div className="aspect-square w-full">
                     <img
                       src={typeof t.image === "object" ? (t.image as any)?.url : (t.image || "/assets/nursing.webp")}
                       alt={t.title}
@@ -288,28 +308,17 @@ export function ProfessionalsSection() {
                       className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                   </div>
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent" />
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
                   <motion.div
                     variants={overlayVariants}
-                    className="absolute inset-x-0 bottom-0 p-3 sm:p-4 md:p-5 text-white"
+                    className="absolute inset-x-0 bottom-0 p-2 sm:p-3 text-white"
                   >
-                    <motion.div variants={overlayItem}>
-                      <span className="inline-flex items-center rounded-full bg-primary text-white border border-white/20 px-2 sm:px-2.5 py-0.5 text-[10px] sm:text-[11px] font-bold tracking-wide shadow-sm">
-                        {t.count}
-                      </span>
-                    </motion.div>
                     <motion.h3
                       variants={overlayItem}
-                      className="mt-1.5 sm:mt-2 font-display text-sm sm:text-lg leading-tight"
+                      className="font-display text-xs sm:text-sm leading-tight text-white/95"
                     >
                       {t.title}
                     </motion.h3>
-                    <motion.p
-                      variants={overlayItem}
-                      className="mt-0.5 sm:mt-1 text-[10px] sm:text-[11px] text-white/85 leading-snug"
-                    >
-                      {t.description}
-                    </motion.p>
                   </motion.div>
                 </motion.article>
               );
