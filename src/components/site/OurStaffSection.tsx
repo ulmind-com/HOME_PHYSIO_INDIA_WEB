@@ -49,7 +49,7 @@ function StaffCard({ staff }: { staff: StaffMember }) {
       </div>
 
       {/* Content */}
-      <div className="flex flex-1 flex-col p-4">
+      <div className="flex flex-1 flex-col p-3.5">
         {/* Name & Rating */}
         <div className="flex flex-col items-center gap-1.5 mb-5">
           <h3 className="text-[15px] font-medium text-gray-800 text-center">{staff.name}</h3>
@@ -68,7 +68,7 @@ function StaffCard({ staff }: { staff: StaffMember }) {
         </div>
 
         {/* Duration Tabs */}
-        <div className="flex justify-center gap-6 mb-3">
+        <div className="flex justify-center gap-5 mb-2">
           {(["7", "15", "30"] as Duration[]).map((d) => (
             <button
               key={d}
@@ -86,17 +86,10 @@ function StaffCard({ staff }: { staff: StaffMember }) {
 
         {/* Service Label */}
         {staff.service_label && (
-           <p className="text-[12px] text-center text-gray-500 mb-6">
+           <p className="text-[12px] text-center text-gray-500 mb-2">
              {staff.service_label}
            </p>
         )}
-
-        {/* CTA (Centered) */}
-        <div className="mt-auto flex justify-center pt-1 pb-1">
-          <button className="rounded-full bg-primary px-8 py-2 text-[12px] font-bold text-white transition-all duration-200 hover:bg-primary/90 uppercase tracking-wide shadow-sm hover:shadow-md hover:-translate-y-0.5">
-            Book Now
-          </button>
-        </div>
       </div>
     </motion.div>
   );
@@ -233,7 +226,7 @@ export function OurStaffSection() {
                   {filteredStaff.map((staff) => (
                     <div
                       key={staff.id}
-                      className="min-w-0 flex-[0_0_80%] sm:flex-[0_0_55%]"
+                      className="min-w-0 flex-[0_0_70%] sm:flex-[0_0_45%]"
                     >
                       <StaffCard staff={staff} />
                     </div>
@@ -251,7 +244,7 @@ export function OurStaffSection() {
           </>
         ) : (
           /* Desktop: Grid */
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-5">
             <AnimatePresence mode="popLayout">
               {filteredStaff.map((staff) => (
                 <StaffCard key={staff.id} staff={staff} />
