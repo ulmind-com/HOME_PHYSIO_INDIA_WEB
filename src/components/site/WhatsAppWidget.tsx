@@ -11,7 +11,7 @@ export function WhatsAppWidget() {
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ delay: 1, type: "spring", stiffness: 200, damping: 20 }}
-      className="fixed bottom-6 right-6 z-50 md:bottom-8 md:right-8"
+      className="fixed bottom-20 right-6 z-50 md:bottom-24 md:right-8"
     >
       <a
         href={`https://wa.me/${whatsappNumber}`}
