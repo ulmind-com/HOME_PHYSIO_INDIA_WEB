@@ -1,4 +1,6 @@
-import React from "react";
+import os
+
+content = """import React from "react";
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { settingsQ, socialQ, categoriesQ } from "@/lib/api/queries";
@@ -79,7 +81,7 @@ export function Footer() {
                   </svg>
                 </div>
               )}
-              <div className="font-display text-xl sm:text-2xl tracking-tight text-foreground font-medium leading-tight">{name}</div>
+              <div className="font-display text-xl sm:text-2xl tracking-tight text-foreground font-bold leading-tight">{name}</div>
              </div>
              
              <p className="text-[14px] text-slate-600 max-w-lg mb-6 leading-relaxed">
@@ -152,3 +154,7 @@ function SocialIcon({
     </a>
   );
 }
+"""
+
+with open("src/components/site/Footer.tsx", "w") as f:
+    f.write(content)

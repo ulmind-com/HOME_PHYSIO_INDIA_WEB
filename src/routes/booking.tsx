@@ -90,7 +90,7 @@ function BookingPage() {
             </div>
 
             {/* Title */}
-            <h1 className="font-display text-4xl md:text-5xl lg:text-[64px] font-bold leading-[1.1] tracking-tight text-foreground">
+            <h1 className="font-display text-4xl md:text-5xl lg:text-[64px] font-semibold leading-[1.1] tracking-tight text-foreground">
               Book care in{" "}
               <span className="text-primary relative whitespace-nowrap">
                 minutes.
@@ -148,7 +148,7 @@ function BookingPage() {
           <div className="lg:col-span-7">
             <div className="rounded-[32px] border border-white/60 bg-white/70 backdrop-blur-3xl p-8 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.06)] lg:p-12 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px] -z-10 pointer-events-none" />
-              <h2 className="font-display text-[28px] font-bold tracking-tight md:text-[34px] mb-2 leading-tight">
+              <h2 className="font-display text-[28px] font-semibold tracking-tight md:text-[34px] mb-2 leading-tight">
                 Tell us about the care you need
               </h2>
               <p className="text-[15px] text-muted-foreground font-medium mb-10">

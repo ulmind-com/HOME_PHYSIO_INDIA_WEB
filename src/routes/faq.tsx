@@ -1,7 +1,7 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { MessageCircle, Phone } from "lucide-react";
+import { MessageCircle, Phone, ExternalLink } from "lucide-react";
 import { faqsQ, settingsQ } from "@/lib/api/queries";
 import { PageHero } from "@/components/site/PageHero";
 import { FaqAccordion } from "@/components/site/FaqAccordion";
@@ -23,6 +23,24 @@ export const Route = createFileRoute("/faq")({
   }),
   component: FaqPage,
 });
+
+/**
+ * Maps FAQ category names to their corresponding service page routes.
+ * When a user clicks a category tab, they are navigated to the service
+ * page's FAQ section (with #faq hash) for that category.
+ */
+const CATEGORY_ROUTES: Record<string, string> = {
+  "Elder Care": "/elderly-care#faq",
+  "Medical Care": "/nursing-care#faq",
+  "Nursing Care": "/nursing-care#faq",
+  "Physiotherapy": "/physiotherapy#faq",
+  "Mother & Baby Care": "/mother-baby-care#faq",
+  "Equipment": "/medical-equipment#faq",
+  "Medical Equipment": "/medical-equipment#faq",
+  "ICU Setup": "/icu-setup#faq",
+  "Services": "/services#faq",
+  "Support": "/faq",
+};
 
 const DUMMY_FAQS = [
   {
@@ -72,9 +90,12 @@ const DUMMY_FAQS = [
 function FaqPage() {
   const { data, isLoading } = useQuery(faqsQ({ limit: 200 }));
   const dbItems = data?.items ?? [];
-  const items = dbItems.length > 0 ? dbItems : DUMMY_FAQS;
+  const navigate = useNavigate();
 
-  const [active, setActive] = useState("all");
+  // Hardcoded FAQs always stay; API FAQs are appended (deduplicated by question)
+  const hardcodedQuestions = new Set(DUMMY_FAQS.map((f) => f.question.toLowerCase()));
+  const apiFaqs = dbItems.filter((f) => !hardcodedQuestions.has(f.question.toLowerCase()));
+  const items = [...DUMMY_FAQS, ...apiFaqs];
 
   const categories = useMemo(() => {
     const set = new Set<string>();
@@ -82,10 +103,22 @@ function FaqPage() {
     return ["all", ...Array.from(set)];
   }, [items]);
 
-  const filtered = useMemo(
-    () => (active === "all" ? items : items.filter((f) => f.category === active)),
-    [items, active],
-  );
+  const handleCategoryClick = (category: string) => {
+    if (category === "all") return; // "All" stays on this page
+
+    const route = CATEGORY_ROUTES[category];
+    if (route && route !== "/faq") {
+      // Navigate to the service page's FAQ section
+      const [path, hash] = route.split("#");
+      navigate({ to: path }).then(() => {
+        // After navigation, scroll to the FAQ section
+        setTimeout(() => {
+          const el = document.getElementById(hash || "faq");
+          el?.scrollIntoView({ behavior: "smooth" });
+        }, 300);
+      });
+    }
+  };
 
   return (
     <main className="min-h-screen bg-[#fafafa] pt-32 pb-24">
@@ -98,18 +131,25 @@ function FaqPage() {
           {categories.length > 1 && (
             <div className="flex flex-wrap justify-center gap-3 mb-10">
               {categories.map((c) => {
-                const isActive = c === active;
-                return (
+                const isAll = c === "all";
+                const hasRoute = !isAll && CATEGORY_ROUTES[c] && CATEGORY_ROUTES[c] !== "/faq";
+                return isAll ? (
                   <button
                     key={c}
-                    onClick={() => setActive(c)}
-                    className={`rounded-full px-5 py-2.5 text-[15px] font-medium transition-all duration-300 shadow-sm ${
-                      isActive
-                        ? "bg-primary text-white border border-primary shadow-[0_4px_14px_var(--color-primary),0.3)] hover:-translate-y-0.5"
-                        : "bg-white text-foreground border border-black/5 hover:border-black/10 hover:shadow-md hover:-translate-y-0.5"
-                    }`}
+                    className="rounded-full px-5 py-2.5 text-[15px] font-medium transition-all duration-300 shadow-sm bg-primary text-white border border-primary shadow-[0_4px_14px_var(--color-primary),0.3)] hover:-translate-y-0.5"
                   >
-                    {c === "all" ? "All" : c}
+                    All
+                  </button>
+                ) : (
+                  <button
+                    key={c}
+                    onClick={() => handleCategoryClick(c)}
+                    className="group rounded-full px-5 py-2.5 text-[15px] font-medium transition-all duration-300 shadow-sm bg-white text-foreground border border-black/5 hover:border-primary/30 hover:shadow-md hover:-translate-y-0.5 inline-flex items-center gap-2"
+                  >
+                    {c}
+                    {hasRoute && (
+                      <ExternalLink className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition-colors" />
+                    )}
                   </button>
                 );
               })}
@@ -117,7 +157,7 @@ function FaqPage() {
           )}
         </div>
 
-        <FaqAccordion key={active} items={filtered} />
+        <FaqAccordion key="all" items={items} />
       </div>
     </main>
   );

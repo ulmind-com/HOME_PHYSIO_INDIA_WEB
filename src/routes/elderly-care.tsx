@@ -226,10 +226,13 @@ function ElderlyCarePage() {
   const faqs = (faqData?.items ?? []).filter(
     (f) =>
       f.category?.toLowerCase().includes("elder") ||
-      f.category?.toLowerCase().includes("senior") ||
-      !f.category
+      f.category?.toLowerCase().includes("senior")
   );
-  const displayFaqs = DEFAULT_FAQS;
+
+  // Hardcoded FAQs always stay; API FAQs are appended (deduplicated by question)
+  const hardcodedQuestions = new Set(DEFAULT_FAQS.map((f) => f.question.toLowerCase()));
+  const apiFaqs = faqs.filter((f) => !hardcodedQuestions.has(f.question.toLowerCase()));
+  const displayFaqs = [...DEFAULT_FAQS, ...apiFaqs];
 
   return (
     <>

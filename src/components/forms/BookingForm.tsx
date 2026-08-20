@@ -4,55 +4,91 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
-import { CheckCircle2, ChevronLeft, ChevronRight, Loader2, Sparkles } from "lucide-react";
+import { CheckCircle2, ChevronLeft, ChevronRight, Loader2, Sparkles, ShieldCheck, Clock, DollarSign } from "lucide-react";
 import { toast } from "sonner";
 import { api } from "@/lib/api/client";
 import { triggerBookingSuccess } from "@/components/site/GlobalBookingSuccess";
-import { servicesQ } from "@/lib/api/queries";
+import { categoriesQ } from "@/lib/api/queries";
 import { cn } from "@/lib/utils";
+
+/* ─────────────── Schema ─────────────── */
 
 const emptyToUndef = <T extends z.ZodTypeAny>(schema: T) =>
   z.preprocess((v) => (v === "" || v === null ? undefined : v), schema);
 
-const CITIES = ["Faridabad", "Delhi", "Noida", "Gurugram", "Other"] as const;
+const CITIES = ["Faridabad", "Gurugram", "Noida", "Delhi", "Other"] as const;
 type City = (typeof CITIES)[number];
 
 const schema = z.object({
+  // Step 1 — Service
   service_name: z.string().trim().min(2, "Please choose a service"),
   service_id: emptyToUndef(z.string().optional()),
-  care_type: emptyToUndef(z.enum(["home_visit", "consultation", "equipment"]).optional()),
+
+  // Step 2 — Location & Schedule
+  city: z.string().min(1, "Please select a city"),
   preferred_date: z.string().min(1, "Pick a date"),
   preferred_time: emptyToUndef(z.string().optional()),
+
+  // Step 3 — Patient
   patient_name: z.string().trim().min(2, "Enter patient name").max(120),
   patient_age: emptyToUndef(z.coerce.number().int().min(0).max(120).optional()),
   patient_gender: emptyToUndef(z.enum(["male", "female", "other"]).optional()),
+  care_required: emptyToUndef(z.string().max(1000).optional()),
   message: emptyToUndef(z.string().max(1000).optional()),
+
+  // Step 4 — Contact
   contact_phone: z.string().trim().min(7, "Enter a valid phone").max(20),
+  whatsapp_number: emptyToUndef(z.string().max(20).optional()),
   contact_email: emptyToUndef(z.string().trim().email("Enter a valid email").optional()),
   address: z.string().trim().min(5, "Enter the full address").max(500),
-  city: emptyToUndef(z.enum(CITIES).optional()),
   pincode: emptyToUndef(z.string().optional()),
 });
+
 type Values = z.infer<typeof schema>;
 
-// ── exported Cities list so pages can show it ──
 export { CITIES };
 export type { City };
 
+/* ─────────────── Steps ─────────────── */
+
 const STEPS = [
-  { key: "service", label: "Service", fields: ["service_name", "care_type"] as const },
-  { key: "schedule", label: "Schedule", fields: ["preferred_date", "preferred_time"] as const },
+  { key: "service", label: "Service", fields: ["service_name"] as const },
+  { key: "schedule", label: "Location & Schedule", fields: ["city", "preferred_date", "preferred_time"] as const },
   {
     key: "patient",
-    label: "Patient",
-    fields: ["patient_name", "patient_age", "patient_gender", "message"] as const,
+    label: "Patient Details",
+    fields: ["patient_name", "patient_age", "patient_gender", "care_required", "message"] as const,
   },
   {
     key: "contact",
-    label: "Contact",
-    fields: ["contact_phone", "contact_email", "address", "city", "pincode"] as const,
+    label: "Contact & Address",
+    fields: ["contact_phone", "whatsapp_number", "contact_email", "address", "pincode"] as const,
   },
 ];
+
+/* ─────────────── Service helpers ─────────────── */
+
+const DEFAULT_SERVICES = [
+  { name: "Home Sample Collection", slug: "home-sample-collection" },
+  { name: "ICU Setup", slug: "icu-setup" },
+  { name: "Medical Equipment Rental", slug: "medical-equipment-rental" },
+  { name: "Physiotherapy & Recovery", slug: "physiotherapy-recovery" },
+  { name: "Mother & Baby Care", slug: "mother-baby-care" },
+  { name: "Elderly Care", slug: "elderly-care" },
+  { name: "Home Nursing Care", slug: "home-nursing-care" },
+];
+
+const SERVICE_CARE_HINTS: Record<string, string> = {
+  "Home Sample Collection": "What test/sample collection is required?",
+  "ICU Setup": "What ICU setup and equipment are needed?",
+  "Medical Equipment Rental": "Which equipment is required and for how long?",
+  "Physiotherapy & Recovery": "What type of physiotherapy is required?",
+  "Mother & Baby Care": "What type of mother/baby care is needed?",
+  "Elderly Care": "What type of elderly care is required?",
+  "Home Nursing Care": "What type of nursing care is required?",
+};
+
+/* ─────────────── Main Component ─────────────── */
 
 export function BookingForm({
   presetServiceSlug,
@@ -65,27 +101,41 @@ export function BookingForm({
 } = {}) {
   const [step, setStep] = useState(0);
   const [done, setDone] = useState(false);
-  const { data: services } = useQuery(servicesQ({ limit: 100 }));
-  const options = services?.items ?? [];
-  const preset = presetServiceSlug ? options.find((s) => s.slug === presetServiceSlug) : undefined;
+
+  const { data: categoriesData } = useQuery(categoriesQ({ limit: 20 }));
+  const categories = categoriesData?.items ?? [];
+
+  const serviceOptions =
+    categories.length > 0
+      ? categories.map((c) => ({ name: c.name, slug: c.slug }))
+      : DEFAULT_SERVICES;
 
   const form = useForm<Values>({
     resolver: zodResolver(schema) as never,
     mode: "onBlur",
     defaultValues: {
-      service_name: preset?.title ?? presetServiceName ?? "",
-      service_id: preset?.id ?? "",
-      care_type: "home_visit",
-      city: presetCity,
+      service_name: presetServiceName ?? "",
+      service_id: "",
+      city: presetCity ?? "",
+      preferred_date: "",
+      preferred_time: "",
+      patient_name: "",
+      care_required: "",
+      message: "",
+      contact_phone: "",
+      whatsapp_number: "",
+      contact_email: "",
+      address: "",
+      pincode: "",
     },
   });
 
   const mut = useMutation({
-    mutationFn: (data: Values) => api.post("/bookings", data),
+    mutationFn: (data: Values) => api.post("/bookings", { ...data, source: "website" }),
     onSuccess: () => {
       setDone(true);
       triggerBookingSuccess();
-      toast.success("Booking received — we'll call you shortly.");
+      toast.success("Request received — we'll contact you shortly.");
     },
     onError: (err: Error) => toast.error(err.message || "Something went wrong. Please try again."),
   });
@@ -179,38 +229,46 @@ export function BookingForm({
       >
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
-            key={STEPS[step].key}
-            initial={{ opacity: 0, x: 30, filter: "blur(6px)" }}
-            animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-            exit={{ opacity: 0, x: -30, filter: "blur(6px)" }}
+            key={step}
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -30 }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           >
-            {step === 0 && <ServiceStep form={form} options={options} presetServiceName={presetServiceName} />}
+            {step === 0 && <ServiceStep form={form} services={serviceOptions} />}
             {step === 1 && <ScheduleStep form={form} />}
             {step === 2 && <PatientStep form={form} />}
             {step === 3 && <ContactStep form={form} />}
           </motion.div>
         </AnimatePresence>
 
-        {/* Nav */}
-        <div className="mt-10 flex items-center justify-between gap-3">
+        {/* Navigation */}
+        <div className="mt-10 flex items-center justify-between">
           <button
             type="button"
             onClick={back}
-            disabled={step === 0}
-            className="inline-flex items-center gap-1 rounded-full border border-border bg-surface px-5 py-3 text-sm font-medium disabled:opacity-40"
+            className={cn(
+              "flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors",
+              step === 0 && "invisible",
+            )}
           >
             <ChevronLeft className="h-4 w-4" /> Back
           </button>
           <button
             type="submit"
             disabled={mut.isPending}
-            className="group inline-flex items-center gap-2 rounded-full bg-foreground px-7 py-3.5 text-sm font-semibold text-background shadow-[var(--shadow-soft)] hover:bg-accent transition-colors disabled:opacity-60"
+            className="group flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 disabled:opacity-70"
           >
-            {mut.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
-            {step === STEPS.length - 1 ? "Confirm booking" : "Continue"}
-            {!mut.isPending && (
-              <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            {mut.isPending ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" /> Submitting…
+              </>
+            ) : step < STEPS.length - 1 ? (
+              <>
+                Continue <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </>
+            ) : (
+              "Submit Request"
             )}
           </button>
         </div>
@@ -219,69 +277,57 @@ export function BookingForm({
   );
 }
 
-/* --------------------------------- Steps --------------------------------- */
+/* ─────────────── Step 1: Service ─────────────── */
 
 function ServiceStep({
   form,
-  options,
-  presetServiceName,
+  services,
 }: {
   form: UseFormReturn<Values>;
-  options: { id: string; title: string; slug: string; short_description?: string | null }[];
-  presetServiceName?: string;
+  services: { name: string; slug: string }[];
 }) {
   const selected = form.watch("service_name");
-  const care = form.watch("care_type");
+
   return (
     <div className="grid gap-6">
       <StepHeader
-        eyebrow="Care you need"
-        title="Which service brings you here?"
-        description="Pick a service — you can add details in the next steps."
+        eyebrow="Service"
+        title="Which service do you need?"
+        description="Select the type of care you're looking for."
       />
-      {presetServiceName && (
-        <div className="flex items-center gap-2 rounded-2xl border border-primary/30 bg-primary/5 px-4 py-3 text-sm font-medium text-primary">
-          <CheckCircle2 className="h-4 w-4 shrink-0" />
-          Service pre-selected: <span className="font-semibold">{presetServiceName}</span>
-        </div>
-      )}
-      <input type="hidden" {...form.register("service_id")} />
-      <div className="grid gap-3 md:grid-cols-2">
-        {options.slice(0, 8).map((s) => {
-          const active = selected === s.title;
+      <div className="grid gap-3 sm:grid-cols-2">
+        {services.map((svc) => {
+          const active = selected === svc.name;
           return (
             <button
-              key={s.id}
+              key={svc.slug}
               type="button"
               onClick={() => {
-                form.setValue("service_name", s.title, { shouldValidate: true });
-                form.setValue("service_id", s.id);
+                form.setValue("service_name", svc.name, { shouldValidate: true });
+                form.setValue("service_id", svc.slug);
               }}
               className={cn(
-                "text-left rounded-2xl border p-4 transition-all",
+                "flex items-center gap-3 rounded-2xl border px-5 py-4 text-left text-[15px] font-medium transition-all duration-200",
                 active
-                  ? "border-primary bg-primary/5 shadow-[var(--shadow-soft)]"
-                  : "border-border bg-surface hover:border-primary/50 hover:-translate-y-0.5",
+                  ? "border-primary bg-primary/5 text-primary shadow-md shadow-primary/10 ring-2 ring-primary/20"
+                  : "border-border bg-white hover:border-primary/40 hover:bg-primary/[0.02] text-foreground",
               )}
             >
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <div className="font-semibold text-sm">{s.title}</div>
-                  {s.short_description && (
-                    <div className="mt-1 text-xs text-muted-foreground line-clamp-2">
-                      {s.short_description}
-                    </div>
-                  )}
-                </div>
-                <div
-                  className={cn(
-                    "grid h-5 w-5 shrink-0 place-items-center rounded-full border",
-                    active ? "border-primary bg-primary" : "border-border",
-                  )}
-                >
-                  {active && <CheckCircle2 className="h-4 w-4 text-primary-foreground" />}
-                </div>
-              </div>
+              <span
+                className={cn(
+                  "grid h-5 w-5 shrink-0 place-items-center rounded-full border-2 transition-colors",
+                  active ? "border-primary bg-primary" : "border-gray-300",
+                )}
+              >
+                {active && (
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="h-2 w-2 rounded-full bg-white"
+                  />
+                )}
+              </span>
+              {svc.name}
             </button>
           );
         })}
@@ -289,53 +335,33 @@ function ServiceStep({
       {form.formState.errors.service_name && (
         <p className="text-xs text-destructive">{form.formState.errors.service_name.message}</p>
       )}
-
-      <div className="mt-2">
-        <div className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground mb-3">
-          Care type
-        </div>
-        <div className="grid gap-2 sm:grid-cols-3">
-          {[
-            { v: "home_visit", label: "Home visit" },
-            { v: "consultation", label: "Consultation" },
-            { v: "equipment", label: "Equipment rental" },
-          ].map((o) => {
-            const active = care === o.v;
-            return (
-              <button
-                key={o.v}
-                type="button"
-                onClick={() => form.setValue("care_type", o.v as Values["care_type"])}
-                className={cn(
-                  "rounded-full border px-4 py-2.5 text-sm font-medium transition-all",
-                  active
-                    ? "border-primary bg-primary text-primary-foreground"
-                    : "border-border bg-surface hover:border-primary/50",
-                )}
-              >
-                {o.label}
-              </button>
-            );
-          })}
-        </div>
-      </div>
     </div>
   );
 }
+
+/* ─────────────── Step 2: Location & Schedule ─────────────── */
 
 function ScheduleStep({ form }: { form: UseFormReturn<Values> }) {
   return (
     <div className="grid gap-6">
       <StepHeader
-        eyebrow="When"
-        title="When should we arrive?"
-        description="Pick your preferred date and time — final slot is confirmed on the call."
+        eyebrow="Location & Schedule"
+        title="Where and when do you need care?"
+        description="Pick your preferred city, date and time — final slot is confirmed on the call."
       />
+      <FloatField label="Select City" error={form.formState.errors.city?.message}>
+        <select {...form.register("city")} className={inputCls}>
+          <option value="">Select city</option>
+          {CITIES.map((c) => (
+            <option key={c} value={c}>{c}</option>
+          ))}
+        </select>
+      </FloatField>
       <div className="grid gap-4 md:grid-cols-2">
-        <FloatField label="Preferred date" error={form.formState.errors.preferred_date?.message}>
+        <FloatField label="Preferred Date" error={form.formState.errors.preferred_date?.message}>
           <input type="date" {...form.register("preferred_date")} className={inputCls} />
         </FloatField>
-        <FloatField label="Preferred time">
+        <FloatField label="Preferred Time">
           <input type="time" {...form.register("preferred_time")} className={inputCls} />
         </FloatField>
       </div>
@@ -349,11 +375,19 @@ function ScheduleStep({ form }: { form: UseFormReturn<Values> }) {
   );
 }
 
+/* ─────────────── Step 3: Patient & Requirement ─────────────── */
+
 function PatientStep({ form }: { form: UseFormReturn<Values> }) {
+  const serviceName = form.watch("service_name");
+  const careHint = SERVICE_CARE_HINTS[serviceName] || "What specific care/service do you require?";
+
   return (
     <div className="grid gap-6">
-      <StepHeader eyebrow="Patient" title="Who are we caring for?" />
-      <FloatField label="Patient name" error={form.formState.errors.patient_name?.message}>
+      <StepHeader
+        eyebrow="Patient Details"
+        title="Tell us about the patient and care required"
+      />
+      <FloatField label="Patient Name" error={form.formState.errors.patient_name?.message}>
         <input {...form.register("patient_name")} className={inputCls} placeholder="Full name" />
       </FloatField>
       <div className="grid gap-4 md:grid-cols-2">
@@ -374,39 +408,56 @@ function PatientStep({ form }: { form: UseFormReturn<Values> }) {
           </select>
         </FloatField>
       </div>
-      <FloatField label="Anything we should know?">
+      <FloatField label="Service / Care Required">
         <textarea
-          {...form.register("message")}
+          {...form.register("care_required")}
           rows={3}
           className={inputCls}
-          placeholder="Conditions, preferences, timings..."
+          placeholder={careHint}
+        />
+      </FloatField>
+      <FloatField label="Additional Information / Special Requirements">
+        <textarea
+          {...form.register("message")}
+          rows={2}
+          className={inputCls}
+          placeholder="Any other details — medical conditions, preferences, timings…"
         />
       </FloatField>
     </div>
   );
 }
 
+/* ─────────────── Step 4: Contact & Address ─────────────── */
+
 function ContactStep({ form }: { form: UseFormReturn<Values> }) {
   return (
     <div className="grid gap-6">
-      <StepHeader eyebrow="Contact" title="Where should we reach you?" />
+      <StepHeader eyebrow="Contact & Address" title="How can we reach you?" />
       <div className="grid gap-4 md:grid-cols-2">
-        <FloatField label="Phone" error={form.formState.errors.contact_phone?.message}>
+        <FloatField label="Phone Number *" error={form.formState.errors.contact_phone?.message}>
           <input
             {...form.register("contact_phone")}
             className={inputCls}
             placeholder="+91 98765 43210"
           />
         </FloatField>
-        <FloatField label="Email">
+        <FloatField label="WhatsApp Number (Optional)">
           <input
-            {...form.register("contact_email")}
+            {...form.register("whatsapp_number")}
             className={inputCls}
-            placeholder="you@example.com"
+            placeholder="+91 98765 43210"
           />
         </FloatField>
       </div>
-      <FloatField label="Address" error={form.formState.errors.address?.message}>
+      <FloatField label="Email (Optional)">
+        <input
+          {...form.register("contact_email")}
+          className={inputCls}
+          placeholder="you@example.com"
+        />
+      </FloatField>
+      <FloatField label="Full Address *" error={form.formState.errors.address?.message}>
         <textarea
           {...form.register("address")}
           rows={2}
@@ -415,23 +466,22 @@ function ContactStep({ form }: { form: UseFormReturn<Values> }) {
         />
       </FloatField>
       <div className="grid gap-4 md:grid-cols-2">
-        <FloatField label="City" error={form.formState.errors.city?.message}>
-          <select {...form.register("city")} className={inputCls}>
-            <option value="">Select city</option>
-            {CITIES.map((c) => (
-              <option key={c} value={c}>{c}</option>
-            ))}
-          </select>
+        <FloatField label="City">
+          <input
+            {...form.register("city")}
+            className={inputCls}
+            readOnly
+          />
         </FloatField>
         <FloatField label="Pincode">
-          <input {...form.register("pincode")} className={inputCls} />
+          <input {...form.register("pincode")} className={inputCls} placeholder="e.g. 121001" />
         </FloatField>
       </div>
     </div>
   );
 }
 
-/* -------------------------------- Pieces --------------------------------- */
+/* ─────────────── Pieces ─────────────── */
 
 function StepHeader({
   eyebrow,
@@ -500,14 +550,31 @@ function SuccessState({ onReset }: { onReset: () => void }) {
       >
         <CheckCircle2 className="h-8 w-8" />
       </motion.div>
-      <h3 className="relative mt-6 font-display text-3xl tracking-[-0.03em]">Booking received</h3>
+      <h3 className="relative mt-6 font-display text-3xl tracking-[-0.03em]">
+        Request Received Successfully
+      </h3>
       <p className="relative mt-3 text-muted-foreground max-w-md mx-auto">
-        A care advisor will call you within <b className="text-foreground">2 hours</b> to confirm
-        your slot and match a verified caregiver.
+        Our care team will review your requirement and contact you for confirmation.
       </p>
+
+      <div className="relative mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 text-sm font-medium text-foreground">
+        <div className="flex items-center gap-2">
+          <ShieldCheck className="h-4 w-4 text-primary" />
+          Verified & Trained Staff
+        </div>
+        <div className="flex items-center gap-2">
+          <Clock className="h-4 w-4 text-primary" />
+          Confirmation within 2 Hours
+        </div>
+        <div className="flex items-center gap-2">
+          <DollarSign className="h-4 w-4 text-primary" />
+          Transparent Pricing
+        </div>
+      </div>
+
       <button
         onClick={onReset}
-        className="relative mt-8 inline-flex items-center rounded-full border border-border bg-surface px-6 py-3 text-sm font-medium hover:border-primary"
+        className="relative mt-8 inline-flex items-center rounded-full border border-border bg-surface px-6 py-3 text-sm font-medium hover:border-primary transition-colors"
       >
         Book another
       </button>

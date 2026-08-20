@@ -11,6 +11,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { api } from "@/lib/api/client";
+import { CITIES } from "@/components/forms/BookingForm";
 import { triggerBookingSuccess } from "@/components/site/GlobalBookingSuccess";
 import {
   Dialog,
@@ -24,6 +25,7 @@ const labFormSchema = z.object({
   contact_phone: z.string().min(7, "Enter a valid phone number"),
   test_type: z.string().min(1, "Select test type"),
   preferred_slot: z.string().min(1, "Select preferred slot"),
+  city: z.string().min(1, "Select city"),
 });
 
 type LabFormValues = z.infer<typeof labFormSchema>;
@@ -64,6 +66,7 @@ export function LabBookingModal({
       contact_phone: "",
       test_type: "",
       preferred_slot: "",
+      city: "",
     },
   });
 
@@ -74,7 +77,7 @@ export function LabBookingModal({
         contact_phone: data.contact_phone,
         service_name: "Home Sample Collection",
         patient_condition: `Test: ${data.test_type} | Slot: ${data.preferred_slot}`,
-        city: "Not specified",
+        city: data.city,
         source: "Lab Booking Modal",
         preferred_date: new Date().toISOString().split("T")[0],
         address: "Pending (Provided via Quick Form)",
@@ -258,6 +261,29 @@ export function LabBookingModal({
                     {form.formState.errors.preferred_slot && (
                       <p className="text-xs text-destructive mt-1.5 pl-1">
                         {form.formState.errors.preferred_slot.message}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* City */}
+                  <div>
+                    <div className="relative">
+                      <select
+                        {...form.register("city")}
+                        className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-foreground appearance-none cursor-pointer"
+                      >
+                        <option value="">Select city</option>
+                        {CITIES.map((c) => (
+                          <option key={c} value={c}>
+                            {c}
+                          </option>
+                        ))}
+                      </select>
+                      <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                    </div>
+                    {form.formState.errors.city && (
+                      <p className="text-xs text-destructive mt-1.5 pl-1">
+                        {form.formState.errors.city.message}
                       </p>
                     )}
                   </div>

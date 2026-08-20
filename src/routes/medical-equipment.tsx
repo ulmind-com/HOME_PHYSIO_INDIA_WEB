@@ -30,7 +30,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
-import { settingsQ, categoriesQ, equipmentQ } from "@/lib/api/queries";
+import { settingsQ, categoriesQ, equipmentQ, faqsQ } from "@/lib/api/queries";
 import { CITIES } from "@/components/forms/BookingForm";
 import {
   EquipmentBookingModal,
@@ -194,6 +194,17 @@ function MedicalEquipmentPage() {
       c.slug?.toLowerCase().includes("equipment")
   );
 
+  const { data: faqData } = useQuery(faqsQ({ limit: 20 }));
+  const apiFaqs = (faqData?.items ?? []).filter(
+    (f) =>
+      f.category?.toLowerCase().includes("equipment")
+  );
+
+  // Hardcoded FAQs always stay; API FAQs are appended (deduplicated by question)
+  const hardcodedQuestions = new Set(FAQS.map((f) => f.question.toLowerCase()));
+  const extraFaqs = apiFaqs.filter((f) => !hardcodedQuestions.has(f.question.toLowerCase()));
+  const displayFaqs = [...FAQS, ...extraFaqs];
+
   return (
     <>
       <EquipmentHero phone={phone} category={category} />
@@ -202,7 +213,7 @@ function MedicalEquipmentPage() {
       <EquipmentWhyChooseSection />
       <EquipmentHowItWorksSection />
       <EquipmentCtaBand phone={phone} whatsapp={whatsapp} />
-      <EquipmentFaqSection />
+      <EquipmentFaqSection faqs={displayFaqs} />
       <EquipmentBookingPanel phone={phone} whatsapp={whatsapp} />
       <FinalCtaBand phone={phone} />
     </>
@@ -714,11 +725,11 @@ function EquipmentCtaBand({ phone, whatsapp }: { phone?: string; whatsapp?: stri
 
 /* ─────────────────────── FAQ ─────────────────────── */
 
-function EquipmentFaqSection() {
+function EquipmentFaqSection({ faqs }: { faqs: { id: string; question: string; answer: string }[] }) {
   const [open, setOpen] = useState<string | null>(null);
 
   return (
-    <Section className="py-20 lg:py-28">
+    <Section className="py-20 lg:py-28" id="faq">
       <div className="grid gap-12 lg:grid-cols-2 items-start max-w-6xl mx-auto">
         <div>
           <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-6">
@@ -739,7 +750,7 @@ function EquipmentFaqSection() {
         </div>
 
         <div className="space-y-3">
-          {FAQS.map((faq) => (
+          {faqs.map((faq) => (
             <motion.div
               key={faq.id}
               initial={{ opacity: 0, y: 10 }}

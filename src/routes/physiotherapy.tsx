@@ -250,10 +250,13 @@ function PhysiotherapyPage() {
   const faqs = (faqData?.items ?? []).filter(
     (f) =>
       f.category?.toLowerCase().includes("physio") ||
-      f.category?.toLowerCase().includes("physiotherapy") ||
-      !f.category
+      f.category?.toLowerCase().includes("physiotherapy")
   );
-  const displayFaqs = faqs.length > 0 ? faqs.slice(0, 10) : DEFAULT_FAQS;
+
+  // Hardcoded FAQs always stay; API FAQs are appended (deduplicated by question)
+  const hardcodedQuestions = new Set(DEFAULT_FAQS.map((f) => f.question.toLowerCase()));
+  const apiFaqs = faqs.filter((f) => !hardcodedQuestions.has(f.question.toLowerCase()));
+  const displayFaqs = [...DEFAULT_FAQS, ...apiFaqs];
 
   const { data: catData } = useQuery(categoriesQ({ limit: 100 }));
   const category = (catData?.items ?? []).find(
@@ -795,7 +798,7 @@ function PhysioFaqSection({
   const [open, setOpen] = useState<string | null>(null);
 
   return (
-    <Section className="bg-[#F8F9FA] py-20 lg:py-28">
+    <Section className="bg-[#F8F9FA] py-20 lg:py-28" id="faq">
       <div className="grid gap-12 lg:grid-cols-2 items-start max-w-6xl mx-auto">
         <div>
           <div className="inline-flex items-center gap-2 rounded-full border border-border bg-white px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-6">

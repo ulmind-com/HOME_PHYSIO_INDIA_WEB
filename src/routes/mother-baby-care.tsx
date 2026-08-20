@@ -8,318 +8,206 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { api } from "@/lib/api/client";
 import {
-  Syringe,
-  Droplets,
-  BandageIcon as Bandage,
-  Shield,
-  Activity,
-  Zap,
-  Home,
-  HeartPulse,
-  Users,
-  Clock3,
+  Baby,
+  Heart,
+  HeartHandshake,
+  ShieldCheck,
   Phone,
   ArrowRight,
   Check,
   ChevronDown,
-  Stethoscope,
-  ThumbsUp,
   Loader2,
+  Clock,
+  Users,
+  ThumbsUp,
+  ArrowUpRight,
   ChevronLeft,
   ChevronRight,
-  ArrowUpRight,
 } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import { categoriesQ, faqsQ, settingsQ } from "@/lib/api/queries";
 import { BookingForm, CITIES } from "@/components/forms/BookingForm";
-import { NursingBookingModal } from "@/components/forms/NursingBookingModal";
+import { MotherBabyBookingModal } from "@/components/forms/MotherBabyBookingModal";
 import { Section } from "@/components/site/Section";
 
-export const Route = createFileRoute("/nursing-care")({
+export const Route = createFileRoute("/mother-baby-care")({
   head: () => ({
     meta: [
-      { title: "Home Nursing Care — Nupun Home Health Care Services" },
+      { title: "Mother & Baby Care at Home — Nupun Home Health Care Services" },
       {
         name: "description",
         content:
-          "Professional nursing support at home — injections, IV infusion, wound care, catheter care, tracheostomy care, post-hospitalisation nursing and more.",
+          "Reliable and personalised mother and baby care at home — postnatal recovery, newborn care, feeding support and everyday assistance for families.",
       },
-      { property: "og:title", content: "Home Nursing Care — Nupun Home Health Care" },
+      { property: "og:title", content: "Mother & Baby Care at Home — Nupun Home Health Care" },
       {
         property: "og:description",
         content:
-          "Skilled nursing at home — wound care, IV infusions, injections, catheter care and post-operative monitoring by trained nursing professionals.",
+          "Trusted mother and baby care at home — postnatal support, newborn care, feeding assistance and flexible care options by trained caregivers.",
       },
-      { property: "og:url", content: "/nursing-care" },
+      { property: "og:url", content: "/mother-baby-care" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "canonical", href: "/nursing-care" }],
+    links: [{ rel: "canonical", href: "/mother-baby-care" }],
   }),
-  component: NursingCarePage,
+  component: MotherBabyCarePage,
 });
 
 /* ─────────────────────── Static data ─────────────────────── */
 
-const NURSING_SERVICES = [
+const MOTHER_BABY_SERVICES = [
   {
-    icon: Stethoscope,
-    emoji: "🩺",
-    title: "Nursing Care at home",
-    description: "Qualified nursing staff provide routine patient care, health monitoring and assistance according to the patient's care requirements and medical instructions.",
+    emoji: "👩",
+    title: "Postnatal Mother Care",
+    description: "New mothers ko daily care, comfort, hygiene and recovery support.",
+    color: "text-pink-600",
+    bg: "from-pink-50 to-rose-50",
+    iconBg: "bg-pink-100",
+  },
+  {
+    emoji: "👶",
+    title: "Newborn Baby Care",
+    description: "Newborn ki daily routine, feeding support, hygiene and basic baby care.",
     color: "text-blue-600",
     bg: "from-blue-50 to-sky-50",
     iconBg: "bg-blue-100",
   },
   {
-    icon: Syringe,
-    emoji: "💉",
-    title: "Injection Administration",
-    description: "Nursing staff can provide prescribed injections at home, helping patients avoid unnecessary visits to a clinic or hospital.",
+    emoji: "🍼",
+    title: "Mother & Baby Support",
+    description: "Mother aur baby dono ki routine care aur assistance according to family requirements.",
     color: "text-violet-600",
     bg: "from-violet-50 to-purple-50",
     iconBg: "bg-violet-100",
   },
   {
-    icon: Droplets,
-    emoji: "💧",
-    title: "IV Infusion & Drip Care",
-    description: "Prescribed IV fluids and medications can be administered at home by trained nursing professionals with appropriate monitoring.",
-    color: "text-cyan-600",
-    bg: "from-cyan-50 to-teal-50",
-    iconBg: "bg-cyan-100",
-  },
-  {
-    icon: Bandage,
-    emoji: "🩹",
-    title: "Wound & Dressing Care",
-    description: "Professional wound dressing support for patients recovering from surgery, injuries, wounds or other conditions requiring regular dressing changes.",
-    color: "text-rose-600",
-    bg: "from-rose-50 to-pink-50",
-    iconBg: "bg-rose-100",
-  },
-  {
-    icon: Shield,
-    emoji: "🛡️",
-    title: "Bed Sore Care",
-    description: "Regular nursing support for patients with pressure sores, including prescribed dressing care and assistance with positioning and hygiene.",
+    emoji: "🤱",
+    title: "Feeding Support",
+    description: "Mother ko baby feeding routine aur daily baby-care activities mein assistance.",
     color: "text-amber-600",
     bg: "from-amber-50 to-yellow-50",
     iconBg: "bg-amber-100",
   },
-  {
-    icon: Activity,
-    emoji: "🔬",
-    title: "Catheter Care",
-    description: "Support for catheter insertion, removal and routine catheter-related care when prescribed and clinically appropriate.",
-    color: "text-emerald-600",
-    bg: "from-emerald-50 to-green-50",
-    iconBg: "bg-emerald-100",
-  },
-  {
-    icon: HeartPulse,
-    emoji: "🫁",
-    title: "Ryles Tube Care & Feeding",
-    description: "Nursing assistance for patients requiring Ryles/NG tube feeding and related routine care as advised by the treating healthcare professional.",
-    color: "text-indigo-600",
-    bg: "from-indigo-50 to-blue-50",
-    iconBg: "bg-indigo-100",
-  },
-  {
-    icon: Zap,
-    emoji: "⚡",
-    title: "Tracheostomy Care",
-    description: "Home nursing support for patients with a tracheostomy, including prescribed routine care and monitoring.",
-    color: "text-orange-600",
-    bg: "from-orange-50 to-amber-50",
-    iconBg: "bg-orange-100",
-  },
-  {
-    icon: Activity,
-    emoji: "📊",
-    title: "Vital Signs Monitoring",
-    description: "Monitoring of basic vital signs such as blood pressure, pulse, temperature and oxygen saturation as required.",
-    color: "text-teal-600",
-    bg: "from-teal-50 to-emerald-50",
-    iconBg: "bg-teal-100",
-  },
-  {
-    icon: Home,
-    emoji: "🏥",
-    title: "Post-Hospitalisation Nursing Care",
-    description: "Nursing support for patients returning home after surgery, hospitalisation or treatment who still require medical supervision and routine care.",
-    color: "text-primary",
-    bg: "from-primary/5 to-primary/10",
-    iconBg: "bg-primary/15",
-  },
 ];
 
-const NURSING_CHECKLIST = [
-  "Prescribed nursing procedures at home",
-  "Regular patients monitoring",
-  "Injection administration",
-  "IV infusion and drip support",
-  "Wound and dressing care",
-  "Bed sore dressing support",
-  "Catheter-related care",
-  "Ryles/NG tube feeding support",
-  "Tracheostomy care",
-  "Post-hospitalisation nursing",
-  "Vital signs monitoring",
-  "Regular communication with family members",
+const TRUST_CHECKLIST = [
+  "Trained & verified caregivers",
+  "Mother and newborn care support",
+  "Personal hygiene assistance",
+  "Baby feeding & routine support",
+  "Postnatal recovery assistance",
+  "Flexible 8 / 12 / 24-hour care options",
+  "Personalised care according to family requirements",
+  "Regular family communication",
 ];
 
 const WHY_CHOOSE = [
   {
     icon: Users,
     emoji: "✅",
-    title: "Trained Nursing Professionals",
-    description: "We connect families with nursing staff suitable for the patient's care requirements and prescribed nursing needs.",
-    color: "text-blue-600",
-    bg: "bg-blue-50",
-    iconBg: "bg-blue-100",
-  },
-  {
-    icon: Home,
-    emoji: "🏡",
-    title: "Care at Your Home",
-    description: "Receive nursing support without making frequent trips to a clinic or hospital for routine home-care requirements.",
+    title: "Trained Caregivers",
+    description: "Mother and baby care requirements ke according trained staff.",
     color: "text-emerald-600",
     bg: "bg-emerald-50",
     iconBg: "bg-emerald-100",
   },
   {
-    icon: HeartPulse,
-    emoji: "❤️",
-    title: "Patients-Focused Care",
-    description: "Our nursing support is arranged according to the patient's condition, care plan and required duty hours.",
+    icon: Clock,
+    emoji: "⏰",
+    title: "Flexible Care Options",
+    description: "8, 12 aur 24-hour care according to requirement.",
+    color: "text-sky-600",
+    bg: "bg-sky-50",
+    iconBg: "bg-sky-100",
+  },
+  {
+    icon: Heart,
+    emoji: "💖",
+    title: "Personalised Care",
+    description: "Har mother aur baby ki requirement alag hoti hai.",
     color: "text-rose-600",
     bg: "bg-rose-50",
     iconBg: "bg-rose-100",
   },
   {
-    icon: Clock3,
-    emoji: "⏰",
-    title: "Flexible Nursing Visits",
-    description: "Nursing visits can be arranged according to the patient's requirement, subject to staff availability and service area.",
-    color: "text-violet-600",
-    bg: "bg-violet-50",
-    iconBg: "bg-violet-100",
+    icon: ShieldCheck,
+    emoji: "🛡️",
+    title: "Safety & Comfort",
+    description: "Hygiene, comfort aur respectful assistance par focus.",
+    color: "text-indigo-600",
+    bg: "bg-indigo-50",
+    iconBg: "bg-indigo-100",
   },
   {
     icon: ThumbsUp,
     emoji: "🤝",
-    title: "Family Communication",
-    description: "Families can stay informed about the patients' routine care and important observations.",
+    title: "Family Support",
+    description: "Family ko care routine aur requirements ke according coordination.",
     color: "text-amber-600",
     bg: "bg-amber-50",
     iconBg: "bg-amber-100",
   },
-  {
-    icon: Shield,
-    emoji: "🛡️",
-    title: "Professional & Respectful Approach",
-    description: "We focus on patients comfort, privacy, dignity and proper adherence to the prescribed care instructions.",
-    color: "text-teal-600",
-    bg: "bg-teal-50",
-    iconBg: "bg-teal-100",
-  },
-];
-
-const WHO_CAN_BENEFIT = [
-  "Recovering after hospitalisation",
-  "Need regular wound dressing",
-  "Require prescribed injections",
-  "Need IV therapy at home",
-  "Have a catheter or feeding tube",
-  "Require tracheostomy care",
-  "Need support after surgery",
-  "Are bedridden and require nursing assistance",
-  "Need regular monitoring of vital signs",
-  "Require ongoing nursing support at home",
 ];
 
 const DEFAULT_FAQS = [
   {
     id: "1",
-    question: "What is home nursing care?",
+    question: "What is Mother & Baby Care at home?",
     answer:
-      "Home nursing care provides professional nursing support to patients in their own homes for prescribed medical procedures, monitoring, recovery and routine nursing needs.",
+      "Mother & Baby Care at home provides trained caregiver support for new mothers and newborn babies. This includes postnatal recovery assistance, newborn hygiene, feeding support, and daily routine care — all in the comfort of your home.",
   },
   {
     id: "2",
-    question: "Can I book a nurse for an injection at home?",
+    question: "Do you provide postnatal care?",
     answer:
-      "Yes. Prescribed injections can be administered at home by appropriate nursing staff, subject to availability and the required procedure.",
+      "Yes. Our trained caregivers assist new mothers with postnatal recovery, personal hygiene, comfort, rest and daily care needs after delivery.",
   },
   {
     id: "3",
-    question: "Do you provide wound dressing at home?",
+    question: "Do you provide newborn baby care?",
     answer:
-      "Yes. We provide home wound dressing support for patients who require regular dressing according to their medical care plan.",
+      "Yes. Our caregivers support newborn baby care including bathing, diaper changes, feeding assistance, hygiene and establishing a healthy daily routine.",
   },
   {
     id: "4",
-    question: "Do you provide catheter insertion and removal?",
+    question: "Can I book 8, 12 or 24-hour care?",
     answer:
-      "Yes. Catheter insertion and removal services can be arranged through appropriate nursing professionals when medically indicated and prescribed.",
+      "Yes. We offer flexible care options — 8-hour, 12-hour and 24-hour shifts — so you can choose the support that best fits your family's needs.",
   },
   {
     id: "5",
-    question: "Can you provide IV drip at home?",
+    question: "Can I request a female caregiver?",
     answer:
-      "Prescribed IV fluids or medications may be administered at home by trained nursing staff when the patients is suitable for home-based care.",
+      "Yes. Female caregivers are available for mother and baby care services, subject to availability in your area.",
   },
   {
     id: "6",
-    question: "Do you provide Ryles tube feeding care?",
+    question: "Can care be arranged after C-section delivery?",
     answer:
-      "Yes. Nursing support can be arranged for patients requiring Ryles/NG tube feeding and routine tube care according to medical instructions.",
+      "Yes. Post C-section care can be arranged for new mothers who need additional support with mobility, hygiene, feeding and recovery at home.",
   },
   {
     id: "7",
-    question: "Do you provide tracheostomy care at home?",
+    question: "How can I book Mother & Baby Care?",
     answer:
-      "Yes. Home nursing support is available for patients requiring routine tracheostomy care, subject to the patient's condition and nursing requirements.",
-  },
-  {
-    id: "8",
-    question: "Can I book a nurse after hospital discharge?",
-    answer:
-      "Yes. Post-hospitalisation nursing support can be arranged for patients who continue to require nursing care at home.",
-  },
-  {
-    id: "9",
-    question: "Can I book a nurse for one visit only?",
-    answer:
-      "Yes. Single nursing visits can be arranged for eligible services, subject to location, procedure and staff availability.",
-  },
-  {
-    id: "10",
-    question: "How can I book home nursing care?",
-    answer:
-      "Contact Nupun Home Health Care Services by phone or WhatsApp. Share the patients' age, condition, location, required service and preferred timing. Our team will guide you regarding the available nursing option.",
+      "Contact Nupun Home Health Care Services by phone or WhatsApp. Share the mother's and baby's details, your location, required care type and preferred timing. Our team will guide you regarding the best available option.",
   },
 ];
 
 /* ─────────────────────── Component ─────────────────────── */
 
-function NursingCarePage() {
+function MotherBabyCarePage() {
   const { data: settings } = useQuery(settingsQ());
   const { data: faqData } = useQuery(faqsQ({ limit: 20 }));
   const { data: catData } = useQuery(categoriesQ({ limit: 100 }));
 
   const category = (catData?.items ?? []).find(
     (c) =>
-      c.name.toLowerCase().includes("nurs") ||
-      c.slug?.toLowerCase().includes("nurs")
+      c.name.toLowerCase().includes("mother") ||
+      c.name.toLowerCase().includes("baby") ||
+      c.slug?.toLowerCase().includes("mother")
   );
-  
-  const heroImageStr = category?.hero_image
-    ? typeof category.hero_image === "string"
-      ? category.hero_image
-      : category.hero_image.url
-    : null;
 
   const rawPhone = settings?.phone || "+919876543210";
   const rawWhatsapp = settings?.whatsapp || settings?.phone || "919876543210";
@@ -329,8 +217,8 @@ function NursingCarePage() {
 
   const faqs = (faqData?.items ?? []).filter(
     (f) =>
-      f.category?.toLowerCase().includes("nurs") ||
-      f.category?.toLowerCase().includes("nursing")
+      f.category?.toLowerCase().includes("mother") ||
+      f.category?.toLowerCase().includes("baby")
   );
 
   // Hardcoded FAQs always stay; API FAQs are appended (deduplicated by question)
@@ -341,76 +229,73 @@ function NursingCarePage() {
   return (
     <>
       {/* ── Hero ─────────────────────────────────────────────── */}
-      <NursingHero phone={phone} whatsapp={whatsapp} category={category} />
+      <MotherBabyHero phone={phone} whatsapp={whatsapp} category={category} />
 
-      {/* ── Our Home Nursing Services ─────────────────────── */}
-      <NursingServicesSection />
+      {/* ── Our Mother & Baby Care Services ───────────────── */}
+      <MotherBabyServicesSection />
 
-      {/* ── Nursing Support Checklist ─────────────────────── */}
+      {/* ── Trusted Mother & Baby Care Checklist ──────────── */}
       <ChecklistSection />
 
       {/* ── Why Choose Nupun ─────────────────────────────── */}
       <WhyChooseSection />
 
-      {/* ── Who Can Benefit ──────────────────────────────── */}
-      <WhoCanBenefitSection />
-
       {/* ── CTA Band ─────────────────────────────────────── */}
-      <NursingCtaBand phone={phone} whatsapp={whatsapp} />
+      <MotherBabyCtaBand phone={phone} whatsapp={whatsapp} />
 
       {/* ── FAQ ──────────────────────────────────────────── */}
-      <NursingFaqSection faqs={displayFaqs} />
+      <MotherBabyFaqSection faqs={displayFaqs} />
 
       {/* ── Booking Panel ────────────────────────────────── */}
-      <NursingBookingPanel phone={phone} whatsapp={whatsapp} />
+      <MotherBabyBookingPanel phone={phone} whatsapp={whatsapp} />
     </>
   );
 }
 
 /* ─────────────────────── Hero ─────────────────────── */
 
-function NursingHero({
+function MotherBabyHero({
   phone,
   whatsapp,
   category,
 }: {
   phone?: string;
   whatsapp?: string;
-  category?: any; // Using any or Category based on import
+  category?: any;
 }) {
-  const heroBadge = category?.hero_badge || "Skilled Nursing Care at Home";
-  const heroTitle = category?.hero_title || "Professional Nursing Support Delivered at Home";
-  const heroDescription = category?.hero_description || "Nupun Home Health Care Services, our trained nursing professionals provide personalised medical support at home. From routine monitoring and prescribed procedures to wound care, injections and post-hospitalisation support, we help patients receive safe and dependable nursing care in the comfort of their home.";
-  const heroCtaPrimaryText = category?.hero_cta_primary_text || "Book a Nurse";
-  const heroCtaSecondaryText = category?.hero_cta_secondary_text || "Call Now";
+  const heroBadge = category?.hero_badge || "Mother & Baby Care Services";
+  const heroTitle = category?.hero_title || "Trusted Mother & Baby Care at Home";
+  const heroDescription = category?.hero_description || "Nupun Home Health Care Services provides reliable and personalised support for mothers and babies at home, helping families manage postnatal recovery, newborn care and everyday needs with comfort and confidence.";
+  const heroCtaPrimaryText = category?.hero_cta_primary_text || "Book Mother & Baby Care";
+  const heroCtaSecondaryText = category?.hero_cta_secondary_text || "Call Now / WhatsApp";
   const heroStats = category?.hero_stats?.length ? category.hero_stats : [
-    { val: "40+", label: "Nurses" },
+    { val: "100+", label: "Caregivers" },
     { val: "24/7", label: "Availability" },
     { val: "4 Cities", label: "NCR Coverage" },
   ];
-  
+
   const heroImageStr = category?.hero_image
     ? typeof category.hero_image === "string"
       ? category.hero_image
       : category.hero_image.url
     : null;
 
-  const images = category?.hero_images?.length 
+  const images = category?.hero_images?.length
     ? category.hero_images.map((img: any) => typeof img === "string" ? img : img.url)
     : [
-        heroImageStr || "/assets/nurse-hero-21-9-1.png",
-        "/assets/nurse-hero-21-9-2.png",
-        "/assets/nurse-hero-21-9-3.png",
+        "/assets/hero-desktop/mother_baby_desktop_1_1787204531372.jpg",
+        "/assets/hero-desktop/mother_baby_desktop_2_1787204543889.jpg",
+        "/assets/hero-desktop/mother_baby_desktop_3_1787204554373.jpg",
       ];
 
   const mobileImages = category?.hero_images_mobile?.length
     ? category.hero_images_mobile.map((img: any) => typeof img === "string" ? img : img.url)
     : [
-        "/assets/Home%20Nourse/mobile-1.png",
-        "/assets/Home%20Nourse/mobile-2.png",
-        "/assets/Home%20Nourse/mobile-3.png",
+        "/assets/hero-mobile/mother_baby_mobile_1_1787204578046.jpg",
+        "/assets/hero-mobile/mother_baby_mobile_2_1787204592769.jpg",
+        "/assets/hero-mobile/mother_baby_mobile_3_1787204605595.jpg",
       ];
-  
+
   const [currentIdx, setCurrentIdx] = useState(0);
 
   const go = useCallback(
@@ -437,7 +322,7 @@ function NursingHero({
             initial={{ opacity: 0, scale: 1 }}
             animate={{ opacity: 1, scale: 1.15 }}
             exit={{ opacity: 0 }}
-            transition={{ 
+            transition={{
               opacity: { duration: 1.8, ease: "easeInOut" },
               scale: { duration: 8, ease: "easeOut" }
             }}
@@ -445,17 +330,17 @@ function NursingHero({
           >
             <picture>
               <source media="(max-width: 768px)" srcSet={mobileImages[currentIdx]} />
-              <img 
-                src={images[currentIdx]} 
-                alt="Home Nursing Care" 
+              <img
+                src={images[currentIdx]}
+                alt="Mother & Baby Care"
                 className="w-full h-full object-cover object-center"
               />
             </picture>
           </motion.div>
         </AnimatePresence>
       </div>
-      
-      {/* Cinematic dark overlay similar to home page hero */}
+
+      {/* Cinematic dark overlay similar to nursing page hero */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black/90 via-black/60 to-black/30" />
       <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
 
@@ -495,11 +380,11 @@ function NursingHero({
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/90 mb-5">
-              <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-pulse" />
+              <span className="h-1.5 w-1.5 rounded-full bg-pink-400 animate-pulse" />
               {heroBadge}
             </div>
 
-            <h1 
+            <h1
               className="font-display font-medium text-white tracking-tight leading-[1.1] text-[40px] sm:text-[48px] md:text-[56px] lg:text-[64px] mb-4"
               style={{ textShadow: "0 4px 40px rgba(0,0,0,0.5)" }}
             >
@@ -511,14 +396,14 @@ function NursingHero({
             </p>
 
             <div className="mt-6 md:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-              <NursingBookingModal>
+              <MotherBabyBookingModal>
                 <button
                   className="group inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-[15px] font-semibold text-primary-foreground shadow-sm transition-all duration-300 hover:brightness-110 hover:-translate-y-0.5"
                 >
                   {heroCtaPrimaryText}
                   <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </button>
-              </NursingBookingModal>
+              </MotherBabyBookingModal>
 
               <a
                 href={`tel:${phone || "+919876543210"}`}
@@ -539,7 +424,7 @@ function NursingHero({
             </div>
           </motion.div>
 
-          {/* Right: Glass nursing card */}
+          {/* Right: Glass card */}
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
@@ -547,32 +432,32 @@ function NursingHero({
             className="hidden lg:block"
           >
             <div className="relative rounded-[2rem] border border-white/15 bg-white/8 backdrop-blur-2xl p-6 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.6)]">
-              <div className="absolute -top-6 -right-6 h-20 w-20 rounded-full bg-cyan-400/20 blur-3xl" />
+              <div className="absolute -top-6 -right-6 h-20 w-20 rounded-full bg-pink-400/20 blur-3xl" />
 
-              <div className="grid h-12 w-12 place-items-center rounded-2xl bg-cyan-400/20 text-cyan-300 border border-cyan-400/20 mb-4">
-                <Stethoscope className="h-6 w-6" strokeWidth={1.5} />
+              <div className="grid h-12 w-12 place-items-center rounded-2xl bg-pink-400/20 text-pink-300 border border-pink-400/20 mb-4">
+                <Baby className="h-6 w-6" strokeWidth={1.5} />
               </div>
 
               <div className="text-white/50 text-xs uppercase tracking-[0.2em] font-semibold mb-4">
-                Nursing services available
+                Care services available
               </div>
 
               <div className="grid grid-cols-2 gap-2 mb-5">
                 {[
-                  "Injections",
-                  "IV Infusion",
-                  "Wound Dressing",
-                  "Bed Sore Care",
-                  "Catheter Care",
-                  "Ryles Tube",
-                  "Tracheostomy",
-                  "Vital Monitoring",
+                  "Postnatal Care",
+                  "Newborn Care",
+                  "Feeding Support",
+                  "Hygiene Care",
+                  "Recovery Support",
+                  "Baby Routine",
+                  "Flexible Hours",
+                  "Trained Staff",
                 ].map((item, i) => (
                   <div
                     key={i}
                     className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-2.5 py-1.5"
                   >
-                    <div className="h-1.5 w-1.5 rounded-full bg-cyan-400 shrink-0" />
+                    <div className="h-1.5 w-1.5 rounded-full bg-pink-400 shrink-0" />
                     <span className="text-white/80 text-xs font-medium">{item}</span>
                   </div>
                 ))}
@@ -580,14 +465,14 @@ function NursingHero({
 
               <div className="h-px bg-white/10 mb-4" />
               <p className="text-white/55 text-xs leading-relaxed">
-                From a single nursing visit to regular ongoing nursing support —
-                we arrange the right care for your patients.
+                From postnatal recovery to newborn care —
+                we arrange the right support for your family.
               </p>
             </div>
           </motion.div>
         </div>
 
-        {/* Progress Dots + Navigation (Matches Home Hero) */}
+        {/* Progress Dots + Navigation (Matches Nursing Hero) */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -614,7 +499,7 @@ function NursingHero({
 
           {/* Progress Bars */}
           <div className="flex items-center gap-2">
-            {images.map((_, i) => (
+            {images.map((_: any, i: number) => (
               <button
                 key={i}
                 onClick={() => go(i)}
@@ -625,7 +510,7 @@ function NursingHero({
                 <span className="absolute inset-0 rounded-full bg-white/30" />
                 {i === currentIdx && (
                   <motion.span
-                    className="absolute inset-0 rounded-full bg-cyan-400"
+                    className="absolute inset-0 rounded-full bg-pink-400"
                     initial={{ scaleX: 0 }}
                     animate={{ scaleX: 1 }}
                     transition={{ duration: 5.5, ease: "linear" }}
@@ -641,9 +526,9 @@ function NursingHero({
   );
 }
 
-/* ─────────────────────── Nursing Services Grid ─────────────────────── */
+/* ─────────────────────── Services Grid (Same as Nursing) ─────────────────────── */
 
-function NursingServicesSection() {
+function MotherBabyServicesSection() {
   return (
     <Section className="py-20 lg:py-28">
       <motion.div
@@ -654,26 +539,25 @@ function NursingServicesSection() {
       >
         <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-5">
           <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-          Nursing Procedures
+          Our Services
         </div>
         <h2 className="font-display text-4xl md:text-5xl lg:text-6xl tracking-tight text-foreground mb-4">
-          Our Home Nursing services
+          Our Mother & Baby Care Services
         </h2>
         <p className="text-muted-foreground text-lg leading-relaxed">
-          Professional nursing assistance for patients who require medical support at home.
+          Personalised care and support for mothers and newborns at home.
         </p>
       </motion.div>
 
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-        {NURSING_SERVICES.map((s, i) => {
-          const Icon = s.icon;
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {MOTHER_BABY_SERVICES.map((s, i) => {
           return (
             <motion.div
               key={s.title}
               initial={{ opacity: 0, y: 25 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: (i % 5) * 0.07, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.5, delay: (i % 4) * 0.07, ease: [0.22, 1, 0.36, 1] }}
             >
               <div
                 className="group h-full flex flex-col items-start text-left rounded-2xl bg-white border border-black/5 p-6 shadow-sm transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_15px_40px_-10px_rgba(0,0,0,0.1)] cursor-default"
@@ -696,14 +580,14 @@ function NursingServicesSection() {
   );
 }
 
-/* ─────────────────────── Checklist Section ─────────────────────── */
+/* ─────────────────────── Checklist Section (Same as Nursing) ─────────────────────── */
 
 function ChecklistSection() {
   return (
     <section className="relative py-20 lg:py-28 overflow-hidden bg-gradient-to-br from-slate-900 to-blue-950">
       <div className="absolute inset-0 pointer-events-none" aria-hidden>
-        <div className="absolute top-0 right-[20%] w-80 h-80 bg-cyan-500/15 rounded-full blur-[100px]" />
-        <div className="absolute bottom-0 left-[10%] w-64 h-64 bg-blue-600/10 rounded-full blur-[80px]" />
+        <div className="absolute top-0 right-[20%] w-80 h-80 bg-pink-500/15 rounded-full blur-[100px]" />
+        <div className="absolute bottom-0 left-[10%] w-64 h-64 bg-rose-600/10 rounded-full blur-[80px]" />
       </div>
 
       <div className="container-x relative z-10">
@@ -715,15 +599,16 @@ function ChecklistSection() {
             transition={{ duration: 0.7 }}
           >
             <h2 className="font-display text-4xl md:text-5xl text-white tracking-tight leading-tight mb-3">
-              What We Cover
+              Trusted Mother & Baby Care
             </h2>
             <h3 className="text-xl md:text-2xl text-white/90 font-medium mb-6">
-              Nursing Support Designed Around the Patients
+              Care Designed Around Mother & Baby
             </h3>
             <p className="text-white/60 text-lg leading-relaxed">
-              Every patient has different care requirements. Our nursing team
-              follows the care instructions provided by the treating doctor and
-              helps families maintain a safe and organised home-care routine.
+              Every mother and baby has different care requirements. Our
+              trained caregivers provide gentle, personalised support to
+              help families manage postnatal recovery, newborn care and
+              everyday needs with comfort and confidence.
             </p>
           </motion.div>
 
@@ -734,7 +619,7 @@ function ChecklistSection() {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="grid grid-cols-1 sm:grid-cols-2 gap-3"
           >
-            {NURSING_CHECKLIST.map((feat, i) => (
+            {TRUST_CHECKLIST.map((feat, i) => (
               <motion.div
                 key={feat}
                 initial={{ opacity: 0, y: 10 }}
@@ -743,7 +628,7 @@ function ChecklistSection() {
                 transition={{ duration: 0.4, delay: i * 0.04 }}
                 className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 backdrop-blur-md px-4 py-3"
               >
-                <div className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-cyan-400/25 text-cyan-300">
+                <div className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-pink-400/25 text-pink-300">
                   <Check className="h-3.5 w-3.5" strokeWidth={3} />
                 </div>
                 <span className="text-sm font-medium text-white/85">{feat}</span>
@@ -756,7 +641,7 @@ function ChecklistSection() {
   );
 }
 
-/* ─────────────────────── Why Choose Nupun ─────────────────────── */
+/* ─────────────────────── Why Choose Nupun (Same as Nursing) ─────────────────────── */
 
 function WhyChooseSection() {
   return (
@@ -772,13 +657,12 @@ function WhyChooseSection() {
           Why Families Choose Us
         </div>
         <h2 className="font-display text-4xl md:text-5xl tracking-tight text-foreground mb-4">
-          Why Choose Nupun for Home Nursing?
+          Why Choose Nupun?
         </h2>
       </motion.div>
 
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {WHY_CHOOSE.map((item, i) => {
-          const Icon = item.icon;
           return (
             <motion.div
               key={item.title}
@@ -805,50 +689,9 @@ function WhyChooseSection() {
   );
 }
 
-/* ─────────────────────── Who Can Benefit ─────────────────────── */
+/* ─────────────────────── CTA Band (Same as Nursing) ─────────────────────── */
 
-function WhoCanBenefitSection() {
-  return (
-    <section className="py-16 lg:py-20 bg-[#F8F9FA]">
-      <div className="container-x">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center max-w-2xl mx-auto mb-12"
-        >
-          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-white px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-5">
-            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-            Who Needs This
-          </div>
-          <h2 className="font-display text-3xl md:text-4xl tracking-tight text-foreground">
-            Who Can Benefit From Home Nursing Care?
-          </h2>
-        </motion.div>
-
-        <div className="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto">
-          {WHO_CAN_BENEFIT.map((item, i) => (
-            <motion.div
-              key={item}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.05 }}
-              className="group flex items-center gap-2.5 rounded-full border border-border bg-white px-5 py-2.5 text-sm font-medium text-foreground shadow-sm transition-all duration-300 hover:border-primary/40 hover:bg-primary/5 hover:text-primary hover:shadow-md cursor-default"
-            >
-              <div className="h-2 w-2 rounded-full bg-primary/60 group-hover:bg-primary transition-colors" />
-              Patients who {item}
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─────────────────────── CTA Band ─────────────────────── */
-
-function NursingCtaBand({ phone, whatsapp }: { phone?: string; whatsapp?: string }) {
+function MotherBabyCtaBand({ phone, whatsapp }: { phone?: string; whatsapp?: string }) {
   return (
     <section className="relative overflow-hidden">
       <div
@@ -872,30 +715,32 @@ function NursingCtaBand({ phone, whatsapp }: { phone?: string; whatsapp?: string
       <div className="container-x py-20 lg:py-24">
         <div className="max-w-3xl">
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-white tracking-tight leading-tight mb-3">
-            Need a Nurse at Home?
+            Need Mother & Baby Care at Home?
           </h2>
           <h3 className="text-xl md:text-2xl text-white/90 font-medium mb-6 tracking-wide" style={{ wordSpacing: "0.06em" }}>
-            Whether you need a single visit or regular nursing support,{" "}
-            <em className="not-italic text-white">we can help.</em>
+            Whether you need support after delivery, newborn care or assistance with everyday mother and baby needs,{" "}
+            <em className="not-italic text-white">Nupun Home Health Care Services is here to help.</em>
           </h3>
           <p className="text-white/65 text-lg leading-relaxed max-w-2xl mb-10">
-            Tell us about the patient and the required nursing service. Our team
-            will guide you regarding the available nursing support option.
+            Tell us about your requirement and our care team will
+            guide you regarding the available support option.
           </p>
           <div className="flex flex-wrap gap-4">
-            <NursingBookingModal>
+            <MotherBabyBookingModal>
               <button
                 className="inline-flex items-center gap-2 rounded-full bg-cyan-400 text-slate-900 px-8 py-4 text-base font-semibold hover:bg-cyan-300 transition-all duration-300 shadow-[0_15px_35px_-10px_rgba(34,211,238,0.4)]"
               >
-                Book a Nurse <ArrowRight className="h-5 w-5" />
+                Book Mother & Baby Care <ArrowRight className="h-5 w-5" />
               </button>
-            </NursingBookingModal>
-            {phone && (
+            </MotherBabyBookingModal>
+            {whatsapp && (
               <a
-                href={`tel:${phone}`}
+                href={`https://wa.me/${whatsapp}?text=Hi%2C%20I%20need%20Mother%20%26%20Baby%20Care%20at%20home.`}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-full border border-white/30 text-white px-8 py-4 text-base font-semibold hover:bg-white/10 transition-all duration-300"
               >
-                <Phone className="h-5 w-5" /> Request a Callback
+                <Phone className="h-5 w-5" /> WhatsApp Us
               </a>
             )}
           </div>
@@ -905,9 +750,9 @@ function NursingCtaBand({ phone, whatsapp }: { phone?: string; whatsapp?: string
   );
 }
 
-/* ─────────────────────── FAQ ─────────────────────── */
+/* ─────────────────────── FAQ (Same 2-col layout as Nursing) ─────────────────────── */
 
-function NursingFaqSection({
+function MotherBabyFaqSection({
   faqs,
 }: {
   faqs: { id: string; question: string; answer: string }[];
@@ -927,17 +772,17 @@ function NursingFaqSection({
             <span className="text-primary">Questions</span>
           </h2>
           <p className="text-muted-foreground leading-relaxed mb-8">
-            Have questions about our home nursing services? Find answers below.
+            Have questions about our mother & baby care services? Find answers below.
             Still unsure? Our care team is ready to help.
           </p>
           <div className="flex flex-col gap-3">
-            <NursingBookingModal>
+            <MotherBabyBookingModal>
               <button
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-primary/10 text-primary px-6 py-3 text-sm font-semibold hover:bg-primary hover:text-white transition-colors duration-300 w-fit"
               >
-                Book Home Nursing Care →
+                Book Mother & Baby Care →
               </button>
-            </NursingBookingModal>
+            </MotherBabyBookingModal>
             <Link
               to="/contact"
               className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors w-fit"
@@ -988,36 +833,60 @@ function NursingFaqSection({
   );
 }
 
-/* ─────────────────────── Booking Panel ─────────────────────── */
+/* ─────────────────────── Booking Panel (Same fields as Modal) ─────────────────────── */
 
-const nursingFormSchema = z.object({
+const inlineFormSchema = z.object({
   patient_name: z.string().min(2, "Enter full name"),
   contact_phone: z.string().min(7, "Enter a valid phone number"),
   city: z.string().min(1, "Select a city"),
-  service_name: z.string().min(1, "Select a service"),
-  patient_condition: z.string().optional(),
+  service_required: z.string().min(1, "Select service required"),
+  care_duration: z.string().min(1, "Select care duration"),
+  mother_care_requirement: z.string().optional(),
+  baby_care_requirement: z.string().optional(),
+  delivery_type: z.string().optional(),
+  preferred_date: z.string().optional(),
+  patient_age: z.string().optional(),
+  additional_message: z.string().optional(),
 });
 
-type NursingFormValues = z.infer<typeof nursingFormSchema>;
+type InlineFormValues = z.infer<typeof inlineFormSchema>;
 
-function NursingBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: string }) {
+function MotherBabyBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: string }) {
   const [done, setDone] = useState(false);
-  const form = useForm<NursingFormValues>({
-    resolver: zodResolver(nursingFormSchema),
+  const form = useForm<InlineFormValues>({
+    resolver: zodResolver(inlineFormSchema),
     defaultValues: {
       patient_name: "",
       contact_phone: "",
       city: "",
-      service_name: "",
-      patient_condition: "",
+      service_required: "",
+      care_duration: "",
+      mother_care_requirement: "",
+      baby_care_requirement: "",
+      delivery_type: "",
+      preferred_date: "",
+      patient_age: "",
+      additional_message: "",
     },
   });
 
   const mut = useMutation({
-    mutationFn: (data: NursingFormValues) =>
+    mutationFn: (data: InlineFormValues) =>
       api.post("/bookings", {
-        ...data,
-        preferred_date: new Date().toISOString().split("T")[0],
+        patient_name: data.patient_name,
+        contact_phone: data.contact_phone,
+        city: data.city,
+        service_name: data.service_required,
+        patient_condition: [
+          `Care Duration: ${data.care_duration}`,
+          data.mother_care_requirement ? `Mother Care: ${data.mother_care_requirement}` : "",
+          data.baby_care_requirement ? `Baby Care: ${data.baby_care_requirement}` : "",
+          data.delivery_type ? `Delivery Type: ${data.delivery_type}` : "",
+          data.patient_age ? `Patient/Baby Age: ${data.patient_age}` : "",
+          data.additional_message ? `Message: ${data.additional_message}` : "",
+        ].filter(Boolean).join(" | "),
+        source: "Mother & Baby Care Inline Form",
+        preferred_date: data.preferred_date || new Date().toISOString().split("T")[0],
         address: "Pending (Provided via Quick Form)",
       }),
     onSuccess: () => {
@@ -1028,6 +897,10 @@ function NursingBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: s
     onError: (err: Error) => toast.error(err.message || "Something went wrong."),
   });
 
+  const inputCls = "w-full rounded-full border border-border bg-transparent px-5 py-3.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground";
+  const selectCls = "w-full rounded-full border border-border bg-transparent px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-foreground appearance-none";
+  const errCls = "text-xs text-destructive mt-1";
+
   return (
     <section className="py-20 lg:py-28 bg-[#F8F9FA]" id="booking">
       <div className="container-x max-w-md mx-auto">
@@ -1036,7 +909,7 @@ function NursingBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: s
             <div className="text-center py-6">
               <h3 className="font-display text-2xl mb-2">Thank You!</h3>
               <p className="text-muted-foreground mb-6">
-                Our nursing team will contact you shortly.
+                Our care team will contact you shortly.
               </p>
               <button
                 onClick={() => {
@@ -1051,93 +924,160 @@ function NursingBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: s
           ) : (
             <>
               <h3 className="font-display text-2xl md:text-3xl tracking-tight text-foreground mb-2">
-                Book a Nurse
+                Mother & Baby Care – Booking Form
               </h3>
               <p className="text-muted-foreground text-sm mb-8">
                 Tell us about your requirements and our care team will contact you shortly.
               </p>
 
               <form onSubmit={form.handleSubmit((v) => mut.mutate(v))} className="space-y-4">
+                {/* Full Name */}
                 <div>
                   <input
                     {...form.register("patient_name")}
-                    placeholder="Full name"
-                    className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground"
+                    placeholder="Full Name"
+                    className={inputCls}
                   />
                   {form.formState.errors.patient_name && (
-                    <p className="text-xs text-destructive mt-1">
-                      {form.formState.errors.patient_name.message}
-                    </p>
+                    <p className={errCls}>{form.formState.errors.patient_name.message}</p>
                   )}
                 </div>
 
+                {/* Phone Number */}
                 <div>
                   <input
                     {...form.register("contact_phone")}
-                    placeholder="Phone number"
-                    className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground"
+                    placeholder="Phone Number"
+                    type="tel"
+                    className={inputCls}
                   />
                   {form.formState.errors.contact_phone && (
-                    <p className="text-xs text-destructive mt-1">
-                      {form.formState.errors.contact_phone.message}
-                    </p>
+                    <p className={errCls}>{form.formState.errors.contact_phone.message}</p>
                   )}
                 </div>
 
+                {/* Select City */}
                 <div>
                   <div className="relative">
-                    <select
-                      {...form.register("city")}
-                      className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-foreground appearance-none"
-                    >
-                      <option value="">Select city</option>
+                    <select {...form.register("city")} className={selectCls}>
+                      <option value="">Select City</option>
                       {CITIES.map((c) => (
-                        <option key={c} value={c}>
-                          {c}
-                        </option>
+                        <option key={c} value={c}>{c}</option>
                       ))}
                     </select>
                     <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
                   </div>
                   {form.formState.errors.city && (
-                    <p className="text-xs text-destructive mt-1">
-                      {form.formState.errors.city.message}
-                    </p>
+                    <p className={errCls}>{form.formState.errors.city.message}</p>
                   )}
                 </div>
 
+                {/* Service Required */}
                 <div>
                   <div className="relative">
                     <select
-                      {...form.register("service_name")}
-                      className="w-full rounded-full border border-border bg-black/5 px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-foreground appearance-none"
+                      {...form.register("service_required")}
+                      className="w-full rounded-full border border-primary/20 bg-primary/5 px-5 py-3.5 pr-10 text-sm outline-none transition hover:bg-primary/10 hover:border-primary/30 focus:border-primary focus:ring-2 focus:ring-primary/15 text-foreground appearance-none cursor-pointer"
                     >
-                      <option value="">Select nursing service</option>
-                      <option value="Injection Administration">Injection Administration</option>
-                      <option value="IV Infusion & Drip Care">IV Infusion & Drip Care</option>
-                      <option value="Wound Dressing Care">Wound Dressing Care</option>
-                      <option value="Catheter Care">Catheter Care</option>
-                      <option value="Ryles Tube Feeding">Ryles Tube Feeding</option>
-                      <option value="Tracheostomy Care">Tracheostomy Care</option>
-                      <option value="Post-Hospitalisation Nursing Care">
-                        Post-Hospitalisation Nursing Care
-                      </option>
-                      <option value="Vital Signs Monitoring">Vital Signs Monitoring</option>
-                      <option value="Other Nursing Requirement">Other Nursing Requirement</option>
+                      <option value="">Service Required</option>
+                      <option value="Mother Care">Mother Care</option>
+                      <option value="Baby Care">Baby Care</option>
+                      <option value="Mother & Baby Care">Mother & Baby Care</option>
                     </select>
                     <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
                   </div>
-                  {form.formState.errors.service_name && (
-                    <p className="text-xs text-destructive mt-1">
-                      {form.formState.errors.service_name.message}
-                    </p>
+                  {form.formState.errors.service_required && (
+                    <p className={errCls}>{form.formState.errors.service_required.message}</p>
                   )}
                 </div>
 
+                {/* Care Duration */}
+                <div>
+                  <div className="relative">
+                    <select {...form.register("care_duration")} className={selectCls}>
+                      <option value="">Care Duration / Service Required For</option>
+                      <option value="8 Hours">8 Hours</option>
+                      <option value="12 Hours">12 Hours</option>
+                      <option value="24 Hours">24 Hours</option>
+                      <option value="Visit Basis">Visit Basis</option>
+                    </select>
+                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                  </div>
+                  {form.formState.errors.care_duration && (
+                    <p className={errCls}>{form.formState.errors.care_duration.message}</p>
+                  )}
+                </div>
+
+                {/* Mother's Care Requirement */}
+                <div>
+                  <div className="relative">
+                    <select {...form.register("mother_care_requirement")} className={selectCls}>
+                      <option value="">Mother's Care Requirement</option>
+                      <option value="Post-Delivery Care">Post-Delivery Care</option>
+                      <option value="C-Section Care">C-Section Care</option>
+                      <option value="Normal Delivery Care">Normal Delivery Care</option>
+                      <option value="Mother Assistance">Mother Assistance</option>
+                      <option value="Feeding Support">Feeding Support</option>
+                      <option value="Personal Hygiene & Daily Care">Personal Hygiene & Daily Care</option>
+                      <option value="Other">Other</option>
+                    </select>
+                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                  </div>
+                </div>
+
+                {/* Baby's Care Requirement */}
+                <div>
+                  <div className="relative">
+                    <select {...form.register("baby_care_requirement")} className={selectCls}>
+                      <option value="">Baby's Care Requirement</option>
+                      <option value="Newborn Baby Care">Newborn Baby Care</option>
+                      <option value="Feeding Support">Feeding Support</option>
+                      <option value="Diaper Changing">Diaper Changing</option>
+                      <option value="Bathing & Hygiene">Bathing & Hygiene</option>
+                      <option value="Baby Monitoring">Baby Monitoring</option>
+                      <option value="Other">Other</option>
+                    </select>
+                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                  </div>
+                </div>
+
+                {/* Delivery Type */}
+                <div>
+                  <div className="relative">
+                    <select {...form.register("delivery_type")} className={selectCls}>
+                      <option value="">Delivery Type</option>
+                      <option value="Normal Delivery">Normal Delivery</option>
+                      <option value="C-Section">C-Section</option>
+                      <option value="Not Applicable / Other">Not Applicable / Other</option>
+                    </select>
+                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                  </div>
+                </div>
+
+                {/* Expected Start Date + Patient / Baby Age */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <input
+                      {...form.register("preferred_date")}
+                      type="date"
+                      className={inputCls}
+                      title="Expected Start Date"
+                    />
+                  </div>
+                  <div>
+                    <input
+                      {...form.register("patient_age")}
+                      placeholder="Patient / Baby Age"
+                      className={inputCls}
+                    />
+                  </div>
+                </div>
+
+                {/* Additional Requirements / Message */}
                 <div>
                   <textarea
-                    {...form.register("patient_condition")}
-                    placeholder="Patient condition / requirement (optional)"
+                    {...form.register("additional_message")}
+                    placeholder="Additional Requirements / Message"
                     rows={3}
                     className="w-full rounded-2xl border border-border bg-transparent px-5 py-3.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground resize-none"
                   />
@@ -1149,7 +1089,7 @@ function NursingBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: s
                   className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-[#0A252E] px-4 py-3.5 text-sm font-semibold text-white hover:bg-[#0A252E]/90 transition-colors disabled:opacity-60 mt-2"
                 >
                   {mut.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
-                  Submit Request
+                  Submit Booking Request
                 </button>
               </form>
             </>

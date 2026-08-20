@@ -38,6 +38,7 @@ const fallbacks: Array<{ title: string; description: string; image: string; vari
     description: "Expert postnatal care for new mothers & newborns — feeding support, baby care & recovery.",
     image: motherBabyAsset.url,
     variant: "c",
+    dedicatedLink: "/mother-baby-care",
   },
   {
     title: "Physiotherapy & Recovery",
@@ -58,12 +59,14 @@ const fallbacks: Array<{ title: string; description: string; image: string; vari
     description: "Complete home ICU setup with ventilators, monitors & trained ICU nurses round the clock.",
     image: icuSetupAsset.url,
     variant: "a",
+    dedicatedLink: "/icu-setup",
   },
   {
     title: "Home Sample Collection",
     description: "Convenient at-home blood tests & lab sample collection by certified phlebotomists.",
     image: homeSampleAsset.url,
     variant: "c",
+    dedicatedLink: "/sample-collection",
   },
 ];
 
@@ -91,10 +94,16 @@ export function usePremiumCategories() {
         ? "/elderly-care"
         : catNameLower.includes("nurs") || catSlugLower.includes("nurs")
         ? "/nursing-care"
+        : catNameLower.includes("mother") || catNameLower.includes("baby") || catSlugLower.includes("mother")
+        ? "/mother-baby-care"
         : catNameLower.includes("physio") || catSlugLower.includes("physio")
         ? "/physiotherapy"
         : catNameLower.includes("equip") || catSlugLower.includes("equip")
         ? "/medical-equipment"
+        : catNameLower.includes("icu") || catSlugLower.includes("icu")
+        ? "/icu-setup"
+        : catNameLower.includes("sample") || catSlugLower.includes("sample")
+        ? "/sample-collection"
         : fb.dedicatedLink ?? null;
 
     return {

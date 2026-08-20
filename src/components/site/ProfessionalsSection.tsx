@@ -52,7 +52,7 @@ const DEFAULT_FEATURES: FeatureItem[] = [
   },
 ];const DEFAULT_TILES: TileItem[] = [
   {
-    image: "/assets/categories/nursing.jpg",
+    image: "/assets/categories/nursing-v2.jpg?v=2",
     count: "200+",
     title: "Home Nursing Care",
     description: "Round-the-clock bedside medical care",
@@ -60,7 +60,7 @@ const DEFAULT_FEATURES: FeatureItem[] = [
     cta_link: "/booking",
   },
   {
-    image: "/assets/categories/elder.jpg",
+    image: "/assets/categories/elder.jpg?v=2",
     count: "150+",
     title: "Elderly Care",
     description: "Daily living support & elderly companionship",
@@ -76,7 +76,7 @@ const DEFAULT_FEATURES: FeatureItem[] = [
     cta_link: "/booking",
   },
   {
-    image: "/assets/categories/physio.jpg",
+    image: "/assets/categories/physio-v2.jpg?v=2",
     count: "45+",
     title: "Physiotherapy & Recovery",
     description: "In-home rehab & pain recovery",
@@ -84,7 +84,7 @@ const DEFAULT_FEATURES: FeatureItem[] = [
     cta_link: "/booking",
   },
   {
-    image: "/assets/categories/equipment.jpg",
+    image: "/assets/categories/equipment-v2.jpg?v=2",
     count: "100+",
     title: "Medical Equipment",
     description: "Rental medical equipment at home",

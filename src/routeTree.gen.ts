@@ -15,11 +15,14 @@ import { Route as BookingRouteImport } from './routes/booking'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ElderlyCareRouteImport } from './routes/elderly-care'
 import { Route as FaqRouteImport } from './routes/faq'
+import { Route as IcuSetupRouteImport } from './routes/icu-setup'
 import { Route as MedicalEquipmentRouteImport } from './routes/medical-equipment'
+import { Route as MotherBabyCareRouteImport } from './routes/mother-baby-care'
 import { Route as NursingCareRouteImport } from './routes/nursing-care'
 import { Route as PhysiotherapyRouteImport } from './routes/physiotherapy'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as RefundPolicyRouteImport } from './routes/refund-policy'
+import { Route as SampleCollectionRouteImport } from './routes/sample-collection'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TestimonialsRouteImport } from './routes/testimonials'
 import { Route as VideosRouteImport } from './routes/videos'
@@ -65,9 +68,19 @@ const FaqRoute = FaqRouteImport.update({
   path: '/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
+const IcuSetupRoute = IcuSetupRouteImport.update({
+  id: '/icu-setup',
+  path: '/icu-setup',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MedicalEquipmentRoute = MedicalEquipmentRouteImport.update({
   id: '/medical-equipment',
   path: '/medical-equipment',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MotherBabyCareRoute = MotherBabyCareRouteImport.update({
+  id: '/mother-baby-care',
+  path: '/mother-baby-care',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NursingCareRoute = NursingCareRouteImport.update({
@@ -88,6 +101,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const RefundPolicyRoute = RefundPolicyRouteImport.update({
   id: '/refund-policy',
   path: '/refund-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SampleCollectionRoute = SampleCollectionRouteImport.update({
+  id: '/sample-collection',
+  path: '/sample-collection',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TermsRoute = TermsRouteImport.update({
@@ -168,11 +186,14 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/elderly-care': typeof ElderlyCareRoute
   '/faq': typeof FaqRoute
+  '/icu-setup': typeof IcuSetupRoute
   '/medical-equipment': typeof MedicalEquipmentRoute
+  '/mother-baby-care': typeof MotherBabyCareRoute
   '/nursing-care': typeof NursingCareRoute
   '/physiotherapy': typeof PhysiotherapyRoute
   '/privacy': typeof PrivacyRoute
   '/refund-policy': typeof RefundPolicyRoute
+  '/sample-collection': typeof SampleCollectionRoute
   '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
   '/videos': typeof VideosRoute
@@ -195,11 +216,14 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/elderly-care': typeof ElderlyCareRoute
   '/faq': typeof FaqRoute
+  '/icu-setup': typeof IcuSetupRoute
   '/medical-equipment': typeof MedicalEquipmentRoute
+  '/mother-baby-care': typeof MotherBabyCareRoute
   '/nursing-care': typeof NursingCareRoute
   '/physiotherapy': typeof PhysiotherapyRoute
   '/privacy': typeof PrivacyRoute
   '/refund-policy': typeof RefundPolicyRoute
+  '/sample-collection': typeof SampleCollectionRoute
   '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
   '/videos': typeof VideosRoute
@@ -223,11 +247,14 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/elderly-care': typeof ElderlyCareRoute
   '/faq': typeof FaqRoute
+  '/icu-setup': typeof IcuSetupRoute
   '/medical-equipment': typeof MedicalEquipmentRoute
+  '/mother-baby-care': typeof MotherBabyCareRoute
   '/nursing-care': typeof NursingCareRoute
   '/physiotherapy': typeof PhysiotherapyRoute
   '/privacy': typeof PrivacyRoute
   '/refund-policy': typeof RefundPolicyRoute
+  '/sample-collection': typeof SampleCollectionRoute
   '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
   '/videos': typeof VideosRoute
@@ -252,11 +279,14 @@ export interface FileRouteTypes {
     | '/contact'
     | '/elderly-care'
     | '/faq'
+    | '/icu-setup'
     | '/medical-equipment'
+    | '/mother-baby-care'
     | '/nursing-care'
     | '/physiotherapy'
     | '/privacy'
     | '/refund-policy'
+    | '/sample-collection'
     | '/terms'
     | '/testimonials'
     | '/videos'
@@ -279,11 +309,14 @@ export interface FileRouteTypes {
     | '/contact'
     | '/elderly-care'
     | '/faq'
+    | '/icu-setup'
     | '/medical-equipment'
+    | '/mother-baby-care'
     | '/nursing-care'
     | '/physiotherapy'
     | '/privacy'
     | '/refund-policy'
+    | '/sample-collection'
     | '/terms'
     | '/testimonials'
     | '/videos'
@@ -306,11 +339,14 @@ export interface FileRouteTypes {
     | '/contact'
     | '/elderly-care'
     | '/faq'
+    | '/icu-setup'
     | '/medical-equipment'
+    | '/mother-baby-care'
     | '/nursing-care'
     | '/physiotherapy'
     | '/privacy'
     | '/refund-policy'
+    | '/sample-collection'
     | '/terms'
     | '/testimonials'
     | '/videos'
@@ -334,11 +370,14 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   ElderlyCareRoute: typeof ElderlyCareRoute
   FaqRoute: typeof FaqRoute
+  IcuSetupRoute: typeof IcuSetupRoute
   MedicalEquipmentRoute: typeof MedicalEquipmentRoute
+  MotherBabyCareRoute: typeof MotherBabyCareRoute
   NursingCareRoute: typeof NursingCareRoute
   PhysiotherapyRoute: typeof PhysiotherapyRoute
   PrivacyRoute: typeof PrivacyRoute
   RefundPolicyRoute: typeof RefundPolicyRoute
+  SampleCollectionRoute: typeof SampleCollectionRoute
   TermsRoute: typeof TermsRoute
   TestimonialsRoute: typeof TestimonialsRoute
   VideosRoute: typeof VideosRoute
@@ -399,11 +438,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/icu-setup': {
+      id: '/icu-setup'
+      path: '/icu-setup'
+      fullPath: '/icu-setup'
+      preLoaderRoute: typeof IcuSetupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/medical-equipment': {
       id: '/medical-equipment'
       path: '/medical-equipment'
       fullPath: '/medical-equipment'
       preLoaderRoute: typeof MedicalEquipmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mother-baby-care': {
+      id: '/mother-baby-care'
+      path: '/mother-baby-care'
+      fullPath: '/mother-baby-care'
+      preLoaderRoute: typeof MotherBabyCareRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/nursing-care': {
@@ -432,6 +485,13 @@ declare module '@tanstack/react-router' {
       path: '/refund-policy'
       fullPath: '/refund-policy'
       preLoaderRoute: typeof RefundPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sample-collection': {
+      id: '/sample-collection'
+      path: '/sample-collection'
+      fullPath: '/sample-collection'
+      preLoaderRoute: typeof SampleCollectionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/terms': {
@@ -542,11 +602,14 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   ElderlyCareRoute: ElderlyCareRoute,
   FaqRoute: FaqRoute,
+  IcuSetupRoute: IcuSetupRoute,
   MedicalEquipmentRoute: MedicalEquipmentRoute,
+  MotherBabyCareRoute: MotherBabyCareRoute,
   NursingCareRoute: NursingCareRoute,
   PhysiotherapyRoute: PhysiotherapyRoute,
   PrivacyRoute: PrivacyRoute,
   RefundPolicyRoute: RefundPolicyRoute,
+  SampleCollectionRoute: SampleCollectionRoute,
   TermsRoute: TermsRoute,
   TestimonialsRoute: TestimonialsRoute,
   VideosRoute: VideosRoute,

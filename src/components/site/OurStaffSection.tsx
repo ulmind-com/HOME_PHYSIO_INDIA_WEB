@@ -192,56 +192,47 @@ export function OurStaffSection() {
       </div>
 
       {/* Category Tabs */}
-      <div className="flex flex-wrap justify-center gap-2 md:gap-3">
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setActiveCategory(cat)}
-            className={`relative rounded-full px-5 py-2.5 text-sm font-semibold transition-all duration-300 ${
-              activeCategory === cat
-                ? "text-white shadow-lg shadow-primary/30"
-                : "text-gray-600 bg-gray-100 hover:bg-gray-200 hover:text-gray-900"
-            }`}
-          >
-            {activeCategory === cat && (
-              <motion.div
-                layoutId="staff-tab"
-                className="absolute inset-0 rounded-full bg-primary"
-                transition={{ type: "spring", stiffness: 350, damping: 30 }}
-              />
-            )}
-            <span className="relative z-10">{cat}</span>
-          </button>
-        ))}
+      <div className="relative mb-8 mt-6">
+        <div className="flex overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] w-full px-4 md:px-0 mx-auto md:w-max min-w-full md:min-w-0 md:justify-center">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`whitespace-nowrap px-4 py-3 text-[15px] font-medium transition-colors relative ${
+                activeCategory === cat
+                  ? "text-[#F97316]"
+                  : "text-gray-600 hover:text-gray-900"
+              }`}
+            >
+              {cat}
+              {activeCategory === cat && (
+                <motion.div
+                  layoutId="staff-tab"
+                  className="absolute bottom-[-1px] left-0 right-0 h-[2px] bg-[#F97316]"
+                  transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                />
+              )}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Staff Grid / Carousel */}
       <div className="mt-6">
         {isMobile ? (
-          /* Mobile: Embla Carousel */
-          <>
-            <div className="overflow-hidden cursor-grab active:cursor-grabbing" ref={emblaRef}>
-              <div className="flex gap-4 pl-1">
-                <AnimatePresence mode="popLayout">
-                  {filteredStaff.map((staff) => (
-                    <div
-                      key={staff.id}
-                      className="min-w-0 flex-[0_0_70%] sm:flex-[0_0_45%]"
-                    >
-                      <StaffCard staff={staff} />
-                    </div>
-                  ))}
-                </AnimatePresence>
-              </div>
-            </div>
-            {scrollSnaps.length > 1 && (
-              <Dots
-                count={scrollSnaps.length}
-                active={selectedIndex}
-                onSelect={(i) => emblaApi?.scrollTo(i)}
-              />
-            )}
-          </>
+          /* Mobile: Native Horizontal Scroll */
+          <div className="flex overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] snap-x snap-mandatory gap-4 px-4 pb-4 w-full">
+            <AnimatePresence mode="popLayout">
+              {filteredStaff.map((staff) => (
+                <div
+                  key={staff.id}
+                  className="w-[75%] sm:w-[45%] shrink-0 snap-center"
+                >
+                  <StaffCard staff={staff} />
+                </div>
+              ))}
+            </AnimatePresence>
+          </div>
         ) : (
           /* Desktop: Grid */
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-5">

@@ -68,9 +68,9 @@ const FALLBACK_SLIDES: HeroSlide[] = [
     title: "Home Sample Collection",
     subtitle: "Safe and hygienic diagnostic sample collection right from your doorstep by professional phlebotomists.",
     button_text: "Book Home Lab Test",
-    button_link: "/services/home-sample-collection",
-    image_desktop: { url: "/assets/hero-nurse-patient.png" },
-    image_mobile: { url: "/assets/hero-nurse-patient.png" },
+    button_link: "/sample-collection",
+    image_desktop: { url: "/assets/sample-collection/web.jpg" },
+    image_mobile: { url: "/assets/sample-collection/mobile.jpg" },
   }
 ];
 

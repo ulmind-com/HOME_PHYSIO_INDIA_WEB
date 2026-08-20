@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { api } from "@/lib/api/client";
 import { triggerBookingSuccess } from "@/components/site/GlobalBookingSuccess";
+import { CITIES } from "@/components/forms/BookingForm";
 import {
   Dialog,
   DialogContent,
@@ -21,25 +22,15 @@ import {
 
 const icuFormSchema = z.object({
   patient_name: z.string().min(2, "Enter full name"),
+  patient_age: z.string().min(1, "Enter patient age"),
   contact_phone: z.string().min(7, "Enter a valid phone number"),
-  patient_condition: z.string().min(1, "Select patient condition"),
-  required_services: z.array(z.string()).min(1, "Select at least one required service"),
+  city: z.string().min(1, "Select a city"),
+  patient_condition: z.string().min(2, "Enter patient condition / diagnosis"),
+  expected_start_date: z.string().optional(),
 });
 
 type IcuFormValues = z.infer<typeof icuFormSchema>;
 
-const CONDITIONS = [
-  "Patient is on Ventilator / Tracheostomy",
-  "Patient needs BiPAP / CPAP / Oxygen Support",
-  "Post-Surgery Recovery / Cardiac Care",
-  "Comatose / Semi-Comatose Patient Care",
-];
-
-const SERVICES = [
-  "ICU Equipment only",
-  "24 Hours ICU Nurse",
-  "ICU Equipment + Staff",
-];
 
 export function IcuBookingModal({
   children,
@@ -61,9 +52,11 @@ export function IcuBookingModal({
     resolver: zodResolver(icuFormSchema),
     defaultValues: {
       patient_name: "",
+      patient_age: "",
       contact_phone: "",
+      city: "",
       patient_condition: "",
-      required_services: [],
+      expected_start_date: "",
     },
   });
 
@@ -72,11 +65,14 @@ export function IcuBookingModal({
       api.post<{ reference?: string }>("/bookings", {
         patient_name: data.patient_name,
         contact_phone: data.contact_phone,
-        service_name: "ICU Setup",
-        patient_condition: `Condition: ${data.patient_condition} | Services: ${data.required_services.join(", ")}`,
-        city: "Not specified",
-        source: "ICU Setup Modal",
-        preferred_date: new Date().toISOString().split("T")[0],
+        city: data.city,
+        service_name: "ICU Setup at Home",
+        patient_condition: [
+          `Age: ${data.patient_age}`,
+          `Condition: ${data.patient_condition}`,
+        ].filter(Boolean).join(" | "),
+        source: "ICU Setup Modal Form",
+        preferred_date: data.expected_start_date || new Date().toISOString().split("T")[0],
         address: "Pending (Provided via Quick Form)",
       }),
     onSuccess: (res) => {
@@ -87,6 +83,11 @@ export function IcuBookingModal({
     },
     onError: (err: Error) => toast.error(err.message || "Something went wrong."),
   });
+
+  const inputCls = "w-full rounded-full border border-border bg-transparent px-5 py-3.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground";
+  const selectCls = "w-full rounded-full border border-border bg-transparent px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-foreground appearance-none cursor-pointer";
+  const errCls = "text-xs text-destructive mt-1.5 pl-1";
+
 
   return (
     <Dialog
@@ -103,12 +104,13 @@ export function IcuBookingModal({
       }}
     >
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="max-w-[480px] w-[95vw] overflow-hidden rounded-[1.75rem] border border-border bg-white p-6 md:p-8 shadow-2xl sm:h-auto h-auto max-h-[90dvh] overflow-y-auto">
-        <DialogTitle className="sr-only">Request ICU Setup</DialogTitle>
+      <DialogContent className="max-w-[520px] w-[95vw] overflow-hidden rounded-[1.75rem] border border-border bg-white p-6 md:p-8 shadow-2xl sm:h-auto h-auto max-h-[90dvh] overflow-y-auto">
+        <DialogTitle className="sr-only">Request Your ICU Setup</DialogTitle>
         
         <div className="relative pt-2 pb-2">
           <AnimatePresence mode="wait">
             {done ? (
+              /* ── Success State ── */
               <motion.div
                 key="success"
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -156,7 +158,7 @@ export function IcuBookingModal({
                   transition={{ delay: 0.45, duration: 0.5 }}
                   className="text-muted-foreground text-sm leading-relaxed max-w-xs mx-auto mb-8"
                 >
-                  Our care team will contact you shortly to confirm the details.
+                  Our care team will contact you shortly to discuss your setup.
                 </motion.p>
 
                 <motion.button
@@ -170,6 +172,7 @@ export function IcuBookingModal({
                 </motion.button>
               </motion.div>
             ) : (
+              /* ── Form State ── */
               <motion.div
                 key="form"
                 initial={{ opacity: 0 }}
@@ -179,97 +182,93 @@ export function IcuBookingModal({
               >
                 <div className="mb-6">
                   <h3 className="font-display text-2xl md:text-3xl tracking-tight text-foreground mb-2">
-                    Request ICU Setup
+                    Request Your ICU Setup
                   </h3>
                   <p className="text-muted-foreground text-sm">
-                    Tell us about your requirements and our care team will contact you shortly.
+                    Tell us about the patient's condition and required care.
                   </p>
                 </div>
 
                 <form onSubmit={form.handleSubmit((v) => mut.mutate(v))} className="space-y-4">
-                  {/* Patient Name */}
-                  <div>
-                    <input
-                      {...form.register("patient_name")}
-                      placeholder="Full name"
-                      className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground"
-                    />
-                    {form.formState.errors.patient_name && (
-                      <p className="text-xs text-destructive mt-1.5 pl-1">
-                        {form.formState.errors.patient_name.message}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Phone */}
-                  <div>
-                    <input
-                      {...form.register("contact_phone")}
-                      placeholder="Phone number"
-                      type="tel"
-                      className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground"
-                    />
-                    {form.formState.errors.contact_phone && (
-                      <p className="text-xs text-destructive mt-1.5 pl-1">
-                        {form.formState.errors.contact_phone.message}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Patient Condition */}
-                  <div>
-                    <div className="relative">
-                      <select
-                        {...form.register("patient_condition")}
-                        className="w-full rounded-full border border-primary/20 bg-primary/5 px-5 py-3.5 pr-10 text-sm outline-none transition hover:bg-primary/10 hover:border-primary/30 focus:border-primary focus:ring-2 focus:ring-primary/15 text-foreground appearance-none cursor-pointer"
-                      >
-                        <option value="">Current Patient Condition</option>
-                        {CONDITIONS.map((c) => (
-                          <option key={c} value={c}>
-                            {c}
-                          </option>
-                        ))}
-                      </select>
-                      <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                  {/* Full Name & Age */}
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="col-span-2">
+                      <input
+                        {...form.register("patient_name")}
+                        placeholder="Full Name"
+                        className={inputCls}
+                      />
+                      {form.formState.errors.patient_name && (
+                        <p className={errCls}>{form.formState.errors.patient_name.message}</p>
+                      )}
                     </div>
+                    <div>
+                      <input
+                        {...form.register("patient_age")}
+                        placeholder="Age"
+                        type="number"
+                        className={inputCls}
+                      />
+                      {form.formState.errors.patient_age && (
+                        <p className={errCls}>{form.formState.errors.patient_age.message}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Phone & City */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <input
+                        {...form.register("contact_phone")}
+                        placeholder="Phone Number"
+                        type="tel"
+                        className={inputCls}
+                      />
+                      {form.formState.errors.contact_phone && (
+                        <p className={errCls}>{form.formState.errors.contact_phone.message}</p>
+                      )}
+                    </div>
+                    <div>
+                      <div className="relative">
+                        <select {...form.register("city")} className={selectCls}>
+                          <option value="">Select City</option>
+                          {CITIES.map((c) => (
+                            <option key={c} value={c}>{c}</option>
+                          ))}
+                        </select>
+                        <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                      </div>
+                      {form.formState.errors.city && (
+                        <p className={errCls}>{form.formState.errors.city.message}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Patient Condition / Diagnosis */}
+                  <div>
+                    <input
+                      {...form.register("patient_condition")}
+                      placeholder="Patient Condition / Diagnosis"
+                      className={inputCls}
+                    />
                     {form.formState.errors.patient_condition && (
-                      <p className="text-xs text-destructive mt-1.5 pl-1">
-                        {form.formState.errors.patient_condition.message}
-                      </p>
+                      <p className={errCls}>{form.formState.errors.patient_condition.message}</p>
                     )}
                   </div>
 
-                  {/* Required Services (Multiple Checkboxes) */}
+
+                  {/* Expected Start Date */}
+                  <div>
+                    <input
+                      {...form.register("expected_start_date")}
+                      type="date"
+                      className={inputCls}
+                      title="Expected Start Date"
+                    />
+                  </div>
+
+                  {/* Submit */}
                   <div className="pt-2">
-                    <label className="text-sm font-medium text-foreground mb-3 block">Select Required Services</label>
-                    <div className="space-y-3 pl-1">
-                      {SERVICES.map((service) => (
-                        <label key={service} className="flex items-start gap-3 cursor-pointer group">
-                          <div className="relative flex items-center justify-center mt-0.5">
-                            <input
-                              type="checkbox"
-                              value={service}
-                              {...form.register("required_services")}
-                              className="peer sr-only"
-                            />
-                            <div className="w-5 h-5 rounded border border-border bg-transparent transition-colors peer-checked:bg-primary peer-checked:border-primary peer-focus-visible:ring-2 peer-focus-visible:ring-primary/20 group-hover:border-primary/50" />
-                            <CheckCircle2 className="absolute w-3.5 h-3.5 text-white opacity-0 peer-checked:opacity-100 transition-opacity" strokeWidth={3} />
-                          </div>
-                          <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors select-none">
-                            {service}
-                          </span>
-                        </label>
-                      ))}
-                    </div>
-                    {form.formState.errors.required_services && (
-                      <p className="text-xs text-destructive mt-2 pl-1">
-                        {form.formState.errors.required_services.message}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Submit Action */}
-                  <div className="pt-4">
                     <button
                       type="submit"
                       disabled={mut.isPending}

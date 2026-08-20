@@ -141,9 +141,9 @@ export function CommitmentSection() {
         </motion.div>
 
         {/* Bottom — Commitments Grid + Image */}
-        <div className="grid items-center gap-10 lg:gap-16 lg:grid-cols-[1fr_auto]">
+        <div className="flex flex-col lg:grid items-center gap-10 lg:gap-16 lg:grid-cols-[1fr_auto]">
           {/* Left — Commitment Cards */}
-          <div>
+          <div className="order-2 lg:order-1 w-full">
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -189,7 +189,7 @@ export function CommitmentSection() {
             whileInView={{ opacity: 1, scale: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="relative mx-auto lg:mx-0 w-full max-w-md lg:max-w-[420px]"
+            className="relative mx-auto lg:mx-0 w-full max-w-md lg:max-w-[420px] order-1 lg:order-2"
           >
             {/* Decorative frame elements */}
             <div className="absolute -inset-3 rounded-[2rem] bg-gradient-to-br from-primary/20 via-primary/5 to-accent/10 -z-10 blur-sm" />

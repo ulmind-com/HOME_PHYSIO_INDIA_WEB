@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { api } from "@/lib/api/client";
 import { triggerBookingSuccess } from "@/components/site/GlobalBookingSuccess";
+import { CITIES } from "@/components/forms/BookingForm";
 import {
   Dialog,
   DialogContent,
@@ -22,22 +23,55 @@ import {
 const motherBabyFormSchema = z.object({
   patient_name: z.string().min(2, "Enter full name"),
   contact_phone: z.string().min(7, "Enter a valid phone number"),
-  service_package: z.string().min(1, "Select a service package"),
-  shift_required: z.string().min(1, "Select shift required"),
+  city: z.string().min(1, "Select a city"),
+  service_required: z.string().min(1, "Select service required"),
+  care_duration: z.string().min(1, "Select care duration"),
+  mother_care_requirement: z.string().optional(),
+  baby_care_requirement: z.string().optional(),
+  delivery_type: z.string().optional(),
+  preferred_date: z.string().optional(),
+  patient_age: z.string().optional(),
+  additional_message: z.string().optional(),
 });
 
 type MotherBabyFormValues = z.infer<typeof motherBabyFormSchema>;
 
-const SERVICE_PACKAGES = [
-  "Newborn Baby Care Only",
-  "Mother Care Only",
-  "Mother & Baby Care Both",
+const SERVICE_OPTIONS = [
+  "Mother Care",
+  "Baby Care",
+  "Mother & Baby Care",
 ];
 
-const SHIFTS = [
-  "12 Hours Day Shift",
-  "12 Hours Night Shift",
-  "24 Hours Live-in Care",
+const CARE_DURATIONS = [
+  "8 Hours",
+  "12 Hours",
+  "24 Hours",
+  "Visit Basis",
+];
+
+const MOTHER_CARE_OPTIONS = [
+  "Post-Delivery Care",
+  "C-Section Care",
+  "Normal Delivery Care",
+  "Mother Assistance",
+  "Feeding Support",
+  "Personal Hygiene & Daily Care",
+  "Other",
+];
+
+const BABY_CARE_OPTIONS = [
+  "Newborn Baby Care",
+  "Feeding Support",
+  "Diaper Changing",
+  "Bathing & Hygiene",
+  "Baby Monitoring",
+  "Other",
+];
+
+const DELIVERY_TYPES = [
+  "Normal Delivery",
+  "C-Section",
+  "Not Applicable / Other",
 ];
 
 export function MotherBabyBookingModal({
@@ -61,8 +95,15 @@ export function MotherBabyBookingModal({
     defaultValues: {
       patient_name: "",
       contact_phone: "",
-      service_package: "",
-      shift_required: "",
+      city: "",
+      service_required: "",
+      care_duration: "",
+      mother_care_requirement: "",
+      baby_care_requirement: "",
+      delivery_type: "",
+      preferred_date: "",
+      patient_age: "",
+      additional_message: "",
     },
   });
 
@@ -71,11 +112,18 @@ export function MotherBabyBookingModal({
       api.post<{ reference?: string }>("/bookings", {
         patient_name: data.patient_name,
         contact_phone: data.contact_phone,
-        service_name: data.service_package,
-        patient_condition: `Shift: ${data.shift_required}`,
-        city: "Not specified",
+        city: data.city,
+        service_name: data.service_required,
+        patient_condition: [
+          `Care Duration: ${data.care_duration}`,
+          data.mother_care_requirement ? `Mother Care: ${data.mother_care_requirement}` : "",
+          data.baby_care_requirement ? `Baby Care: ${data.baby_care_requirement}` : "",
+          data.delivery_type ? `Delivery Type: ${data.delivery_type}` : "",
+          data.patient_age ? `Patient/Baby Age: ${data.patient_age}` : "",
+          data.additional_message ? `Message: ${data.additional_message}` : "",
+        ].filter(Boolean).join(" | "),
         source: "Mother & Baby Care Modal",
-        preferred_date: new Date().toISOString().split("T")[0],
+        preferred_date: data.preferred_date || new Date().toISOString().split("T")[0],
         address: "Pending (Provided via Quick Form)",
       }),
     onSuccess: (res) => {
@@ -86,6 +134,13 @@ export function MotherBabyBookingModal({
     },
     onError: (err: Error) => toast.error(err.message || "Something went wrong."),
   });
+
+  /* shared input classes */
+  const inputCls = "w-full rounded-full border border-border bg-transparent px-5 py-3.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground";
+  const selectCls = "w-full rounded-full border border-border bg-transparent px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-foreground appearance-none cursor-pointer";
+  const selectAccentCls = "w-full rounded-full border border-primary/20 bg-primary/5 px-5 py-3.5 pr-10 text-sm outline-none transition hover:bg-primary/10 hover:border-primary/30 focus:border-primary focus:ring-2 focus:ring-primary/15 text-foreground appearance-none cursor-pointer";
+  const labelCls = "block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 pl-1";
+  const errCls = "text-xs text-destructive mt-1.5 pl-1";
 
   return (
     <Dialog
@@ -102,8 +157,8 @@ export function MotherBabyBookingModal({
       }}
     >
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="max-w-[480px] w-[95vw] overflow-hidden rounded-[1.75rem] border border-border bg-white p-6 md:p-8 shadow-2xl sm:h-auto h-auto max-h-[90dvh] overflow-y-auto">
-        <DialogTitle className="sr-only">Book Mother & Baby Care</DialogTitle>
+      <DialogContent className="max-w-[520px] w-[95vw] overflow-hidden rounded-[1.75rem] border border-border bg-white p-6 md:p-8 shadow-2xl sm:h-auto h-auto max-h-[90dvh] overflow-y-auto">
+        <DialogTitle className="sr-only">Mother & Baby Care – Booking Form</DialogTitle>
         
         <div className="relative pt-2 pb-2">
           <AnimatePresence mode="wait">
@@ -180,7 +235,7 @@ export function MotherBabyBookingModal({
               >
                 <div className="mb-6">
                   <h3 className="font-display text-2xl md:text-3xl tracking-tight text-foreground mb-2">
-                    Mother & Baby Care
+                    Mother & Baby Care – Booking Form
                   </h3>
                   <p className="text-muted-foreground text-sm">
                     Tell us about your requirements and our care team will contact you shortly.
@@ -188,82 +243,149 @@ export function MotherBabyBookingModal({
                 </div>
 
                 <form onSubmit={form.handleSubmit((v) => mut.mutate(v))} className="space-y-4">
-                  {/* Patient Name */}
+                  {/* Full Name */}
                   <div>
                     <input
                       {...form.register("patient_name")}
-                      placeholder="Full name"
-                      className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground"
+                      placeholder="Full Name"
+                      className={inputCls}
                     />
                     {form.formState.errors.patient_name && (
-                      <p className="text-xs text-destructive mt-1.5 pl-1">
-                        {form.formState.errors.patient_name.message}
-                      </p>
+                      <p className={errCls}>{form.formState.errors.patient_name.message}</p>
                     )}
                   </div>
 
-                  {/* Phone */}
+                  {/* Phone Number */}
                   <div>
                     <input
                       {...form.register("contact_phone")}
-                      placeholder="Phone number"
+                      placeholder="Phone Number"
                       type="tel"
-                      className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground"
+                      className={inputCls}
                     />
                     {form.formState.errors.contact_phone && (
-                      <p className="text-xs text-destructive mt-1.5 pl-1">
-                        {form.formState.errors.contact_phone.message}
-                      </p>
+                      <p className={errCls}>{form.formState.errors.contact_phone.message}</p>
                     )}
                   </div>
 
-                  {/* Service Package */}
+                  {/* Select City */}
                   <div>
                     <div className="relative">
-                      <select
-                        {...form.register("service_package")}
-                        className="w-full rounded-full border border-primary/20 bg-primary/5 px-5 py-3.5 pr-10 text-sm outline-none transition hover:bg-primary/10 hover:border-primary/30 focus:border-primary focus:ring-2 focus:ring-primary/15 text-foreground appearance-none cursor-pointer"
-                      >
-                        <option value="">Select Service Package</option>
-                        {SERVICE_PACKAGES.map((s) => (
-                          <option key={s} value={s}>
-                            {s}
-                          </option>
-                        ))}
-                      </select>
-                        <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
-                    </div>
-                    {form.formState.errors.service_package && (
-                      <p className="text-xs text-destructive mt-1.5 pl-1">
-                        {form.formState.errors.service_package.message}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Shift Required */}
-                  <div>
-                    <div className="relative">
-                      <select
-                        {...form.register("shift_required")}
-                        className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-foreground appearance-none cursor-pointer"
-                      >
-                        <option value="">Select Shift Required</option>
-                        {SHIFTS.map((s) => (
-                          <option key={s} value={s}>
-                            {s}
-                          </option>
+                      <select {...form.register("city")} className={selectCls}>
+                        <option value="">Select City</option>
+                        {CITIES.map((c) => (
+                          <option key={c} value={c}>{c}</option>
                         ))}
                       </select>
                       <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
                     </div>
-                    {form.formState.errors.shift_required && (
-                      <p className="text-xs text-destructive mt-1.5 pl-1">
-                        {form.formState.errors.shift_required.message}
-                      </p>
+                    {form.formState.errors.city && (
+                      <p className={errCls}>{form.formState.errors.city.message}</p>
                     )}
                   </div>
 
-                  {/* Submit Action */}
+                  {/* Service Required */}
+                  <div>
+                    <div className="relative">
+                      <select {...form.register("service_required")} className={selectAccentCls}>
+                        <option value="">Service Required</option>
+                        {SERVICE_OPTIONS.map((s) => (
+                          <option key={s} value={s}>{s}</option>
+                        ))}
+                      </select>
+                      <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                    </div>
+                    {form.formState.errors.service_required && (
+                      <p className={errCls}>{form.formState.errors.service_required.message}</p>
+                    )}
+                  </div>
+
+                  {/* Care Duration / Service Required For */}
+                  <div>
+                    <div className="relative">
+                      <select {...form.register("care_duration")} className={selectCls}>
+                        <option value="">Care Duration / Service Required For</option>
+                        {CARE_DURATIONS.map((d) => (
+                          <option key={d} value={d}>{d}</option>
+                        ))}
+                      </select>
+                      <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                    </div>
+                    {form.formState.errors.care_duration && (
+                      <p className={errCls}>{form.formState.errors.care_duration.message}</p>
+                    )}
+                  </div>
+
+                  {/* Mother's Care Requirement */}
+                  <div>
+                    <div className="relative">
+                      <select {...form.register("mother_care_requirement")} className={selectCls}>
+                        <option value="">Mother's Care Requirement</option>
+                        {MOTHER_CARE_OPTIONS.map((o) => (
+                          <option key={o} value={o}>{o}</option>
+                        ))}
+                      </select>
+                      <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                    </div>
+                  </div>
+
+                  {/* Baby's Care Requirement */}
+                  <div>
+                    <div className="relative">
+                      <select {...form.register("baby_care_requirement")} className={selectCls}>
+                        <option value="">Baby's Care Requirement</option>
+                        {BABY_CARE_OPTIONS.map((o) => (
+                          <option key={o} value={o}>{o}</option>
+                        ))}
+                      </select>
+                      <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                    </div>
+                  </div>
+
+                  {/* Delivery Type */}
+                  <div>
+                    <div className="relative">
+                      <select {...form.register("delivery_type")} className={selectCls}>
+                        <option value="">Delivery Type</option>
+                        {DELIVERY_TYPES.map((d) => (
+                          <option key={d} value={d}>{d}</option>
+                        ))}
+                      </select>
+                      <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                    </div>
+                  </div>
+
+                  {/* Expected Start Date + Patient / Baby Age — side by side */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <input
+                        {...form.register("preferred_date")}
+                        type="date"
+                        placeholder="Expected Start Date"
+                        className={inputCls}
+                        title="Expected Start Date"
+                      />
+                    </div>
+                    <div>
+                      <input
+                        {...form.register("patient_age")}
+                        placeholder="Patient / Baby Age"
+                        className={inputCls}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Additional Requirements / Message */}
+                  <div>
+                    <textarea
+                      {...form.register("additional_message")}
+                      placeholder="Additional Requirements / Message"
+                      rows={3}
+                      className="w-full rounded-2xl border border-border bg-transparent px-5 py-3.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground resize-none"
+                    />
+                  </div>
+
+                  {/* Submit */}
                   <div className="pt-2">
                     <button
                       type="submit"
@@ -271,7 +393,7 @@ export function MotherBabyBookingModal({
                       className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-[#0A252E] px-4 py-3.5 text-sm font-semibold text-white hover:bg-[#0A252E]/90 transition-colors disabled:opacity-60"
                     >
                       {mut.isPending && <Loader2 className="h-4.5 w-4.5 animate-spin" />}
-                      {mut.isPending ? "Submitting..." : "Submit Request"}
+                      {mut.isPending ? "Submitting..." : "Submit Booking Request"}
                     </button>
                   </div>
                 </form>

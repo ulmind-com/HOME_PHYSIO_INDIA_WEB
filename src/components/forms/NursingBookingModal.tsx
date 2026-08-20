@@ -35,6 +35,7 @@ const nursingFormSchema = z.object({
   patient_name: z.string().min(2, "Enter full name"),
   contact_phone: z.string().min(7, "Enter a valid phone number"),
   city: z.string().min(1, "Select a city"),
+  duty_hours: z.string().min(1, "Select duty hours"),
   service_name: z.string().min(1, "Select a service"),
   patient_condition: z.string().optional(),
 });
@@ -105,6 +106,7 @@ export function NursingBookingModal({
       patient_name: "",
       contact_phone: "",
       city: "",
+      duty_hours: "",
       service_name: defaultService,
       patient_condition: "",
     },
@@ -114,6 +116,9 @@ export function NursingBookingModal({
     mutationFn: (data: NursingFormValues) =>
       api.post<{ reference?: string }>("/bookings", {
         ...data,
+        patient_condition: data.duty_hours 
+          ? `Duty Hours: ${data.duty_hours}${data.patient_condition ? ` | Condition: ${data.patient_condition}` : ""}` 
+          : data.patient_condition,
         source: source,
         preferred_date: new Date().toISOString().split("T")[0],
         address: "Pending (Provided via Quick Form)",
@@ -279,6 +284,29 @@ export function NursingBookingModal({
                     {form.formState.errors.city && (
                       <p className="text-xs text-destructive mt-1.5 pl-1">
                         {form.formState.errors.city.message}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Duty Hours */}
+                  <div>
+                    <div className="relative">
+                      <select
+                        {...form.register("duty_hours")}
+                        className="w-full rounded-full border border-border bg-transparent px-5 py-3.5 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-foreground appearance-none cursor-pointer"
+                      >
+                        <option value="">Select duty hours</option>
+                        {["8 hours", "12 hours", "24 hours"].map((h) => (
+                          <option key={h} value={h}>
+                            {h}
+                          </option>
+                        ))}
+                      </select>
+                      <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                    </div>
+                    {form.formState.errors.duty_hours && (
+                      <p className="text-xs text-destructive mt-1.5 pl-1">
+                        {form.formState.errors.duty_hours.message}
                       </p>
                     )}
                   </div>
