@@ -66,7 +66,7 @@ export function Footer() {
           <div className="flex flex-col items-center md:items-start text-center md:text-left mb-10">
              <div className="flex flex-row items-center justify-center md:justify-start gap-3 mb-5 md:mb-6 text-left">
               {settings?.logo ? (
-                <img src={settings.logo} alt={name} className="h-10 w-10 object-contain rounded-lg shrink-0" />
+                <img src={typeof settings.logo === 'string' ? settings.logo : (settings.logo as any)?.url} alt={name} className="h-10 w-10 object-contain rounded-lg shrink-0" />
               ) : (
                 <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary to-accent grid place-items-center shadow-lg shadow-primary/20 shrink-0">
                   <svg

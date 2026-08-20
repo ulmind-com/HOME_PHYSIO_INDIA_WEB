@@ -75,7 +75,7 @@ export function Header() {
           />
           <Link to="/" className="relative flex items-center gap-2.5 shrink-0">
             {settings?.logo ? (
-              <img src={settings.logo} alt={settings.website_name || "Logo"} className="h-9 w-9 object-contain" />
+              <img src={typeof settings.logo === 'string' ? settings.logo : (settings.logo as any)?.url} alt={settings.website_name || "Logo"} className="h-9 w-9 object-contain" />
             ) : (
               <div className="relative h-9 w-9 rounded-xl bg-gradient-to-br from-primary to-accent grid place-items-center">
                 <svg
