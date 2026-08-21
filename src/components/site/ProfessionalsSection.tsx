@@ -52,7 +52,7 @@ const DEFAULT_FEATURES: FeatureItem[] = [
   },
 ];const DEFAULT_TILES: TileItem[] = [
   {
-    image: "/assets/service_img_8_desktop.jpg",
+    image: "/assets/categories/home-sample.png",
     count: "24/7",
     title: "I​nfection Control Nurse Services",
     description: "Infection prevention & control support and training",
