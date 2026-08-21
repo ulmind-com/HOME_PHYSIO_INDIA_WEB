@@ -122,8 +122,10 @@ function Dots({
 }
 
 export function OurStaffSection() {
-  const { data } = useQuery(staffQ({ limit: 50 }));
+  const { data, isLoading, isError } = useQuery(staffQ({ limit: 50 }));
   const items = data?.items ?? [];
+
+  // ... (keeping categories logic)
 
   /* Extract unique categories from API data, preserving order of first appearance */
   const categories = useMemo(() => {
@@ -183,7 +185,20 @@ export function OurStaffSection() {
     }
   }, [activeCategory, emblaApi]);
 
-  if (!items.length) return null;
+  if (isLoading) {
+    return (
+      <Section className="pt-4 pb-8 lg:pt-8 lg:pb-4">
+        <div className="mb-6 max-w-3xl mx-auto text-center">
+          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl tracking-tight">Our Staff</h2>
+        </div>
+        <div className="flex justify-center py-10">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        </div>
+      </Section>
+    );
+  }
+
+  if (isError || !items.length) return null;
 
   return (
     <Section className="pt-4 pb-8 lg:pt-8 lg:pb-4">
