@@ -330,9 +330,6 @@ function BlogVideosSection() {
           title="Latest from Our Care Blog"
           align="center"
         />
-        <Link to="/blog" className="hidden text-sm font-medium text-primary hover:underline md:flex items-center gap-1 group">
-          All posts <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-        </Link>
       </div>
 
       <div className="-mx-4 md:-mx-8">
@@ -341,7 +338,7 @@ function BlogVideosSection() {
             {bItems.map((b, i) => (
               <div
                 key={`${b.id}-${i}`}
-                className="min-w-0 flex-[0_0_85%] sm:flex-[0_0_50%] md:flex-[0_0_35%] lg:flex-[0_0_30%] pr-4 md:pr-6"
+                className="min-w-0 flex-[0_0_58%] sm:flex-[0_0_40%] md:flex-[0_0_27%] lg:flex-[0_0_21%] pr-4 md:pr-6"
               >
                 <BlogCard blog={b} />
               </div>
@@ -365,11 +362,6 @@ function BlogVideosSection() {
         </div>
       )}
       
-      <div className="mt-8 flex justify-center md:hidden">
-        <Link to="/blog" className="text-sm font-medium text-primary hover:underline flex items-center gap-1 group">
-          All posts <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-        </Link>
-      </div>
     </Section>
   );
 }

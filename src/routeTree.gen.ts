@@ -16,6 +16,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ElderlyCareRouteImport } from './routes/elderly-care'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as IcuSetupRouteImport } from './routes/icu-setup'
+import { Route as InfectionControlNurseRouteImport } from './routes/infection-control-nurse'
 import { Route as MedicalEquipmentRouteImport } from './routes/medical-equipment'
 import { Route as MotherBabyCareRouteImport } from './routes/mother-baby-care'
 import { Route as NursingCareRouteImport } from './routes/nursing-care'
@@ -71,6 +72,11 @@ const FaqRoute = FaqRouteImport.update({
 const IcuSetupRoute = IcuSetupRouteImport.update({
   id: '/icu-setup',
   path: '/icu-setup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InfectionControlNurseRoute = InfectionControlNurseRouteImport.update({
+  id: '/infection-control-nurse',
+  path: '/infection-control-nurse',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MedicalEquipmentRoute = MedicalEquipmentRouteImport.update({
@@ -187,6 +193,7 @@ export interface FileRoutesByFullPath {
   '/elderly-care': typeof ElderlyCareRoute
   '/faq': typeof FaqRoute
   '/icu-setup': typeof IcuSetupRoute
+  '/infection-control-nurse': typeof InfectionControlNurseRoute
   '/medical-equipment': typeof MedicalEquipmentRoute
   '/mother-baby-care': typeof MotherBabyCareRoute
   '/nursing-care': typeof NursingCareRoute
@@ -217,6 +224,7 @@ export interface FileRoutesByTo {
   '/elderly-care': typeof ElderlyCareRoute
   '/faq': typeof FaqRoute
   '/icu-setup': typeof IcuSetupRoute
+  '/infection-control-nurse': typeof InfectionControlNurseRoute
   '/medical-equipment': typeof MedicalEquipmentRoute
   '/mother-baby-care': typeof MotherBabyCareRoute
   '/nursing-care': typeof NursingCareRoute
@@ -248,6 +256,7 @@ export interface FileRoutesById {
   '/elderly-care': typeof ElderlyCareRoute
   '/faq': typeof FaqRoute
   '/icu-setup': typeof IcuSetupRoute
+  '/infection-control-nurse': typeof InfectionControlNurseRoute
   '/medical-equipment': typeof MedicalEquipmentRoute
   '/mother-baby-care': typeof MotherBabyCareRoute
   '/nursing-care': typeof NursingCareRoute
@@ -280,6 +289,7 @@ export interface FileRouteTypes {
     | '/elderly-care'
     | '/faq'
     | '/icu-setup'
+    | '/infection-control-nurse'
     | '/medical-equipment'
     | '/mother-baby-care'
     | '/nursing-care'
@@ -310,6 +320,7 @@ export interface FileRouteTypes {
     | '/elderly-care'
     | '/faq'
     | '/icu-setup'
+    | '/infection-control-nurse'
     | '/medical-equipment'
     | '/mother-baby-care'
     | '/nursing-care'
@@ -340,6 +351,7 @@ export interface FileRouteTypes {
     | '/elderly-care'
     | '/faq'
     | '/icu-setup'
+    | '/infection-control-nurse'
     | '/medical-equipment'
     | '/mother-baby-care'
     | '/nursing-care'
@@ -371,6 +383,7 @@ export interface RootRouteChildren {
   ElderlyCareRoute: typeof ElderlyCareRoute
   FaqRoute: typeof FaqRoute
   IcuSetupRoute: typeof IcuSetupRoute
+  InfectionControlNurseRoute: typeof InfectionControlNurseRoute
   MedicalEquipmentRoute: typeof MedicalEquipmentRoute
   MotherBabyCareRoute: typeof MotherBabyCareRoute
   NursingCareRoute: typeof NursingCareRoute
@@ -443,6 +456,13 @@ declare module '@tanstack/react-router' {
       path: '/icu-setup'
       fullPath: '/icu-setup'
       preLoaderRoute: typeof IcuSetupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/infection-control-nurse': {
+      id: '/infection-control-nurse'
+      path: '/infection-control-nurse'
+      fullPath: '/infection-control-nurse'
+      preLoaderRoute: typeof InfectionControlNurseRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/medical-equipment': {
@@ -603,6 +623,7 @@ const rootRouteChildren: RootRouteChildren = {
   ElderlyCareRoute: ElderlyCareRoute,
   FaqRoute: FaqRoute,
   IcuSetupRoute: IcuSetupRoute,
+  InfectionControlNurseRoute: InfectionControlNurseRoute,
   MedicalEquipmentRoute: MedicalEquipmentRoute,
   MotherBabyCareRoute: MotherBabyCareRoute,
   NursingCareRoute: NursingCareRoute,

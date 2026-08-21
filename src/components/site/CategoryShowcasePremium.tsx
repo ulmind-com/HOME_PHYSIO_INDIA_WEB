@@ -20,6 +20,13 @@ type Variant = "a" | "b" | "c" | "d";
 
 const fallbacks: Array<{ title: string; description: string; image: string; variant: Variant; dedicatedLink?: string }> = [
   {
+    title: "Infection Control Nurse Services",
+    description: "Professional infection prevention & control support, training and guidance for healthcare settings.",
+    image: "/assets/infection_control_desktop.jpg",
+    variant: "d",
+    dedicatedLink: "/infection-control-nurse",
+  },
+  {
     title: "Home Nursing Care",
     description: "24/7 qualified nurses at your home — injections, wound care, monitoring.",
     image: nursingAsset.url,
@@ -74,8 +81,14 @@ export function usePremiumCategories() {
   const { data: categoriesData } = useQuery(categoriesQ({ limit: 10 }));
   const categories = [...(categoriesData?.items ?? [])].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
-  return fallbacks.map((fb, i) => {
-    const cat = categories.find(c => c.name?.toLowerCase() === fb.title.toLowerCase()) || categories[i];
+  return fallbacks.map((fb) => {
+    // Match by trimmed name only — avoids the positional fallback grabbing the
+    // wrong category when two categories share the same `order` (e.g. the new
+    // Injection/Infection categories both use order 8) and tolerates stray
+    // whitespace in DB names like "Infection Control Nurse Services ".
+    const cat = categories.find(
+      (c) => c.name?.trim().toLowerCase() === fb.title.trim().toLowerCase(),
+    );
     
     // Extract string URL if it's an ImageAsset object
     let imageStr = cat?.image 
@@ -90,7 +103,9 @@ export function usePremiumCategories() {
     const catNameLower = (cat?.name ?? "").toLowerCase();
     const catSlugLower = (cat?.slug ?? "").toLowerCase();
     const dedicatedLink =
-      catNameLower.includes("elder") || catNameLower.includes("senior") || catSlugLower.includes("elder")
+      catNameLower.includes("infection") || catSlugLower.includes("infection")
+        ? "/infection-control-nurse"
+        : catNameLower.includes("elder") || catNameLower.includes("senior") || catSlugLower.includes("elder")
         ? "/elderly-care"
         : catNameLower.includes("nurs") || catSlugLower.includes("nurs")
         ? "/nursing-care"
@@ -208,7 +223,7 @@ export function CategoryShowcasePremium() {
         </h3>
 
         <div className="mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground">
-          Seven pillars of premium home care — each designed around your family's unique rhythm and
+          Pillars of premium home care — each designed around your family's unique rhythm and
           delivered by verified professionals.
         </div>
         

@@ -199,6 +199,22 @@ const SERVICES: ServiceCard[] = [
       "Others",
     ],
   },
+  {
+    id: "infection",
+    title: "Infection Control Nurse Services",
+    image: "/assets/infection_control_desktop.jpg",
+    features: [
+      "Infection Prevention & Control",
+      "Hand Hygiene & PPE Practices",
+      "Infection Control Training",
+      "Audit & Monitoring",
+      "Biomedical Waste Guidance",
+      "Home Healthcare Infection Prevention",
+    ],
+    buttonText: "Learn More",
+    buttonLink: "/infection-control-nurse",
+    selectLabel: "Select infection-control service",
+  },
 ];
 
 const cardStagger = {
@@ -279,7 +295,7 @@ export function ComprehensiveServicesSection() {
             </svg>
           </h2>
           <p className="mt-8 text-base md:text-lg leading-relaxed text-muted-foreground font-normal">
-            Seven specialized care verticals designed around your family's needs — combining hospital-grade precision with compassionate, attentive home care.
+            Specialized care verticals designed around your family's needs — combining hospital-grade precision with compassionate, attentive home care.
           </p>
         </motion.div>
 
@@ -342,6 +358,13 @@ export function ComprehensiveServicesSection() {
                       </button>
                     );
 
+                    if (service.buttonLink && (service.id === "infection" || service.buttonText === "Learn More")) {
+                      return (
+                        <Link to={service.buttonLink as any} className="block">
+                          {btnContent}
+                        </Link>
+                      );
+                    }
                     if (service.id === "mother-baby") {
                       return <MotherBabyBookingModal>{btnContent}</MotherBabyBookingModal>;
                     }

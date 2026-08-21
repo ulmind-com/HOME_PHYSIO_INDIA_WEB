@@ -49,31 +49,31 @@ function StaffCard({ staff }: { staff: StaffMember }) {
       </div>
 
       {/* Content */}
-      <div className="flex flex-1 flex-col p-3.5">
+      <div className="flex flex-1 flex-col p-3">
         {/* Name & Rating */}
-        <div className="flex flex-col items-center gap-1.5 mb-5">
-          <h3 className="text-[15px] font-medium text-gray-800 text-center">{staff.name}</h3>
+        <div className="flex flex-col items-center gap-1 mb-2.5">
+          <h3 className="text-[14px] font-medium text-gray-800 text-center leading-tight">{staff.name}</h3>
           
           <div className="flex items-center justify-center gap-0.5">
             {Array.from({ length: 5 }).map((_, i) => (
               <Star 
                 key={i} 
-                className={`h-3.5 w-3.5 ${
+                className={`h-3 w-3 ${
                   i < Math.round(staff.rating) ? "fill-[#ffb800] text-[#ffb800]" : "fill-gray-200 text-gray-200"
                 }`} 
               />
             ))}
-            <span className="ml-1 text-[13px] font-medium text-gray-700">{staff.rating}</span>
+            <span className="ml-1 text-[12px] font-medium text-gray-700">{staff.rating}</span>
           </div>
         </div>
 
         {/* Duration Tabs */}
-        <div className="flex justify-center gap-5 mb-2">
+        <div className="flex justify-center gap-3 mt-1">
           {(["7", "15", "30"] as Duration[]).map((d) => (
             <button
               key={d}
               onClick={() => setDuration(d)}
-              className="text-[13px] transition-colors"
+              className="text-[11px] transition-colors"
             >
               {duration === d ? (
                 <span className="text-primary font-bold">{d} Days</span>
@@ -86,7 +86,7 @@ function StaffCard({ staff }: { staff: StaffMember }) {
 
         {/* Service Label */}
         {staff.service_label && (
-           <p className="text-[12px] text-center text-gray-500 mb-2">
+           <p className="text-[11px] text-center text-gray-400 mt-2">
              {staff.service_label}
            </p>
         )}
@@ -226,7 +226,7 @@ export function OurStaffSection() {
               {filteredStaff.map((staff) => (
                 <div
                   key={staff.id}
-                  className="w-[75%] sm:w-[45%] shrink-0 snap-center"
+                  className="w-[55%] sm:w-[40%] shrink-0 snap-center"
                 >
                   <StaffCard staff={staff} />
                 </div>

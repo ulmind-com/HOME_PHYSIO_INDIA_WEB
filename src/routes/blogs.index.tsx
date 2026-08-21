@@ -56,9 +56,42 @@ export const DUMMY_BLOGS: Blog[] = [
     created_at: new Date(Date.now() - 259200000).toISOString(),
     status: "published",
   },
+  {
+    id: "dummy-5",
+    title: "What Does an Infection Control Nurse Do? Roles & Responsibilities Explained",
+    slug: "what-does-infection-control-nurse-do-roles-responsibilities",
+    excerpt:
+      "An Infection Control Nurse plays a vital role in healthcare settings by monitoring, preventing and managing infections. Learn about their key responsibilities, from implementing infection-prevention protocols to educating healthcare staff on proper hygiene and safety practices.",
+    featured_image: "/assets/services/infection-control.png",
+    category_name: "Infection Control",
+    created_at: new Date(Date.now() - 345600000).toISOString(),
+    status: "published",
+  },
+  {
+    id: "dummy-6",
+    title: "Infection Prevention & Control: Essential Practices for Healthcare Settings",
+    slug: "infection-prevention-control-essential-practices-healthcare",
+    excerpt:
+      "Infection prevention and control is a fundamental aspect of safe healthcare delivery. This blog covers essential IPC practices including hand hygiene, PPE usage, biomedical waste management and environmental hygiene that every healthcare professional should follow.",
+    featured_image: "/assets/services/infection-control.png",
+    category_name: "Infection Control",
+    created_at: new Date(Date.now() - 432000000).toISOString(),
+    status: "published",
+  },
+  {
+    id: "dummy-7",
+    title: "How to Become an Infection Control Nurse: Skills, Training & Career Guide",
+    slug: "how-to-become-infection-control-nurse-skills-training-career",
+    excerpt:
+      "Interested in a career in infection control nursing? This guide covers the educational qualifications, essential skills, training requirements and career opportunities available for aspiring Infection Control Nurses in the healthcare industry.",
+    featured_image: "/assets/services/infection-control.png",
+    category_name: "Infection Control",
+    created_at: new Date(Date.now() - 518400000).toISOString(),
+    status: "published",
+  },
 ];
 
-const CATEGORIES = ["All Blogs", "Home Care", "Medical", "Nursing"];
+const CATEGORIES = ["All Blogs", "Home Care", "Medical", "Nursing", "Infection Control"];
 
 function BlogsPage() {
   const { data } = useQuery(blogsQ({ limit: 50 }));

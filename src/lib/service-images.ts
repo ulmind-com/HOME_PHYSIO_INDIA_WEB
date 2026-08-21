@@ -25,9 +25,14 @@ const KEYWORD_IMAGES: Array<{ test: RegExp; url: string }> = [
 /** Deterministic default image for a service (stable across renders). */
 export function serviceImage(service: Service, index = 0): string {
   if (service.featured_image) {
-    return typeof service.featured_image === "string" 
+    let url = typeof service.featured_image === "string" 
       ? service.featured_image 
       : service.featured_image.url;
+      
+    if (url === "/assets/services/infection-control.png") {
+      return "/assets/infection_control_desktop.jpg";
+    }
+    return url;
   }
   const haystack = `${service.title} ${service.category_name ?? ""}`;
   for (const { test, url } of KEYWORD_IMAGES) {

@@ -52,6 +52,14 @@ const DEFAULT_FEATURES: FeatureItem[] = [
   },
 ];const DEFAULT_TILES: TileItem[] = [
   {
+    image: "/assets/infection_control_desktop.jpg",
+    count: "24/7",
+    title: "Infection Control Nurse Services",
+    description: "Infection prevention & control support and training",
+    cta_label: "Learn More",
+    cta_link: "/infection-control-nurse",
+  },
+  {
     image: "/assets/categories/nursing-v2.jpg?v=2",
     count: "200+",
     title: "Home Nursing Care",
@@ -194,12 +202,18 @@ export function ProfessionalsSection() {
 
   const features: FeatureItem[] =
     settings?.home_about_features?.length
-      ? settings.home_about_features
+      ? settings.home_about_features.map((f: any) => ({
+          ...f,
+          icon_image: typeof f.icon_image === "string" ? f.icon_image : (f.icon_image?.url || "")
+        }))
       : DEFAULT_FEATURES;
 
   const tiles: TileItem[] =
     settings?.home_about_tiles?.length
-      ? settings.home_about_tiles
+      ? settings.home_about_tiles.map((t: any) => ({
+          ...t,
+          image: typeof t.image === "string" ? t.image : (t.image?.url || "")
+        }))
       : DEFAULT_TILES;
 
   const backdrop = backdropAsset.url;

@@ -95,14 +95,14 @@ function CategoryCardGridItem({ cat, index }: { cat: any; index: number }) {
       <div className="relative z-10 p-2.5">
         <Link
           {...(linkProps as any)}
-          className="relative block aspect-[16/11] overflow-hidden rounded-[20px] shadow-[0_4px_20px_rgba(0,0,0,0.05)]"
+          className="relative block aspect-[4/3] overflow-hidden rounded-[20px] shadow-[0_4px_20px_rgba(0,0,0,0.05)]"
         >
           <img
             src={cat.image}
             alt={cat.title}
             loading="lazy"
             decoding="async"
-            className="h-full w-full object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(0.2,0.8,0.2,1)] group-hover:scale-110"
+            className="h-full w-full object-cover object-top transition-transform duration-[1.2s] ease-[cubic-bezier(0.2,0.8,0.2,1)] group-hover:scale-110"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/0 to-black/10 opacity-70 transition-opacity duration-500 group-hover:opacity-40" />
           <span className="absolute left-3 top-3 rounded-full border border-white/30 bg-white/20 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-white shadow-[0_4px_12px_rgba(0,0,0,0.1)] backdrop-blur-md">
@@ -170,9 +170,10 @@ function ServicesIndex() {
 
   const categories = useMemo(() => {
     const set = new Set<string>();
+    premiumCategories.forEach((cat) => set.add(cat.title));
     items.forEach((s) => s.category_name && set.add(s.category_name));
     return ["all", ...Array.from(set)];
-  }, [items]);
+  }, [items, premiumCategories]);
 
   const filtered = useMemo(() => {
     if (active === "all") return items;
@@ -258,12 +259,31 @@ function ServicesIndex() {
             ))}
           </div>
         ) : (
-          <div className="rounded-3xl border border-dashed border-border bg-surface/50 p-16 text-center">
-            <div className="font-display text-2xl">Nothing here yet</div>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Try another category, or talk to an advisor.
-            </p>
-          </div>
+          (() => {
+            const fallbackCat = premiumCategories.find((c) => c.title === active);
+            if (fallbackCat) {
+              return (
+                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-40px" }}
+                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    <CategoryCardGridItem cat={fallbackCat} index={0} />
+                  </motion.div>
+                </div>
+              );
+            }
+            return (
+              <div className="rounded-3xl border border-dashed border-border bg-surface/50 p-16 text-center">
+                <div className="font-display text-2xl">Nothing here yet</div>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Try another category, or talk to an advisor.
+                </p>
+              </div>
+            );
+          })()
         )}
 
         <div className="mt-10 text-center text-sm text-muted-foreground">

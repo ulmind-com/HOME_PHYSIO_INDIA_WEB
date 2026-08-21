@@ -471,7 +471,7 @@ function NursingHero({
 
       {/* Cross/plus pattern */}
       <div className="absolute inset-0 -z-10 opacity-5 pointer-events-none" aria-hidden>
-        {Array.from({ length: 6 }).map((_, i) => (
+        {Array.from({ length: 6 }).map((_: any, i: number) => (
           <div
             key={i}
             className="absolute text-white font-bold text-4xl"
@@ -614,7 +614,7 @@ function NursingHero({
 
           {/* Progress Bars */}
           <div className="flex items-center gap-2">
-            {images.map((_, i) => (
+            {images.map((_: any, i: number) => (
               <button
                 key={i}
                 onClick={() => go(i)}

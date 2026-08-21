@@ -27,13 +27,6 @@ const YoutubeIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-const MENU_LINKS = [
-  { label: "About Us", to: "/about" },
-  { label: "Privacy Policy", to: "/privacy" },
-  { label: "Terms of Service", to: "/terms" },
-  { label: "Refund Policy", to: "/refund-policy" },
-];
-
 const SUPPORT_LINKS = [
   { label: "FAQ", to: "/faq" },
   { label: "Blogs", to: "/blogs" },
@@ -60,13 +53,19 @@ export function Footer() {
       ];
 
   return (
-      <footer className="relative mt-0 bg-primary-soft pt-12 pb-0 flex flex-col border-t border-primary/20">
+      <footer className="relative mt-0 bg-gradient-to-br from-slate-900 to-blue-950 pt-12 pb-0 flex flex-col border-t border-white/10">
+        <div className="absolute inset-0 pointer-events-none" aria-hidden>
+          <div className="absolute top-0 right-[20%] w-80 h-80 bg-cyan-500/10 rounded-full blur-[100px]" />
+          <div className="absolute bottom-0 left-[10%] w-64 h-64 bg-blue-600/10 rounded-full blur-[80px]" />
+        </div>
         <div className="container-x relative z-10 flex flex-col justify-between flex-grow pb-16 md:pb-8">
           
           <div className="flex flex-col items-center md:items-start text-center md:text-left mb-10">
              <div className="flex flex-row items-center justify-center md:justify-start gap-3 mb-5 md:mb-6 text-left">
               {settings?.logo ? (
-                <img src={typeof settings.logo === 'string' ? settings.logo : (settings.logo as any)?.url} alt={name} className="h-10 w-10 object-contain rounded-lg shrink-0" />
+                <div className="bg-white rounded-lg p-1">
+                  <img src={typeof settings.logo === 'string' ? settings.logo : (settings.logo as any)?.url} alt={name} className="h-10 w-10 object-contain shrink-0" />
+                </div>
               ) : (
                 <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary to-accent grid place-items-center shadow-lg shadow-primary/20 shrink-0">
                   <svg
@@ -79,22 +78,20 @@ export function Footer() {
                   </svg>
                 </div>
               )}
-              <div className="font-display text-xl sm:text-2xl tracking-tight text-foreground font-medium leading-tight">{name}</div>
+              <div className="font-display text-xl sm:text-2xl tracking-tight text-white font-medium leading-tight">{name}</div>
              </div>
              
-             <p className="text-[14px] text-slate-600 max-w-lg mb-6 leading-relaxed">
+             <p className="text-[14px] text-white max-w-lg mb-6 leading-relaxed">
                {settings?.footer_description || "We go beyond standard care to ensure your peace of mind and your loved one's well-being — every visit, every time."}
              </p>
              <div className="flex justify-center md:justify-start gap-4">
-                {social?.facebook && <SocialIcon Icon={FacebookIcon} href={social.facebook} />}
-                {social?.instagram && <SocialIcon Icon={InstagramIcon} href={social.instagram} />}
-                {social?.linkedin && <SocialIcon Icon={LinkedinIcon} href={social.linkedin} />}
-                {social?.youtube && <SocialIcon Icon={YoutubeIcon} href={social.youtube} />}
+                <SocialIcon Icon={FacebookIcon} href={social?.facebook || ""} />
+                <SocialIcon Icon={InstagramIcon} href={social?.instagram || ""} />
+                <SocialIcon Icon={YoutubeIcon} href={social?.youtube || ""} />
              </div>
           </div>
 
           <div className="flex flex-col gap-8">
-            <FooterCol title="Menu" links={MENU_LINKS} />
             <FooterCol title="Services" links={SERVICES_LINKS} />
             <FooterCol title="Support" links={SUPPORT_LINKS} />
           </div>
@@ -102,9 +99,9 @@ export function Footer() {
         </div>
         
         {/* Bottom Bar (Desktop/Tablet) */}
-        <div className="w-full bg-primary/10 py-6 border-t border-primary/10">
+        <div className="w-full relative z-10 bg-black/20 py-6 border-t border-white/10">
           <div className="container-x flex flex-col md:flex-row items-center justify-center gap-4">
-            <div className="text-[13px] text-slate-600 font-medium text-center">
+            <div className="text-[13px] text-white/80 font-medium text-center">
               © {new Date().getFullYear()} {name}. All Rights Reserved.
             </div>
           </div>
@@ -116,17 +113,17 @@ export function Footer() {
 function FooterCol({ title, links }: { title: string; links: {label: string, to: string}[] }) {
   return (
     <div className="flex flex-col">
-      <div className="text-[18px] font-bold text-foreground mb-3">{title}</div>
+      <div className="text-[18px] font-bold text-white mb-3">{title}</div>
       <div className="flex flex-wrap items-center gap-x-1.5 gap-y-2">
         {links.map((link, i) => (
           <React.Fragment key={i}>
             <Link
               to={link.to}
-              className="text-[14px] font-medium text-slate-600 hover:text-primary hover:-translate-y-0.5 transition-all block leading-snug"
+              className="text-[14px] font-medium text-white hover:text-white/80 hover:-translate-y-0.5 transition-all block leading-snug"
             >
               {link.label}
             </Link>
-            {i < links.length - 1 && <span className="text-slate-300 text-[13px] font-bold mx-1">|</span>}
+            {i < links.length - 1 && <span className="text-white/20 text-[13px] font-bold mx-1">|</span>}
           </React.Fragment>
         ))}
       </div>
@@ -143,12 +140,12 @@ function SocialIcon({
 }) {
   return (
     <a
-      href={href}
+      href={href || "#"}
       target="_blank"
       rel="noopener noreferrer"
-      className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-all duration-200 shadow-sm hover:shadow-md"
+      className="w-12 h-12 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white/20 transition-all duration-300"
     >
-      <Icon className="w-4 h-4" fill="currentColor" />
+      <Icon className="w-5 h-5" fill="currentColor" />
     </a>
   );
 }

@@ -432,7 +432,7 @@ function EquipmentHero({ phone, category }: { phone?: string; category?: any }) 
 
           {/* Progress Bars */}
           <div className="flex items-center gap-2">
-            {images.map((_, i) => (
+            {images.map((_: any, i: number) => (
               <button
                 key={i}
                 onClick={() => go(i)}
@@ -487,10 +487,10 @@ function EquipmentGridSection() {
 
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {equipments.map((item, i) => {
-          const imgUrl = typeof item.featured_image === "string" ? item.featured_image : item.featured_image?.url;
-          const iconBg = item.specifications?.iconBg || "bg-gray-100";
-          const color = item.specifications?.color || "text-gray-600";
-          const emoji = item.specifications?.emoji || "📦";
+          const imgUrl = typeof item.featured_image === "string" ? item.featured_image : (item.featured_image as any)?.url;
+          const iconBg = (item as any).specifications?.iconBg || "bg-gray-100";
+          const color = (item as any).specifications?.color || "text-gray-600";
+          const emoji = (item as any).specifications?.emoji || "📦";
 
           return (
             <motion.div
@@ -503,7 +503,7 @@ function EquipmentGridSection() {
               <div className="group h-full flex flex-col rounded-2xl bg-white border border-border p-4 sm:p-5 shadow-sm transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_15px_40px_-10px_rgba(0,0,0,0.1)] cursor-default">
                 {imgUrl ? (
                   <div className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-rose-50 mb-4 transform transition-transform group-hover:scale-110 duration-300">
-                    <img src={imgUrl} alt={item.name} className="w-9 h-9 object-contain mix-blend-multiply" />
+                    <img src={imgUrl} alt={(item as any).name || (item as any).title} className="w-9 h-9 object-contain mix-blend-multiply" />
                   </div>
                 ) : (
                   <div
@@ -513,7 +513,7 @@ function EquipmentGridSection() {
                   </div>
                 )}
                 <h3 className="font-display text-lg sm:text-[21px] font-semibold text-foreground mb-2 sm:mb-3 leading-tight tracking-wide">
-                  {item.name}
+                  {(item as any).name || (item as any).title}
                 </h3>
                 <p className="text-muted-foreground text-[15px] sm:text-[17px] leading-relaxed font-medium flex-1">
                   {item.description || item.short_description}

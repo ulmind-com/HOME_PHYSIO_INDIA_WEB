@@ -52,7 +52,7 @@ export type { City };
 /* ─────────────── Steps ─────────────── */
 
 const STEPS = [
-  { key: "service", label: "Service", fields: ["service_name"] as const },
+  { key: "service", label: "Training", fields: ["service_name"] as const },
   { key: "schedule", label: "Location & Schedule", fields: ["city", "preferred_date", "preferred_time"] as const },
   {
     key: "patient",
@@ -107,7 +107,7 @@ export function BookingForm({
 
   const serviceOptions =
     categories.length > 0
-      ? categories.map((c) => ({ name: c.name, slug: c.slug }))
+      ? categories.map((c) => ({ name: c.name || "", slug: c.slug || "" }))
       : DEFAULT_SERVICES;
 
   const form = useForm<Values>({
@@ -291,9 +291,9 @@ function ServiceStep({
   return (
     <div className="grid gap-6">
       <StepHeader
-        eyebrow="Service"
-        title="Which service do you need?"
-        description="Select the type of care you're looking for."
+        eyebrow="Training"
+        title="Which training do you need?"
+        description="Select the type of training you're looking for."
       />
       <div className="grid gap-3 sm:grid-cols-2">
         {services.map((svc) => {

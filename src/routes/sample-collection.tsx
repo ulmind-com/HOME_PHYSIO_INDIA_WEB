@@ -27,11 +27,12 @@ import {
   Microscope,
   FileHeart,
 } from "lucide-react";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, type ReactNode } from "react";
 import { categoriesQ, settingsQ } from "@/lib/api/queries";
 import { CITIES } from "@/components/forms/BookingForm";
 import { NursingBookingModal } from "@/components/forms/NursingBookingModal";
 import { Section } from "@/components/site/Section";
+import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/sample-collection")({
   head: () => ({
@@ -224,7 +225,6 @@ function SampleCollectionPage() {
       <HowItWorksSection />
       <WhoCanBenefitSection />
       <SampleCollectionCtaBand phone={phone} whatsapp={whatsapp} />
-      <SampleBookingPanel phone={phone} whatsapp={whatsapp} />
     </>
   );
 }
@@ -330,12 +330,15 @@ function SampleCollectionHero({
             </p>
 
             <div className="mt-6 md:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-              <a href="#booking"
+              <SampleBookingModal>
+                <button
+                  type="button"
                   className="group inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-[15px] font-semibold text-primary-foreground shadow-sm transition-all duration-300 hover:brightness-110 hover:-translate-y-0.5"
                 >
                   {heroCtaPrimaryText}
                   <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </a>
+                </button>
+              </SampleBookingModal>
 
               <a
                 href={`tel:${phone || "+919876543210"}`}
@@ -581,12 +584,14 @@ function SampleCollectionCtaBand({ phone, whatsapp }: { phone?: string; whatsapp
           </h3>
           
           <div className="flex flex-wrap gap-4 mt-8">
-            <a
-              href="#booking"
-              className="inline-flex items-center gap-2 rounded-full bg-rose-400 text-slate-900 px-8 py-4 text-base font-semibold hover:bg-rose-300 transition-all duration-300 shadow-[0_15px_35px_-10px_rgba(251,113,133,0.4)]"
-            >
-              Book Home Sample Collection <ArrowRight className="h-5 w-5" />
-            </a>
+            <SampleBookingModal>
+              <button
+                type="button"
+                className="inline-flex items-center gap-2 rounded-full bg-rose-400 text-slate-900 px-8 py-4 text-base font-semibold hover:bg-rose-300 transition-all duration-300 shadow-[0_15px_35px_-10px_rgba(251,113,133,0.4)]"
+              >
+                Book Home Sample Collection <ArrowRight className="h-5 w-5" />
+              </button>
+            </SampleBookingModal>
             {phone && (
               <a
                 href={`tel:${phone}`}
@@ -620,7 +625,7 @@ const sampleFormSchema = z.object({
 
 type SampleFormValues = z.infer<typeof sampleFormSchema>;
 
-function SampleBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: string }) {
+function SampleBookingForm() {
   const [done, setDone] = useState(false);
   const form = useForm<SampleFormValues>({
     resolver: zodResolver(sampleFormSchema),
@@ -653,10 +658,8 @@ function SampleBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: st
   });
 
   return (
-    <section className="py-12 lg:py-16 bg-[#F8F9FA]" id="booking">
-      <div className="container-x max-w-2xl mx-auto">
-        <div className="rounded-3xl border border-border bg-white p-6 md:p-10 shadow-xl shadow-black/5">
-          {done ? (
+    <>
+      {done ? (
             <div className="text-center py-10">
               <div className="inline-flex h-20 w-20 items-center justify-center rounded-full bg-green-100 text-green-600 mb-6">
                 <Check className="h-10 w-10" />
@@ -689,10 +692,9 @@ function SampleBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: st
               <form onSubmit={form.handleSubmit((v) => mut.mutate(v))} className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {/* Full Name */}
                 <div className="md:col-span-2 text-left">
-                  <label className="block text-sm font-medium text-foreground mb-1.5">Full Name</label>
                   <input
                     {...form.register("patient_name")}
-                    placeholder="Patient's Full Name"
+                    placeholder="Full Name"
                     className="w-full rounded-xl border border-border bg-transparent px-5 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground"
                   />
                   {form.formState.errors.patient_name && (
@@ -704,10 +706,9 @@ function SampleBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: st
 
                 {/* Patient Age */}
                 <div className="text-left">
-                  <label className="block text-sm font-medium text-foreground mb-1.5">Patient Age</label>
                   <input
                     {...form.register("patient_age")}
-                    placeholder="e.g. 45"
+                    placeholder="Patient Age"
                     className="w-full rounded-xl border border-border bg-transparent px-5 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground"
                   />
                   {form.formState.errors.patient_age && (
@@ -719,10 +720,9 @@ function SampleBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: st
 
                 {/* Phone Number */}
                 <div className="text-left">
-                  <label className="block text-sm font-medium text-foreground mb-1.5">Phone Number</label>
                   <input
                     {...form.register("contact_phone")}
-                    placeholder="10-digit number"
+                    placeholder="Phone Number"
                     className="w-full rounded-xl border border-border bg-transparent px-5 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground"
                   />
                   {form.formState.errors.contact_phone && (
@@ -734,7 +734,6 @@ function SampleBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: st
 
                 {/* Select City */}
                 <div className="text-left">
-                  <label className="block text-sm font-medium text-foreground mb-1.5">Select City</label>
                   <div className="relative">
                     <select
                       {...form.register("city")}
@@ -758,11 +757,10 @@ function SampleBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: st
 
                 {/* Select Sample Type */}
                 <div className="text-left">
-                  <label className="block text-sm font-medium text-foreground mb-1.5">Sample Type</label>
                   <div className="relative">
                     <select
                       {...form.register("sample_type")}
-                      className="w-full rounded-xl border border-border bg-transparent px-5 py-3 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-foreground appearance-none"
+                      className="w-full rounded-xl border border-border bg-black/5 px-5 py-3 pr-10 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 text-foreground appearance-none cursor-pointer"
                     >
                       <option value="">Select sample type</option>
                       <option value="Blood">Blood</option>
@@ -781,10 +779,9 @@ function SampleBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: st
 
                 {/* Test / Investigation Name */}
                 <div className="md:col-span-2 text-left">
-                  <label className="block text-sm font-medium text-foreground mb-1.5">Test / Investigation Name</label>
                   <input
                     {...form.register("test_name")}
-                    placeholder="e.g. Complete Blood Count, Thyroid Profile, etc."
+                    placeholder="Test / Investigation Name"
                     className="w-full rounded-xl border border-border bg-transparent px-5 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground"
                   />
                   {form.formState.errors.test_name && (
@@ -796,10 +793,17 @@ function SampleBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: st
 
                 {/* Preferred Date */}
                 <div className="text-left">
-                  <label className="block text-sm font-medium text-foreground mb-1.5">Preferred Date</label>
                   <input
-                    type="date"
+                    type="text"
+                    placeholder="Preferred Date"
                     {...form.register("preferred_date")}
+                    onFocus={(e) => {
+                      e.currentTarget.type = "date";
+                      e.currentTarget.showPicker?.();
+                    }}
+                    onBlur={(e) => {
+                      if (!e.currentTarget.value) e.currentTarget.type = "text";
+                    }}
                     className="w-full rounded-xl border border-border bg-transparent px-5 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground"
                   />
                   {form.formState.errors.preferred_date && (
@@ -811,7 +815,6 @@ function SampleBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: st
 
                 {/* Preferred Time */}
                 <div className="text-left">
-                  <label className="block text-sm font-medium text-foreground mb-1.5">Preferred Time</label>
                   <div className="relative">
                     <select
                       {...form.register("preferred_time")}
@@ -834,10 +837,9 @@ function SampleBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: st
 
                 {/* Full Address */}
                 <div className="md:col-span-2 text-left">
-                  <label className="block text-sm font-medium text-foreground mb-1.5">Full Address</label>
                   <textarea
                     {...form.register("address")}
-                    placeholder="House number, street name, area, etc."
+                    placeholder="Full Address"
                     rows={2}
                     className="w-full rounded-xl border border-border bg-transparent px-5 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground resize-none"
                   />
@@ -850,10 +852,9 @@ function SampleBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: st
 
                 {/* Patient Condition / Special Requirement */}
                 <div className="md:col-span-2 text-left">
-                  <label className="block text-sm font-medium text-foreground mb-1.5">Patient Condition / Special Requirement (Optional)</label>
                   <textarea
                     {...form.register("patient_condition")}
-                    placeholder="Any specific requirement like fasting, needle anxiety, etc."
+                    placeholder="Patient Condition / Special Requirement (Optional)"
                     rows={2}
                     className="w-full rounded-xl border border-border bg-transparent px-5 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground resize-none"
                   />
@@ -871,8 +872,18 @@ function SampleBookingPanel({ phone, whatsapp }: { phone?: string; whatsapp?: st
               </form>
             </>
           )}
-        </div>
-      </div>
-    </section>
+    </>
+  );
+}
+
+function SampleBookingModal({ children }: { children: ReactNode }) {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <DialogTitle className="sr-only">Book Home Sample Collection</DialogTitle>
+        <SampleBookingForm />
+      </DialogContent>
+    </Dialog>
   );
 }

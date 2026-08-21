@@ -340,3 +340,46 @@ export type StaffMember = {
   created_at?: string;
   updated_at?: string;
 };
+
+export type ICServiceItem = {
+  title: string;
+  description: string;
+  order: number;
+};
+
+export type ICWhyChooseItem = {
+  title: string;
+  description: string;
+};
+
+export type ICHowItWorksStep = {
+  step_label: string;
+  title: string;
+  description: string;
+};
+
+export type ICFaqItem = {
+  question: string;
+  answer: string;
+};
+
+export type InfectionControlPageContent = {
+  id: string;
+  hero_heading: string;
+  hero_subheading: string;
+  hero_short_text: string;
+  hero_btn_primary: string;
+  hero_btn_secondary: string;
+  intro_heading: string;
+  intro_content: string;
+  services: ICServiceItem[];
+  why_choose_items: ICWhyChooseItem[];
+  how_it_works_steps: ICHowItWorksStep[];
+  faqs: ICFaqItem[];
+  enquiry_heading: string;
+  enquiry_subheading: string;
+  enquiry_requirement_options: string[];
+  home_card_title: string;
+  home_card_description: string;
+  home_card_button_text: string;
+};

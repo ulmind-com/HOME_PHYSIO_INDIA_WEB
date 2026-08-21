@@ -5,6 +5,7 @@ import type {
   Career,
   Equipment,
   Faq,
+  InfectionControlPageContent,
   ReviewSummary,
   SeoMeta,
   Service,
@@ -158,3 +159,12 @@ export const staffQ = (params: { limit?: number; category?: string } = {}) =>
       ),
     staleTime: FIVE_MIN,
   });
+
+export const infectionControlQ = () =>
+  queryOptions({
+    queryKey: ["infection-control"],
+    queryFn: ({ signal }) =>
+      api.get<InfectionControlPageContent>("/infection-control", undefined, signal),
+    staleTime: FIVE_MIN,
+  });
+

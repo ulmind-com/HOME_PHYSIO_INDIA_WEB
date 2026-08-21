@@ -12,6 +12,7 @@ import { MotherBabyBookingModal } from "@/components/forms/MotherBabyBookingModa
 import { IcuBookingModal } from "@/components/forms/IcuBookingModal";
 import { LabBookingModal } from "@/components/forms/LabBookingModal";
 import { PhysioBookingModal } from "@/components/forms/PhysioBookingModal";
+import { InfectionEnquiryModal } from "@/components/forms/InfectionEnquiryModal";
 
 /* ── Default / fallback slides (static assets) ────────────────────── */
 
@@ -71,6 +72,14 @@ const FALLBACK_SLIDES: HeroSlide[] = [
     button_link: "/sample-collection",
     image_desktop: { url: "/assets/sample-collection/web.jpg" },
     image_mobile: { url: "/assets/sample-collection/mobile.jpg" },
+  },
+  {
+    title: "Infection Control Nurse Services",
+    subtitle: "Professional infection prevention & control support, training and guidance for healthcare settings.",
+    button_text: "Enquire Now",
+    button_link: "/infection-control-nurse",
+    image_desktop: { url: "/assets/infection_control_desktop.jpg" },
+    image_mobile: { url: "/assets/infection_control_desktop.jpg" },
   }
 ];
 
@@ -299,6 +308,9 @@ export function ServicesHeroSlider({ slides: dynamicSlides }: { slides?: HeroSli
                   return <MotherBabyBookingModal onOpenChange={setIsModalOpen}>{btnContent}</MotherBabyBookingModal>;
                 }
                 const t = (slide.title || "").toLowerCase();
+                if (t.includes("infection") || link.includes("infection")) {
+                  return <InfectionEnquiryModal onOpenChange={setIsModalOpen}>{btnContent}</InfectionEnquiryModal>;
+                }
                 if (t.includes("icu") || link.includes("icu")) {
                   return <IcuBookingModal onOpenChange={setIsModalOpen}>{btnContent}</IcuBookingModal>;
                 }
