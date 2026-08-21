@@ -30,7 +30,7 @@ export function serviceImage(service: Service, index = 0): string {
       : service.featured_image.url;
       
     if (url === "/assets/services/infection-control.png") {
-      return "/assets/ic_nurse_desktop.jpg";
+      return "/assets/service_img_8_desktop.jpg";
     }
     return url;
   }

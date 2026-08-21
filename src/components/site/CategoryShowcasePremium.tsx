@@ -22,7 +22,7 @@ const fallbacks: Array<{ title: string; description: string; image: string; vari
   {
     title: "Infection Control Nurse Services",
     description: "Professional infection prevention & control support, training and guidance for healthcare settings.",
-    image: "/assets/ic_nurse_desktop.jpg",
+    image: "/assets/service_img_8_desktop.jpg",
     variant: "d",
     dedicatedLink: "/infection-control-nurse",
   },

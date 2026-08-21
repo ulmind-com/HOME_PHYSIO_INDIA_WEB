@@ -172,14 +172,14 @@ function ICHero({
   const btnSecondary = content?.hero_btn_secondary || "Call Now";
 
   const images = [
-    "/assets/ic_nurse_desktop.jpg",
-    "/assets/ic_nurse_desktop_2.jpg",
-    "/assets/ic_nurse_desktop_3.jpg",
+    "/assets/service_img_8_desktop.jpg",
+    "/assets/service_img_8_desktop_2.jpg",
+    "/assets/service_img_8_desktop_3.jpg",
   ];
   const mobileImages = [
-    "/assets/ic_nurse_mobile.jpg",
-    "/assets/ic_nurse_mobile_2.jpg",
-    "/assets/ic_nurse_mobile_3.jpg",
+    "/assets/service_img_8_mobile.jpg",
+    "/assets/service_img_8_mobile_2.jpg",
+    "/assets/service_img_8_mobile_3.jpg",
   ];
 
   const [currentIdx, setCurrentIdx] = useState(0);
