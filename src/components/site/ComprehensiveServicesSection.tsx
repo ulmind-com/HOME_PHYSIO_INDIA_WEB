@@ -201,7 +201,7 @@ const SERVICES: ServiceCard[] = [
   },
   {
     id: "infection",
-    title: "Infection Control Nurse Services",
+    title: "I​nfection Control Nurse Services",
     image: "/assets/service_img_8_desktop.jpg",
     features: [
       "Infection Prevention & Control",

@@ -20,7 +20,7 @@ type Variant = "a" | "b" | "c" | "d";
 
 const fallbacks: Array<{ title: string; description: string; image: string; variant: Variant; dedicatedLink?: string }> = [
   {
-    title: "Infection Control Nurse Services",
+    title: "I​nfection Control Nurse Services",
     description: "Professional infection prevention & control support, training and guidance for healthcare settings.",
     image: "/assets/service_img_8_desktop.jpg",
     variant: "d",
