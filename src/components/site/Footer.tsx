@@ -27,6 +27,14 @@ const YoutubeIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+
+const MENU_LINKS = [
+  { label: "About Us", to: "/about" },
+  { label: "Privacy Policy", to: "/privacy" },
+  { label: "Terms of Service", to: "/terms" },
+  { label: "Refund Policy", to: "/refund-policy" },
+];
+
 const SUPPORT_LINKS = [
   { label: "FAQ", to: "/faq" },
   { label: "Blogs", to: "/blogs" },
@@ -92,6 +100,7 @@ export function Footer() {
           </div>
 
           <div className="flex flex-col gap-8">
+            <FooterCol title="" links={MENU_LINKS} />
             <FooterCol title="Services" links={SERVICES_LINKS} />
             <FooterCol title="Support" links={SUPPORT_LINKS} />
           </div>
@@ -113,7 +122,7 @@ export function Footer() {
 function FooterCol({ title, links }: { title: string; links: {label: string, to: string}[] }) {
   return (
     <div className="flex flex-col">
-      <div className="text-[18px] font-bold text-white mb-3">{title}</div>
+      {title && <div className="text-[18px] font-bold text-white mb-3">{title}</div>}
       <div className="flex flex-wrap items-center gap-x-1.5 gap-y-2">
         {links.map((link, i) => (
           <React.Fragment key={i}>
