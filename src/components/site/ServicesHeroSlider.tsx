@@ -74,7 +74,7 @@ const FALLBACK_SLIDES: HeroSlide[] = [
     image_mobile: { url: "/assets/sample-collection/mobile.jpg" },
   },
   {
-    title: "Infection Control Nurse Services",
+    title: "I​nfection Control Nurse Services",
     subtitle: "Professional infection prevention & control support, training and guidance for healthcare settings.",
     button_text: "Enquire Now",
     button_link: "/infection-control-nurse",
