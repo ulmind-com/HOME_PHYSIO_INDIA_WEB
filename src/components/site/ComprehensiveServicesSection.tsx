@@ -24,6 +24,22 @@ type ServiceCard = {
 
 const SERVICES: ServiceCard[] = [
   {
+    id: "infection",
+    title: "I​nfection Control Nurse Services",
+    image: "/assets/service_img_8_desktop.jpg",
+    features: [
+      "Infection Prevention & Control",
+      "Hand Hygiene & PPE Practices",
+      "Infection Control Training",
+      "Audit & Monitoring",
+      "Biomedical Waste Guidance",
+      "Home Healthcare Infection Prevention",
+    ],
+    buttonText: "Learn More",
+    buttonLink: "/infection-control-nurse",
+    selectLabel: "Select infection-control service",
+  },
+  {
     id: "nursing",
     title: "Home Nursing Care",
     image: "/assets/services/nursing-care.png",
@@ -198,22 +214,6 @@ const SERVICES: ServiceCard[] = [
       "Safe Sample Handling & Lab Coordination",
       "Others",
     ],
-  },
-  {
-    id: "infection",
-    title: "I​nfection Control Nurse Services",
-    image: "/assets/service_img_8_desktop.jpg",
-    features: [
-      "Infection Prevention & Control",
-      "Hand Hygiene & PPE Practices",
-      "Infection Control Training",
-      "Audit & Monitoring",
-      "Biomedical Waste Guidance",
-      "Home Healthcare Infection Prevention",
-    ],
-    buttonText: "Learn More",
-    buttonLink: "/infection-control-nurse",
-    selectLabel: "Select infection-control service",
   },
 ];
 
