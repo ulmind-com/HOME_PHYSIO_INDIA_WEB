@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { Upload, CheckCircle2, Loader2, FileText, Check } from "lucide-react";
+import { Upload, CheckCircle2, Loader2, FileText, Check, ChevronDown } from "lucide-react";
 import { api } from "@/lib/api/client";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -138,13 +138,16 @@ function CareersPage() {
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-foreground">Position Applying For</label>
-                    <select name="job_title" value={formData.job_title} onChange={handleChange} className="w-full h-12 px-4 rounded-xl border border-input bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all appearance-none">
+                    <div className="relative">
+                      <select name="job_title" value={formData.job_title} onChange={handleChange} className="w-full h-12 px-4 rounded-xl border border-input bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all appearance-none">
                       <option value="Staff Nurse">Staff Nurse</option>
                       <option value="GDA / Patient Attendant">GDA / Patient Attendant</option>
                       <option value="Physiotherapist">Physiotherapist</option>
                       <option value="Caregiver">Caregiver</option>
                       <option value="Other">Other</option>
                     </select>
+                      <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                    </div>
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-foreground">Preferred Location</label>
@@ -156,21 +159,27 @@ function CareersPage() {
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-foreground">Total Experience</label>
-                    <select name="experience" value={formData.experience} onChange={handleChange} className="w-full h-12 px-4 rounded-xl border border-input bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all appearance-none">
+                    <div className="relative">
+                      <select name="experience" value={formData.experience} onChange={handleChange} className="w-full h-12 px-4 rounded-xl border border-input bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all appearance-none">
                       <option value="" disabled>Select experience</option>
                       <option value="1">1</option>
                       <option value="2">2</option>
                       <option value="3">3</option>
                       <option value="4">4</option>
                     </select>
+                      <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                    </div>
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-foreground">Preferred Duty</label>
-                    <select name="preferred_duty" value={formData.preferred_duty} onChange={handleChange} className="w-full h-12 px-4 rounded-xl border border-input bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all appearance-none">
+                    <div className="relative">
+                      <select name="preferred_duty" value={formData.preferred_duty} onChange={handleChange} className="w-full h-12 px-4 rounded-xl border border-input bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all appearance-none">
                       <option value="8 Hours">8 Hours</option>
                       <option value="12 Hours">12 Hours</option>
                       <option value="24 Hours">24 Hours</option>
                     </select>
+                      <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                    </div>
                   </div>
 
                   <div className="md:col-span-2 space-y-2">
@@ -210,13 +219,16 @@ function CareersPage() {
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-foreground">Total Experience</label>
-                    <select name="experience" value={formData.experience} onChange={handleChange} className="w-full h-12 px-4 rounded-xl border border-input bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all appearance-none">
+                    <div className="relative">
+                      <select name="experience" value={formData.experience} onChange={handleChange} className="w-full h-12 px-4 rounded-xl border border-input bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all appearance-none">
                       <option value="" disabled>Select experience</option>
                       <option value="1">1</option>
                       <option value="2">2</option>
                       <option value="3">3</option>
                       <option value="4">4</option>
                     </select>
+                      <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                    </div>
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-foreground">Previous Employer</label>
