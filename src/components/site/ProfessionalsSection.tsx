@@ -54,7 +54,7 @@ const DEFAULT_FEATURES: FeatureItem[] = [
   {
     image: "/assets/service_img_8_desktop.jpg",
     count: "24/7",
-    title: "Infection Control Nurse Services",
+    title: "I​nfection Control Nurse Services",
     description: "Infection prevention & control support and training",
     cta_label: "Learn More",
     cta_link: "/infection-control-nurse",
