@@ -158,12 +158,10 @@ function CareersPage() {
                     <label className="text-sm font-semibold text-foreground">Total Experience</label>
                     <select name="experience" value={formData.experience} onChange={handleChange} className="w-full h-12 px-4 rounded-xl border border-input bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all appearance-none">
                       <option value="" disabled>Select experience</option>
-                      <option value="Fresher">Fresher</option>
-                      <option value="1 Year">1 Year</option>
-                      <option value="2 Years">2 Years</option>
-                      <option value="3 Years">3 Years</option>
-                      <option value="4 Years">4 Years</option>
-                      <option value="5+ Years">5+ Years</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
                     </select>
                   </div>
                   <div className="space-y-2">
@@ -214,12 +212,10 @@ function CareersPage() {
                     <label className="text-sm font-semibold text-foreground">Total Experience</label>
                     <select name="experience" value={formData.experience} onChange={handleChange} className="w-full h-12 px-4 rounded-xl border border-input bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all appearance-none">
                       <option value="" disabled>Select experience</option>
-                      <option value="Fresher">Fresher</option>
-                      <option value="1 Year">1 Year</option>
-                      <option value="2 Years">2 Years</option>
-                      <option value="3 Years">3 Years</option>
-                      <option value="4 Years">4 Years</option>
-                      <option value="5+ Years">5+ Years</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
                     </select>
                   </div>
                   <div className="space-y-2">
