@@ -78,8 +78,8 @@ const FALLBACK_SLIDES: HeroSlide[] = [
     subtitle: "Professional infection prevention & control support, training and guidance for healthcare settings.",
     button_text: "Enquire Now",
     button_link: "/infection-control-nurse",
-    image_desktop: { url: "/assets/infection_control_desktop.jpg" },
-    image_mobile: { url: "/assets/infection_control_desktop.jpg" },
+    image_desktop: { url: "/assets/ic_nurse_desktop.jpg" },
+    image_mobile: { url: "/assets/ic_nurse_desktop.jpg" },
   }
 ];
 
