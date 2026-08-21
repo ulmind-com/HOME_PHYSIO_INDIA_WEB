@@ -73,7 +73,7 @@ function AboutPage() {
   const addressName = (settings as any)?.about_address_name || "Nupun Home Health Care";
   const addressLine1 = (settings as any)?.about_address_line1 || "5th Floor, Tower-C, Unitech Cyber Park";
   const addressLine2 = (settings as any)?.about_address_line2 || "Sector-39, Gurgaon, India – 122003";
-  const mapEmbedUrl = (settings as any)?.about_map_embed_url || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3508.8105740698165!2d77.04258837617478!3d28.424982693444062!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d228f4116c271%3A0xc34b3dc04c5e3d74!2sUnitech%20Cyber%20Park!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin";
+  const mapEmbedUrl = (settings as any)?.about_map_embed_url || "https://maps.google.com/maps?q=Sector+62,+Faridabad,+Haryana+121004&t=&z=14&ie=UTF8&iwloc=&output=embed";
 
   return (
     <>
