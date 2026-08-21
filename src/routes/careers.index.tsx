@@ -156,7 +156,15 @@ function CareersPage() {
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-foreground">Total Experience</label>
-                    <input name="experience" value={formData.experience} onChange={handleChange} className="w-full h-12 px-4 rounded-xl border border-input bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" placeholder="e.g. 3 Years" />
+                    <select name="experience" value={formData.experience} onChange={handleChange} className="w-full h-12 px-4 rounded-xl border border-input bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all appearance-none">
+                      <option value="" disabled>Select experience</option>
+                      <option value="Fresher">Fresher</option>
+                      <option value="1 Year">1 Year</option>
+                      <option value="2 Years">2 Years</option>
+                      <option value="3 Years">3 Years</option>
+                      <option value="4 Years">4 Years</option>
+                      <option value="5+ Years">5+ Years</option>
+                    </select>
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-foreground">Preferred Duty</label>
@@ -204,7 +212,15 @@ function CareersPage() {
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-foreground">Total Experience</label>
-                    <input name="experience" value={formData.experience} onChange={handleChange} className="w-full h-12 px-4 rounded-xl border border-input bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" placeholder="e.g. 3 Years" />
+                    <select name="experience" value={formData.experience} onChange={handleChange} className="w-full h-12 px-4 rounded-xl border border-input bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all appearance-none">
+                      <option value="" disabled>Select experience</option>
+                      <option value="Fresher">Fresher</option>
+                      <option value="1 Year">1 Year</option>
+                      <option value="2 Years">2 Years</option>
+                      <option value="3 Years">3 Years</option>
+                      <option value="4 Years">4 Years</option>
+                      <option value="5+ Years">5+ Years</option>
+                    </select>
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-foreground">Previous Employer</label>
