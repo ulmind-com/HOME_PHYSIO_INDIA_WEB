@@ -79,57 +79,66 @@ const fallbacks: Array<{ title: string; description: string; image: string; vari
 
 export function usePremiumCategories() {
   const { data: categoriesData } = useQuery(categoriesQ({ limit: 10 }));
-  const categories = [...(categoriesData?.items ?? [])].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+  const categories = [...(categoriesData?.items ?? [])]
+    .filter((c) => c.is_active !== false)
+    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
-  return fallbacks.map((fb) => {
-    // Match by trimmed name only — avoids the positional fallback grabbing the
-    // wrong category when two categories share the same `order` (e.g. the new
-    // Injection/Infection categories both use order 8) and tolerates stray
-    // whitespace in DB names like "Infection Control Nurse Services ".
-    const cat = categories.find(
-      (c) => c.name?.trim().toLowerCase() === fb.title.trim().toLowerCase(),
-    );
-    
-    // Extract string URL if it's an ImageAsset object
-    let imageStr = cat?.image 
-      ? (typeof cat.image === "string" ? cat.image : cat.image.url) 
-      : fb.image;
+  // Resolve the dedicated landing page (if any) for a category by name/slug
+  // keyword, falling back to the matched hardcoded entry's link.
+  const resolveDedicatedLink = (
+    name: string | undefined | null,
+    slug: string | undefined | null,
+    fb?: (typeof fallbacks)[number],
+  ): string | null => {
+    const n = (name ?? "").toLowerCase();
+    const s = (slug ?? "").toLowerCase();
+    if (n.includes("infection") || s.includes("infection")) return "/infection-control-nurse";
+    if (n.includes("elder") || n.includes("senior") || s.includes("elder")) return "/elderly-care";
+    if (n.includes("nurs") || s.includes("nurs")) return "/nursing-care";
+    if (n.includes("mother") || n.includes("baby") || s.includes("mother")) return "/mother-baby-care";
+    if (n.includes("physio") || s.includes("physio")) return "/physiotherapy";
+    if (n.includes("equip") || s.includes("equip")) return "/medical-equipment";
+    if (n.includes("icu") || s.includes("icu")) return "/icu-setup";
+    if (n.includes("sample") || s.includes("sample")) return "/sample-collection";
+    return fb?.dedicatedLink ?? null;
+  };
 
-    if (imageStr && !imageStr.includes("?")) {
-      imageStr = `${imageStr}?v=2`;
-    }
+  // Cache-bust image URLs that don't already carry a query string.
+  const normImage = (raw?: string | null): string =>
+    !raw ? "" : raw.includes("?") ? raw : `${raw}?v=2`;
 
-    // Detect dedicated landing pages by slug or name matching
-    const catNameLower = (cat?.name ?? "").toLowerCase();
-    const catSlugLower = (cat?.slug ?? "").toLowerCase();
-    const dedicatedLink =
-      catNameLower.includes("infection") || catSlugLower.includes("infection")
-        ? "/infection-control-nurse"
-        : catNameLower.includes("elder") || catNameLower.includes("senior") || catSlugLower.includes("elder")
-        ? "/elderly-care"
-        : catNameLower.includes("nurs") || catSlugLower.includes("nurs")
-        ? "/nursing-care"
-        : catNameLower.includes("mother") || catNameLower.includes("baby") || catSlugLower.includes("mother")
-        ? "/mother-baby-care"
-        : catNameLower.includes("physio") || catSlugLower.includes("physio")
-        ? "/physiotherapy"
-        : catNameLower.includes("equip") || catSlugLower.includes("equip")
-        ? "/medical-equipment"
-        : catNameLower.includes("icu") || catSlugLower.includes("icu")
-        ? "/icu-setup"
-        : catNameLower.includes("sample") || catSlugLower.includes("sample")
-        ? "/sample-collection"
-        : fb.dedicatedLink ?? null;
+  const variants: Variant[] = ["a", "b", "c", "d"];
 
-    return {
-      title: cat?.name || fb.title,
-      description: cat?.description || fb.description,
-      image: imageStr || fb.image,
-      slug: cat?.slug || "",
-      variant: fb.variant,
-      dedicatedLink,
-    };
-  });
+  // Backend categories are the source of truth so newly-added categories in the
+  // admin panel actually show up on the site. The hardcoded `fallbacks` only
+  // ENRICH the known categories (card variant, dedicated landing page, and
+  // image/description when the DB leaves them blank) — they no longer cap the
+  // list to a fixed 8. When the API returns nothing, render the full fallback.
+  if (categories.length) {
+    return categories.map((cat, i) => {
+      const fb = fallbacks.find(
+        (f) => f.title.trim().toLowerCase() === cat.name?.trim().toLowerCase(),
+      );
+      const rawImage = typeof cat.image === "string" ? cat.image : cat.image?.url;
+      return {
+        title: cat.name || fb?.title || "",
+        description: cat.description || fb?.description || "",
+        image: normImage(rawImage) || normImage(fb?.image) || fb?.image || "",
+        slug: cat.slug || "",
+        variant: fb?.variant ?? variants[i % variants.length],
+        dedicatedLink: resolveDedicatedLink(cat.name, cat.slug, fb),
+      };
+    });
+  }
+
+  return fallbacks.map((fb) => ({
+    title: fb.title,
+    description: fb.description,
+    image: normImage(fb.image),
+    slug: "",
+    variant: fb.variant,
+    dedicatedLink: fb.dedicatedLink ?? null,
+  }));
 }
 
 export function CategoryShowcasePremium() {
