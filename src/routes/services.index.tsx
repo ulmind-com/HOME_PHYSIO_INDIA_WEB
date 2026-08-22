@@ -163,8 +163,8 @@ function ServicesIndex() {
 
   const [active, setActive] = useState<string>("all");
 
-  const phone = settings?.phone?.replace(/[^\d+]/g, "");
-  const whatsapp = (settings?.whatsapp ?? settings?.phone)?.replace(/[^\d]/g, "");
+  const phone = (settings?.phone || "+919813095627").replace(/[^\d+]/g, "");
+  const whatsapp = (settings?.whatsapp ?? settings?.phone ?? "+919813095627").replace(/[^\d]/g, "");
 
   const heroSlides = settings?.services_hero?.slides;
 

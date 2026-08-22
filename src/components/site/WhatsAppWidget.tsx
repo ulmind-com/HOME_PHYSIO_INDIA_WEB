@@ -4,7 +4,7 @@ import { settingsQ } from "@/lib/api/queries";
 
 export function WhatsAppWidget() {
   const { data: settings } = useQuery(settingsQ());
-  const whatsappNumber = (settings?.whatsapp ?? settings?.phone)?.replace(/\D/g, "") || "919876543210";
+  const whatsappNumber = (settings?.whatsapp ?? settings?.phone ?? "+919813095627").replace(/\D/g, "") || "+919813095627";
 
   return (
     <motion.div

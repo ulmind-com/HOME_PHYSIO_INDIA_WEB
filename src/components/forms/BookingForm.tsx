@@ -439,14 +439,14 @@ function ContactStep({ form }: { form: UseFormReturn<Values> }) {
           <input
             {...form.register("contact_phone")}
             className={inputCls}
-            placeholder="+91 98765 43210"
+            placeholder="+91 98130 95627"
           />
         </FloatField>
         <FloatField label="WhatsApp Number (Optional)">
           <input
             {...form.register("whatsapp_number")}
             className={inputCls}
-            placeholder="+91 98765 43210"
+            placeholder="+91 98130 95627"
           />
         </FloatField>
       </div>

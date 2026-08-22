@@ -98,7 +98,7 @@ export function NursingBookingModal({
   };
 
   const { data: settings } = useQuery(settingsQ());
-  const phone = settings?.phone?.replace(/[^\\d+]/g, "");
+  const phone = (settings?.phone || "+919813095627").replace(/[^\\d+]/g, "");
 
   const form = useForm<NursingFormValues>({
     resolver: zodResolver(nursingFormSchema),

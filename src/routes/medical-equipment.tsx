@@ -184,8 +184,8 @@ const FAQS = [
 
 function MedicalEquipmentPage() {
   const { data: settings } = useQuery(settingsQ());
-  const phone = settings?.phone?.replace(/[^\d+]/g, "");
-  const whatsapp = (settings?.whatsapp ?? settings?.phone)?.replace(/\D/g, "");
+  const phone = (settings?.phone || "+919813095627").replace(/[^\d+]/g, "");
+  const whatsapp = (settings?.whatsapp ?? settings?.phone ?? "+919813095627").replace(/\D/g, "");
 
   const { data: catData } = useQuery(categoriesQ({ limit: 100 }));
   const category = (catData?.items ?? []).find(

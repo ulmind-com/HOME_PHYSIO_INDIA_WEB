@@ -88,7 +88,7 @@ function EquipmentIndex() {
   const { data, isLoading } = useQuery(equipmentQ({ limit: 60 }));
   const { data: settings } = useQuery(settingsQ());
   const items = data?.items ?? [];
-  const phone = settings?.phone?.replace(/[^\d+]/g, "");
+  const phone = (settings?.phone || "+919813095627").replace(/[^\d+]/g, "");
 
   return (
     <>

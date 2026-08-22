@@ -16,8 +16,8 @@ export const Route = createFileRoute("/contact")({
 
 function ContactPage() {
   const { data: settings } = useQuery(settingsQ());
-  const phone = settings?.phone?.replace(/[^\d+]/g, "");
-  const whatsapp = (settings?.whatsapp ?? settings?.phone)?.replace(/\D/g, "");
+  const phone = (settings?.phone || "+919813095627").replace(/[^\d+]/g, "");
+  const whatsapp = (settings?.whatsapp ?? settings?.phone ?? "+919813095627").replace(/\D/g, "");
 
   return (
     <main className="min-h-screen bg-[#F8F9FA] relative flex flex-col">
@@ -66,7 +66,7 @@ function ContactPage() {
                   desc={settings?.address || "Delhi NCR, India"}
                 />
                 <InfoRow icon={Mail} title="Email Us" desc={settings?.email || "info@nupun.com"} />
-                <InfoRow icon={Phone} title="Call Us" desc={settings?.phone || "+91 98765 43210"} />
+                <InfoRow icon={Phone} title="Call Us" desc={settings?.phone || "+91 98130 95627"} />
               </div>
             </div>
           </div>

@@ -84,7 +84,7 @@ export function Hero() {
   const { data: settings } = useQuery(settingsQ());
   const isMobile = useIsMobile();
 
-  const rawNumber = settings?.whatsapp || settings?.phone || "919876543210";
+  const rawNumber = settings?.whatsapp || settings?.phone || "+919813095627";
   const whatsapp = rawNumber.replace(/\D/g, "");
 
   const heroHeadline = settings?.hero_headline || "Trusted Home Health Care at Your Doorstep";

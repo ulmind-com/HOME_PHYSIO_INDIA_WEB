@@ -209,8 +209,8 @@ function MotherBabyCarePage() {
       c.slug?.toLowerCase().includes("mother")
   );
 
-  const rawPhone = settings?.phone || "+919876543210";
-  const rawWhatsapp = settings?.whatsapp || settings?.phone || "919876543210";
+  const rawPhone = settings?.phone || "+919813095627";
+  const rawWhatsapp = settings?.whatsapp || settings?.phone || "+919813095627";
 
   const phone = rawPhone.replace(/[^\d+]/g, "");
   const whatsapp = rawWhatsapp.replace(/\D/g, "");
@@ -406,7 +406,7 @@ function MotherBabyHero({
               </MotherBabyBookingModal>
 
               <a
-                href={`tel:${phone || "+919876543210"}`}
+                href={`tel:${phone || "+919813095627"}`}
                 className="group inline-flex items-center justify-center gap-2.5 rounded-full border border-white/30 bg-white/10 backdrop-blur-md px-8 py-3.5 text-[15px] font-medium text-white shadow-sm hover:bg-white/20 hover:border-white/50 transition-all duration-300 hover:-translate-y-0.5"
               >
                 <Phone className="h-5 w-5 text-[#25D366]" />

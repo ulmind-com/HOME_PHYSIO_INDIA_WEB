@@ -61,8 +61,8 @@ const TRUST = [
 function BookingPage() {
   const { service } = Route.useSearch();
   const { data: settings } = useQuery(settingsQ());
-  const phone = settings?.phone?.replace(/[^\d+]/g, "");
-  const whatsapp = (settings?.whatsapp ?? settings?.phone)?.replace(/\D/g, "");
+  const phone = (settings?.phone || "+919813095627").replace(/[^\d+]/g, "");
+  const whatsapp = (settings?.whatsapp ?? settings?.phone ?? "+919813095627").replace(/\D/g, "");
 
   return (
     <main className="min-h-screen bg-[#F8F9FA] relative flex flex-col">
