@@ -123,18 +123,28 @@ function Dots({
 
 export function OurStaffSection() {
   const { data, isLoading, isError } = useQuery(staffQ({ limit: 50 }));
-  const items = data?.items ?? [];
 
-  // ... (keeping categories logic)
+  /* Sort every staff member by their admin-set `order` (ascending) up front.
+     Both the category tabs and the cards inside them follow this, so the admin
+     controls ordering purely through the Order field. */
+  const items = useMemo(
+    () =>
+      [...(data?.items ?? [])].sort((a, b) => (a.order ?? 0) - (b.order ?? 0)),
+    [data],
+  );
 
-  /* Extract unique categories from API data, preserving order of first appearance */
+  /* Category tabs = unique categories in order of first appearance in the
+     order-sorted list, i.e. the category whose lowest-order staff comes first
+     appears first. Categories are trimmed so stray whitespace ("Nurse " vs
+     "Nurse") never splits one category into two tabs. */
   const categories = useMemo(() => {
     const seen = new Set<string>();
     const result: string[] = [];
     for (const s of items) {
-      if (!seen.has(s.category)) {
-        seen.add(s.category);
-        result.push(s.category);
+      const cat = (s.category ?? "").trim();
+      if (cat && !seen.has(cat)) {
+        seen.add(cat);
+        result.push(cat);
       }
     }
     return result;
@@ -150,7 +160,7 @@ export function OurStaffSection() {
   }, [categories, activeCategory]);
 
   const filteredStaff = useMemo(
-    () => items.filter((s) => s.category === activeCategory),
+    () => items.filter((s) => (s.category ?? "").trim() === activeCategory),
     [items, activeCategory],
   );
 
