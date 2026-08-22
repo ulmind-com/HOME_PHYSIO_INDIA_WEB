@@ -24,14 +24,6 @@ import { CommitmentSection } from "@/components/site/CommitmentSection";
 import { OurStaffSection } from "@/components/site/OurStaffSection";
 
 export const Route = createFileRoute("/")({
-  // Prefetch settings during SSR so the server renders the real backend
-  // comprehensive_services (not the hardcoded fallback). This keeps SSR and
-  // client output identical — no fallback→backend swap on hydration, which was
-  // causing cards/features (e.g. "Injection & IV Drip Services") to appear on a
-  // hard refresh and then disappear once the client query resolved.
-  loader: async ({ context }) => {
-    await context.queryClient.ensureQueryData(settingsQ()).catch(() => {});
-  },
   head: () => ({
     meta: [
       { title: "Nupun Home Health Care — Hospital-grade care, at home" },
