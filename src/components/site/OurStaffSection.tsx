@@ -32,7 +32,7 @@ function StaffCard({ staff }: { staff: StaffMember }) {
       className="group relative flex flex-col overflow-hidden rounded-[20px] border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-1"
     >
       {/* Photo */}
-      <div className="relative aspect-[5/4] w-full overflow-hidden bg-gray-100 rounded-b-[20px]">
+      <div className="relative aspect-[4/5] w-full overflow-hidden bg-gray-100 rounded-b-[20px]">
         {photo ? (
           <img
             src={photo}
@@ -241,7 +241,7 @@ export function OurStaffSection() {
               {filteredStaff.map((staff) => (
                 <div
                   key={staff.id}
-                  className="w-[55%] sm:w-[40%] shrink-0 snap-center"
+                  className="w-[45%] sm:w-[40%] shrink-0 snap-center"
                 >
                   <StaffCard staff={staff} />
                 </div>
