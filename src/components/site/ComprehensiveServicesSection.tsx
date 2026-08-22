@@ -307,9 +307,16 @@ export function ComprehensiveServicesSection() {
           viewport={{ once: true, margin: "-60px" }}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-7 max-w-[1400px] mx-auto"
         >
-          {activeServices.map((service) => (
+          {activeServices.map((service, index) => (
             <motion.article
-              key={service.id}
+              // Key by position, NOT service.id. The SSR fallback and the
+              // backend disagree on the first card's id ("infection" vs
+              // "infection-control"); keying by id made React unmount/remount
+              // that card on the client swap, and the remounted framer-motion
+              // article got stuck hidden — so the Infection Control card
+              // vanished after a hard refresh. A stable index key updates the
+              // card in place instead, keeping it visible.
+              key={index}
               variants={cardItem}
               className="group relative flex flex-col overflow-hidden rounded-[1.75rem] border border-border/80 bg-surface/95 shadow-[0_8px_30px_-10px_rgba(0,0,0,0.08)] transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_20px_50px_-15px_rgba(0,0,0,0.15)] hover:border-primary/40"
             >
