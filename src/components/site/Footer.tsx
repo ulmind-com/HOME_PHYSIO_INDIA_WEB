@@ -109,10 +109,25 @@ export function Footer() {
         
         {/* Bottom Bar (Desktop/Tablet) */}
         <div className="w-full relative z-10 bg-black/20 py-6 border-t border-white/10">
-          <div className="container-x flex flex-col md:flex-row items-center justify-center gap-4">
-            <div className="text-[13px] text-white/80 font-medium text-center">
+          <div className="container-x flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="text-[13px] text-white/80 font-medium text-center md:text-left">
               © {new Date().getFullYear()} {name}. All Rights Reserved.
             </div>
+            <a
+              href="https://www.ulmind.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-2.5 text-[13px] font-medium text-white/90"
+            >
+              <span className="opacity-80 transition-opacity group-hover:opacity-100">
+                Designed and Developed by
+              </span>
+              <img
+                src="/assets/ulmind.png"
+                alt="Ulmind"
+                className="h-10 w-auto object-contain transition-all group-hover:scale-105 sm:h-12"
+              />
+            </a>
           </div>
         </div>
       </footer>
