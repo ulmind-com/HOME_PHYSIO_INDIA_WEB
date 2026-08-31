@@ -2,9 +2,19 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { settingsQ } from "@/lib/api/queries";
-import { Menu, X, ArrowRight } from "lucide-react";
+import { Menu, X, ArrowRight, User, LogOut, LayoutDashboard } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/contexts/AuthContext";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const NAV = [
   { to: "/", label: "Home" },
@@ -23,6 +33,7 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const { data: settings } = useQuery(settingsQ());
+  const { user, isAuthenticated, logout } = useAuth();
 
   useEffect(() => setOpen(false), [pathname]);
 
@@ -130,20 +141,64 @@ export function Header() {
           </nav>
 
           <div className="relative flex items-center gap-2">
-            <Link
-              to="/booking"
-              className={cn(
-                "hidden sm:inline-flex h-[32px] sm:h-10 items-center justify-center rounded-full px-4 sm:px-5 text-[11px] xs:text-[12px] sm:text-sm font-semibold tracking-wide transition-all hover:scale-105",
-                onDarkHero
-                  ? "bg-white text-primary hover:bg-white/90"
-                  : "bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-sm hover:opacity-90",
-              )}
-            >
-              <span className="flex items-center gap-1.5 sm:hidden">
-                Book Trusted Care <ArrowRight className="h-3 w-3" />
-              </span>
-              <span className="hidden sm:inline">Book Appointment</span>
-            </Link>
+            {!isAuthenticated ? (
+              <Link
+                to="/booking"
+                className={cn(
+                  "hidden sm:inline-flex h-[32px] sm:h-10 items-center justify-center rounded-full px-4 sm:px-5 text-[11px] xs:text-[12px] sm:text-sm font-semibold tracking-wide transition-all hover:scale-105",
+                  onDarkHero
+                    ? "bg-white text-primary hover:bg-white/90"
+                    : "bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-sm hover:opacity-90",
+                )}
+              >
+                <span className="flex items-center gap-1.5 sm:hidden">
+                  Book Trusted Care <ArrowRight className="h-3 w-3" />
+                </span>
+                <span className="hidden sm:inline">Book Appointment</span>
+              </Link>
+            ) : (
+              <DropdownMenu>
+                <DropdownMenuTrigger className="outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-full transition-transform hover:scale-105 active:scale-95">
+                  <Avatar className="h-10 w-10 border-2 border-primary/20 shadow-sm cursor-pointer">
+                    <AvatarImage src={user?.avatar?.url} alt={user?.name || "User"} className="object-cover" />
+                    <AvatarFallback className="bg-primary/10 text-primary font-semibold text-sm">
+                      {user?.name?.charAt(0).toUpperCase() || "U"}
+                    </AvatarFallback>
+                  </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56 mt-2 rounded-2xl shadow-lg border-border/50">
+                  <DropdownMenuLabel className="font-normal p-3">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none truncate">{user?.name}</p>
+                      <p className="text-xs text-muted-foreground leading-none truncate">
+                        {user?.email}
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator className="bg-border/50" />
+                  <DropdownMenuItem className="p-2 cursor-pointer focus:bg-primary-soft rounded-lg" asChild>
+                    <Link to={user?.role === "therapist" ? "/therapist/dashboard" : "/user/dashboard"} className="flex items-center">
+                      <LayoutDashboard className="mr-2 h-4 w-4" />
+                      <span>Dashboard</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="p-2 cursor-pointer focus:bg-primary-soft rounded-lg" asChild>
+                    <Link to={user?.role === "therapist" ? "/therapist/dashboard" : "/user/dashboard"} className="flex items-center">
+                      <User className="mr-2 h-4 w-4" />
+                      <span>Profile Settings</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator className="bg-border/50" />
+                  <DropdownMenuItem 
+                    className="p-2 cursor-pointer text-destructive focus:bg-destructive/10 focus:text-destructive rounded-lg"
+                    onClick={() => logout()}
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Log out</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
 
             <button
               onClick={() => setOpen(!open)}
@@ -180,13 +235,15 @@ export function Header() {
                     {item.label}
                   </Link>
                 ))}
-                <Link
-                  to="/booking"
-                  onClick={() => setOpen(false)}
-                  className="mt-2 rounded-full bg-primary px-4 py-3 text-center text-sm font-semibold text-primary-foreground"
-                >
-                  Book Appointment
-                </Link>
+                {!isAuthenticated && (
+                  <Link
+                    to="/booking"
+                    onClick={() => setOpen(false)}
+                    className="mt-2 rounded-full bg-primary px-4 py-3 text-center text-sm font-semibold text-primary-foreground"
+                  >
+                    Book Appointment
+                  </Link>
+                )}
               </div>
             </motion.div>
           )}

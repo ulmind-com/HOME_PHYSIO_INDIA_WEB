@@ -1,4 +1,4 @@
-import { api, type Envelope } from "@/lib/api/client";
+import { api, apiFetch, type Envelope } from "@/lib/api/client";
 
 export type User = {
   id: string;
@@ -6,8 +6,9 @@ export type User = {
   email: string;
   role: string;
   phone?: string;
+  address?: string;
   is_email_verified: boolean;
-  avatar?: { url: string };
+  avatar?: { url: string; public_id?: string; [key: string]: any };
 };
 
 export type AuthResponse = {
@@ -49,5 +50,22 @@ export const authService = {
 
   me: async (): Promise<User> => {
     return api.get<User>("/auth/me");
+  },
+
+  updateProfile: async (payload: { name?: string; phone?: string; address?: string }): Promise<User> => {
+    return api.put<User>("/auth/me", payload);
+  },
+
+  uploadAvatar: async (file: File): Promise<User> => {
+    const fd = new FormData();
+    fd.append("file", file);
+    return apiFetch<User>("/auth/me/avatar", {
+      method: "POST",
+      formData: fd,
+    });
+  },
+
+  getBookings: async (): Promise<any[]> => {
+    return api.get<any[]>("/auth/me/bookings");
   },
 };
