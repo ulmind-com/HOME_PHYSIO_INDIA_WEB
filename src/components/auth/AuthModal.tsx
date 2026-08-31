@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { useRouter } from "@tanstack/react-router";
 import { useAuth } from "@/contexts/AuthContext";
 import { authService } from "@/services/api/auth.service";
 import { tokenStore } from "@/services/api/tokens";
@@ -16,6 +17,7 @@ type ViewState = "login" | "signup" | "otp" | "phone_prompt";
 
 export function AuthModal() {
   const { isAuthenticated, isLoading, setUser } = useAuth();
+  const router = useRouter();
   
   const [view, setView] = useState<ViewState>("login");
   const [loading, setLoading] = useState(false);
@@ -47,6 +49,7 @@ export function AuthModal() {
           tokenStore.set(res.access_token, res.refresh_token);
           setUser(res.user);
           toast.success("Logged in with Google!");
+          router.navigate({ to: res.user.role === "therapist" ? "/therapist/dashboard" : "/user/dashboard" });
         } catch (err: any) {
           const msg = (err.message || "").toLowerCase();
           if (msg.includes("phone") && msg.includes("required")) {
@@ -71,6 +74,7 @@ export function AuthModal() {
       tokenStore.set(res.access_token, res.refresh_token);
       setUser(res.user);
       toast.success("Logged in successfully!");
+      router.navigate({ to: res.user.role === "therapist" ? "/therapist/dashboard" : "/user/dashboard" });
     } catch (err: any) {
       if (err.message === "EMAIL_NOT_VERIFIED") {
         setView("otp");
@@ -109,6 +113,7 @@ export function AuthModal() {
       tokenStore.set(res.access_token, res.refresh_token);
       setUser(res.user);
       toast.success("Email verified successfully!");
+      router.navigate({ to: res.user.role === "therapist" ? "/therapist/dashboard" : "/user/dashboard" });
     } catch (err: any) {
       setError(err.message || "An unexpected error occurred");
     } finally {
@@ -143,6 +148,7 @@ export function AuthModal() {
       tokenStore.set(res.access_token, res.refresh_token);
       setUser(res.user);
       toast.success("Logged in with Google!");
+      router.navigate({ to: res.user.role === "therapist" ? "/therapist/dashboard" : "/user/dashboard" });
     } catch (err: any) {
       const msg = (err.message || "").toLowerCase();
       if (msg.includes("phone") && msg.includes("required")) {
@@ -164,6 +170,7 @@ export function AuthModal() {
       tokenStore.set(res.access_token, res.refresh_token);
       setUser(res.user);
       toast.success("Account created successfully!");
+      router.navigate({ to: res.user.role === "therapist" ? "/therapist/dashboard" : "/user/dashboard" });
     } catch (err: any) {
       setError(err.message || "An unexpected error occurred");
     } finally {

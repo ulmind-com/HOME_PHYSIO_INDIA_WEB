@@ -37,6 +37,8 @@ import { Route as EquipmentIndexRouteImport } from './routes/equipment.index'
 import { Route as EquipmentSlugRouteImport } from './routes/equipment.$slug'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
+import { Route as TherapistDashboardRouteImport } from './routes/therapist.dashboard'
+import { Route as UserDashboardRouteImport } from './routes/user.dashboard'
 import { Route as ApiPublicProxySplatRouteImport } from './routes/api/public/proxy.$'
 
 const IndexRoute = IndexRouteImport.update({
@@ -179,6 +181,16 @@ const ServicesSlugRoute = ServicesSlugRouteImport.update({
   path: '/services/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TherapistDashboardRoute = TherapistDashboardRouteImport.update({
+  id: '/therapist/dashboard',
+  path: '/therapist/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UserDashboardRoute = UserDashboardRouteImport.update({
+  id: '/user/dashboard',
+  path: '/user/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicProxySplatRoute = ApiPublicProxySplatRouteImport.update({
   id: '/api/public/proxy/$',
   path: '/api/public/proxy/$',
@@ -209,6 +221,8 @@ export interface FileRoutesByFullPath {
   '/careers/$slug': typeof CareersSlugRoute
   '/equipment/$slug': typeof EquipmentSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/therapist/dashboard': typeof TherapistDashboardRoute
+  '/user/dashboard': typeof UserDashboardRoute
   '/blog/': typeof BlogIndexRoute
   '/blogs/': typeof BlogsIndexRoute
   '/careers/': typeof CareersIndexRoute
@@ -240,6 +254,8 @@ export interface FileRoutesByTo {
   '/careers/$slug': typeof CareersSlugRoute
   '/equipment/$slug': typeof EquipmentSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/therapist/dashboard': typeof TherapistDashboardRoute
+  '/user/dashboard': typeof UserDashboardRoute
   '/blog': typeof BlogIndexRoute
   '/blogs': typeof BlogsIndexRoute
   '/careers': typeof CareersIndexRoute
@@ -272,6 +288,8 @@ export interface FileRoutesById {
   '/careers/$slug': typeof CareersSlugRoute
   '/equipment/$slug': typeof EquipmentSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/therapist/dashboard': typeof TherapistDashboardRoute
+  '/user/dashboard': typeof UserDashboardRoute
   '/blog/': typeof BlogIndexRoute
   '/blogs/': typeof BlogsIndexRoute
   '/careers/': typeof CareersIndexRoute
@@ -305,6 +323,8 @@ export interface FileRouteTypes {
     | '/careers/$slug'
     | '/equipment/$slug'
     | '/services/$slug'
+    | '/therapist/dashboard'
+    | '/user/dashboard'
     | '/blog/'
     | '/blogs/'
     | '/careers/'
@@ -336,6 +356,8 @@ export interface FileRouteTypes {
     | '/careers/$slug'
     | '/equipment/$slug'
     | '/services/$slug'
+    | '/therapist/dashboard'
+    | '/user/dashboard'
     | '/blog'
     | '/blogs'
     | '/careers'
@@ -367,6 +389,8 @@ export interface FileRouteTypes {
     | '/careers/$slug'
     | '/equipment/$slug'
     | '/services/$slug'
+    | '/therapist/dashboard'
+    | '/user/dashboard'
     | '/blog/'
     | '/blogs/'
     | '/careers/'
@@ -399,6 +423,8 @@ export interface RootRouteChildren {
   CareersSlugRoute: typeof CareersSlugRoute
   EquipmentSlugRoute: typeof EquipmentSlugRoute
   ServicesSlugRoute: typeof ServicesSlugRoute
+  TherapistDashboardRoute: typeof TherapistDashboardRoute
+  UserDashboardRoute: typeof UserDashboardRoute
   BlogIndexRoute: typeof BlogIndexRoute
   BlogsIndexRoute: typeof BlogsIndexRoute
   CareersIndexRoute: typeof CareersIndexRoute
@@ -605,6 +631,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/therapist/dashboard': {
+      id: '/therapist/dashboard'
+      path: '/therapist/dashboard'
+      fullPath: '/therapist/dashboard'
+      preLoaderRoute: typeof TherapistDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/user/dashboard': {
+      id: '/user/dashboard'
+      path: '/user/dashboard'
+      fullPath: '/user/dashboard'
+      preLoaderRoute: typeof UserDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/proxy/$': {
       id: '/api/public/proxy/$'
       path: '/api/public/proxy/$'
@@ -639,6 +679,8 @@ const rootRouteChildren: RootRouteChildren = {
   CareersSlugRoute: CareersSlugRoute,
   EquipmentSlugRoute: EquipmentSlugRoute,
   ServicesSlugRoute: ServicesSlugRoute,
+  TherapistDashboardRoute: TherapistDashboardRoute,
+  UserDashboardRoute: UserDashboardRoute,
   BlogIndexRoute: BlogIndexRoute,
   BlogsIndexRoute: BlogsIndexRoute,
   CareersIndexRoute: CareersIndexRoute,

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -9,7 +10,6 @@ import { CheckCircle2, Loader2, Upload } from "lucide-react";
 
 const schema = z.object({
   full_name: z.string().trim().min(2).max(120),
-  email: z.string().trim().email(),
   phone: z.string().trim().min(7).max(20),
   experience: z
     .string()
@@ -27,6 +27,7 @@ type Values = z.infer<typeof schema>;
 export function ApplicationForm({ jobId, jobTitle }: { jobId?: string; jobTitle: string }) {
   const [file, setFile] = useState<File | null>(null);
   const [done, setDone] = useState(false);
+  const { user } = useAuth();
   const form = useForm<Values>({ resolver: zodResolver(schema) });
 
   const mut = useMutation({
@@ -35,7 +36,7 @@ export function ApplicationForm({ jobId, jobTitle }: { jobId?: string; jobTitle:
       if (jobId) fd.append("job_id", jobId);
       fd.append("job_title", jobTitle);
       fd.append("full_name", v.full_name);
-      fd.append("email", v.email);
+      if (user?.email) fd.append("email", user.email);
       fd.append("phone", v.phone);
       if (v.experience) fd.append("experience", v.experience);
       if (v.cover_letter) fd.append("cover_letter", v.cover_letter);
@@ -68,14 +69,9 @@ export function ApplicationForm({ jobId, jobTitle }: { jobId?: string; jobTitle:
       <Field label="Full name" error={form.formState.errors.full_name?.message}>
         <input {...form.register("full_name")} className={inputCls} />
       </Field>
-      <div className="grid gap-4 md:grid-cols-2">
-        <Field label="Email" error={form.formState.errors.email?.message}>
-          <input type="email" {...form.register("email")} className={inputCls} />
-        </Field>
-        <Field label="Phone" error={form.formState.errors.phone?.message}>
-          <input {...form.register("phone")} className={inputCls} />
-        </Field>
-      </div>
+      <Field label="Phone" error={form.formState.errors.phone?.message}>
+        <input {...form.register("phone")} className={inputCls} />
+      </Field>
       <Field label="Experience">
         <input
           {...form.register("experience")}
