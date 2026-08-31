@@ -2,7 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
 import { authService, type User } from "@/services/api/auth.service";
 import { tokenStore } from "@/services/api/tokens";
 import { auth as firebaseAuth } from "@/lib/firebase";
-import { GoogleAuthProvider, signInWithPopup, signOut as firebaseSignOut } from "firebase/auth";
+import { signOut as firebaseSignOut } from "firebase/auth";
 
 interface AuthContextValue {
   user: User | null;

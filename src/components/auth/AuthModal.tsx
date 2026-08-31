@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { authService } from "@/services/api/auth.service";
 import { tokenStore } from "@/services/api/tokens";
@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { toast } from "sonner";
 import { auth as firebaseAuth } from "@/lib/firebase";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult } from "firebase/auth";
 import { AlertCircle, Loader2 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
@@ -91,12 +91,55 @@ export function AuthModal() {
     }
   };
 
+  // Handle redirect result on mount (fallback for COOP-blocked popups)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    getRedirectResult(firebaseAuth)
+      .then(async (result) => {
+        if (!result) return;
+        const idToken = await result.user.getIdToken();
+        setGoogleIdToken(idToken);
+        setLoading(true);
+        try {
+          const res = await authService.googleLogin(idToken);
+          tokenStore.set(res.access_token, res.refresh_token);
+          setUser(res.user);
+          toast.success("Logged in with Google!");
+        } catch (err: any) {
+          const msg = (err.message || "").toLowerCase();
+          if (msg.includes("phone") && msg.includes("required")) {
+            setView("phone_prompt");
+          } else {
+            handleError(err);
+          }
+        } finally {
+          setLoading(false);
+        }
+      })
+      .catch(() => {});
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleGoogleLogin = async () => {
     setLoading(true);
     setError(null);
     try {
       const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(firebaseAuth, provider);
+      let result;
+      try {
+        result = await signInWithPopup(firebaseAuth, provider);
+      } catch (popupErr: any) {
+        // If popup is blocked by COOP or user's browser, fall back to redirect
+        if (
+          popupErr.code === "auth/popup-blocked" ||
+          popupErr.code === "auth/popup-closed-by-user" ||
+          popupErr.code === "auth/internal-error"
+        ) {
+          await signInWithRedirect(firebaseAuth, provider);
+          return; // Page will redirect; result handled on mount
+        }
+        throw popupErr;
+      }
       const idToken = await result.user.getIdToken();
       setGoogleIdToken(idToken);
       
@@ -105,7 +148,8 @@ export function AuthModal() {
       setUser(res.user);
       toast.success("Logged in with Google!");
     } catch (err: any) {
-      if (err.message === "PHONE_REQUIRED") {
+      const msg = (err.message || "").toLowerCase();
+      if (msg.includes("phone") && msg.includes("required")) {
         setView("phone_prompt");
       } else {
         handleError(err);
