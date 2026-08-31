@@ -41,13 +41,13 @@ import { Section } from "@/components/site/Section";
 export const Route = createFileRoute("/medical-equipment")({
   head: () => ({
     meta: [
-      { title: "Medical Equipment for Home Care — Nupun Home Health Care Services" },
+      { title: "Medical Equipment for Home Care — Home Physio India" },
       {
         name: "description",
         content:
           "Essential medical equipment to support safer, more comfortable and convenient care at home. We arrange hospital beds, oxygen concentrators, wheelchairs, and more.",
       },
-      { property: "og:title", content: "Medical Equipment for Home Care — Nupun Home Health Care" },
+      { property: "og:title", content: "Medical Equipment for Home Care — Home Physio India" },
       {
         property: "og:description",
         content:
@@ -225,7 +225,7 @@ function MedicalEquipmentPage() {
 function EquipmentHero({ phone, category }: { phone?: string; category?: any }) {
   const heroBadge = category?.hero_badge || "Equipment Rentals";
   const heroTitle = category?.hero_title || "Medical Equipment \nfor Home Care";
-  const heroDescription = category?.hero_description || "Nupun Home Health Care Services provides essential medical equipment on rent to support patients, elderly people and families during home care and recovery. From hospital beds and wheelchairs to oxygen concentrators, BiPAP/CPAP and suction machines, we help you get the equipment you need with convenient rental options and dependable support.";
+  const heroDescription = category?.hero_description || "Home Physio India provides essential medical equipment on rent to support patients, elderly people and families during home care and recovery. From hospital beds and wheelchairs to oxygen concentrators, BiPAP/CPAP and suction machines, we help you get the equipment you need with convenient rental options and dependable support.";
   const heroCtaPrimaryText = category?.hero_cta_primary_text || "Check Availability";
   const heroCtaSecondaryText = category?.hero_cta_secondary_text || "Call Now";
   
@@ -552,7 +552,7 @@ function EquipmentChecklistSection() {
               Reliable Equipment for Home Care
             </h3>
             <p className="text-white/60 text-lg leading-relaxed">
-              Choosing the right equipment can make home care more comfortable and manageable. Nupun helps families identify the equipment they need based on the patient's requirements and available options.
+              Choosing the right equipment can make home care more comfortable and manageable. Home Physio India helps families identify the equipment they need based on the patient's requirements and available options.
             </p>
           </motion.div>
 
@@ -585,7 +585,7 @@ function EquipmentChecklistSection() {
   );
 }
 
-/* ─────────────────────── Why Choose Nupun ─────────────────────── */
+/* ─────────────────────── Why Choose Home Physio India ─────────────────────── */
 
 function EquipmentWhyChooseSection() {
   return (
@@ -598,10 +598,10 @@ function EquipmentWhyChooseSection() {
       >
         <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-5">
           <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-          Why Choose Nupun
+          Why Choose Home Physio India
         </div>
         <h2 className="font-display text-4xl md:text-5xl tracking-tight text-foreground mb-4">
-          Why Choose Nupun for Medical Equipment?
+          Why Choose Home Physio India for Medical Equipment?
         </h2>
       </motion.div>
 
@@ -695,7 +695,7 @@ function EquipmentCtaBand({ phone, whatsapp }: { phone?: string; whatsapp?: stri
             Need Medical Equipment at Home?
           </h2>
           <h3 className="text-xl md:text-2xl text-white/90 font-medium mb-6 tracking-wide" style={{ wordSpacing: "0.06em" }}>
-            Whether you need a hospital bed for a bedridden patient, a wheelchair for mobility support, an oxygen concentrator or respiratory equipment, Nupun Home Health Care Services can help you arrange the required equipment according to availability.
+            Whether you need a hospital bed for a bedridden patient, a wheelchair for mobility support, an oxygen concentrator or respiratory equipment, Home Physio India can help you arrange the required equipment according to availability.
           </h3>
           <p className="text-white/65 text-lg leading-relaxed max-w-2xl mb-10">
             Tell us what you need and our team will guide you through the available options.

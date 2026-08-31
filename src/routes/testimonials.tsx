@@ -10,9 +10,9 @@ import { motion } from "framer-motion";
 export const Route = createFileRoute("/testimonials")({
   head: () => ({
     meta: [
-      { title: "Testimonials — Nupun Home Health Care" },
+      { title: "Testimonials — Home Physio India" },
       { name: "description", content: "Real stories from the families we've cared for." },
-      { property: "og:title", content: "Testimonials — Nupun Home Health Care" },
+      { property: "og:title", content: "Testimonials — Home Physio India" },
       { property: "og:description", content: "Real stories from families." },
       { property: "og:url", content: "/testimonials" },
     ],
@@ -27,7 +27,7 @@ const DUMMY_TESTIMONIALS: any[] = [
     name: "Rajeshwar Roy",
     role: "Son of Patient",
     rating: 5,
-    content: "Nupun Health arranged an ICU-trained nurse within two hours after my father was discharged. The clinical discipline and empathy shown by the staff were exceptional.",
+    content: "Home Physio India arranged an ICU-trained nurse within two hours after my father was discharged. The clinical discipline and empathy shown by the staff were exceptional.",
   },
   {
     id: "d2",
@@ -48,7 +48,7 @@ const DUMMY_TESTIMONIALS: any[] = [
     name: "Dr. Meenakshi Iyer",
     role: "Referring Physician",
     rating: 5,
-    content: "I regularly refer my post-op patients to Nupun for home care. Their strict adherence to clinical protocols and timely vitals reporting makes them a reliable extension of our hospital care.",
+    content: "I regularly refer my post-op patients to Home Physio India for home care. Their strict adherence to clinical protocols and timely vitals reporting makes them a reliable extension of our hospital care.",
   },
   {
     id: "d5",
@@ -62,7 +62,7 @@ const DUMMY_TESTIMONIALS: any[] = [
     name: "Sneha Kapoor",
     role: "Daughter, NRI",
     rating: 5,
-    content: "Living abroad, I was constantly worried about my parents' health. Nupun's elder care plan with daily WhatsApp updates and weekly doctor visits has been a blessing. I feel connected to their care journey.",
+    content: "Living abroad, I was constantly worried about my parents' health. Home Physio India's elder care plan with daily WhatsApp updates and weekly doctor visits has been a blessing. I feel connected to their care journey.",
   }
 ];
 

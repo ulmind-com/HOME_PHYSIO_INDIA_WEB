@@ -20,12 +20,12 @@ export const Route = createFileRoute("/booking")({
   validateSearch: (s) => searchSchema.parse(s),
   head: () => ({
     meta: [
-      { title: "Book care — Nupun Home Health Care" },
+      { title: "Book care — Home Physio India" },
       {
         name: "description",
         content: "Book a nurse, physio or attendant at home. Confirmation within 2 hours.",
       },
-      { property: "og:title", content: "Book care — Nupun" },
+      { property: "og:title", content: "Book care — Home Physio India" },
       { property: "og:description", content: "Book care at home in minutes." },
       { property: "og:url", content: "/booking" },
     ],

@@ -10,13 +10,13 @@ import { Reveal } from "@/components/site/Reveal";
 export const Route = createFileRoute("/equipment/")({
   head: () => ({
     meta: [
-      { title: "Medical Equipment Rental — Nupun Home Health Care" },
+      { title: "Medical Equipment Rental — Home Physio India" },
       {
         name: "description",
         content:
           "Rent oxygen concentrators, hospital beds, wheelchairs and more, delivered and sanitised.",
       },
-      { property: "og:title", content: "Medical Equipment Rental — Nupun" },
+      { property: "og:title", content: "Medical Equipment Rental — Home Physio India" },
       { property: "og:description", content: "Hospital-grade equipment for home use." },
       { property: "og:url", content: "/equipment" },
     ],
@@ -177,7 +177,7 @@ function EquipmentIndex() {
         </div>
       </div>
 
-      {/* ── Why rent from Nupun ──────────────────────────────── */}
+      {/* ── Why rent from Home Physio India ──────────────────────────────── */}
       <Section className="pt-16 pb-8 lg:pt-20 lg:pb-10">
         <div className="container-x max-w-7xl mx-auto">
           <div className="grid gap-4 md:gap-5 md:grid-cols-3">

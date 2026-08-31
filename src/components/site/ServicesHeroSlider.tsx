@@ -264,7 +264,7 @@ export function ServicesHeroSlider({ slides: dynamicSlides }: { slides?: HeroSli
               className="mb-5 inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-md px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/80"
             >
               <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-              Nupun Home Health Care
+              Home Physio India
             </motion.div>
 
             {/* Title */}

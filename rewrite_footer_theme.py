@@ -65,7 +65,7 @@ export function Footer() {
   const { data: settings } = useQuery(settingsQ());
   const { data: social } = useQuery(socialQ());
 
-  const name = settings?.website_name ?? "Nupun Home Health Care";
+  const name = settings?.website_name ?? "Home Physio India";
   const phone = settings?.contact_phone ?? "+91 9876543210";
   const whatsapp = settings?.whatsapp_number ?? phone;
 

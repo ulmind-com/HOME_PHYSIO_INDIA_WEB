@@ -10,12 +10,12 @@ import { EmptyState, Section } from "@/components/site/Section";
 export const Route = createFileRoute("/faq")({
   head: () => ({
     meta: [
-      { title: "FAQ — Nupun Home Health Care" },
+      { title: "FAQ — Home Physio India" },
       {
         name: "description",
-        content: "Answers to common questions about Nupun's care services and equipment.",
+        content: "Answers to common questions about Home Physio India's care services and equipment.",
       },
-      { property: "og:title", content: "FAQ — Nupun Home Health Care" },
+      { property: "og:title", content: "FAQ — Home Physio India" },
       { property: "og:description", content: "Common questions about our care and equipment." },
       { property: "og:url", content: "/faq" },
     ],

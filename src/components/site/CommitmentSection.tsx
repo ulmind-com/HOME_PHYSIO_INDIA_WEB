@@ -60,7 +60,7 @@ export function CommitmentSection() {
 
   // Section header — dynamic with fallback
   const eyebrow = settings?.why_choose_eyebrow || "Our Promise";
-  const sectionTitle = settings?.why_choose_title || "Why Choose Nupun Home Care?";
+  const sectionTitle = settings?.why_choose_title || "Why Choose Home Physio India?";
   const sectionDescription =
     settings?.why_choose_description ||
     "We go beyond standard care to ensure your peace of mind and your loved one\u2019s well-being \u2014 every visit, every time.";
@@ -80,7 +80,7 @@ export function CommitmentSection() {
   const teamImage = imgUrl(rawImg) || "/assets/commitment-team.png";
 
   // Parse title to highlight the brand name
-  const titleParts = sectionTitle.split(/(Nupun)/i);
+  const titleParts = sectionTitle.split(/(Home Physio India)/i);
 
   return (
     <section className="relative w-full overflow-hidden bg-gradient-to-br from-[#f7fafa] via-white to-[#f0f7f6] py-16 md:py-24 lg:py-28">
@@ -113,7 +113,7 @@ export function CommitmentSection() {
           </div>
           <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-medium tracking-tight text-foreground leading-[1.15]">
             {titleParts.map((part, i) =>
-              part.toLowerCase() === "nupun" ? (
+              part.toLowerCase() === "home-physio-india" ? (
                 <span key={i} className="relative inline-block">
                   <span className="relative z-10 text-primary">{part}</span>
                   <svg
@@ -199,7 +199,7 @@ export function CommitmentSection() {
             <div className="overflow-hidden rounded-[1.5rem] border-2 border-white shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)]">
               <img
                 src={teamImage}
-                alt="Nupun Home Health Care Team"
+                alt="Home Physio India Team"
                 loading="lazy"
                 decoding="async"
                 className="w-full h-auto object-cover aspect-[4/3]"

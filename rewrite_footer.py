@@ -48,7 +48,7 @@ export function Footer() {
   const { data: social } = useQuery(socialQ());
   const { data: categoriesData } = useQuery(categoriesQ({ limit: 12 }));
 
-  const name = settings?.website_name ?? "Nupun Home Health Care";
+  const name = settings?.website_name ?? "Home Physio India";
   const categories = categoriesData?.items || [];
   
   const SERVICES_LINKS = categories.length > 0 

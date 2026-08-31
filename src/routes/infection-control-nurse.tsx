@@ -48,13 +48,13 @@ import type {
 export const Route = createFileRoute("/infection-control-nurse")({
   head: () => ({
     meta: [
-      { title: "Infection Control Nurse Services — Nupun Home Health Care Services" },
+      { title: "Infection Control Nurse Services — Home Physio India" },
       {
         name: "description",
         content:
           "Professional infection prevention and control support, training and guidance for healthcare professionals and care environments.",
       },
-      { property: "og:title", content: "Infection Control Nurse Services — Nupun Home Health Care" },
+      { property: "og:title", content: "Infection Control Nurse Services — Home Physio India" },
       {
         property: "og:description",
         content:
@@ -108,7 +108,7 @@ const DEFAULT_FAQS: ICFaqItem[] = [
   { question: "What topics can be covered in Infection Control training?", answer: "Topics may include hand hygiene, PPE, standard precautions, infection prevention practices, biomedical waste management and other relevant infection-control procedures." },
   { question: "Can nursing students enquire about Infection Control Nurse training?", answer: "Yes. Nursing students and healthcare professionals can submit an enquiry regarding available educational or training support." },
   { question: "Do you provide an Infection Control Nurse certificate?", answer: "Any certificate or training credential should be provided only according to the actual course, authorization, affiliation or recognition applicable to the program. Do not describe it as university/government recognized unless such recognition officially exists." },
-  { question: "How can I enquire about Infection Control Nurse services?", answer: "You can submit the enquiry form on this page or contact Nupun Home Health Care Services directly." },
+  { question: "How can I enquire about Infection Control Nurse services?", answer: "You can submit the enquiry form on this page or contact Home Physio India directly." },
 ];
 
 
@@ -418,7 +418,7 @@ function ICHero({
 
 function ICIntroSection({ content }: { content?: InfectionControlPageContent }) {
   const heading = content?.intro_heading || "Professional Infection Prevention & Control Support";
-  const body = content?.intro_content || "Nupun Home Health Care Services provides professional infection prevention and control support for healthcare professionals, nursing teams, healthcare facilities and home-care environments. Our services focus on promoting safe practices, proper hygiene, infection prevention protocols and awareness in healthcare settings.";
+  const body = content?.intro_content || "Home Physio India provides professional infection prevention and control support for healthcare professionals, nursing teams, healthcare facilities and home-care environments. Our services focus on promoting safe practices, proper hygiene, infection prevention protocols and awareness in healthcare settings.";
 
   return (
     <Section className="py-20 lg:py-28">
@@ -518,7 +518,7 @@ function ICWhyChooseSection({ content }: { content?: InfectionControlPageContent
           Why Choose Us
         </div>
         <h2 className="font-display text-4xl md:text-5xl tracking-tight text-foreground mb-4">
-          Why Choose Nupun?
+          Why Choose Home Physio India?
         </h2>
       </motion.div>
 

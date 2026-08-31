@@ -83,23 +83,23 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Nupun Home Health Care Services — Premium care, delivered home" },
+      { title: "Home Physio India — Premium care, delivered home" },
       {
         name: "description",
         content:
           "Verified nurses, physiotherapists and premium medical equipment — booked in minutes, delivered to your door. Rated 5-star by families across the region.",
       },
-      { property: "og:site_name", content: "Nupun Home Health Care" },
+      { property: "og:site_name", content: "Home Physio India" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "theme-color", content: "#33C4C7" },
       {
         property: "og:title",
-        content: "Nupun Home Health Care Services — Premium care, delivered home",
+        content: "Home Physio India — Premium care, delivered home",
       },
       {
         name: "twitter:title",
-        content: "Nupun Home Health Care Services — Premium care, delivered home",
+        content: "Home Physio India — Premium care, delivered home",
       },
       {
         property: "og:description",
@@ -136,7 +136,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "MedicalOrganization",
-          name: "Nupun Home Health Care Services",
+          name: "Home Physio India",
           medicalSpecialty: ["Nursing", "Physiotherapy", "ElderCare"],
         }),
       },

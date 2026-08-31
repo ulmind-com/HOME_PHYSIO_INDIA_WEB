@@ -26,13 +26,13 @@ import { OurStaffSection } from "@/components/site/OurStaffSection";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Nupun Home Health Care — Hospital-grade care, at home" },
+      { title: "Home Physio India — Hospital-grade care, at home" },
       {
         name: "description",
         content:
           "Verified nurses, physiotherapists and premium medical equipment — orchestrated by a dedicated advisor and delivered to your door in hours.",
       },
-      { property: "og:title", content: "Nupun Home Health Care — Hospital-grade care, at home" },
+      { property: "og:title", content: "Home Physio India — Hospital-grade care, at home" },
       {
         property: "og:description",
         content:
@@ -80,12 +80,12 @@ function Home() {
         <BlogVideosSection />
       </PremiumScrollReveal>
 
-      {/* 6. They Say About Nupun (Testimonials) */}
+      {/* 6. They Say About Home Physio India (Testimonials) */}
       <PremiumScrollReveal>
         <TestimonialsSection />
       </PremiumScrollReveal>
 
-      {/* Why Choose Nupun + Commitment to Excellence */}
+      {/* Why Choose Home Physio India + Commitment to Excellence */}
       <PremiumScrollReveal>
         <CommitmentSection />
       </PremiumScrollReveal>
@@ -143,7 +143,7 @@ const DEFAULT_TESTIMONIALS: any /* eslint-disable-line @typescript-eslint/no-exp
     role: "Son of Patient, Kolkata",
     rating: 5,
     content:
-      "Nupun Health arranged an ICU-trained nurse within two hours after my father was discharged. The clinical discipline and empathy shown by the staff were exceptional.",
+      "Home Physio India arranged an ICU-trained nurse within two hours after my father was discharged. The clinical discipline and empathy shown by the staff were exceptional.",
   },
   {
     id: "2",
@@ -207,7 +207,7 @@ function TestimonialsSection() {
 
   return (
     <Section className="overflow-hidden pb-4 pt-2 lg:pt-4">
-      <SectionHeader eyebrow="Testimonials & Reviews" title="They Say About Nupun" align="center" />
+      <SectionHeader eyebrow="Testimonials & Reviews" title="They Say About Home Physio India" align="center" />
       <div className="mt-10 -mx-4 md:-mx-8">
         <div className="overflow-hidden cursor-grab active:cursor-grabbing" ref={emblaRef}>
           <div className="flex pl-4 md:pl-8">
@@ -369,13 +369,13 @@ function BlogVideosSection() {
 const DEFAULT_FAQS: any /* eslint-disable-line @typescript-eslint/no-explicit-any */[] = [
   {
     id: "1",
-    question: "How quickly can Nupun arrange a nurse or caregiver at my home?",
+    question: "How quickly can Home Physio India arrange a nurse or caregiver at my home?",
     answer:
       "In most cases, we can verify your medical requirements and assign a qualified nurse or attendant to your doorstep within 2 to 4 hours of your booking consultation.",
   },
   {
     id: "2",
-    question: "Are all Nupun caregivers and nurses certified and background-checked?",
+    question: "Are all Home Physio India caregivers and nurses certified and background-checked?",
     answer:
       "Yes. Every registered nurse, physiotherapist, and care attendant goes through a rigorous 5-step vetting process, including medical credentials verification, criminal background checks, and practical clinical skills testing.",
   },

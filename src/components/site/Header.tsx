@@ -97,7 +97,7 @@ export function Header() {
                   onDarkHero && "text-white",
                 )}
               >
-                {settings?.website_name?.split(" ")[0] || "Nupun"}
+                {settings?.website_name?.split(" ")[0] || "Home Physio India"}
               </div>
               <div
                 className={cn(

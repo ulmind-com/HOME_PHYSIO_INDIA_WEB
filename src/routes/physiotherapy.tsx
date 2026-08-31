@@ -39,13 +39,13 @@ import { Section } from "@/components/site/Section";
 export const Route = createFileRoute("/physiotherapy")({
   head: () => ({
     meta: [
-      { title: "Physiotherapy at Home — Nupun Home Health Care Services" },
+      { title: "Physiotherapy at Home — Home Physio India" },
       {
         name: "description",
         content:
           "Professional physiotherapy at home — post-surgery rehabilitation, stroke recovery, orthopedic physiotherapy, geriatric care, mobility training and more.",
       },
-      { property: "og:title", content: "Physiotherapy at Home — Nupun Home Health Care" },
+      { property: "og:title", content: "Physiotherapy at Home — Home Physio India" },
       {
         property: "og:description",
         content:
@@ -234,7 +234,7 @@ const DEFAULT_FAQS = [
     id: "p6",
     question: "How can I book a physiotherapist at home?",
     answer:
-      "You can contact Nupun Home Health Care Services by phone or WhatsApp, or submit the booking form on our website. Our team will contact you to understand the patient's requirements and schedule the service.",
+      "You can contact Home Physio India by phone or WhatsApp, or submit the booking form on our website. Our team will contact you to understand the patient's requirements and schedule the service.",
   },
 ];
 
@@ -291,7 +291,7 @@ function PhysioHero({
 }) {
   const heroBadge = category?.hero_badge || "Physiotherapy & Recovery";
   const heroTitle = category?.hero_title || "Physiotherapy \nat Home";
-  const heroDescription = category?.hero_description || "Nupun Home Health Care Services provides personalised physiotherapy at home for elderly patients, post-surgery patients, bedridden patients and people recovering from illness or injury. Our physiotherapists focus on safe movement, pain management, rehabilitation and improving day-to-day independence.";
+  const heroDescription = category?.hero_description || "Home Physio India provides personalised physiotherapy at home for elderly patients, post-surgery patients, bedridden patients and people recovering from illness or injury. Our physiotherapists focus on safe movement, pain management, rehabilitation and improving day-to-day independence.";
   const heroCtaPrimaryText = category?.hero_cta_primary_text || "Book a Physiotherapist";
   const heroCtaSecondaryText = category?.hero_cta_secondary_text || "Call Now";
   const heroStats = category?.hero_stats?.length ? category.hero_stats : [
@@ -585,7 +585,7 @@ function PhysioServicesSection() {
           Our Physiotherapy Services
         </h2>
         <p className="text-muted-foreground text-lg leading-relaxed">
-          Nupun Home Health Care Services provides professional physiotherapy and rehabilitation
+          Home Physio India provides professional physiotherapy and rehabilitation
           support at home based on the patient's condition, mobility and recovery needs.
         </p>
       </motion.div>
@@ -644,7 +644,7 @@ function PhysioChecklistSection() {
               Trusted Physiotherapy Care at Home
             </h3>
             <p className="text-white/60 text-lg leading-relaxed">
-              At Nupun Home Health Care Services, our physiotherapy support is focused on safe,
+              At Home Physio India, our physiotherapy support is focused on safe,
               personalised and convenient care at home. Each session is planned according to the
               patient's condition, recovery goals and comfort.
             </p>
@@ -679,7 +679,7 @@ function PhysioChecklistSection() {
   );
 }
 
-/* ─────────────────────── Why Choose Nupun ─────────────────────── */
+/* ─────────────────────── Why Choose Home Physio India ─────────────────────── */
 
 function PhysioWhyChooseSection() {
   return (
@@ -695,7 +695,7 @@ function PhysioWhyChooseSection() {
           Why Families Choose Us
         </div>
         <h2 className="font-display text-4xl md:text-5xl tracking-tight text-foreground mb-4">
-          Why Choose Nupun for Physiotherapy at Home?
+          Why Choose Home Physio India for Physiotherapy at Home?
         </h2>
         <p className="text-muted-foreground text-lg leading-relaxed">
           Getting physiotherapy at home makes rehabilitation easier and more convenient, especially

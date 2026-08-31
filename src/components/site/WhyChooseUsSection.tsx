@@ -68,10 +68,10 @@ export function WhyChooseUsSection() {
       <div className="relative z-10 flex flex-col items-center">
         <SectionHeader
           align="center"
-          eyebrow="The Nupun Advantage"
+          eyebrow="The Home Physio India Advantage"
           title={
             <>
-              Why Choose <span className="text-primary">Nupun Home Cares</span>
+              Why Choose <span className="text-primary">Home Physio India</span>
             </>
           }
           description="Experience the perfect blend of clinical excellence, compassion, and reliability right in the comfort of your home."

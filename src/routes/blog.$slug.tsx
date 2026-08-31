@@ -20,8 +20,8 @@ export const Route = createFileRoute("/blog/$slug")({
   },
   head: ({ loaderData, params }) => ({
     meta: [
-      { title: `${loaderData?.title ?? "Article"} — Nupun` },
-      { name: "description", content: loaderData?.description ?? "Article from the Nupun blog." },
+      { title: `${loaderData?.title ?? "Article"} — Home Physio India` },
+      { name: "description", content: loaderData?.description ?? "Article from the Home Physio India blog." },
       { property: "og:title", content: loaderData?.title ?? "Article" },
       { property: "og:description", content: loaderData?.description ?? "" },
       { property: "og:type", content: "article" },

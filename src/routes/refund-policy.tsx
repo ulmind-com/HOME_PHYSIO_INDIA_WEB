@@ -8,7 +8,7 @@ import { LegalPage } from "@/components/site/LegalPage";
 export const Route = createFileRoute("/refund-policy")({
   head: () => ({
     meta: [
-      { title: "Refund Policy — Nupun Home Health Care" },
+      { title: "Refund Policy — Home Physio India" },
       {
         name: "description",
         content: "Our refund and cancellation policy for home care services and equipment rentals.",

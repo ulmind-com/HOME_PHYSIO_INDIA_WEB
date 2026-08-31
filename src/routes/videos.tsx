@@ -11,12 +11,12 @@ import type { Video } from "@/lib/api/types";
 export const Route = createFileRoute("/videos")({
   head: () => ({
     meta: [
-      { title: "Videos — Nupun Home Health Care" },
+      { title: "Videos — Home Physio India" },
       {
         name: "description",
         content: "Watch care in action — guides, family stories and behind-the-scenes.",
       },
-      { property: "og:title", content: "Videos — Nupun Home Health Care" },
+      { property: "og:title", content: "Videos — Home Physio India" },
       { property: "og:description", content: "Watch care in action." },
       { property: "og:url", content: "/videos" },
     ],
@@ -34,7 +34,7 @@ function VideosPage() {
       <PageHero
         eyebrow="Watch"
         title="Care, on screen."
-        description="Short films, guides and family stories — a look at how Nupun's care actually feels."
+        description="Short films, guides and family stories — a look at how Home Physio India's care actually feels."
         crumbs={[{ label: "Home", to: "/" }, { label: "Videos" }]}
       />
       <Section className="pt-16 lg:pt-20">

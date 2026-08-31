@@ -29,7 +29,7 @@ type TileItem = {
 const DEFAULT_HEADING = "Professionals dedicated to your health";
 
 const DEFAULT_DESCRIPTION =
-  "Nupun Home Health Care provides a qualified team of nursing staff, care attendants, physiotherapists and equipment specialists — available 8, 12 or 24 hours as per your requirement.";
+  "Home Physio India provides a qualified team of nursing staff, care attendants, physiotherapists and equipment specialists — available 8, 12 or 24 hours as per your requirement.";
 
 const DEFAULT_FEATURES: FeatureItem[] = [
   {

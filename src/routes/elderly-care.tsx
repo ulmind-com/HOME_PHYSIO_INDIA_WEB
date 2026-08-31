@@ -41,13 +41,13 @@ const MOBILE_HERO_IMAGES = [
 export const Route = createFileRoute("/elderly-care")({
   head: () => ({
     meta: [
-      { title: "Elderly Care at Home — Nupun Home Health Care Services" },
+      { title: "Elderly Care at Home — Home Physio India" },
       {
         name: "description",
         content:
           "Trained and caring attendants for elderly people. Personal hygiene, mobility, meals, companionship, medication reminders and daily routine support — right at home.",
       },
-      { property: "og:title", content: "Elderly Care at Home — Nupun Home Health Care" },
+      { property: "og:title", content: "Elderly Care at Home — Home Physio India" },
       {
         property: "og:description",
         content:
@@ -202,7 +202,7 @@ const DEFAULT_FAQS = [
     id: "8",
     question: "How can I book an elderly caregiver?",
     answer:
-      "You can contact Nupun Home Health Care Services by phone or WhatsApp. Share the patient's age, condition, location and required duty hours, and our team will guide you regarding the suitable care option.",
+      "You can contact Home Physio India by phone or WhatsApp. Share the patient's age, condition, location and required duty hours, and our team will guide you regarding the suitable care option.",
   },
 ];
 
@@ -254,7 +254,7 @@ function ElderlyHero({ phone, whatsapp, category }: { phone?: string; whatsapp?:
 
   const heroBadge = category?.hero_badge || "Elderly Care Services";
   const heroTitle = category?.hero_title || "Trusted Elderly Care \nRight at Home";
-  const heroDescription = category?.hero_description || "Nupun Home Health Care Services, we provide caring and personalised support for seniors with their daily needs. Our trained attendants assist with personal care, mobility, meals, companionship and medication reminders, helping elderly people stay comfortable, safe and independent at home.";
+  const heroDescription = category?.hero_description || "Home Physio India, we provide caring and personalised support for seniors with their daily needs. Our trained attendants assist with personal care, mobility, meals, companionship and medication reminders, helping elderly people stay comfortable, safe and independent at home.";
   const heroCtaPrimaryText = category?.hero_cta_primary_text || "Book an Attendant";
   const heroCtaSecondaryText = category?.hero_cta_secondary_text || "Call Now";
   const heroStats = category?.hero_stats?.length ? category.hero_stats : [
@@ -588,7 +588,7 @@ function TrustedFeatures() {
               Trusted Elderly Care Services
             </h2>
             <p className="text-white/70 text-lg leading-relaxed mb-6">
-              At Nupun Home Health Care Services, we understand that caring for an elderly family member requires patience, responsibility and trust.
+              At Home Physio India, we understand that caring for an elderly family member requires patience, responsibility and trust.
             </p>
             <p className="text-white/70 text-lg leading-relaxed mb-10">
               Our trained attendants provide respectful support while maintaining the senior's dignity, comfort and independence.
@@ -658,7 +658,7 @@ function WhyChooseUs() {
             Why Choose Us
           </div>
           <h2 className="font-display text-4xl md:text-5xl font-semibold text-foreground tracking-tight leading-[1.1]">
-            Why Choose Nupun Home Health Care Services?
+            Why Choose Home Physio India?
           </h2>
         </motion.div>
       </div>

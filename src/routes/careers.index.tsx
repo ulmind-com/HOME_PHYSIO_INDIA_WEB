@@ -9,12 +9,12 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/careers/")({
   head: () => ({
     meta: [
-      { title: "Careers — Join Nupun Home Health Care" },
+      { title: "Careers — Join Home Physio India" },
       {
         name: "description",
-        content: "Join Nupun Home Health Care Services and build your career in professional home healthcare.",
+        content: "Join Home Physio India and build your career in professional home healthcare.",
       },
-      { property: "og:title", content: "Careers — Nupun Home Health Care" },
+      { property: "og:title", content: "Careers — Home Physio India" },
       { property: "og:url", content: "/careers" },
     ],
     links: [{ rel: "canonical", href: "/careers" }],
@@ -89,7 +89,7 @@ function CareersPage() {
             Join Our Care Team
           </h1>
           <p className="text-lg md:text-xl text-white/90 leading-relaxed max-w-2xl mx-auto font-medium drop-shadow-sm">
-            Join Nupun Home Health Care Services and build your career in professional home healthcare.
+            Join Home Physio India and build your career in professional home healthcare.
           </p>
         </div>
       </section>
@@ -104,7 +104,7 @@ function CareersPage() {
               </div>
               <h2 className="text-3xl font-display font-semibold mb-4">Application Submitted!</h2>
               <p className="text-lg text-muted-foreground mb-8">
-                Thank you for applying to Nupun Home Health Care. Our team will review your details and get back to you shortly.
+                Thank you for applying to Home Physio India. Our team will review your details and get back to you shortly.
               </p>
               <button 
                 onClick={() => window.location.reload()}

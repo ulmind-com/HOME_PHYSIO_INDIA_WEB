@@ -38,13 +38,13 @@ import { Section } from "@/components/site/Section";
 export const Route = createFileRoute("/nursing-care")({
   head: () => ({
     meta: [
-      { title: "Home Nursing Care — Nupun Home Health Care Services" },
+      { title: "Home Nursing Care — Home Physio India" },
       {
         name: "description",
         content:
           "Professional nursing support at home — injections, IV infusion, wound care, catheter care, tracheostomy care, post-hospitalisation nursing and more.",
       },
-      { property: "og:title", content: "Home Nursing Care — Nupun Home Health Care" },
+      { property: "og:title", content: "Home Nursing Care — Home Physio India" },
       {
         property: "og:description",
         content:
@@ -298,7 +298,7 @@ const DEFAULT_FAQS = [
     id: "10",
     question: "How can I book home nursing care?",
     answer:
-      "Contact Nupun Home Health Care Services by phone or WhatsApp. Share the patients' age, condition, location, required service and preferred timing. Our team will guide you regarding the available nursing option.",
+      "Contact Home Physio India by phone or WhatsApp. Share the patients' age, condition, location, required service and preferred timing. Our team will guide you regarding the available nursing option.",
   },
 ];
 
@@ -349,7 +349,7 @@ function NursingCarePage() {
       {/* ── Nursing Support Checklist ─────────────────────── */}
       <ChecklistSection />
 
-      {/* ── Why Choose Nupun ─────────────────────────────── */}
+      {/* ── Why Choose Home Physio India ─────────────────────────────── */}
       <WhyChooseSection />
 
       {/* ── Who Can Benefit ──────────────────────────────── */}
@@ -380,7 +380,7 @@ function NursingHero({
 }) {
   const heroBadge = category?.hero_badge || "Skilled Nursing Care at Home";
   const heroTitle = category?.hero_title || "Professional Nursing Support Delivered at Home";
-  const heroDescription = category?.hero_description || "Nupun Home Health Care Services, our trained nursing professionals provide personalised medical support at home. From routine monitoring and prescribed procedures to wound care, injections and post-hospitalisation support, we help patients receive safe and dependable nursing care in the comfort of their home.";
+  const heroDescription = category?.hero_description || "Home Physio India, our trained nursing professionals provide personalised medical support at home. From routine monitoring and prescribed procedures to wound care, injections and post-hospitalisation support, we help patients receive safe and dependable nursing care in the comfort of their home.";
   const heroCtaPrimaryText = category?.hero_cta_primary_text || "Book a Nurse";
   const heroCtaSecondaryText = category?.hero_cta_secondary_text || "Call Now";
   const heroStats = category?.hero_stats?.length ? category.hero_stats : [
@@ -756,7 +756,7 @@ function ChecklistSection() {
   );
 }
 
-/* ─────────────────────── Why Choose Nupun ─────────────────────── */
+/* ─────────────────────── Why Choose Home Physio India ─────────────────────── */
 
 function WhyChooseSection() {
   return (
@@ -772,7 +772,7 @@ function WhyChooseSection() {
           Why Families Choose Us
         </div>
         <h2 className="font-display text-4xl md:text-5xl tracking-tight text-foreground mb-4">
-          Why Choose Nupun for Home Nursing?
+          Why Choose Home Physio India for Home Nursing?
         </h2>
       </motion.div>
 

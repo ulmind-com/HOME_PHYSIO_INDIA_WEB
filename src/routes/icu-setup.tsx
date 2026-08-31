@@ -30,13 +30,13 @@ import { IcuBookingModal } from "@/components/forms/IcuBookingModal";
 export const Route = createFileRoute("/icu-setup")({
   head: () => ({
     meta: [
-      { title: "ICU Setup at Home — Nupun Home Health Care Services" },
+      { title: "ICU Setup at Home — Home Physio India" },
       {
         name: "description",
         content:
           "Complete ICU setup at home with trained nursing professionals, essential medical equipment and continuous patient care — planned according to the patient's clinical requirements.",
       },
-      { property: "og:title", content: "ICU Setup at Home — Nupun Home Health Care" },
+      { property: "og:title", content: "ICU Setup at Home — Home Physio India" },
       {
         property: "og:description",
         content:
@@ -513,7 +513,7 @@ function IntroSection() {
           Complete ICU Care Setup at Home
         </h2>
         <p className="text-lg text-muted-foreground leading-relaxed">
-          Nupun Home Health Care Services provides a comprehensive home ICU setup for
+          Home Physio India provides a comprehensive home ICU setup for
           patients who require critical care after hospital discharge or prefer continued
           medical care at home. Our team helps arrange the required equipment, trained
           nursing support and essential monitoring facilities according to the patient's
@@ -693,7 +693,7 @@ function DurationEquipmentSection() {
   );
 }
 
-/* ─────────────────────── Why Choose Nupun ─────────────────────── */
+/* ─────────────────────── Why Choose Home Physio India ─────────────────────── */
 
 function WhyChooseSection() {
   return (
@@ -709,7 +709,7 @@ function WhyChooseSection() {
           Why Families Choose Us
         </div>
         <h2 className="font-display text-4xl md:text-5xl tracking-tight text-foreground mb-4">
-          Why Choose Nupun Home Health Care Services?
+          Why Choose Home Physio India?
         </h2>
       </motion.div>
 
@@ -851,7 +851,7 @@ function IcuCtaBand({ phone, whatsapp }: { phone?: string; whatsapp?: string }) 
                 href={`tel:${phone}`}
                 className="inline-flex items-center gap-2 rounded-full border border-white/30 text-white px-8 py-4 text-base font-semibold hover:bg-white/10 transition-all duration-300"
               >
-                <Phone className="h-5 w-5" /> Call Nupun Home Health Care Services
+                <Phone className="h-5 w-5" /> Call Home Physio India
               </a>
             )}
           </div>

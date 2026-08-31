@@ -24,13 +24,13 @@ import { usePremiumCategories } from "@/components/site/CategoryShowcasePremium"
 export const Route = createFileRoute("/services/")({
   head: () => ({
     meta: [
-      { title: "Services — Nupun Home Health Care" },
+      { title: "Services — Home Physio India" },
       {
         name: "description",
         content:
           "Nurses, physios, elder care, post-op recovery and more — medically supervised care delivered at home.",
       },
-      { property: "og:title", content: "Services — Nupun Home Health Care" },
+      { property: "og:title", content: "Services — Home Physio India" },
       {
         property: "og:description",
         content: "Medically supervised home care — nurses, physios, elder care and more.",
@@ -297,7 +297,7 @@ function ServicesIndex() {
         </div>
       </Section>
 
-      {/* ── Why Choose Nupun ─────────────────────────────────── */}
+      {/* ── Why Choose Home Physio India ─────────────────────────────────── */}
       <section className="relative overflow-hidden bg-background">
         <div className="container-x pb-20 lg:pb-28 pt-0">
           <div className="text-center max-w-2xl mx-auto mb-14">
@@ -305,7 +305,7 @@ function ServicesIndex() {
               <HeartHandshake className="h-3.5 w-3.5 text-primary" /> Why families choose us
             </div>
             <h2 className="font-display text-4xl md:text-5xl tracking-tight text-foreground">
-              Why Choose Nupun?
+              Why Choose Home Physio India?
             </h2>
           </div>
 
@@ -409,7 +409,7 @@ function ServicesIndex() {
         <section className="border-t border-border/60 bg-surface/60 overflow-hidden">
           <div className="container-x pt-20 pb-6">
             <div className="text-[10px] uppercase tracking-[0.24em] text-accent mb-3">
-              What they say about Nupun
+              What they say about Home Physio India
             </div>
             <h2 className="font-display text-3xl md:text-4xl tracking-tight max-w-2xl">
               Families across India, in their own words.

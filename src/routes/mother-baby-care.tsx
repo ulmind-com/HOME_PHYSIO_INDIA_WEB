@@ -33,13 +33,13 @@ import { Section } from "@/components/site/Section";
 export const Route = createFileRoute("/mother-baby-care")({
   head: () => ({
     meta: [
-      { title: "Mother & Baby Care at Home — Nupun Home Health Care Services" },
+      { title: "Mother & Baby Care at Home — Home Physio India" },
       {
         name: "description",
         content:
           "Reliable and personalised mother and baby care at home — postnatal recovery, newborn care, feeding support and everyday assistance for families.",
       },
-      { property: "og:title", content: "Mother & Baby Care at Home — Nupun Home Health Care" },
+      { property: "og:title", content: "Mother & Baby Care at Home — Home Physio India" },
       {
         property: "og:description",
         content:
@@ -191,7 +191,7 @@ const DEFAULT_FAQS = [
     id: "7",
     question: "How can I book Mother & Baby Care?",
     answer:
-      "Contact Nupun Home Health Care Services by phone or WhatsApp. Share the mother's and baby's details, your location, required care type and preferred timing. Our team will guide you regarding the best available option.",
+      "Contact Home Physio India by phone or WhatsApp. Share the mother's and baby's details, your location, required care type and preferred timing. Our team will guide you regarding the best available option.",
   },
 ];
 
@@ -237,7 +237,7 @@ function MotherBabyCarePage() {
       {/* ── Trusted Mother & Baby Care Checklist ──────────── */}
       <ChecklistSection />
 
-      {/* ── Why Choose Nupun ─────────────────────────────── */}
+      {/* ── Why Choose Home Physio India ─────────────────────────────── */}
       <WhyChooseSection />
 
       {/* ── CTA Band ─────────────────────────────────────── */}
@@ -265,7 +265,7 @@ function MotherBabyHero({
 }) {
   const heroBadge = category?.hero_badge || "Mother & Baby Care Services";
   const heroTitle = category?.hero_title || "Trusted Mother & Baby Care at Home";
-  const heroDescription = category?.hero_description || "Nupun Home Health Care Services provides reliable and personalised support for mothers and babies at home, helping families manage postnatal recovery, newborn care and everyday needs with comfort and confidence.";
+  const heroDescription = category?.hero_description || "Home Physio India provides reliable and personalised support for mothers and babies at home, helping families manage postnatal recovery, newborn care and everyday needs with comfort and confidence.";
   const heroCtaPrimaryText = category?.hero_cta_primary_text || "Book Mother & Baby Care";
   const heroCtaSecondaryText = category?.hero_cta_secondary_text || "Call Now / WhatsApp";
   const heroStats = category?.hero_stats?.length ? category.hero_stats : [
@@ -641,7 +641,7 @@ function ChecklistSection() {
   );
 }
 
-/* ─────────────────────── Why Choose Nupun (Same as Nursing) ─────────────────────── */
+/* ─────────────────────── Why Choose Home Physio India (Same as Nursing) ─────────────────────── */
 
 function WhyChooseSection() {
   return (
@@ -657,7 +657,7 @@ function WhyChooseSection() {
           Why Families Choose Us
         </div>
         <h2 className="font-display text-4xl md:text-5xl tracking-tight text-foreground mb-4">
-          Why Choose Nupun?
+          Why Choose Home Physio India?
         </h2>
       </motion.div>
 
@@ -719,7 +719,7 @@ function MotherBabyCtaBand({ phone, whatsapp }: { phone?: string; whatsapp?: str
           </h2>
           <h3 className="text-xl md:text-2xl text-white/90 font-medium mb-6 tracking-wide" style={{ wordSpacing: "0.06em" }}>
             Whether you need support after delivery, newborn care or assistance with everyday mother and baby needs,{" "}
-            <em className="not-italic text-white">Nupun Home Health Care Services is here to help.</em>
+            <em className="not-italic text-white">Home Physio India is here to help.</em>
           </h3>
           <p className="text-white/65 text-lg leading-relaxed max-w-2xl mb-10">
             Tell us about your requirement and our care team will

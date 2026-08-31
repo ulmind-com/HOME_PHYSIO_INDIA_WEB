@@ -37,13 +37,13 @@ import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/components/
 export const Route = createFileRoute("/sample-collection")({
   head: () => ({
     meta: [
-      { title: "Home Sample Collection — Nupun Home Health Care Services" },
+      { title: "Home Sample Collection — Home Physio India" },
       {
         name: "description",
         content:
           "Convenient home sample collection for blood, urine, stool and other diagnostic tests. Professional and hygienic sample handling.",
       },
-      { property: "og:title", content: "Home Sample Collection — Nupun Home Health Care" },
+      { property: "og:title", content: "Home Sample Collection — Home Physio India" },
       {
         property: "og:description",
         content:
@@ -242,7 +242,7 @@ function SampleCollectionHero({
 }) {
   const heroBadge = "Home Sample Collection";
   const heroTitle = "Reliable Home Sample Collection Services";
-  const heroDescription = "Nupun Home Health Care Services provides convenient home sample collection for patients who prefer to get their blood and other diagnostic samples collected at home. Our trained professionals follow appropriate sample-collection and handling procedures.";
+  const heroDescription = "Home Physio India provides convenient home sample collection for patients who prefer to get their blood and other diagnostic samples collected at home. Our trained professionals follow appropriate sample-collection and handling procedures.";
   const heroCtaPrimaryText = "Book Home Sample Collection";
   const heroCtaSecondaryText = "Call Now";
   const heroStats = [
@@ -580,7 +580,7 @@ function SampleCollectionCtaBand({ phone, whatsapp }: { phone?: string; whatsapp
             Need a Sample Collection at Home?
           </h2>
           <h3 className="text-xl md:text-2xl text-white/90 font-medium mb-6 tracking-wide" style={{ wordSpacing: "0.06em" }}>
-            Book a convenient home sample collection with Nupun Home Health Care Services.
+            Book a convenient home sample collection with Home Physio India.
           </h3>
           
           <div className="flex flex-wrap gap-4 mt-8">

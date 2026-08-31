@@ -22,7 +22,7 @@ export function BlogCard({ blog }: { blog: Blog }) {
           />
         ) : (
           <div className="grid h-full w-full place-items-center text-primary/70 font-display text-4xl">
-            Nupun
+            Home Physio India
           </div>
         )}
       </div>

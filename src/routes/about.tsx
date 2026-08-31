@@ -8,13 +8,13 @@ import { Section } from "@/components/site/Section";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About — Nupun Home Health Care Services" },
+      { title: "About — Home Physio India" },
       {
         name: "description",
-        content: "Nupun Home Health Care Services provides reliable healthcare and personal care support at home for patients, elderly people and families.",
+        content: "Home Physio India provides reliable healthcare and personal care support at home for patients, elderly people and families.",
       },
-      { property: "og:title", content: "About — Nupun Home Health Care" },
-      { property: "og:description", content: "Nupun Home Health Care Services provides reliable healthcare and personal care support at home." },
+      { property: "og:title", content: "About — Home Physio India" },
+      { property: "og:description", content: "Home Physio India provides reliable healthcare and personal care support at home." },
       { property: "og:url", content: "/about" },
     ],
     links: [{ rel: "canonical", href: "/about" }],
@@ -28,8 +28,8 @@ function AboutPage() {
   const { data: settings } = useQuery(settingsQ());
 
   // Hero section data
-  const heroTitle = settings?.about_hero_title || "ABOUT NUPUN";
-  const heroDescription = settings?.about_hero_description || "Nupun Home Health Care Services provides reliable and compassionate healthcare support in the comfort of your home.\n\nWe connect families with trained and verified nurses, caregivers and healthcare professionals, offering personalized care based on each patient needs.\n\n. Flexible care options designed around your requirements.\n. Professional nursing, elderly care, physiotherapy and recovery support.\n. Patient - focused care with safety, dignity and compassion.\n. Reliable support for patient and families throughout their care journey.";
+  const heroTitle = settings?.about_hero_title || "ABOUT HOME PHYSIO INDIA";
+  const heroDescription = settings?.about_hero_description || "Home Physio India provides reliable and compassionate healthcare support in the comfort of your home.\n\nWe connect families with trained and verified nurses, caregivers and healthcare professionals, offering personalized care based on each patient needs.\n\n. Flexible care options designed around your requirements.\n. Professional nursing, elderly care, physiotherapy and recovery support.\n. Patient - focused care with safety, dignity and compassion.\n. Reliable support for patient and families throughout their care journey.";
 
   // Split description into text and bullets
   const lines = heroDescription.split('\n').map((l: string) => l.trim()).filter(Boolean);
@@ -55,22 +55,22 @@ function AboutPage() {
       : [
           {
             name: "Sandeep Anand",
-            role: "Founder, Nupun Home Health Care",
+            role: "Founder, Home Physio India",
             image: "https://i.pravatar.cc/300?u=sandeep",
             description:
-              "With over two decades of leadership experience across PepsiCo, ITC, GSK, and Walmart, and an MBA from SP Jain (SPJIMR), Sandeep has built and managed large-scale operations where reliability is non-negotiable.\n\nThe vision for Nupun is deeply personal, emerging from his experience navigating the lack of organized elderly care during his parents' terminal illnesses. He combines operational excellence with emotional purpose to create care that is structured, dependable, and reassuring for families.",
+              "With over two decades of leadership experience across PepsiCo, ITC, GSK, and Walmart, and an MBA from SP Jain (SPJIMR), Sandeep has built and managed large-scale operations where reliability is non-negotiable.\n\nThe vision for Home Physio India is deeply personal, emerging from his experience navigating the lack of organized elderly care during his parents' terminal illnesses. He combines operational excellence with emotional purpose to create care that is structured, dependable, and reassuring for families.",
           },
           {
             name: "Megha Gandhi",
-            role: "Co-Founder, Nupun Home Health Care",
+            role: "Co-Founder, Home Physio India",
             image: "https://i.pravatar.cc/300?u=megha",
             description:
-              "Having managed business leadership roles across YES Bank, HDFC Bank, and Axis Bank, Megha has spent her career working closely with senior citizens. This professional background, coupled with the personal loss of her mother, deeply shaped her commitment to dignity and empathy.\n\nAt Nupun, Megha leads with compassion, ensuring that every service is personal, respectful, and built on a foundation of absolute trust to redefine the elder care experience.",
+              "Having managed business leadership roles across YES Bank, HDFC Bank, and Axis Bank, Megha has spent her career working closely with senior citizens. This professional background, coupled with the personal loss of her mother, deeply shaped her commitment to dignity and empathy.\n\nAt Home Physio India, Megha leads with compassion, ensuring that every service is personal, respectful, and built on a foundation of absolute trust to redefine the elder care experience.",
           },
         ];
 
   // Address data
-  const addressName = (settings as any)?.about_address_name || "Nupun Home Health Care";
+  const addressName = (settings as any)?.about_address_name || "Home Physio India";
   const addressLine1 = (settings as any)?.about_address_line1 || "5th Floor, Tower-C, Unitech Cyber Park";
   const addressLine2 = (settings as any)?.about_address_line2 || "Sector-39, Gurgaon, India – 122003";
   const mapEmbedUrl = (settings as any)?.about_map_embed_url || "https://maps.google.com/maps?q=Sector+62,+Faridabad,+Haryana+121004&t=&z=14&ie=UTF8&iwloc=&output=embed";

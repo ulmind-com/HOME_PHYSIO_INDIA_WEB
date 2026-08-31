@@ -7,7 +7,7 @@ import { MapPin, Mail, Phone } from "lucide-react";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact — Nupun Home Health Care" },
+      { title: "Contact — Home Physio India" },
       { name: "description", content: "Talk to a care advisor. We respond within 2 hours." },
     ],
   }),
@@ -65,7 +65,7 @@ function ContactPage() {
                   title="Head Office"
                   desc={settings?.address || "Delhi NCR, India"}
                 />
-                <InfoRow icon={Mail} title="Email Us" desc={settings?.email || "info@nupun.com"} />
+                <InfoRow icon={Mail} title="Email Us" desc={settings?.email || "info@home-physio-india.com"} />
                 <InfoRow icon={Phone} title="Call Us" desc={settings?.phone || "+91 98130 95627"} />
               </div>
             </div>
