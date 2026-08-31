@@ -1,4 +1,6 @@
-export const API_BASE = "/api/public/proxy";
+import { tokenStore } from "@/services/api/tokens";
+
+export const API_BASE = import.meta.env.VITE_API_UPSTREAM ?? "https://home-physio-india-backend.onrender.com/api/v1";
 
 export type Envelope<T> = {
   success: boolean;
@@ -39,7 +41,7 @@ type FetchOpts = {
 };
 
 export async function apiFetch<T>(path: string, opts: FetchOpts = {}): Promise<T> {
-  const base = typeof window !== "undefined" ? window.location.origin : "http://localhost";
+  const base = typeof window !== "undefined" ? window.location.origin : "http://localhost:8080";
   const url = new URL(`${API_BASE}${path}`, base);
   if (opts.query) {
     for (const [k, v] of Object.entries(opts.query)) {
@@ -60,6 +62,11 @@ export async function apiFetch<T>(path: string, opts: FetchOpts = {}): Promise<T
     init.body = JSON.stringify(opts.body);
   }
 
+  const access = tokenStore.getAccess();
+  if (access) {
+    (init.headers as Record<string, string>)["Authorization"] = `Bearer ${access}`;
+  }
+
   const res = await fetch(url.toString(), init);
   const text = await res.text();
   let json: unknown = null;
@@ -74,6 +81,14 @@ export async function apiFetch<T>(path: string, opts: FetchOpts = {}): Promise<T
       (json as { message?: string; detail?: string } | null)?.message ??
       (json as { detail?: string } | null)?.detail ??
       `Request failed (${res.status})`;
+      
+    if (res.status === 401) {
+      if (typeof window !== "undefined" && !url.pathname.includes("/login")) {
+        const event = new CustomEvent("hpi:auth:unauthorized");
+        window.dispatchEvent(event);
+      }
+    }
+    
     throw new ApiError(msg, res.status, json);
   }
 

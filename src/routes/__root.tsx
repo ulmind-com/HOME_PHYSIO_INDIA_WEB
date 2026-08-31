@@ -1,4 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { AuthModal } from "@/components/auth/AuthModal";
 import {
   Outlet,
   Link,
@@ -216,18 +218,21 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeInjector />
-      <DynamicSeo />
-      <div className="flex min-h-dvh flex-col">
-        <Header />
-        <main className="flex-1">
-          <Outlet />
-        </main>
-        <Footer />
-      </div>
-      <WhatsAppWidget />
-      <GlobalBookingSuccess />
-      <Toaster position="top-center" richColors />
+      <AuthProvider>
+        <ThemeInjector />
+        <DynamicSeo />
+        <div className="flex min-h-dvh flex-col">
+          <Header />
+          <main className="flex-1 relative z-0">
+            <Outlet />
+          </main>
+          <Footer />
+        </div>
+        <WhatsAppWidget />
+        <GlobalBookingSuccess />
+        <Toaster position="top-center" richColors />
+        <AuthModal />
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
