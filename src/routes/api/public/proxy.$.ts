@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 const UPSTREAM =
-  import.meta.env.VITE_API_UPSTREAM ?? "https://nupun-health-backend.onrender.com/api/v1";
+  import.meta.env.VITE_API_UPSTREAM ?? "https://home-physio-india-backend.onrender.com/api/v1";
 
 const CORS = {
   "Access-Control-Allow-Origin": "*",
