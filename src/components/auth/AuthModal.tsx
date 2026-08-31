@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { authService } from "@/services/api/auth.service";
 import { tokenStore } from "@/services/api/tokens";
@@ -29,67 +29,9 @@ export function AuthModal() {
   const [otp, setOtp] = useState("");
   const [googleIdToken, setGoogleIdToken] = useState("");
 
-  if (isLoading || isAuthenticated) {
-    return null; // Don't show modal if loading or already authed
-  }
-
-  const handleError = (err: any) => {
+  const handleError = useCallback((err: any) => {
     setError(err.message || "An unexpected error occurred");
-  };
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await authService.login(email, password);
-      tokenStore.set(res.access_token, res.refresh_token);
-      setUser(res.user);
-      toast.success("Logged in successfully!");
-    } catch (err: any) {
-      if (err.message === "EMAIL_NOT_VERIFIED") {
-        setView("otp");
-        authService.resendOtp(email).catch(() => {});
-        toast.info("Please verify your email. A new OTP has been sent.");
-      } else {
-        handleError(err);
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSignup = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-    try {
-      await authService.register({ name, email, password, phone });
-      toast.success("Registration successful! Check your email for the OTP.");
-      setView("otp");
-    } catch (err) {
-      handleError(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleVerifyOtp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (otp.length !== 6) return setError("OTP must be 6 digits");
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await authService.verifyEmail(email, otp);
-      tokenStore.set(res.access_token, res.refresh_token);
-      setUser(res.user);
-      toast.success("Email verified successfully!");
-    } catch (err) {
-      handleError(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, []);
 
   // Handle redirect result on mount (fallback for COOP-blocked popups)
   useEffect(() => {
@@ -110,7 +52,7 @@ export function AuthModal() {
           if (msg.includes("phone") && msg.includes("required")) {
             setView("phone_prompt");
           } else {
-            handleError(err);
+            setError(err.message || "An unexpected error occurred");
           }
         } finally {
           setLoading(false);
@@ -120,7 +62,61 @@ export function AuthModal() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleGoogleLogin = async () => {
+  const handleLogin = useCallback(async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await authService.login(email, password);
+      tokenStore.set(res.access_token, res.refresh_token);
+      setUser(res.user);
+      toast.success("Logged in successfully!");
+    } catch (err: any) {
+      if (err.message === "EMAIL_NOT_VERIFIED") {
+        setView("otp");
+        authService.resendOtp(email).catch(() => {});
+        toast.info("Please verify your email. A new OTP has been sent.");
+      } else {
+        setError(err.message || "An unexpected error occurred");
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [email, password, setUser]);
+
+  const handleSignup = useCallback(async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    try {
+      await authService.register({ name, email, password, phone });
+      toast.success("Registration successful! Check your email for the OTP.");
+      setView("otp");
+    } catch (err: any) {
+      setError(err.message || "An unexpected error occurred");
+    } finally {
+      setLoading(false);
+    }
+  }, [name, email, password, phone]);
+
+  const handleVerifyOtp = useCallback(async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (otp.length !== 6) { setError("OTP must be 6 digits"); return; }
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await authService.verifyEmail(email, otp);
+      tokenStore.set(res.access_token, res.refresh_token);
+      setUser(res.user);
+      toast.success("Email verified successfully!");
+    } catch (err: any) {
+      setError(err.message || "An unexpected error occurred");
+    } finally {
+      setLoading(false);
+    }
+  }, [email, otp, setUser]);
+
+  const handleGoogleLogin = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -152,14 +148,14 @@ export function AuthModal() {
       if (msg.includes("phone") && msg.includes("required")) {
         setView("phone_prompt");
       } else {
-        handleError(err);
+        setError(err.message || "An unexpected error occurred");
       }
     } finally {
       setLoading(false);
     }
-  };
+  }, [setUser]);
 
-  const handleProvidePhone = async (e: React.FormEvent) => {
+  const handleProvidePhone = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
@@ -168,12 +164,17 @@ export function AuthModal() {
       tokenStore.set(res.access_token, res.refresh_token);
       setUser(res.user);
       toast.success("Account created successfully!");
-    } catch (err) {
-      handleError(err);
+    } catch (err: any) {
+      setError(err.message || "An unexpected error occurred");
     } finally {
       setLoading(false);
     }
-  };
+  }, [googleIdToken, phone, setUser]);
+
+  // Early return AFTER all hooks
+  if (isLoading || isAuthenticated) {
+    return null;
+  }
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
