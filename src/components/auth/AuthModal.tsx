@@ -61,7 +61,13 @@ export function AuthModal() {
           setLoading(false);
         }
       })
-      .catch(() => {});
+      .catch((err: any) => {
+        if (err?.code !== "auth/popup-closed-by-user") {
+          const msg = err?.message || "Google sign-in failed";
+          setError(msg);
+          toast.error(msg);
+        }
+      });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -323,9 +329,13 @@ export function AuthModal() {
                 <button 
                   type="button" 
                   className="text-muted-foreground hover:text-primary underline" 
-                  onClick={() => {
-                    authService.resendOtp(email);
-                    toast.success("OTP resent successfully!");
+                  onClick={async () => {
+                    try {
+                      await authService.resendOtp(email);
+                      toast.success("OTP resent successfully!");
+                    } catch (err: any) {
+                      toast.error(err?.message || "Failed to resend OTP");
+                    }
                   }}
                 >
                   Resend Code

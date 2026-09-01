@@ -98,20 +98,26 @@ function UserDashboard() {
   /* ──── Preview Zoom ──── */
   const [zoomLevel, setZoomLevel] = useState(1);
 
+  const [debouncedTherapistSearch, setDebouncedTherapistSearch] = useState(therapistSearch);
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedTherapistSearch(therapistSearch), 300);
+    return () => clearTimeout(timer);
+  }, [therapistSearch]);
+
   /* ──── Queries ──── */
-  const { data: bookings = [], isLoading: isLoadingBookings } = useQuery({
+  const { data: bookings = [], isLoading: isLoadingBookings, isError: isErrorBookings, refetch: refetchBookings } = useQuery({
     queryKey: ["myBookings"],
     queryFn: authService.getBookings,
   });
 
-  const { data: reports = [], isLoading: isLoadingReports } = useQuery({
+  const { data: reports = [], isLoading: isLoadingReports, isError: isErrorReports, refetch: refetchReports } = useQuery({
     queryKey: ["myReports"],
     queryFn: medicalReportsService.list,
   });
 
-  const { data: therapistsData, isLoading: isLoadingTherapists } = useQuery({
-    queryKey: ["therapists", therapistSearch, therapistSpecialization],
-    queryFn: () => therapistService.list({ search: therapistSearch || undefined, specialization: therapistSpecialization || undefined }),
+  const { data: therapistsData, isLoading: isLoadingTherapists, isError: isErrorTherapists, refetch: refetchTherapists } = useQuery({
+    queryKey: ["therapists", debouncedTherapistSearch, therapistSpecialization],
+    queryFn: () => therapistService.list({ search: debouncedTherapistSearch || undefined, specialization: therapistSpecialization || undefined }),
   });
 
   /* ──── Profile Mutations ──── */
@@ -330,6 +336,13 @@ function UserDashboard() {
                       <Loader2 className="h-8 w-8 animate-spin mb-4" />
                       <p>Loading your appointments...</p>
                     </div>
+                  ) : isErrorBookings ? (
+                    <div className="flex flex-col items-center justify-center py-12 text-center text-red-500">
+                      <AlertCircle className="h-8 w-8 mb-2" />
+                      <p className="font-medium text-foreground">Failed to load appointments</p>
+                      <p className="text-sm text-muted-foreground mt-1 mb-4">An error occurred while fetching your data.</p>
+                      <button onClick={() => refetchBookings()} className="px-4 py-2 text-xs font-semibold rounded-lg bg-primary text-primary-foreground">Retry</button>
+                    </div>
                   ) : bookings.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-12 text-center">
                       <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
@@ -401,6 +414,13 @@ function UserDashboard() {
                       <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
                         <Loader2 className="h-8 w-8 animate-spin mb-4" />
                         <p>Loading your reports...</p>
+                      </div>
+                    ) : isErrorReports ? (
+                      <div className="flex flex-col items-center justify-center py-12 text-center text-red-500">
+                        <AlertCircle className="h-8 w-8 mb-2" />
+                        <p className="font-medium text-foreground">Failed to load reports</p>
+                        <p className="text-sm text-muted-foreground mt-1 mb-4">An error occurred while fetching your medical reports.</p>
+                        <button onClick={() => refetchReports()} className="px-4 py-2 text-xs font-semibold rounded-lg bg-primary text-primary-foreground">Retry</button>
                       </div>
                     ) : reports.length === 0 ? (
                       <div className="flex flex-col items-center justify-center py-12 text-center">
@@ -539,6 +559,13 @@ function UserDashboard() {
                     <div className="flex flex-col items-center justify-center py-12 text-muted-foreground h-full">
                       <Loader2 className="h-8 w-8 animate-spin mb-4" />
                       <p>Loading therapists...</p>
+                    </div>
+                  ) : isErrorTherapists ? (
+                    <div className="flex flex-col items-center justify-center py-12 text-center text-red-500 h-full">
+                      <AlertCircle className="h-8 w-8 mb-2" />
+                      <p className="font-medium text-foreground">Failed to load therapists</p>
+                      <p className="text-sm text-muted-foreground mt-1 mb-4">An error occurred while fetching the therapist directory.</p>
+                      <button onClick={() => refetchTherapists()} className="px-4 py-2 text-xs font-semibold rounded-lg bg-primary text-primary-foreground">Retry</button>
                     </div>
                   ) : !therapistsData?.items || therapistsData.items.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-12 text-center h-full">

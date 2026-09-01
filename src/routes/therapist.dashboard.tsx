@@ -113,12 +113,12 @@ function TherapistDashboard() {
   const [isUploading, setIsUploading] = useState(false);
 
   /* ──── Queries ──── */
-  const { data: assignedBookings = [], isLoading: isLoadingBookings } = useQuery({
+  const { data: assignedBookings = [], isLoading: isLoadingBookings, isError: isErrorBookings, refetch: refetchBookings } = useQuery({
     queryKey: ["therapist", "assigned-bookings"],
     queryFn: () => apiFetch<AssignedBooking[]>("/auth/me/assigned-bookings"),
   });
 
-  const { data: patientReports = [], isLoading: isLoadingReports } = useQuery({
+  const { data: patientReports = [], isLoading: isLoadingReports, isError: isErrorReports, refetch: refetchReports } = useQuery({
     queryKey: ["therapist", "patient-reports", selectedPatientId],
     queryFn: () => apiFetch<MedicalReport[]>(`/auth/me/patient-reports/${selectedPatientId}`),
     enabled: Boolean(selectedPatientId),
@@ -304,6 +304,11 @@ function TherapistDashboard() {
                 <div className="p-4">
                   {isLoadingBookings ? (
                     <div className="flex items-center justify-center py-12"><Loader2 className="h-6 w-6 animate-spin text-muted-foreground" /></div>
+                  ) : isErrorBookings ? (
+                    <div className="flex flex-col items-center justify-center py-8 text-center">
+                      <p className="text-xs text-red-500 font-medium mb-2">Failed to load assigned patients.</p>
+                      <button onClick={() => refetchBookings()} className="px-3 py-1 text-xs font-medium rounded-md bg-primary text-primary-foreground">Retry</button>
+                    </div>
                   ) : patients.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-12 text-center">
                       <div className="h-14 w-14 rounded-full bg-primary/10 flex items-center justify-center mb-3">

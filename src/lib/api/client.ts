@@ -21,6 +21,8 @@ export type Paginated<T> = {
   };
 };
 
+export type PaginatedResponse<T> = Paginated<T>;
+
 export class ApiError extends Error {
   status: number;
   payload?: unknown;
@@ -38,6 +40,7 @@ type FetchOpts = {
   headers?: Record<string, string>;
   signal?: AbortSignal;
   query?: Record<string, string | number | boolean | undefined | null>;
+  _isRetry?: boolean;
 };
 
 export async function apiFetch<T>(path: string, opts: FetchOpts = {}): Promise<T> {
@@ -82,7 +85,28 @@ export async function apiFetch<T>(path: string, opts: FetchOpts = {}): Promise<T
       (json as { detail?: string } | null)?.detail ??
       `Request failed (${res.status})`;
       
-    if (res.status === 401) {
+    if (res.status === 401 && !opts._isRetry && !path.includes("/auth/login") && !path.includes("/auth/refresh")) {
+      const refresh = tokenStore.getRefresh();
+      if (refresh) {
+        try {
+          const refreshRes = await fetch(`${API_BASE}/auth/refresh`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Accept: "application/json" },
+            body: JSON.stringify({ refresh_token: refresh }),
+          });
+          if (refreshRes.ok) {
+            const refreshJson = await refreshRes.json();
+            const newAccess = refreshJson?.data?.access_token ?? refreshJson?.access_token;
+            if (newAccess) {
+              tokenStore.setAccess(newAccess);
+              return apiFetch<T>(path, { ...opts, _isRetry: true });
+            }
+          }
+        } catch {
+          /* refresh failed */
+        }
+      }
+      tokenStore.clear();
       if (typeof window !== "undefined" && !url.pathname.includes("/login")) {
         const event = new CustomEvent("hpi:auth:unauthorized");
         window.dispatchEvent(event);
@@ -106,4 +130,12 @@ export const api = {
     apiFetch<T>(path, { method: "POST", body, signal }),
   postForm: <T>(path: string, formData: FormData, signal?: AbortSignal) =>
     apiFetch<T>(path, { method: "POST", formData, signal }),
+  put: <T>(path: string, body?: unknown, signal?: AbortSignal) =>
+    apiFetch<T>(path, { method: "PUT", body, signal }),
+  patch: <T>(path: string, body?: unknown, signal?: AbortSignal) =>
+    apiFetch<T>(path, { method: "PATCH", body, signal }),
+  delete: <T>(path: string, signal?: AbortSignal) =>
+    apiFetch<T>(path, { method: "DELETE", signal }),
+  putForm: <T>(path: string, formData: FormData, signal?: AbortSignal) =>
+    apiFetch<T>(path, { method: "PUT", formData, signal }),
 };
