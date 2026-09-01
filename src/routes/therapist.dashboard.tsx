@@ -265,6 +265,34 @@ function TherapistDashboard() {
           </button>
         </div>
 
+        {user?.verification_status && user.verification_status !== "approved" ? (
+          <div className="rounded-3xl border border-border bg-surface shadow-sm p-10 text-center">
+            {user.verification_status === "pending" ? (
+              <>
+                <div className="h-14 w-14 rounded-full bg-amber-500/10 flex items-center justify-center mx-auto mb-4">
+                  <Clock className="h-7 w-7 text-amber-600" />
+                </div>
+                <h2 className="text-lg font-semibold text-foreground">Your application is under review</h2>
+                <p className="text-sm text-muted-foreground mt-2 max-w-md mx-auto">
+                  Our team is reviewing your qualification and documents. You'll get an email as soon as your
+                  account is approved — you can then start receiving bookings and patient assignments.
+                </p>
+              </>
+            ) : (
+              <>
+                <div className="h-14 w-14 rounded-full bg-destructive/10 flex items-center justify-center mx-auto mb-4">
+                  <X className="h-7 w-7 text-destructive" />
+                </div>
+                <h2 className="text-lg font-semibold text-foreground">Application not approved</h2>
+                <p className="text-sm text-muted-foreground mt-2 max-w-md mx-auto">
+                  Your therapist application wasn't approved. Check your email for details, or reply to that email
+                  if you'd like to submit updated documents.
+                </p>
+              </>
+            )}
+          </div>
+        ) : (
+        <>
         {/* Tab Switcher */}
         <div className="flex gap-1 p-1 rounded-2xl bg-muted/50 border border-border">
           <button
@@ -389,6 +417,11 @@ function TherapistDashboard() {
                     <div className="p-6">
                       {isLoadingReports ? (
                         <div className="flex items-center justify-center py-12"><Loader2 className="h-6 w-6 animate-spin text-muted-foreground" /></div>
+                      ) : isErrorReports ? (
+                        <div className="flex flex-col items-center justify-center py-8 text-center">
+                          <p className="text-xs text-red-500 font-medium mb-2">Failed to load reports.</p>
+                          <button onClick={() => refetchReports()} className="px-3 py-1 text-xs font-medium rounded-md bg-primary text-primary-foreground">Retry</button>
+                        </div>
                       ) : patientReports.length === 0 ? (
                         <div className="flex flex-col items-center justify-center py-12 text-center">
                           <FileText className="h-12 w-12 text-muted-foreground mb-3" />
@@ -603,6 +636,8 @@ function TherapistDashboard() {
               </div>
             </div>
           </div>
+        )}
+        </>
         )}
       </div>
 

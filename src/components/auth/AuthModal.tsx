@@ -12,8 +12,16 @@ import { auth as firebaseAuth } from "@/lib/firebase";
 import { GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult } from "firebase/auth";
 import { AlertCircle, Loader2 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-type ViewState = "login" | "signup" | "otp" | "phone_prompt";
+type ViewState = "login" | "signup" | "therapist_signup" | "otp" | "phone_prompt";
+
+const THERAPIST_TYPES = [
+  { value: "physiotherapist", label: "Physiotherapist" },
+  { value: "yoga_therapist", label: "Yoga Therapist" },
+  { value: "massage_therapist", label: "Massage Therapist" },
+];
+const QUALIFICATIONS = ["MPT", "BPT", "PT", "DPT"];
 
 export function AuthModal() {
   const { isAuthenticated, isLoading, setUser } = useAuth();
@@ -30,6 +38,9 @@ export function AuthModal() {
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [googleIdToken, setGoogleIdToken] = useState("");
+  const [therapistType, setTherapistType] = useState("physiotherapist");
+  const [qualification, setQualification] = useState("");
+  const [pendingVerification, setPendingVerification] = useState(false);
 
   const handleError = useCallback((err: any) => {
     setError(err.message || "An unexpected error occurred");
@@ -84,8 +95,12 @@ export function AuthModal() {
     } catch (err: any) {
       if (err.message === "EMAIL_NOT_VERIFIED") {
         setView("otp");
-        authService.resendOtp(email).catch(() => {});
-        toast.info("Please verify your email. A new OTP has been sent.");
+        try {
+          await authService.resendOtp(email);
+          toast.info("Please verify your email. A new OTP has been sent.");
+        } catch (resendErr: any) {
+          toast.error(resendErr?.message || "Failed to send a new OTP. Use \"Resend Code\" to try again.");
+        }
       } else {
         setError(err.message || "An unexpected error occurred");
       }
@@ -101,6 +116,7 @@ export function AuthModal() {
     try {
       await authService.register({ name, email, password, phone });
       toast.success("Registration successful! Check your email for the OTP.");
+      setPendingVerification(false);
       setView("otp");
     } catch (err: any) {
       setError(err.message || "An unexpected error occurred");
@@ -108,6 +124,29 @@ export function AuthModal() {
       setLoading(false);
     }
   }, [name, email, password, phone]);
+
+  const handleTherapistSignup = useCallback(async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    try {
+      await authService.registerTherapist({
+        name,
+        email,
+        password,
+        phone,
+        user_type: therapistType as "physiotherapist" | "yoga_therapist" | "massage_therapist",
+        qualification: qualification || undefined,
+      });
+      toast.success("Application submitted! Check your email for the OTP.");
+      setPendingVerification(true);
+      setView("otp");
+    } catch (err: any) {
+      setError(err.message || "An unexpected error occurred");
+    } finally {
+      setLoading(false);
+    }
+  }, [name, email, password, phone, therapistType, qualification]);
 
   const handleVerifyOtp = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
@@ -118,14 +157,18 @@ export function AuthModal() {
       const res = await authService.verifyEmail(email, otp);
       tokenStore.set(res.access_token, res.refresh_token);
       setUser(res.user);
-      toast.success("Email verified successfully!");
+      if (pendingVerification || res.user.verification_status === "pending") {
+        toast.success("Email verified! Your therapist application is now under review.");
+      } else {
+        toast.success("Email verified successfully!");
+      }
       router.navigate({ to: res.user.role === "therapist" ? "/therapist/dashboard" : "/user/dashboard" });
     } catch (err: any) {
       setError(err.message || "An unexpected error occurred");
     } finally {
       setLoading(false);
     }
-  }, [email, otp, setUser]);
+  }, [email, otp, setUser, pendingVerification]);
 
   const handleGoogleLogin = useCallback(async () => {
     setLoading(true);
@@ -197,12 +240,14 @@ export function AuthModal() {
             <h2 className="text-2xl font-display font-bold tracking-tight">
               {view === "login" && "Welcome Back"}
               {view === "signup" && "Create Account"}
+              {view === "therapist_signup" && "Join as a Therapist"}
               {view === "otp" && "Verify Email"}
               {view === "phone_prompt" && "Almost There"}
             </h2>
             <p className="text-sm text-muted-foreground mt-2">
               {view === "login" && "Log in to book your home healthcare services"}
               {view === "signup" && "Join us to get premium healthcare at home"}
+              {view === "therapist_signup" && "Register as a Physiotherapist, Yoga Therapist or Massage Therapist"}
               {view === "otp" && `We sent a 6-digit code to ${email}`}
               {view === "phone_prompt" && "Please provide a mobile number to complete your profile"}
             </p>
@@ -273,6 +318,12 @@ export function AuthModal() {
                   Sign up
                 </button>
               </div>
+              <div className="text-center text-sm text-muted-foreground">
+                Are you a therapist?{" "}
+                <button type="button" className="text-primary hover:underline font-medium" onClick={() => { setView("therapist_signup"); setError(null); }}>
+                  Register as a Therapist
+                </button>
+              </div>
             </div>
           )}
 
@@ -298,6 +349,69 @@ export function AuthModal() {
                 {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Create Account
               </Button>
+              <div className="text-center text-sm">
+                Already have an account?{" "}
+                <button type="button" className="text-primary hover:underline font-medium" onClick={() => { setView("login"); setError(null); }}>
+                  Log in
+                </button>
+              </div>
+            </form>
+          )}
+
+          {view === "therapist_signup" && (
+            <form onSubmit={handleTherapistSignup} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="t-name">Full Name</Label>
+                <Input id="t-name" value={name} onChange={e => setName(e.target.value)} required />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="t-email">Email</Label>
+                <Input id="t-email" type="email" value={email} onChange={e => setEmail(e.target.value)} required />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="t-phone">Mobile Number</Label>
+                <Input id="t-phone" type="tel" placeholder="+91" value={phone} onChange={e => setPhone(e.target.value)} required minLength={10} />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="t-password">Password</Label>
+                <Input id="t-password" type="password" value={password} onChange={e => setPassword(e.target.value)} required minLength={8} />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-2">
+                  <Label>Therapist Type</Label>
+                  <Select value={therapistType} onValueChange={setTherapistType}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {THERAPIST_TYPES.map((t) => (
+                        <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label>Qualification</Label>
+                  <Select value={qualification || "__none__"} onValueChange={(v) => setQualification(v === "__none__" ? "" : v)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Optional" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="__none__">Not set</SelectItem>
+                      {QUALIFICATIONS.map((q) => (
+                        <SelectItem key={q} value={q}>{q}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                Submit Application
+              </Button>
+              <p className="text-xs text-muted-foreground text-center">
+                Our team will review your application and documents before your account goes live.
+              </p>
               <div className="text-center text-sm">
                 Already have an account?{" "}
                 <button type="button" className="text-primary hover:underline font-medium" onClick={() => { setView("login"); setError(null); }}>

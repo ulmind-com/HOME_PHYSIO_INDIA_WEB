@@ -17,6 +17,10 @@ export const tokenStore = {
     localStorage.setItem(STORAGE_KEYS.accessToken, access);
     localStorage.setItem(STORAGE_KEYS.refreshToken, refresh);
   },
+  setAccess: (access: string) => {
+    if (typeof window === "undefined") return;
+    localStorage.setItem(STORAGE_KEYS.accessToken, access);
+  },
   clear: () => {
     if (typeof window === "undefined") return;
     localStorage.removeItem(STORAGE_KEYS.accessToken);

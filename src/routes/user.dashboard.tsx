@@ -55,6 +55,12 @@ const reportTypeIcons: Record<string, string> = {
   "Medical Report": "📋",
 };
 
+const THERAPIST_TYPE_LABELS: Record<string, string> = {
+  physiotherapist: "Physiotherapist",
+  yoga_therapist: "Yoga Therapist",
+  massage_therapist: "Massage Therapist",
+};
+
 function isImageUrl(url?: string): boolean {
   if (!url) return false;
   return /\.(jpeg|jpg|gif|png|webp)(\?|$)/i.test(url) || url.includes("/image/upload/");
@@ -68,7 +74,12 @@ function UserDashboard() {
   const [name, setName] = useState(user?.name || "");
   const [phone, setPhone] = useState(user?.phone || "");
   const [address, setAddress] = useState(user?.address || "");
+  const [age, setAge] = useState(user?.age != null ? String(user.age) : "");
+  const [pincode, setPincode] = useState(user?.pincode || "");
+  const [medicalCondition, setMedicalCondition] = useState(user?.medical_condition || "");
   const [isUploading, setIsUploading] = useState(false);
+
+  const isProfileIncomplete = !user?.age || !user?.pincode || !user?.medical_condition;
 
   /* ──── Active Tab ──── */
   const [activeTab, setActiveTab] = useState<"bookings" | "reports" | "therapists">("bookings");
@@ -76,6 +87,7 @@ function UserDashboard() {
   /* ──── Therapists Search State ──── */
   const [therapistSearch, setTherapistSearch] = useState("");
   const [therapistSpecialization, setTherapistSpecialization] = useState("");
+  const [therapistType, setTherapistType] = useState("");
 
   /* ──── Medical Report Modals ──── */
   const [uploadOpen, setUploadOpen] = useState(false);
@@ -116,8 +128,13 @@ function UserDashboard() {
   });
 
   const { data: therapistsData, isLoading: isLoadingTherapists, isError: isErrorTherapists, refetch: refetchTherapists } = useQuery({
-    queryKey: ["therapists", debouncedTherapistSearch, therapistSpecialization],
-    queryFn: () => therapistService.list({ search: debouncedTherapistSearch || undefined, specialization: therapistSpecialization || undefined }),
+    queryKey: ["therapists", debouncedTherapistSearch, therapistSpecialization, therapistType],
+    queryFn: () =>
+      therapistService.list({
+        search: debouncedTherapistSearch || undefined,
+        specialization: therapistSpecialization || undefined,
+        user_type: therapistType || undefined,
+      }),
   });
 
   /* ──── Profile Mutations ──── */
@@ -147,7 +164,14 @@ function UserDashboard() {
 
   const handleSaveProfile = (e: React.FormEvent) => {
     e.preventDefault();
-    updateProfileMut.mutate({ name, phone, address });
+    updateProfileMut.mutate({
+      name,
+      phone,
+      address,
+      age: age ? Number(age) : undefined,
+      pincode: pincode || undefined,
+      medical_condition: medicalCondition || undefined,
+    });
   };
 
   /* ──── Report Mutations ──── */
@@ -233,6 +257,18 @@ function UserDashboard() {
           </div>
         </div>
 
+        {isProfileIncomplete && (
+          <div className="flex items-start gap-3 rounded-2xl border border-amber-300/50 bg-amber-50 dark:bg-amber-500/10 dark:border-amber-500/30 p-4">
+            <AlertCircle className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
+            <div>
+              <p className="text-sm font-semibold text-amber-800 dark:text-amber-400">Complete your profile</p>
+              <p className="text-xs text-amber-700/80 dark:text-amber-400/80 mt-0.5">
+                Please add your Age, PIN Code and a short description of your condition in Profile Settings so our therapists can prepare for your visit.
+              </p>
+            </div>
+          </div>
+        )}
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column: Profile Settings */}
           <div className="lg:col-span-1 space-y-8">
@@ -269,9 +305,30 @@ function UserDashboard() {
                   <label className="text-sm font-medium">Mobile Number</label>
                   <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} className="flex h-10 w-full rounded-xl border border-input bg-transparent px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2" />
                 </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Age</label>
+                    <input type="number" min={0} max={120} value={age} onChange={(e) => setAge(e.target.value)} className="flex h-10 w-full rounded-xl border border-input bg-transparent px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2" />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">PIN Code</label>
+                    <input type="text" inputMode="numeric" maxLength={10} value={pincode} onChange={(e) => setPincode(e.target.value)} className="flex h-10 w-full rounded-xl border border-input bg-transparent px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2" />
+                  </div>
+                </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Detailed Address</label>
                   <textarea value={address} onChange={(e) => setAddress(e.target.value)} rows={3} className="flex w-full rounded-xl border border-input bg-transparent px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 resize-none" placeholder="Enter your complete address..." />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Patient Condition / Problem</label>
+                  <textarea
+                    value={medicalCondition}
+                    onChange={(e) => setMedicalCondition(e.target.value)}
+                    rows={4}
+                    maxLength={2000}
+                    className="flex w-full rounded-xl border border-input bg-transparent px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 resize-none"
+                    placeholder="Describe your medical condition, pain/symptoms, movement problem, how long you've had it, etc."
+                  />
                 </div>
                 <button type="submit" disabled={updateProfileMut.isPending} className="w-full mt-4 flex h-10 items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground text-sm font-semibold transition-all hover:opacity-90 disabled:opacity-50">
                   {updateProfileMut.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
@@ -538,6 +595,16 @@ function UserDashboard() {
                         />
                       </div>
                       <select
+                        value={therapistType}
+                        onChange={(e) => setTherapistType(e.target.value)}
+                        className="flex h-10 w-full sm:w-48 rounded-xl border border-input bg-transparent px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                      >
+                        <option value="">All Therapist Types</option>
+                        <option value="physiotherapist">Physiotherapist</option>
+                        <option value="yoga_therapist">Yoga Therapist</option>
+                        <option value="massage_therapist">Massage Therapist</option>
+                      </select>
+                      <select
                         value={therapistSpecialization}
                         onChange={(e) => setTherapistSpecialization(e.target.value)}
                         className="flex h-10 w-full sm:w-48 rounded-xl border border-input bg-transparent px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
@@ -574,13 +641,13 @@ function UserDashboard() {
                       </div>
                       <h3 className="text-lg font-medium text-foreground">No therapists found</h3>
                       <p className="text-sm text-muted-foreground mt-2 max-w-sm">
-                        {therapistSearch || therapistSpecialization
+                        {therapistSearch || therapistSpecialization || therapistType
                           ? "Try adjusting your search or filters to find what you're looking for."
                           : "There are currently no verified therapists available."}
                       </p>
-                      {(therapistSearch || therapistSpecialization) && (
+                      {(therapistSearch || therapistSpecialization || therapistType) && (
                         <button
-                          onClick={() => { setTherapistSearch(""); setTherapistSpecialization(""); }}
+                          onClick={() => { setTherapistSearch(""); setTherapistSpecialization(""); setTherapistType(""); }}
                           className="mt-4 px-5 py-2 rounded-xl border border-border text-sm font-medium hover:bg-muted transition-colors"
                         >
                           Clear Filters
@@ -600,9 +667,22 @@ function UserDashboard() {
                             </Avatar>
                             <div className="min-w-0 flex-1">
                               <h4 className="font-semibold text-foreground text-base truncate">{therapist.name}</h4>
-                              {therapist.specialization && (
-                                <p className="text-sm text-primary font-medium mt-0.5 truncate">{therapist.specialization} Physiotherapist</p>
-                              )}
+                              <p className="text-sm text-primary font-medium mt-0.5 truncate">
+                                {therapist.specialization ? `${therapist.specialization} ` : ""}
+                                {THERAPIST_TYPE_LABELS[therapist.user_type ?? ""] ?? "Therapist"}
+                              </p>
+                              <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
+                                {therapist.qualification && (
+                                  <span className="inline-flex items-center rounded-full border border-border px-2 py-0.5 text-[10px] font-semibold text-muted-foreground">
+                                    {therapist.qualification}
+                                  </span>
+                                )}
+                                {therapist.therapist_tier && (
+                                  <span className="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary capitalize">
+                                    {therapist.therapist_tier}
+                                  </span>
+                                )}
+                              </div>
                               <div className="flex flex-col gap-1 mt-2 text-xs text-muted-foreground">
                                 {therapist.experience_years !== undefined && therapist.experience_years > 0 && (
                                   <span className="flex items-center gap-1.5"><Activity className="h-3.5 w-3.5" /> {therapist.experience_years} years experience</span>
@@ -625,8 +705,13 @@ function UserDashboard() {
                   )}
                   
                   {/* Pagination placeholder if needed later */}
-                  {therapistsData?.total > therapistsData?.items.length && (
-                     <p className="text-center text-xs text-muted-foreground mt-8">Showing {therapistsData.items.length} of {therapistsData.total} therapists.</p>
+                  {Boolean(
+                    therapistsData?.pagination &&
+                      therapistsData.pagination.total > (therapistsData.items?.length ?? 0)
+                  ) && (
+                     <p className="text-center text-xs text-muted-foreground mt-8">
+                       Showing {therapistsData!.items.length} of {therapistsData!.pagination!.total} therapists.
+                     </p>
                   )}
                 </div>
               </div>

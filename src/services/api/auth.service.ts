@@ -21,8 +21,17 @@ export type User = {
   name: string;
   email: string;
   role: string;
+  user_type?: string;
   phone?: string;
   address?: string;
+  age?: number | null;
+  pincode?: string | null;
+  medical_condition?: string | null;
+  specialization?: string | null;
+  experience_years?: number | null;
+  qualification?: string | null;
+  therapist_tier?: string | null;
+  verification_status?: "pending" | "approved" | "rejected";
   is_email_verified: boolean;
   avatar?: { url: string; public_id?: string; [key: string]: any };
   documents?: TherapistDocument[];
@@ -43,6 +52,19 @@ export const authService = {
 
   register: async (payload: { name: string; email: string; password: string; phone: string }): Promise<{ message: string }> => {
     return api.post<{ message: string }>("/auth/register", payload);
+  },
+
+  registerTherapist: async (payload: {
+    name: string;
+    email: string;
+    password: string;
+    phone: string;
+    user_type: "physiotherapist" | "yoga_therapist" | "massage_therapist";
+    qualification?: string;
+    specialization?: string;
+    experience_years?: number;
+  }): Promise<{ message: string }> => {
+    return api.post<{ message: string }>("/auth/register-therapist", payload);
   },
 
   verifyEmail: async (email: string, otp: string): Promise<AuthResponse> => {
@@ -69,7 +91,14 @@ export const authService = {
     return api.get<User>("/auth/me");
   },
 
-  updateProfile: async (payload: { name?: string; phone?: string; address?: string }): Promise<User> => {
+  updateProfile: async (payload: {
+    name?: string;
+    phone?: string;
+    address?: string;
+    age?: number;
+    pincode?: string;
+    medical_condition?: string;
+  }): Promise<User> => {
     return api.put<User>("/auth/me", payload);
   },
 
