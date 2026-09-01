@@ -8,6 +8,7 @@ import {
   type MedicalReport,
   type ReportType,
 } from "@/services/api/medical-reports.service";
+import { therapistService } from "@/services/api/therapist.service";
 import { toast } from "sonner";
 import {
   Camera,
@@ -31,6 +32,8 @@ import {
   StickyNote,
   CheckCircle2,
   AlertCircle,
+  Search,
+  Users,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -68,7 +71,11 @@ function UserDashboard() {
   const [isUploading, setIsUploading] = useState(false);
 
   /* ──── Active Tab ──── */
-  const [activeTab, setActiveTab] = useState<"bookings" | "reports">("bookings");
+  const [activeTab, setActiveTab] = useState<"bookings" | "reports" | "therapists">("bookings");
+
+  /* ──── Therapists Search State ──── */
+  const [therapistSearch, setTherapistSearch] = useState("");
+  const [therapistSpecialization, setTherapistSpecialization] = useState("");
 
   /* ──── Medical Report Modals ──── */
   const [uploadOpen, setUploadOpen] = useState(false);
@@ -100,6 +107,11 @@ function UserDashboard() {
   const { data: reports = [], isLoading: isLoadingReports } = useQuery({
     queryKey: ["myReports"],
     queryFn: medicalReportsService.list,
+  });
+
+  const { data: therapistsData, isLoading: isLoadingTherapists } = useQuery({
+    queryKey: ["therapists", therapistSearch, therapistSpecialization],
+    queryFn: () => therapistService.list({ search: therapistSearch || undefined, specialization: therapistSpecialization || undefined }),
   });
 
   /* ──── Profile Mutations ──── */
@@ -266,31 +278,41 @@ function UserDashboard() {
           {/* Right Column: Tabs */}
           <div className="lg:col-span-2 space-y-8">
             {/* Tab Switcher */}
-            <div className="flex gap-1 p-1 rounded-2xl bg-muted/50 border border-border">
+            <div className="flex gap-1 p-1 rounded-2xl bg-muted/50 border border-border overflow-x-auto hide-scrollbar">
               <button
                 onClick={() => setActiveTab("bookings")}
-                className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                className={`flex-1 min-w-[120px] flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all ${
                   activeTab === "bookings"
                     ? "bg-background shadow-sm text-foreground"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                <Calendar className="h-4 w-4" /> Bookings
+                <Calendar className="h-4 w-4 shrink-0" /> <span className="whitespace-nowrap">Bookings</span>
               </button>
               <button
                 onClick={() => setActiveTab("reports")}
-                className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                className={`flex-1 min-w-[150px] flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all ${
                   activeTab === "reports"
                     ? "bg-background shadow-sm text-foreground"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                <ClipboardList className="h-4 w-4" /> Medical Reports
+                <ClipboardList className="h-4 w-4 shrink-0" /> <span className="whitespace-nowrap">Medical Reports</span>
                 {reports.length > 0 && (
                   <span className="ml-1 inline-flex items-center justify-center h-5 min-w-5 px-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold">
                     {reports.length}
                   </span>
                 )}
+              </button>
+              <button
+                onClick={() => setActiveTab("therapists")}
+                className={`flex-1 min-w-[130px] flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                  activeTab === "therapists"
+                    ? "bg-background shadow-sm text-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                <Users className="h-4 w-4 shrink-0" /> <span className="whitespace-nowrap">Therapists</span>
               </button>
             </div>
 
@@ -472,6 +494,113 @@ function UserDashboard() {
                       </div>
                     )}
                   </div>
+                </div>
+              </div>
+            )}
+
+            {/* ═══════ Therapists Tab ═══════ */}
+            {activeTab === "therapists" && (
+              <div className="rounded-3xl border border-border bg-surface shadow-sm overflow-hidden flex flex-col min-h-[500px]">
+                <div className="p-6 md:p-8 border-b border-border/50 bg-background/50 space-y-4">
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <h2 className="text-xl font-semibold flex items-center gap-2">
+                      <Users className="h-5 w-5 text-primary" /> Therapist Directory
+                    </h2>
+                    <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                      <div className="relative flex-1 sm:w-64">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                        <input
+                          type="text"
+                          placeholder="Search therapists..."
+                          value={therapistSearch}
+                          onChange={(e) => setTherapistSearch(e.target.value)}
+                          className="flex h-10 w-full rounded-xl border border-input bg-transparent pl-9 pr-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                        />
+                      </div>
+                      <select
+                        value={therapistSpecialization}
+                        onChange={(e) => setTherapistSpecialization(e.target.value)}
+                        className="flex h-10 w-full sm:w-48 rounded-xl border border-input bg-transparent px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                      >
+                        <option value="">All Specializations</option>
+                        <option value="Orthopedic">Orthopedic</option>
+                        <option value="Neurological">Neurological</option>
+                        <option value="Cardiopulmonary">Cardiopulmonary</option>
+                        <option value="Pediatric">Pediatric</option>
+                        <option value="Geriatric">Geriatric</option>
+                        <option value="Sports">Sports</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="p-6 md:p-8 flex-1 bg-background/30">
+                  {isLoadingTherapists ? (
+                    <div className="flex flex-col items-center justify-center py-12 text-muted-foreground h-full">
+                      <Loader2 className="h-8 w-8 animate-spin mb-4" />
+                      <p>Loading therapists...</p>
+                    </div>
+                  ) : !therapistsData?.items || therapistsData.items.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center py-12 text-center h-full">
+                      <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                        <Users className="h-8 w-8 text-primary" />
+                      </div>
+                      <h3 className="text-lg font-medium text-foreground">No therapists found</h3>
+                      <p className="text-sm text-muted-foreground mt-2 max-w-sm">
+                        {therapistSearch || therapistSpecialization
+                          ? "Try adjusting your search or filters to find what you're looking for."
+                          : "There are currently no verified therapists available."}
+                      </p>
+                      {(therapistSearch || therapistSpecialization) && (
+                        <button
+                          onClick={() => { setTherapistSearch(""); setTherapistSpecialization(""); }}
+                          className="mt-4 px-5 py-2 rounded-xl border border-border text-sm font-medium hover:bg-muted transition-colors"
+                        >
+                          Clear Filters
+                        </button>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
+                      {therapistsData.items.map((therapist) => (
+                        <div key={therapist.id} className="group relative rounded-2xl border border-border/60 bg-surface overflow-hidden hover:border-primary/30 hover:shadow-md transition-all flex flex-col">
+                          <div className="p-5 flex gap-4">
+                            <Avatar className="h-16 w-16 border border-border/50 shadow-sm shrink-0">
+                              <AvatarImage src={therapist.avatar?.url} alt={therapist.name} className="object-cover" />
+                              <AvatarFallback className="bg-primary/5 text-primary text-xl font-bold">
+                                {therapist.name.charAt(0).toUpperCase()}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div className="min-w-0 flex-1">
+                              <h4 className="font-semibold text-foreground text-base truncate">{therapist.name}</h4>
+                              {therapist.specialization && (
+                                <p className="text-sm text-primary font-medium mt-0.5 truncate">{therapist.specialization} Physiotherapist</p>
+                              )}
+                              <div className="flex flex-col gap-1 mt-2 text-xs text-muted-foreground">
+                                {therapist.experience_years !== undefined && therapist.experience_years > 0 && (
+                                  <span className="flex items-center gap-1.5"><Activity className="h-3.5 w-3.5" /> {therapist.experience_years} years experience</span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div className="mt-auto p-4 border-t border-border/50 bg-background/50 flex gap-2">
+                            <a
+                              href={`/booking?therapist=${encodeURIComponent(therapist.name)}`}
+                              className="flex-1 flex items-center justify-center gap-2 h-9 rounded-lg bg-primary text-primary-foreground text-xs font-semibold hover:opacity-90 transition-opacity"
+                            >
+                              <Calendar className="h-3.5 w-3.5" /> Book Session
+                            </a>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  
+                  {/* Pagination placeholder if needed later */}
+                  {therapistsData?.total > therapistsData?.items.length && (
+                     <p className="text-center text-xs text-muted-foreground mt-8">Showing {therapistsData.items.length} of {therapistsData.total} therapists.</p>
+                  )}
                 </div>
               </div>
             )}
