@@ -1,5 +1,21 @@
 import { api, apiFetch, type Envelope } from "@/lib/api/client";
 
+export type TherapistDocument = {
+  id: string;
+  title: string;
+  file: {
+    url: string;
+    public_id?: string;
+    resource_type?: string;
+    format?: string;
+    bytes?: number;
+    original_filename?: string;
+  };
+  is_verified: boolean;
+  uploaded_at: string;
+  verified_at?: string;
+};
+
 export type User = {
   id: string;
   name: string;
@@ -9,6 +25,7 @@ export type User = {
   address?: string;
   is_email_verified: boolean;
   avatar?: { url: string; public_id?: string; [key: string]: any };
+  documents?: TherapistDocument[];
 };
 
 export type AuthResponse = {
@@ -67,5 +84,19 @@ export const authService = {
 
   getBookings: async (): Promise<any[]> => {
     return api.get<any[]>("/auth/me/bookings");
+  },
+
+  addDocument: async (title: string, file: File): Promise<{ message: string; data: TherapistDocument }> => {
+    const fd = new FormData();
+    fd.append("title", title);
+    fd.append("file", file);
+    return apiFetch<{ message: string; data: TherapistDocument }>("/users/me/documents", {
+      method: "POST",
+      formData: fd,
+    });
+  },
+
+  deleteDocument: async (doc_id: string): Promise<{ message: string }> => {
+    return api.delete(`/users/me/documents/${doc_id}`);
   },
 };

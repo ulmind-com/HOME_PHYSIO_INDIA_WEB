@@ -171,6 +171,45 @@ function TherapistDashboard() {
     onError: (err: any) => toast.error(err.message || "Failed to update profile."),
   });
 
+  const [isUploadingDoc, setIsUploadingDoc] = useState(false);
+  const [docTitle, setDocTitle] = useState("");
+
+  const uploadDocMut = useMutation({
+    mutationFn: (data: { title: string; file: File }) => authService.addDocument(data.title, data.file),
+    onSuccess: () => {
+      authService.me().then(setUser);
+      toast.success("Document uploaded!");
+      setDocTitle("");
+      setIsUploadingDoc(false);
+    },
+    onError: (err: any) => {
+      toast.error(err.message || "Failed to upload document.");
+      setIsUploadingDoc(false);
+    },
+  });
+
+  const deleteDocMut = useMutation({
+    mutationFn: authService.deleteDocument,
+    onSuccess: () => {
+      authService.me().then(setUser);
+      toast.success("Document deleted.");
+    },
+    onError: (err: any) => toast.error(err.message || "Failed to delete document."),
+  });
+
+  const handleDocChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!docTitle.trim()) {
+      toast.error("Please enter a document title first.");
+      e.target.value = "";
+      return;
+    }
+    setIsUploadingDoc(true);
+    uploadDocMut.mutate({ title: docTitle, file });
+    e.target.value = "";
+  };
+
   const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -465,6 +504,98 @@ function TherapistDashboard() {
                   Save Changes
                 </button>
               </form>
+            </div>
+
+            {/* Documents Section */}
+            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-border">
+              <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                  <h2 className="text-xl font-semibold text-slate-800">Documents & Certifications</h2>
+                  <p className="text-sm text-muted-foreground mt-1">Manage your uploaded certificates. Admin will verify them.</p>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                {(user?.documents || []).length === 0 ? (
+                  <div className="text-center py-8 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
+                    <FileText className="h-8 w-8 mx-auto text-slate-400 mb-2" />
+                    <p className="text-sm text-slate-500">No documents uploaded yet.</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {user?.documents?.map((doc) => (
+                      <div key={doc.id} className="p-4 rounded-2xl border border-border bg-slate-50/50 flex flex-col gap-3">
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-center gap-2 min-w-0">
+                            <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                              <FileText className="h-4 w-4 text-primary" />
+                            </div>
+                            <div className="min-w-0">
+                              <h4 className="text-sm font-medium text-slate-800 truncate" title={doc.title}>{doc.title}</h4>
+                              <p className="text-xs text-muted-foreground">{new Date(doc.uploaded_at).toLocaleDateString()}</p>
+                            </div>
+                          </div>
+                          <button
+                            onClick={() => {
+                              if (confirm("Delete this document?")) deleteDocMut.mutate(doc.id);
+                            }}
+                            className="p-1.5 text-slate-400 hover:text-destructive transition-colors shrink-0"
+                            title="Delete"
+                          >
+                            <X className="h-4 w-4" />
+                          </button>
+                        </div>
+                        <div className="flex items-center justify-between mt-auto pt-2 border-t border-border/50">
+                          <div className="flex items-center gap-1.5">
+                            {doc.is_verified ? (
+                              <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
+                                <CheckCircle2 className="h-3 w-3" /> Verified
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center gap-1 text-xs font-medium text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">
+                                <Clock className="h-3 w-3" /> Pending
+                              </span>
+                            )}
+                          </div>
+                          <a href={doc.file.url} target="_blank" rel="noreferrer" className="text-xs font-medium text-primary hover:underline flex items-center gap-1">
+                            View <Eye className="h-3 w-3" />
+                          </a>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <div className="pt-4 border-t border-border mt-4">
+                  <h4 className="text-sm font-medium mb-3">Upload New Document</h4>
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <input
+                      type="text"
+                      placeholder="e.g. Master's Degree"
+                      value={docTitle}
+                      onChange={(e) => setDocTitle(e.target.value)}
+                      className="flex h-10 w-full sm:max-w-xs rounded-xl border border-input bg-transparent px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                    />
+                    <div className="relative">
+                      <input
+                        type="file"
+                        id="doc-upload"
+                        className="peer sr-only"
+                        onChange={handleDocChange}
+                        accept=".pdf,.png,.jpg,.jpeg"
+                        disabled={isUploadingDoc}
+                      />
+                      <label
+                        htmlFor="doc-upload"
+                        className="cursor-pointer flex h-10 items-center justify-center gap-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 px-4 text-sm font-semibold transition-all peer-disabled:opacity-50 peer-disabled:cursor-not-allowed"
+                      >
+                        {isUploadingDoc ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+                        {isUploadingDoc ? "Uploading..." : "Select File"}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )}
