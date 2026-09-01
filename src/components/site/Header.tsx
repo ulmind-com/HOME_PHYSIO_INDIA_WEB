@@ -62,7 +62,8 @@ export function Header() {
   const isFaq = pathname === "/faq";
   const isBlogs = pathname.startsWith("/blogs");
   const isBooking = pathname === "/booking";
-  const onDarkHero = !isAbout && !isEquipment && !isFaq && !isBlogs && !isBooking && !scrolled;
+  const isDashboard = pathname.startsWith("/user/") || pathname.startsWith("/therapist/") || pathname.startsWith("/admin");
+  const onDarkHero = !isAbout && !isEquipment && !isFaq && !isBlogs && !isBooking && !isDashboard && !scrolled;
   const overlay = isHome && !scrolled;
 
   return (
