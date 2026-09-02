@@ -27,6 +27,7 @@ import { Route as SampleCollectionRouteImport } from './routes/sample-collection
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TestimonialsRouteImport } from './routes/testimonials'
 import { Route as TherapyBookingRouteImport } from './routes/therapy-booking'
+import { Route as VideoConsultationRouteImport } from './routes/video-consultation'
 import { Route as VideosRouteImport } from './routes/videos'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
@@ -132,6 +133,11 @@ const TherapyBookingRoute = TherapyBookingRouteImport.update({
   path: '/therapy-booking',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VideoConsultationRoute = VideoConsultationRouteImport.update({
+  id: '/video-consultation',
+  path: '/video-consultation',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VideosRoute = VideosRouteImport.update({
   id: '/videos',
   path: '/videos',
@@ -222,6 +228,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
   '/therapy-booking': typeof TherapyBookingRoute
+  '/video-consultation': typeof VideoConsultationRoute
   '/videos': typeof VideosRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blogs/$slug': typeof BlogsSlugRoute
@@ -256,6 +263,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
   '/therapy-booking': typeof TherapyBookingRoute
+  '/video-consultation': typeof VideoConsultationRoute
   '/videos': typeof VideosRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blogs/$slug': typeof BlogsSlugRoute
@@ -291,6 +299,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
   '/therapy-booking': typeof TherapyBookingRoute
+  '/video-consultation': typeof VideoConsultationRoute
   '/videos': typeof VideosRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blogs/$slug': typeof BlogsSlugRoute
@@ -327,6 +336,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/testimonials'
     | '/therapy-booking'
+    | '/video-consultation'
     | '/videos'
     | '/blog/$slug'
     | '/blogs/$slug'
@@ -361,6 +371,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/testimonials'
     | '/therapy-booking'
+    | '/video-consultation'
     | '/videos'
     | '/blog/$slug'
     | '/blogs/$slug'
@@ -395,6 +406,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/testimonials'
     | '/therapy-booking'
+    | '/video-consultation'
     | '/videos'
     | '/blog/$slug'
     | '/blogs/$slug'
@@ -430,6 +442,7 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   TestimonialsRoute: typeof TestimonialsRoute
   TherapyBookingRoute: typeof TherapyBookingRoute
+  VideoConsultationRoute: typeof VideoConsultationRoute
   VideosRoute: typeof VideosRoute
   BlogSlugRoute: typeof BlogSlugRoute
   BlogsSlugRoute: typeof BlogsSlugRoute
@@ -574,6 +587,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TherapyBookingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/video-consultation': {
+      id: '/video-consultation'
+      path: '/video-consultation'
+      fullPath: '/video-consultation'
+      preLoaderRoute: typeof VideoConsultationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/videos': {
       id: '/videos'
       path: '/videos'
@@ -694,6 +714,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   TestimonialsRoute: TestimonialsRoute,
   TherapyBookingRoute: TherapyBookingRoute,
+  VideoConsultationRoute: VideoConsultationRoute,
   VideosRoute: VideosRoute,
   BlogSlugRoute: BlogSlugRoute,
   BlogsSlugRoute: BlogsSlugRoute,
