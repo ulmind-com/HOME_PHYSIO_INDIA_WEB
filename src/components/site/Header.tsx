@@ -183,6 +183,14 @@ export function Header() {
                       <span>Dashboard</span>
                     </Link>
                   </DropdownMenuItem>
+                  {user?.role !== "therapist" && (
+                    <DropdownMenuItem className="p-2 cursor-pointer focus:bg-primary-soft rounded-lg" asChild>
+                      <Link to="/therapy-booking" className="flex items-center">
+                        <ArrowRight className="mr-2 h-4 w-4" />
+                        <span>Book a Session</span>
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuItem className="p-2 cursor-pointer focus:bg-primary-soft rounded-lg" asChild>
                     <Link to={user?.role === "therapist" ? "/therapist/dashboard" : "/user/dashboard"} className="flex items-center">
                       <User className="mr-2 h-4 w-4" />

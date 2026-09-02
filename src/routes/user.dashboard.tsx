@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useAuth } from "@/contexts/AuthContext";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -9,6 +9,7 @@ import {
   type ReportType,
 } from "@/services/api/medical-reports.service";
 import { therapistService } from "@/services/api/therapist.service";
+import { therapyBookingService, type TherapyBooking } from "@/services/api/therapy-booking.service";
 import { toast } from "sonner";
 import {
   Camera,
@@ -82,7 +83,7 @@ function UserDashboard() {
   const isProfileIncomplete = !user?.age || !user?.pincode || !user?.medical_condition;
 
   /* ──── Active Tab ──── */
-  const [activeTab, setActiveTab] = useState<"bookings" | "reports" | "therapists">("bookings");
+  const [activeTab, setActiveTab] = useState<"bookings" | "therapy" | "reports" | "therapists">("bookings");
 
   /* ──── Therapists Search State ──── */
   const [therapistSearch, setTherapistSearch] = useState("");
@@ -94,6 +95,7 @@ function UserDashboard() {
   const [previewReport, setPreviewReport] = useState<MedicalReport | null>(null);
   const [editReport, setEditReport] = useState<MedicalReport | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<MedicalReport | null>(null);
+  const [cancelTarget, setCancelTarget] = useState<TherapyBooking | null>(null);
 
   /* ──── Upload Form ──── */
   const [reportTitle, setReportTitle] = useState("");
@@ -126,6 +128,17 @@ function UserDashboard() {
     queryKey: ["myReports"],
     queryFn: medicalReportsService.list,
   });
+
+  const {
+    data: therapyBookingsData,
+    isLoading: isLoadingTherapyBookings,
+    isError: isErrorTherapyBookings,
+    refetch: refetchTherapyBookings,
+  } = useQuery({
+    queryKey: ["myTherapyBookings"],
+    queryFn: () => therapyBookingService.listMine(),
+  });
+  const therapyBookings = therapyBookingsData?.items ?? [];
 
   const { data: therapistsData, isLoading: isLoadingTherapists, isError: isErrorTherapists, refetch: refetchTherapists } = useQuery({
     queryKey: ["therapists", debouncedTherapistSearch, therapistSpecialization, therapistType],
@@ -204,6 +217,20 @@ function UserDashboard() {
       setDeleteTarget(null);
     },
     onError: (err: any) => toast.error(err.message || "Failed to delete report."),
+  });
+
+  const cancelBookingMut = useMutation({
+    mutationFn: ({ id, reason }: { id: string; reason?: string }) => therapyBookingService.cancel(id, reason),
+    onSuccess: (updated) => {
+      queryClient.invalidateQueries({ queryKey: ["myTherapyBookings"] });
+      toast.success(
+        updated.refund_amount > 0
+          ? `Booking cancelled — ₹${updated.refund_amount} refunded to your original payment method.`
+          : "Booking cancelled."
+      );
+      setCancelTarget(null);
+    },
+    onError: (err: any) => toast.error(err.message || "Failed to cancel booking."),
   });
 
   /* ──── Form Helpers ──── */
@@ -353,6 +380,21 @@ function UserDashboard() {
                 <Calendar className="h-4 w-4 shrink-0" /> <span className="whitespace-nowrap">Bookings</span>
               </button>
               <button
+                onClick={() => setActiveTab("therapy")}
+                className={`flex-1 min-w-[150px] flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                  activeTab === "therapy"
+                    ? "bg-background shadow-sm text-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                <Activity className="h-4 w-4 shrink-0" /> <span className="whitespace-nowrap">Therapy Sessions</span>
+                {therapyBookings.length > 0 && (
+                  <span className="ml-1 inline-flex items-center justify-center h-5 min-w-5 px-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold">
+                    {therapyBookings.length}
+                  </span>
+                )}
+              </button>
+              <button
                 onClick={() => setActiveTab("reports")}
                 className={`flex-1 min-w-[150px] flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all ${
                   activeTab === "reports"
@@ -435,6 +477,75 @@ function UserDashboard() {
                               </span>
                               <span className="text-[10px] text-muted-foreground mt-1 uppercase tracking-widest">{booking.reference}</span>
                             </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* ═══════ Therapy Sessions Tab ═══════ */}
+            {activeTab === "therapy" && (
+              <div className="rounded-3xl border border-border bg-surface shadow-sm overflow-hidden">
+                <div className="p-6 md:p-8 border-b border-border/50 bg-background/50 flex justify-between items-center">
+                  <h2 className="text-xl font-semibold flex items-center gap-2">
+                    <Activity className="h-5 w-5 text-primary" /> Therapy Sessions
+                  </h2>
+                  <Link
+                    to="/therapy-booking"
+                    className="px-4 py-2 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity"
+                  >
+                    Book New Session
+                  </Link>
+                </div>
+                <div className="p-6 md:p-8">
+                  {isLoadingTherapyBookings ? (
+                    <div className="flex items-center justify-center py-12"><Loader2 className="h-6 w-6 animate-spin text-muted-foreground" /></div>
+                  ) : isErrorTherapyBookings ? (
+                    <div className="flex flex-col items-center justify-center py-8 text-center">
+                      <p className="text-xs text-red-500 font-medium mb-2">Failed to load therapy sessions.</p>
+                      <button onClick={() => refetchTherapyBookings()} className="px-3 py-1 text-xs font-medium rounded-md bg-primary text-primary-foreground">Retry</button>
+                    </div>
+                  ) : therapyBookings.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center py-12 text-center">
+                      <div className="h-14 w-14 rounded-full bg-primary/10 flex items-center justify-center mb-3">
+                        <Activity className="h-7 w-7 text-primary" />
+                      </div>
+                      <h3 className="text-sm font-medium text-foreground">No therapy sessions booked yet</h3>
+                      <p className="text-xs text-muted-foreground mt-1 mb-4">Book a physiotherapy, yoga, massage or rehabilitation session.</p>
+                      <Link to="/therapy-booking" className="px-5 py-2 rounded-xl bg-primary text-primary-foreground text-sm font-medium">
+                        Book Now
+                      </Link>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {therapyBookings.map((b) => (
+                        <div key={b.id} className="rounded-2xl border border-border/60 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                          <div>
+                            <p className="font-semibold text-sm capitalize">{b.service_category.replace(/_/g, " ")}</p>
+                            <p className="text-xs text-muted-foreground mt-0.5">
+                              {b.preferred_date} · {b.shift} · {b.time_slot}
+                            </p>
+                            <p className="text-xs text-muted-foreground font-mono mt-0.5">{b.reference}</p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${b.payment_status === "paid" ? "bg-green-500/10 text-green-600" : "bg-amber-500/10 text-amber-600"}`}>
+                              {b.payment_status}
+                            </span>
+                            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-muted text-muted-foreground capitalize">
+                              {b.status.replace(/_/g, " ")}
+                            </span>
+                            <span className="text-sm font-semibold">₹{b.total_amount}</span>
+                            {["pending", "approved", "in_progress"].includes(b.status) && (
+                              <button
+                                onClick={() => setCancelTarget(b)}
+                                className="text-xs font-semibold px-2.5 py-1 rounded-full border border-destructive/30 text-destructive hover:bg-destructive/10 transition-colors"
+                              >
+                                Cancel
+                              </button>
+                            )}
                           </div>
                         </div>
                       ))}
@@ -854,6 +965,37 @@ function UserDashboard() {
               <p className="text-sm text-green-100 leading-relaxed">{previewReport.physio_notes}</p>
             </div>
           )}
+        </div>
+      )}
+
+      {/* ═══════ CANCEL BOOKING CONFIRM ═══════ */}
+      {cancelTarget && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4" onClick={() => setCancelTarget(null)}>
+          <div className="relative w-full max-w-sm bg-background rounded-3xl border border-border shadow-2xl overflow-hidden p-6" onClick={(e) => e.stopPropagation()}>
+            <div className="flex flex-col items-center text-center">
+              <div className="h-14 w-14 rounded-full bg-red-100 dark:bg-red-500/10 flex items-center justify-center mb-4">
+                <AlertCircle className="h-7 w-7 text-red-600" />
+              </div>
+              <h3 className="text-lg font-semibold">Cancel this booking?</h3>
+              <p className="text-sm text-muted-foreground mt-2">
+                Reference <span className="font-mono">{cancelTarget.reference}</span>.{" "}
+                {cancelTarget.payment_status === "paid"
+                  ? "If you're cancelling well ahead of your scheduled visit, you'll get a full refund automatically as per our cancellation policy; cancelling too close to the visit time may not be refunded."
+                  : "This booking hasn't been paid for yet, so there's nothing to refund."}
+              </p>
+            </div>
+            <div className="flex gap-3 mt-6">
+              <button onClick={() => setCancelTarget(null)} className="flex-1 h-10 rounded-xl border border-border text-sm font-medium hover:bg-muted transition-colors">Keep Booking</button>
+              <button
+                onClick={() => cancelBookingMut.mutate({ id: cancelTarget.id })}
+                disabled={cancelBookingMut.isPending}
+                className="flex-1 h-10 flex items-center justify-center gap-2 rounded-xl bg-red-600 text-white text-sm font-semibold hover:bg-red-700 disabled:opacity-50 transition-all"
+              >
+                {cancelBookingMut.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+                Cancel Booking
+              </button>
+            </div>
+          </div>
         </div>
       )}
 

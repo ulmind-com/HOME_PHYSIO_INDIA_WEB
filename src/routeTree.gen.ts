@@ -26,6 +26,7 @@ import { Route as RefundPolicyRouteImport } from './routes/refund-policy'
 import { Route as SampleCollectionRouteImport } from './routes/sample-collection'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TestimonialsRouteImport } from './routes/testimonials'
+import { Route as TherapyBookingRouteImport } from './routes/therapy-booking'
 import { Route as VideosRouteImport } from './routes/videos'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
@@ -126,6 +127,11 @@ const TestimonialsRoute = TestimonialsRouteImport.update({
   path: '/testimonials',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TherapyBookingRoute = TherapyBookingRouteImport.update({
+  id: '/therapy-booking',
+  path: '/therapy-booking',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VideosRoute = VideosRouteImport.update({
   id: '/videos',
   path: '/videos',
@@ -215,6 +221,7 @@ export interface FileRoutesByFullPath {
   '/sample-collection': typeof SampleCollectionRoute
   '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
+  '/therapy-booking': typeof TherapyBookingRoute
   '/videos': typeof VideosRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blogs/$slug': typeof BlogsSlugRoute
@@ -248,6 +255,7 @@ export interface FileRoutesByTo {
   '/sample-collection': typeof SampleCollectionRoute
   '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
+  '/therapy-booking': typeof TherapyBookingRoute
   '/videos': typeof VideosRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blogs/$slug': typeof BlogsSlugRoute
@@ -282,6 +290,7 @@ export interface FileRoutesById {
   '/sample-collection': typeof SampleCollectionRoute
   '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
+  '/therapy-booking': typeof TherapyBookingRoute
   '/videos': typeof VideosRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blogs/$slug': typeof BlogsSlugRoute
@@ -317,6 +326,7 @@ export interface FileRouteTypes {
     | '/sample-collection'
     | '/terms'
     | '/testimonials'
+    | '/therapy-booking'
     | '/videos'
     | '/blog/$slug'
     | '/blogs/$slug'
@@ -350,6 +360,7 @@ export interface FileRouteTypes {
     | '/sample-collection'
     | '/terms'
     | '/testimonials'
+    | '/therapy-booking'
     | '/videos'
     | '/blog/$slug'
     | '/blogs/$slug'
@@ -383,6 +394,7 @@ export interface FileRouteTypes {
     | '/sample-collection'
     | '/terms'
     | '/testimonials'
+    | '/therapy-booking'
     | '/videos'
     | '/blog/$slug'
     | '/blogs/$slug'
@@ -417,6 +429,7 @@ export interface RootRouteChildren {
   SampleCollectionRoute: typeof SampleCollectionRoute
   TermsRoute: typeof TermsRoute
   TestimonialsRoute: typeof TestimonialsRoute
+  TherapyBookingRoute: typeof TherapyBookingRoute
   VideosRoute: typeof VideosRoute
   BlogSlugRoute: typeof BlogSlugRoute
   BlogsSlugRoute: typeof BlogsSlugRoute
@@ -554,6 +567,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TestimonialsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/therapy-booking': {
+      id: '/therapy-booking'
+      path: '/therapy-booking'
+      fullPath: '/therapy-booking'
+      preLoaderRoute: typeof TherapyBookingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/videos': {
       id: '/videos'
       path: '/videos'
@@ -673,6 +693,7 @@ const rootRouteChildren: RootRouteChildren = {
   SampleCollectionRoute: SampleCollectionRoute,
   TermsRoute: TermsRoute,
   TestimonialsRoute: TestimonialsRoute,
+  TherapyBookingRoute: TherapyBookingRoute,
   VideosRoute: VideosRoute,
   BlogSlugRoute: BlogSlugRoute,
   BlogsSlugRoute: BlogsSlugRoute,

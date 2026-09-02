@@ -25,6 +25,7 @@ export type User = {
   phone?: string;
   address?: string;
   age?: number | null;
+  gender?: string | null;
   pincode?: string | null;
   medical_condition?: string | null;
   specialization?: string | null;
@@ -96,6 +97,7 @@ export const authService = {
     phone?: string;
     address?: string;
     age?: number;
+    gender?: string;
     pincode?: string;
     medical_condition?: string;
   }): Promise<User> => {
