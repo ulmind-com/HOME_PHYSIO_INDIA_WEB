@@ -134,7 +134,8 @@ export function Header() {
                 }}
                 inactiveProps={{ className: onDarkHero ? "text-white/75" : "text-foreground/70" }}
                 className={cn(
-                  "text-sm uppercase tracking-wider transition-colors hover:text-primary",
+                  "text-sm uppercase tracking-wider transition-all hover:underline underline-offset-4 decoration-2",
+                  onDarkHero ? "hover:text-white decoration-white/50" : "hover:text-primary decoration-primary/50"
                 )}
               >
                 {item.label}
