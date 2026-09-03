@@ -35,7 +35,7 @@ export function PageHero({
           src={image}
           alt=""
           aria-hidden
-          className="absolute inset-0 -z-20 h-full w-full object-cover"
+          className="absolute inset-0 -z-20 h-full w-full object-cover object-[center_20%]"
         />
       ) : (
         <div
