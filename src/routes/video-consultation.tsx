@@ -1,4 +1,7 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { PageHero } from "@/components/site/PageHero";
+import { openAuthDialog } from "@/lib/auth-dialog";
+import { CONSULTATION_FEE } from "@/lib/plan";
 import { useEffect, useRef, useState } from "react";
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 import { useAuth } from "@/contexts/AuthContext";
@@ -30,8 +33,10 @@ function VideoConsultationPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [zegoInstance, setZegoInstance] = useState<any>(null);
+  const [started, setStarted] = useState<boolean>(false);
 
   useEffect(() => {
+    if (!started) return;
     let isMounted = true;
 
     async function initVideoCall() {
@@ -50,17 +55,12 @@ function VideoConsultationPage() {
           kitToken = resData?.data?.token;
         }
 
-        // Fallback: Generate token if backend API is not reachable in dev
+        // The token is minted server-side only. A client-side fallback would
+        // mean shipping the Zego server secret in the bundle, which lets anyone
+        // join any room on the account.
         if (!kitToken) {
-          const appId = 149684840;
-          const serverSecret = "a1ba3a9d4ff4b8316a7e97249742c9e4";
-          kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
-            appId,
-            serverSecret,
-            roomId,
-            userId,
-            userName,
-            3600
+          throw new Error(
+            "Could not start the consultation — the video service is unavailable. Please try again shortly.",
           );
         }
 
@@ -121,7 +121,11 @@ function VideoConsultationPage() {
         }
       }
     };
-  }, [roomId, userId, userName]);
+  }, [roomId, userId, userName, started]);
+
+  if (!started) {
+    return <ConsultationIntro onStart={() => setStarted(true)} signedIn={Boolean(user)} />;
+  }
 
   return (
     <div className="min-h-screen bg-slate-950 text-white flex flex-col font-sans">
@@ -188,5 +192,95 @@ function VideoConsultationPage() {
         />
       </main>
     </div>
+  );
+}
+
+
+/**
+ * Pre-call screen: what the ₹199 consultation covers, and the sign-in gate.
+ * The room is only created once the patient explicitly starts the call.
+ */
+function ConsultationIntro({
+  onStart,
+  signedIn,
+}: {
+  onStart: () => void;
+  signedIn: boolean;
+}) {
+  const INCLUDED = [
+    "A qualified physiotherapist reviews your symptoms live",
+    "Guidance on whether home visits are the right next step",
+    "Which portable modalities are likely to help your condition",
+    "A realistic estimate of how many sessions you need",
+  ];
+
+  return (
+    <>
+      <PageHero
+        eyebrow="Online consultation"
+        title="Talk to a physiotherapist, 24×7"
+        description="A ₹199 video consultation before you commit to home visits — so you book the right care, not a guess."
+        crumbs={[{ label: "Home", to: "/" }, { label: "Online consultation" }]}
+        badges={["₹199 per consultation", "Available 24×7", "Secure 1-on-1 video"]}
+      />
+
+      <section className="py-14 lg:py-20">
+        <div className="container-x grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:items-start">
+          <div>
+            <h2 className="font-display text-2xl tracking-tight">What's included</h2>
+            <ul className="mt-6 space-y-4">
+              {INCLUDED.map((item) => (
+                <li key={item} className="flex gap-3">
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary-soft">
+                    <ShieldCheck className="h-3 w-3 text-primary" />
+                  </span>
+                  <span className="text-sm text-foreground/80">{item}</span>
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-8 rounded-2xl border border-border/70 bg-secondary/40 p-5 text-sm text-muted-foreground">
+              A consultation is advice, not a prescription. If you already have a
+              doctor's prescription, X-Ray or MRI, upload it from your dashboard first —
+              your physiotherapist can review it during the call.
+            </div>
+          </div>
+
+          <aside className="rounded-3xl border border-border/70 bg-card p-6 shadow-soft sm:p-8">
+            <p className="text-xs uppercase tracking-[0.18em] text-primary">
+              Consultation fee
+            </p>
+            <p className="mt-3 font-display text-5xl">₹{CONSULTATION_FEE}</p>
+            <p className="mt-1 text-sm text-muted-foreground">per video consultation</p>
+
+            {signedIn ? (
+              <Button className="mt-8 w-full rounded-full" onClick={onStart}>
+                <Video className="mr-2 h-4 w-4" />
+                Start consultation
+              </Button>
+            ) : (
+              <>
+                <Button
+                  className="mt-8 w-full rounded-full"
+                  onClick={() => openAuthDialog("login")}
+                >
+                  Sign in to start
+                </Button>
+                <p className="mt-3 text-center text-xs text-muted-foreground">
+                  Sign in so your consultation is attached to your medical history.
+                </p>
+              </>
+            )}
+
+            <Link
+              to="/booking"
+              className="mt-4 block text-center text-sm font-medium text-primary hover:underline"
+            >
+              Or book a home visit directly →
+            </Link>
+          </aside>
+        </div>
+      </section>
+    </>
   );
 }

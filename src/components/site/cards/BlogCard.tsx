@@ -7,7 +7,7 @@ export function BlogCard({ blog }: { blog: Blog }) {
   const cover = imgUrl(blog.featured_image);
   return (
     <Link
-      to="/blog/$slug"
+      to="/blogs/$slug"
       params={{ slug: blog.slug }}
       className="group flex flex-col overflow-hidden rounded-3xl border border-border bg-surface hover-glow hover:border-primary/60"
     >

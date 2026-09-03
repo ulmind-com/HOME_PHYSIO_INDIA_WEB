@@ -11,7 +11,7 @@ export const Route = createFileRoute("/about")({
       { title: "About — Home Physio India" },
       {
         name: "description",
-        content: "Home Physio India provides reliable healthcare and personal care support at home for patients, elderly people and families.",
+        content: "Home Physio India delivers home physiotherapy, yoga therapy, massage therapy and rehabilitation across West Bengal through verified therapists.",
       },
       { property: "og:title", content: "About — Home Physio India" },
       { property: "og:description", content: "Home Physio India provides reliable healthcare and personal care support at home." },
@@ -29,7 +29,7 @@ function AboutPage() {
 
   // Hero section data
   const heroTitle = settings?.about_hero_title || "ABOUT HOME PHYSIO INDIA";
-  const heroDescription = settings?.about_hero_description || "Home Physio India provides reliable and compassionate healthcare support in the comfort of your home.\n\nWe connect families with trained and verified nurses, caregivers and healthcare professionals, offering personalized care based on each patient needs.\n\n. Flexible care options designed around your requirements.\n. Professional nursing, elderly care, physiotherapy and recovery support.\n. Patient - focused care with safety, dignity and compassion.\n. Reliable support for patient and families throughout their care journey.";
+  const heroDescription = settings?.about_hero_description || "Home Physio India brings structured, clinical recovery into the home.\n\nWe connect patients with document-verified physiotherapists, yoga therapists and massage therapists who visit at home with portable modalities and a treatment plan built around the patient's own condition.\n\n. Home physiotherapy, yoga therapy, massage therapy and rehabilitation.\n. Verified therapists, admin-approved before their first visit.\n. Transparent per-visit pricing, itemised before you pay.\n. Prescriptions and scans reviewed by your physiotherapist.";
 
   // Split description into text and bullets
   const lines = heroDescription.split('\n').map((l: string) => l.trim()).filter(Boolean);

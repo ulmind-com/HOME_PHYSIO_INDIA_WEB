@@ -21,56 +21,12 @@ export const Route = createFileRoute("/testimonials")({
   component: TestimonialsPage,
 });
 
-const DUMMY_TESTIMONIALS: any[] = [
-  {
-    id: "d1",
-    name: "Rajeshwar Roy",
-    role: "Son of Patient",
-    rating: 5,
-    content: "Home Physio India arranged an ICU-trained nurse within two hours after my father was discharged. The clinical discipline and empathy shown by the staff were exceptional.",
-  },
-  {
-    id: "d2",
-    name: "Anjali Mukherjee",
-    role: "Post-Surgery Patient",
-    rating: 5,
-    content: "The physiotherapist assigned to me for knee replacement recovery was thorough and patient. I walked without assistance much faster than my doctor anticipated! Their home sessions saved us the hassle of traveling.",
-  },
-  {
-    id: "d3",
-    name: "Saurabh Banerjee",
-    role: "Elder Care Client",
-    rating: 5,
-    content: "Having a dedicated 24/7 care attendant for my elderly mother brought our family peace of mind. Truly hospital-grade standards at home.",
-  },
-  {
-    id: "d4",
-    name: "Dr. Meenakshi Iyer",
-    role: "Referring Physician",
-    rating: 5,
-    content: "I regularly refer my post-op patients to Home Physio India for home care. Their strict adherence to clinical protocols and timely vitals reporting makes them a reliable extension of our hospital care.",
-  },
-  {
-    id: "d5",
-    name: "Vikram Chauhan",
-    role: "Husband of Patient",
-    rating: 4,
-    content: "Excellent service. The medical equipment (BiPAP machine and oxygen concentrator) was delivered and installed on the same day. The technician explained everything clearly.",
-  },
-  {
-    id: "d6",
-    name: "Sneha Kapoor",
-    role: "Daughter, NRI",
-    rating: 5,
-    content: "Living abroad, I was constantly worried about my parents' health. Home Physio India's elder care plan with daily WhatsApp updates and weekly doctor visits has been a blessing. I feel connected to their care journey.",
-  }
-];
 
 function TestimonialsPage() {
   const { data, isLoading } = useQuery(testimonialsQ({ limit: 60 }));
   const { data: reviews } = useQuery(reviewSummaryQ());
   const rawItems = data?.items ?? [];
-  const items = rawItems.length > 0 ? rawItems : DUMMY_TESTIMONIALS;
+  const items = rawItems;
 
   const rating = reviews?.average_rating ? reviews.average_rating.toFixed(1) : "4.9";
   const total = reviews?.total_reviews;
@@ -127,6 +83,14 @@ function TestimonialsPage() {
                 className="h-60 rounded-3xl border border-border bg-surface animate-pulse"
               />
             ))}
+          </div>
+        ) : items.length === 0 ? (
+          <div className="rounded-3xl border border-dashed border-border bg-surface/50 p-12 text-center">
+            <h3 className="font-display text-xl tracking-tight">No stories published yet</h3>
+            <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
+              Patient testimonials appear here as soon as they are published from the
+              admin panel.
+            </p>
           </div>
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 auto-rows-max items-start">

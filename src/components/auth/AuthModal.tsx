@@ -10,9 +10,10 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp
 import { toast } from "sonner";
 import { auth as firebaseAuth } from "@/lib/firebase";
 import { GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult } from "firebase/auth";
-import { AlertCircle, Loader2 } from "lucide-react";
+import { AlertCircle, Loader2, X } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { AUTH_DIALOG_EVENT } from "@/lib/auth-dialog";
 
 type ViewState = "login" | "signup" | "therapist_signup" | "otp" | "phone_prompt";
 
@@ -28,8 +29,36 @@ export function AuthModal() {
   const router = useRouter();
   
   const [view, setView] = useState<ViewState>("login");
+  const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // The dialog is opened on demand — either by a "Sign in" affordance anywhere
+  // in the app, or by the API client when a request comes back unauthorized.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const onOpen = (e: Event) => {
+      const next = (e as CustomEvent<{ view?: ViewState }>).detail?.view;
+      if (next) setView(next);
+      setError(null);
+      setOpen(true);
+    };
+    const onExpired = () => {
+      setView("login");
+      setOpen(true);
+    };
+    window.addEventListener(AUTH_DIALOG_EVENT, onOpen);
+    window.addEventListener("hpi:auth:session-expired", onExpired);
+    return () => {
+      window.removeEventListener(AUTH_DIALOG_EVENT, onOpen);
+      window.removeEventListener("hpi:auth:session-expired", onExpired);
+    };
+  }, []);
+
+  // Close automatically once the user is signed in.
+  useEffect(() => {
+    if (isAuthenticated) setOpen(false);
+  }, [isAuthenticated]);
 
   // Form states
   const [email, setEmail] = useState("");
@@ -228,13 +257,26 @@ export function AuthModal() {
   }, [googleIdToken, phone, setUser]);
 
   // Early return AFTER all hooks
-  if (isLoading || isAuthenticated) {
+  if (isLoading || isAuthenticated || !open) {
     return null;
   }
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
-      <div className="w-full max-w-md bg-background rounded-2xl shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm px-4"
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget) setOpen(false);
+      }}
+    >
+      <div className="relative w-full max-w-md bg-background rounded-2xl shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+        <button
+          type="button"
+          aria-label="Close"
+          onClick={() => setOpen(false)}
+          className="absolute right-4 top-4 z-10 rounded-full p-1.5 text-muted-foreground transition hover:bg-muted hover:text-foreground"
+        >
+          <X className="h-4 w-4" />
+        </button>
         <div className="p-6 md:p-8">
           <div className="text-center mb-6">
             <h2 className="text-2xl font-display font-bold tracking-tight">

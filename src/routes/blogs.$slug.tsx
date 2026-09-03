@@ -3,7 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, Calendar, User, Clock, CheckCircle2 } from "lucide-react";
 import { blogBySlugQ } from "@/lib/api/queries";
 import { Section } from "@/components/site/Section";
-import { DUMMY_BLOGS } from "./blogs.index";
 
 export const Route = createFileRoute("/blogs/$slug")({
   component: BlogDetailsPage,
@@ -18,9 +17,7 @@ function BlogDetailsPage() {
     retry: false,
   });
 
-  // Fallback to dummy data if not found in API
-  const dummyMatch = DUMMY_BLOGS.find((b) => b.slug === slug);
-  const blog = data || dummyMatch;
+  const blog = data;
 
   if (isLoading) {
     return (
@@ -30,7 +27,7 @@ function BlogDetailsPage() {
     );
   }
 
-  if (isError && !dummyMatch) {
+  if (isError || (!isLoading && !blog)) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#F8F9FA]">
         <h1 className="text-4xl font-display font-bold text-foreground mb-4">Blog not found</h1>

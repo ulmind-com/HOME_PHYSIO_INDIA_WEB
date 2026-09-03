@@ -13,30 +13,20 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as BookingRouteImport } from './routes/booking'
 import { Route as ContactRouteImport } from './routes/contact'
-import { Route as ElderlyCareRouteImport } from './routes/elderly-care'
 import { Route as FaqRouteImport } from './routes/faq'
-import { Route as IcuSetupRouteImport } from './routes/icu-setup'
-import { Route as InfectionControlNurseRouteImport } from './routes/infection-control-nurse'
-import { Route as MedicalEquipmentRouteImport } from './routes/medical-equipment'
-import { Route as MotherBabyCareRouteImport } from './routes/mother-baby-care'
-import { Route as NursingCareRouteImport } from './routes/nursing-care'
-import { Route as PhysiotherapyRouteImport } from './routes/physiotherapy'
+import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as RefundPolicyRouteImport } from './routes/refund-policy'
-import { Route as SampleCollectionRouteImport } from './routes/sample-collection'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TestimonialsRouteImport } from './routes/testimonials'
-import { Route as TherapyBookingRouteImport } from './routes/therapy-booking'
+import { Route as TherapistsRouteImport } from './routes/therapists'
 import { Route as VideoConsultationRouteImport } from './routes/video-consultation'
 import { Route as VideosRouteImport } from './routes/videos'
-import { Route as BlogIndexRouteImport } from './routes/blog.index'
-import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as BlogsIndexRouteImport } from './routes/blogs.index'
 import { Route as BlogsSlugRouteImport } from './routes/blogs.$slug'
 import { Route as CareersIndexRouteImport } from './routes/careers.index'
 import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
 import { Route as EquipmentIndexRouteImport } from './routes/equipment.index'
-import { Route as EquipmentSlugRouteImport } from './routes/equipment.$slug'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as TherapistDashboardRouteImport } from './routes/therapist.dashboard'
@@ -63,44 +53,14 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ElderlyCareRoute = ElderlyCareRouteImport.update({
-  id: '/elderly-care',
-  path: '/elderly-care',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const FaqRoute = FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IcuSetupRoute = IcuSetupRouteImport.update({
-  id: '/icu-setup',
-  path: '/icu-setup',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InfectionControlNurseRoute = InfectionControlNurseRouteImport.update({
-  id: '/infection-control-nurse',
-  path: '/infection-control-nurse',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MedicalEquipmentRoute = MedicalEquipmentRouteImport.update({
-  id: '/medical-equipment',
-  path: '/medical-equipment',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MotherBabyCareRoute = MotherBabyCareRouteImport.update({
-  id: '/mother-baby-care',
-  path: '/mother-baby-care',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const NursingCareRoute = NursingCareRouteImport.update({
-  id: '/nursing-care',
-  path: '/nursing-care',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PhysiotherapyRoute = PhysiotherapyRouteImport.update({
-  id: '/physiotherapy',
-  path: '/physiotherapy',
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -113,11 +73,6 @@ const RefundPolicyRoute = RefundPolicyRouteImport.update({
   path: '/refund-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SampleCollectionRoute = SampleCollectionRouteImport.update({
-  id: '/sample-collection',
-  path: '/sample-collection',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -128,9 +83,9 @@ const TestimonialsRoute = TestimonialsRouteImport.update({
   path: '/testimonials',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TherapyBookingRoute = TherapyBookingRouteImport.update({
-  id: '/therapy-booking',
-  path: '/therapy-booking',
+const TherapistsRoute = TherapistsRouteImport.update({
+  id: '/therapists',
+  path: '/therapists',
   getParentRoute: () => rootRouteImport,
 } as any)
 const VideoConsultationRoute = VideoConsultationRouteImport.update({
@@ -141,16 +96,6 @@ const VideoConsultationRoute = VideoConsultationRouteImport.update({
 const VideosRoute = VideosRouteImport.update({
   id: '/videos',
   path: '/videos',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BlogIndexRoute = BlogIndexRouteImport.update({
-  id: '/blog/',
-  path: '/blog/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BlogSlugRoute = BlogSlugRouteImport.update({
-  id: '/blog/$slug',
-  path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogsIndexRoute = BlogsIndexRouteImport.update({
@@ -176,11 +121,6 @@ const CareersSlugRoute = CareersSlugRouteImport.update({
 const EquipmentIndexRoute = EquipmentIndexRouteImport.update({
   id: '/equipment/',
   path: '/equipment/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EquipmentSlugRoute = EquipmentSlugRouteImport.update({
-  id: '/equipment/$slug',
-  path: '/equipment/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesIndexRoute = ServicesIndexRouteImport.update({
@@ -214,30 +154,20 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/booking': typeof BookingRoute
   '/contact': typeof ContactRoute
-  '/elderly-care': typeof ElderlyCareRoute
   '/faq': typeof FaqRoute
-  '/icu-setup': typeof IcuSetupRoute
-  '/infection-control-nurse': typeof InfectionControlNurseRoute
-  '/medical-equipment': typeof MedicalEquipmentRoute
-  '/mother-baby-care': typeof MotherBabyCareRoute
-  '/nursing-care': typeof NursingCareRoute
-  '/physiotherapy': typeof PhysiotherapyRoute
+  '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/refund-policy': typeof RefundPolicyRoute
-  '/sample-collection': typeof SampleCollectionRoute
   '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
-  '/therapy-booking': typeof TherapyBookingRoute
+  '/therapists': typeof TherapistsRoute
   '/video-consultation': typeof VideoConsultationRoute
   '/videos': typeof VideosRoute
-  '/blog/$slug': typeof BlogSlugRoute
   '/blogs/$slug': typeof BlogsSlugRoute
   '/careers/$slug': typeof CareersSlugRoute
-  '/equipment/$slug': typeof EquipmentSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/therapist/dashboard': typeof TherapistDashboardRoute
   '/user/dashboard': typeof UserDashboardRoute
-  '/blog/': typeof BlogIndexRoute
   '/blogs/': typeof BlogsIndexRoute
   '/careers/': typeof CareersIndexRoute
   '/equipment/': typeof EquipmentIndexRoute
@@ -249,30 +179,20 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/booking': typeof BookingRoute
   '/contact': typeof ContactRoute
-  '/elderly-care': typeof ElderlyCareRoute
   '/faq': typeof FaqRoute
-  '/icu-setup': typeof IcuSetupRoute
-  '/infection-control-nurse': typeof InfectionControlNurseRoute
-  '/medical-equipment': typeof MedicalEquipmentRoute
-  '/mother-baby-care': typeof MotherBabyCareRoute
-  '/nursing-care': typeof NursingCareRoute
-  '/physiotherapy': typeof PhysiotherapyRoute
+  '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/refund-policy': typeof RefundPolicyRoute
-  '/sample-collection': typeof SampleCollectionRoute
   '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
-  '/therapy-booking': typeof TherapyBookingRoute
+  '/therapists': typeof TherapistsRoute
   '/video-consultation': typeof VideoConsultationRoute
   '/videos': typeof VideosRoute
-  '/blog/$slug': typeof BlogSlugRoute
   '/blogs/$slug': typeof BlogsSlugRoute
   '/careers/$slug': typeof CareersSlugRoute
-  '/equipment/$slug': typeof EquipmentSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/therapist/dashboard': typeof TherapistDashboardRoute
   '/user/dashboard': typeof UserDashboardRoute
-  '/blog': typeof BlogIndexRoute
   '/blogs': typeof BlogsIndexRoute
   '/careers': typeof CareersIndexRoute
   '/equipment': typeof EquipmentIndexRoute
@@ -285,30 +205,20 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/booking': typeof BookingRoute
   '/contact': typeof ContactRoute
-  '/elderly-care': typeof ElderlyCareRoute
   '/faq': typeof FaqRoute
-  '/icu-setup': typeof IcuSetupRoute
-  '/infection-control-nurse': typeof InfectionControlNurseRoute
-  '/medical-equipment': typeof MedicalEquipmentRoute
-  '/mother-baby-care': typeof MotherBabyCareRoute
-  '/nursing-care': typeof NursingCareRoute
-  '/physiotherapy': typeof PhysiotherapyRoute
+  '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/refund-policy': typeof RefundPolicyRoute
-  '/sample-collection': typeof SampleCollectionRoute
   '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
-  '/therapy-booking': typeof TherapyBookingRoute
+  '/therapists': typeof TherapistsRoute
   '/video-consultation': typeof VideoConsultationRoute
   '/videos': typeof VideosRoute
-  '/blog/$slug': typeof BlogSlugRoute
   '/blogs/$slug': typeof BlogsSlugRoute
   '/careers/$slug': typeof CareersSlugRoute
-  '/equipment/$slug': typeof EquipmentSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/therapist/dashboard': typeof TherapistDashboardRoute
   '/user/dashboard': typeof UserDashboardRoute
-  '/blog/': typeof BlogIndexRoute
   '/blogs/': typeof BlogsIndexRoute
   '/careers/': typeof CareersIndexRoute
   '/equipment/': typeof EquipmentIndexRoute
@@ -322,30 +232,20 @@ export interface FileRouteTypes {
     | '/about'
     | '/booking'
     | '/contact'
-    | '/elderly-care'
     | '/faq'
-    | '/icu-setup'
-    | '/infection-control-nurse'
-    | '/medical-equipment'
-    | '/mother-baby-care'
-    | '/nursing-care'
-    | '/physiotherapy'
+    | '/pricing'
     | '/privacy'
     | '/refund-policy'
-    | '/sample-collection'
     | '/terms'
     | '/testimonials'
-    | '/therapy-booking'
+    | '/therapists'
     | '/video-consultation'
     | '/videos'
-    | '/blog/$slug'
     | '/blogs/$slug'
     | '/careers/$slug'
-    | '/equipment/$slug'
     | '/services/$slug'
     | '/therapist/dashboard'
     | '/user/dashboard'
-    | '/blog/'
     | '/blogs/'
     | '/careers/'
     | '/equipment/'
@@ -357,30 +257,20 @@ export interface FileRouteTypes {
     | '/about'
     | '/booking'
     | '/contact'
-    | '/elderly-care'
     | '/faq'
-    | '/icu-setup'
-    | '/infection-control-nurse'
-    | '/medical-equipment'
-    | '/mother-baby-care'
-    | '/nursing-care'
-    | '/physiotherapy'
+    | '/pricing'
     | '/privacy'
     | '/refund-policy'
-    | '/sample-collection'
     | '/terms'
     | '/testimonials'
-    | '/therapy-booking'
+    | '/therapists'
     | '/video-consultation'
     | '/videos'
-    | '/blog/$slug'
     | '/blogs/$slug'
     | '/careers/$slug'
-    | '/equipment/$slug'
     | '/services/$slug'
     | '/therapist/dashboard'
     | '/user/dashboard'
-    | '/blog'
     | '/blogs'
     | '/careers'
     | '/equipment'
@@ -392,30 +282,20 @@ export interface FileRouteTypes {
     | '/about'
     | '/booking'
     | '/contact'
-    | '/elderly-care'
     | '/faq'
-    | '/icu-setup'
-    | '/infection-control-nurse'
-    | '/medical-equipment'
-    | '/mother-baby-care'
-    | '/nursing-care'
-    | '/physiotherapy'
+    | '/pricing'
     | '/privacy'
     | '/refund-policy'
-    | '/sample-collection'
     | '/terms'
     | '/testimonials'
-    | '/therapy-booking'
+    | '/therapists'
     | '/video-consultation'
     | '/videos'
-    | '/blog/$slug'
     | '/blogs/$slug'
     | '/careers/$slug'
-    | '/equipment/$slug'
     | '/services/$slug'
     | '/therapist/dashboard'
     | '/user/dashboard'
-    | '/blog/'
     | '/blogs/'
     | '/careers/'
     | '/equipment/'
@@ -428,30 +308,20 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   BookingRoute: typeof BookingRoute
   ContactRoute: typeof ContactRoute
-  ElderlyCareRoute: typeof ElderlyCareRoute
   FaqRoute: typeof FaqRoute
-  IcuSetupRoute: typeof IcuSetupRoute
-  InfectionControlNurseRoute: typeof InfectionControlNurseRoute
-  MedicalEquipmentRoute: typeof MedicalEquipmentRoute
-  MotherBabyCareRoute: typeof MotherBabyCareRoute
-  NursingCareRoute: typeof NursingCareRoute
-  PhysiotherapyRoute: typeof PhysiotherapyRoute
+  PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
   RefundPolicyRoute: typeof RefundPolicyRoute
-  SampleCollectionRoute: typeof SampleCollectionRoute
   TermsRoute: typeof TermsRoute
   TestimonialsRoute: typeof TestimonialsRoute
-  TherapyBookingRoute: typeof TherapyBookingRoute
+  TherapistsRoute: typeof TherapistsRoute
   VideoConsultationRoute: typeof VideoConsultationRoute
   VideosRoute: typeof VideosRoute
-  BlogSlugRoute: typeof BlogSlugRoute
   BlogsSlugRoute: typeof BlogsSlugRoute
   CareersSlugRoute: typeof CareersSlugRoute
-  EquipmentSlugRoute: typeof EquipmentSlugRoute
   ServicesSlugRoute: typeof ServicesSlugRoute
   TherapistDashboardRoute: typeof TherapistDashboardRoute
   UserDashboardRoute: typeof UserDashboardRoute
-  BlogIndexRoute: typeof BlogIndexRoute
   BlogsIndexRoute: typeof BlogsIndexRoute
   CareersIndexRoute: typeof CareersIndexRoute
   EquipmentIndexRoute: typeof EquipmentIndexRoute
@@ -489,13 +359,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/elderly-care': {
-      id: '/elderly-care'
-      path: '/elderly-care'
-      fullPath: '/elderly-care'
-      preLoaderRoute: typeof ElderlyCareRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/faq': {
       id: '/faq'
       path: '/faq'
@@ -503,46 +366,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/icu-setup': {
-      id: '/icu-setup'
-      path: '/icu-setup'
-      fullPath: '/icu-setup'
-      preLoaderRoute: typeof IcuSetupRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/infection-control-nurse': {
-      id: '/infection-control-nurse'
-      path: '/infection-control-nurse'
-      fullPath: '/infection-control-nurse'
-      preLoaderRoute: typeof InfectionControlNurseRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/medical-equipment': {
-      id: '/medical-equipment'
-      path: '/medical-equipment'
-      fullPath: '/medical-equipment'
-      preLoaderRoute: typeof MedicalEquipmentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/mother-baby-care': {
-      id: '/mother-baby-care'
-      path: '/mother-baby-care'
-      fullPath: '/mother-baby-care'
-      preLoaderRoute: typeof MotherBabyCareRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/nursing-care': {
-      id: '/nursing-care'
-      path: '/nursing-care'
-      fullPath: '/nursing-care'
-      preLoaderRoute: typeof NursingCareRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/physiotherapy': {
-      id: '/physiotherapy'
-      path: '/physiotherapy'
-      fullPath: '/physiotherapy'
-      preLoaderRoute: typeof PhysiotherapyRouteImport
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -559,13 +387,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RefundPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/sample-collection': {
-      id: '/sample-collection'
-      path: '/sample-collection'
-      fullPath: '/sample-collection'
-      preLoaderRoute: typeof SampleCollectionRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -580,11 +401,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TestimonialsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/therapy-booking': {
-      id: '/therapy-booking'
-      path: '/therapy-booking'
-      fullPath: '/therapy-booking'
-      preLoaderRoute: typeof TherapyBookingRouteImport
+    '/therapists': {
+      id: '/therapists'
+      path: '/therapists'
+      fullPath: '/therapists'
+      preLoaderRoute: typeof TherapistsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/video-consultation': {
@@ -599,20 +420,6 @@ declare module '@tanstack/react-router' {
       path: '/videos'
       fullPath: '/videos'
       preLoaderRoute: typeof VideosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/blog/': {
-      id: '/blog/'
-      path: '/blog'
-      fullPath: '/blog/'
-      preLoaderRoute: typeof BlogIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/blog/$slug': {
-      id: '/blog/$slug'
-      path: '/blog/$slug'
-      fullPath: '/blog/$slug'
-      preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blogs/': {
@@ -648,13 +455,6 @@ declare module '@tanstack/react-router' {
       path: '/equipment'
       fullPath: '/equipment/'
       preLoaderRoute: typeof EquipmentIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/equipment/$slug': {
-      id: '/equipment/$slug'
-      path: '/equipment/$slug'
-      fullPath: '/equipment/$slug'
-      preLoaderRoute: typeof EquipmentSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services/': {
@@ -700,30 +500,20 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   BookingRoute: BookingRoute,
   ContactRoute: ContactRoute,
-  ElderlyCareRoute: ElderlyCareRoute,
   FaqRoute: FaqRoute,
-  IcuSetupRoute: IcuSetupRoute,
-  InfectionControlNurseRoute: InfectionControlNurseRoute,
-  MedicalEquipmentRoute: MedicalEquipmentRoute,
-  MotherBabyCareRoute: MotherBabyCareRoute,
-  NursingCareRoute: NursingCareRoute,
-  PhysiotherapyRoute: PhysiotherapyRoute,
+  PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
   RefundPolicyRoute: RefundPolicyRoute,
-  SampleCollectionRoute: SampleCollectionRoute,
   TermsRoute: TermsRoute,
   TestimonialsRoute: TestimonialsRoute,
-  TherapyBookingRoute: TherapyBookingRoute,
+  TherapistsRoute: TherapistsRoute,
   VideoConsultationRoute: VideoConsultationRoute,
   VideosRoute: VideosRoute,
-  BlogSlugRoute: BlogSlugRoute,
   BlogsSlugRoute: BlogsSlugRoute,
   CareersSlugRoute: CareersSlugRoute,
-  EquipmentSlugRoute: EquipmentSlugRoute,
   ServicesSlugRoute: ServicesSlugRoute,
   TherapistDashboardRoute: TherapistDashboardRoute,
   UserDashboardRoute: UserDashboardRoute,
-  BlogIndexRoute: BlogIndexRoute,
   BlogsIndexRoute: BlogsIndexRoute,
   CareersIndexRoute: CareersIndexRoute,
   EquipmentIndexRoute: EquipmentIndexRoute,

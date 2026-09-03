@@ -30,60 +30,78 @@ export const Route = createFileRoute("/faq")({
  * page's FAQ section (with #faq hash) for that category.
  */
 const CATEGORY_ROUTES: Record<string, string> = {
-  "Elder Care": "/elderly-care#faq",
-  "Medical Care": "/nursing-care#faq",
-  "Nursing Care": "/nursing-care#faq",
-  "Physiotherapy": "/physiotherapy#faq",
-  "Mother & Baby Care": "/mother-baby-care#faq",
-  "Equipment": "/medical-equipment#faq",
-  "Medical Equipment": "/medical-equipment#faq",
-  "ICU Setup": "/icu-setup#faq",
-  "Services": "/services#faq",
-  "Support": "/faq",
+  Physiotherapy: "/services/physiotherapy#faq",
+  "Yoga Therapy": "/services/yoga-therapy#faq",
+  "Massage Therapy": "/services/massage-therapy#faq",
+  "Home Rehabilitation": "/services/home-rehabilitation#faq",
+  Equipment: "/equipment",
+  Pricing: "/pricing",
+  Booking: "/booking",
+  Services: "/services",
+  Support: "/faq",
 };
 
-const DUMMY_FAQS = [
+/**
+ * Seed answers to the questions the business plan commits us to, shown until
+ * the admin panel has published its own FAQ set. API entries are appended and
+ * de-duplicated by question, so an admin answer always wins.
+ */
+const SEED_FAQS = [
   {
-    id: "1",
-    question: "Do you provide elder care at home?",
+    id: "seed-1",
+    question: "Which services do you provide at home?",
     answer:
-      "Yes, we provide comprehensive elder care services right at your home, ensuring comfort and professional medical attention.",
-    category: "Elder Care",
-  },
-  {
-    id: "2",
-    question: "I live outside my home town. Can I still arrange care for my parents there?",
-    answer:
-      "Absolutely. You can coordinate and monitor the care plan remotely through our care desk.",
-    category: "Support",
-  },
-  {
-    id: "3",
-    question: "Can I book a caregiver for only a few hours a day?",
-    answer:
-      "Yes, we offer flexible durations. You can book a caregiver for as little as 4 hours a day or opt for 24/7 care.",
+      "Home visit physiotherapy, home visit yoga therapy, home visit massage therapy and home rehabilitation — all delivered at your address by a verified therapist.",
     category: "Services",
   },
   {
-    id: "4",
-    question: "What's the difference between a caregiver and a nurse at home?",
+    id: "seed-2",
+    question: "How much does a physiotherapy visit cost?",
     answer:
-      "A caregiver assists with daily living activities (bathing, feeding, mobility), while a registered nurse provides medical care (injections, wound care, monitoring).",
-    category: "Medical Care",
+      "A therapist visit is ₹400. One visit a day is ₹400, two visits ₹600 and three visits ₹800. Each portable machine used adds ₹100 per visit. Your total is shown before you pay.",
+    category: "Pricing",
   },
   {
-    id: "5",
-    question: "Can you help after a hospital discharge or surgery at home?",
+    id: "seed-3",
+    question: "How long is a session?",
     answer:
-      "Yes, our post-operative care team ensures a smooth transition from hospital to home, including wound care and physiotherapy.",
-    category: "Medical Care",
+      "Physiotherapy, yoga therapy and rehabilitation sessions run 40 to 60 minutes. Massage therapy runs 45 to 60 minutes; beyond 60 minutes an additional ₹100 applies.",
+    category: "Services",
   },
   {
-    id: "6",
-    question: "Do you provide 24-hour or overnight care if required?",
+    id: "seed-4",
+    question: "Which machines can the therapist bring?",
     answer:
-      "Yes, we provide round-the-clock 24-hour care as well as dedicated overnight shifts based on your requirements.",
-    category: "Elder Care",
+      "Portable modalities only — IFT, TENS, UST, NMES, FES, portable EMS, wax bath, hot/cold therapy and TheraBand. Large clinic equipment such as SWD and ESWT is not part of home visits.",
+    category: "Equipment",
+  },
+  {
+    id: "seed-5",
+    question: "Do packages include machine charges?",
+    answer:
+      "Yes. Monthly, quarterly, half-yearly, yearly and custom packages are billed at ₹400 per visit with applicable portable machine use included.",
+    category: "Pricing",
+  },
+  {
+    id: "seed-6",
+    question: "Will I get a therapist of the same gender for massage?",
+    answer:
+      "Always. Male patients are assigned male therapists and female patients female therapists. We do not provide intimate or sexual services of any kind.",
+    category: "Massage Therapy",
+  },
+  {
+    id: "seed-7",
+    question: "Can I upload my prescription or scans?",
+    answer:
+      "Yes. Upload prescriptions, X-Rays, MRI scans and medical reports from your dashboard. You can follow each one through Uploaded, Viewed and Reviewed, along with your physiotherapist's notes.",
+    category: "Booking",
+  },
+  {
+    id: "seed-8",
+    question: "Where do you operate?",
+    answer:
+      "Across West Bengal — urban, rural, village and locality areas. We expand to other states next, and then across India.",
+    category: "Services",
   },
 ];
 
@@ -92,10 +110,10 @@ function FaqPage() {
   const dbItems = data?.items ?? [];
   const navigate = useNavigate();
 
-  // Hardcoded FAQs always stay; API FAQs are appended (deduplicated by question)
-  const hardcodedQuestions = new Set(DUMMY_FAQS.map((f) => f.question.toLowerCase()));
-  const apiFaqs = dbItems.filter((f) => !hardcodedQuestions.has(f.question.toLowerCase()));
-  const items = [...DUMMY_FAQS, ...apiFaqs];
+  // Seed answers stay; admin-published FAQs are appended, de-duplicated by question.
+  const seedQuestions = new Set(SEED_FAQS.map((f) => f.question.toLowerCase()));
+  const apiFaqs = dbItems.filter((f) => !seedQuestions.has(f.question.toLowerCase()));
+  const items = [...SEED_FAQS, ...apiFaqs];
 
   const categories = useMemo(() => {
     const set = new Set<string>();

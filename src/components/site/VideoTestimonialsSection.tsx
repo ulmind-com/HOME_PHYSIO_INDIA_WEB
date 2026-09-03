@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { motion } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
 import AutoScroll from "embla-carousel-auto-scroll";
 import { videosQ, settingsQ } from "@/lib/api/queries";
@@ -38,12 +37,12 @@ export function VideoTestimonialsSection() {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
 
-  const onInit = useCallback((emblaApi: any) => {
-    setScrollSnaps(emblaApi.scrollSnapList());
+  const onInit = useCallback((api: any) => {
+    setScrollSnaps(api.scrollSnapList());
   }, []);
 
-  const onSelect = useCallback((emblaApi: any) => {
-    setSelectedIndex(emblaApi.selectedScrollSnap());
+  const onSelect = useCallback((api: any) => {
+    setSelectedIndex(api.selectedScrollSnap());
   }, []);
 
   useEffect(() => {
@@ -58,7 +57,6 @@ export function VideoTestimonialsSection() {
   if (!items.length) return null;
 
   const loop = [...items, ...items];
-  const duration = Math.max(20, items.length * 5);
 
   return (
     <section className="py-14 md:py-20">
@@ -84,7 +82,7 @@ export function VideoTestimonialsSection() {
               What They Say About <span className="text-primary">Home Physio India</span>
             </h2>
             <p className="mt-3 max-w-lg text-sm md:text-base text-muted-foreground">
-              Our members value the peace of mind our caregivers provide.
+              Our patients value the peace of mind our therapists provide.
             </p>
 
             <div className="relative mt-8 overflow-hidden">

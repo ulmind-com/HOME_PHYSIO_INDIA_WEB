@@ -6,6 +6,7 @@ import { Menu, X, ArrowRight, User, LogOut, LayoutDashboard } from "lucide-react
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
+import { openAuthDialog } from "@/lib/auth-dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,13 +19,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const NAV = [
   { to: "/", label: "Home" },
-  { to: "/about", label: "About Us" },
   { to: "/services", label: "Services" },
-  { to: "/medical-equipment", label: "Equipment" },
-  { to: "/faq", label: "FAQs" },
+  { to: "/pricing", label: "Pricing" },
+  { to: "/equipment", label: "Equipment" },
+  { to: "/therapists", label: "Therapists" },
+  { to: "/about", label: "About" },
   { to: "/blogs", label: "Blogs" },
-  { to: "/careers", label: "Careers" },
-  { to: "/contact", label: "Contact Us" },
+  { to: "/contact", label: "Contact" },
 ] as const;
 
 
@@ -67,7 +68,7 @@ export function Header() {
   const overlay = isHome && !scrolled;
 
   return (
-    <header className={cn("z-50 inset-x-0", overlay ? "absolute top-4" : "fixed top-4")}>
+    <header className={cn("z-50 inset-x-0 transition-all duration-300", overlay ? "absolute top-6 lg:top-8" : "fixed top-6 lg:top-8")}>
       <div className="container-x">
         <div
           className={cn(
@@ -143,6 +144,19 @@ export function Header() {
 
           <div className="relative flex items-center gap-2">
             {!isAuthenticated ? (
+              <>
+              <button
+                type="button"
+                onClick={() => openAuthDialog("login")}
+                className={cn(
+                  "hidden sm:inline-flex h-10 items-center justify-center rounded-full px-4 text-sm font-medium transition",
+                  onDarkHero
+                    ? "text-white/90 hover:text-white"
+                    : "text-foreground/70 hover:text-foreground",
+                )}
+              >
+                Sign in
+              </button>
               <Link
                 to="/booking"
                 className={cn(
@@ -157,6 +171,7 @@ export function Header() {
                 </span>
                 <span className="hidden sm:inline">Book Appointment</span>
               </Link>
+              </>
             ) : (
               <DropdownMenu>
                 <DropdownMenuTrigger className="outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-full transition-transform hover:scale-105 active:scale-95">
@@ -185,7 +200,7 @@ export function Header() {
                   </DropdownMenuItem>
                   {user?.role !== "therapist" && (
                     <DropdownMenuItem className="p-2 cursor-pointer focus:bg-primary-soft rounded-lg" asChild>
-                      <Link to="/therapy-booking" className="flex items-center">
+                      <Link to="/booking" className="flex items-center">
                         <ArrowRight className="mr-2 h-4 w-4" />
                         <span>Book a Session</span>
                       </Link>

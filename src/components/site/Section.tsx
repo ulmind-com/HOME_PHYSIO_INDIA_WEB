@@ -14,7 +14,7 @@ export function Section({
 }) {
   return (
     <PremiumScrollReveal>
-      <section id={id} className={cn("py-20 lg:py-28", className)}>
+      <section id={id} className={cn("py-14 lg:py-20", className)}>
         <div className="container-x">{children}</div>
       </section>
     </PremiumScrollReveal>

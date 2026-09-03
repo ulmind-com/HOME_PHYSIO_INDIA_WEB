@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "@tanstack/react-router";
+import { SERVICES } from "@/lib/plan";
 import { useQuery } from "@tanstack/react-query";
-import { settingsQ, socialQ, categoriesQ } from "@/lib/api/queries";
+import { settingsQ, socialQ } from "@/lib/api/queries";
 
 const FacebookIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" className={className} fill="currentColor">
@@ -30,6 +31,7 @@ const YoutubeIcon = ({ className }: { className?: string }) => (
 
 const MENU_LINKS = [
   { label: "About Us", to: "/about" },
+  { label: "Pricing", to: "/pricing" },
   { label: "Privacy Policy", to: "/privacy" },
   { label: "Terms of Service", to: "/terms" },
   { label: "Refund Policy", to: "/refund-policy" },
@@ -39,32 +41,28 @@ const SUPPORT_LINKS = [
   { label: "FAQ", to: "/faq" },
   { label: "Blogs", to: "/blogs" },
   { label: "Careers", to: "/careers" },
+  { label: "Online Consultation", to: "/video-consultation" },
   { label: "Contact Us", to: "/contact" },
 ];
 
 export function Footer() {
   const { data: settings } = useQuery(settingsQ());
   const { data: social } = useQuery(socialQ());
-  const { data: categoriesData } = useQuery(categoriesQ({ limit: 12 }));
-
-  const name = settings?.website_name ?? "Home Physio India";
-  const categories = categoriesData?.items || [];
   
-  const SERVICES_LINKS = categories.length > 0 
-    ? categories.map(c => ({ label: c.name, to: `/services/${c.slug}` }))
-    : [
-        { label: "Home Nursing Care", to: "/nursing-care" },
-        { label: "Elderly Care", to: "/elderly-care" },
-        { label: "Mother & Baby Care", to: "/mother-baby-care" },
-        { label: "Physiotherapy & Recovery", to: "/physiotherapy" },
-        { label: "Home Sample Collection", to: "/services" },
-      ];
+  const name = settings?.website_name ?? "Home Physio India";
+  
+  // The four services are fixed by the business plan, so they are the source of
+  // truth here; admin-managed categories only ever add detail pages alongside.
+  const SERVICES_LINKS = SERVICES.map((s) => ({
+    label: s.name,
+    to: `/services/${s.slug}`,
+  }));
 
   return (
-      <footer className="relative mt-0 bg-gradient-to-br from-slate-900 to-blue-950 pt-12 pb-0 flex flex-col border-t border-white/10">
+      <footer className="relative mt-0 bg-gradient-to-br from-stone-950 to-[#4a130c] pt-12 pb-0 flex flex-col border-t border-white/10">
         <div className="absolute inset-0 pointer-events-none" aria-hidden>
-          <div className="absolute top-0 right-[20%] w-80 h-80 bg-cyan-500/10 rounded-full blur-[100px]" />
-          <div className="absolute bottom-0 left-[10%] w-64 h-64 bg-blue-600/10 rounded-full blur-[80px]" />
+          <div className="absolute top-0 right-[20%] w-80 h-80 bg-primary/20 rounded-full blur-[100px]" />
+          <div className="absolute bottom-0 left-[10%] w-64 h-64 bg-accent/20 rounded-full blur-[80px]" />
         </div>
         <div className="container-x relative z-10 flex flex-col justify-between flex-grow pb-16 md:pb-8">
           

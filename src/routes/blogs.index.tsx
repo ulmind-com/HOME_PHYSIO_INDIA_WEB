@@ -11,97 +11,27 @@ export const Route = createFileRoute("/blogs/")({
   component: BlogsPage,
 });
 
-export const DUMMY_BLOGS: Blog[] = [
-  {
-    id: "dummy-1",
-    title: "When Should Families Choose Caregiver Services at Home?",
-    slug: "when-should-families-choose-caregiver-services",
-    excerpt:
-      "Caring for a loved one is one of the most emotional duties in any family. Learn when it's time to seek professional help to ensure they receive the best possible care without burning out.",
-    featured_image: "/assets/services/nurse-elder.jpg",
-    category_name: "Home Care",
-    created_at: new Date().toISOString(),
-    status: "published",
-  },
-  {
-    id: "dummy-2",
-    title: "How Home ICU Supports Post Surgery Recovery",
-    slug: "how-home-icu-supports-post-surgery-recovery",
-    excerpt:
-      "Recovering after surgery is not always easy. Even after a successful operation, home ICU setups can provide better comfort, constant monitoring, and reduce the risk of hospital-acquired infections.",
-    featured_image: "/assets/services/nurse-companion.jpg",
-    category_name: "Medical",
-    created_at: new Date(Date.now() - 86400000).toISOString(),
-    status: "published",
-  },
-  {
-    id: "dummy-3",
-    title: "Why More Families Are Choosing Home Health Care for Seniors",
-    slug: "why-more-families-are-choosing-home-health-care",
-    excerpt:
-      "Simple habits to improve your physical and mental energy through natural wellness practices at home. Discover why moving away from traditional nursing homes is the new standard.",
-    featured_image: "/assets/hero-care.jpg",
-    category_name: "Nursing",
-    created_at: new Date(Date.now() - 172800000).toISOString(),
-    status: "published",
-  },
-  {
-    id: "dummy-4",
-    title: "Things To Check Before Hiring a Physiotherapist at Home",
-    slug: "things-to-check-before-hiring-physiotherapist",
-    excerpt:
-      "Physiotherapy is crucial for recovery. Here are the key things you must verify before hiring a professional, from certifications to understanding their approach to personalized care.",
-    featured_image: "/assets/services/physio.jpg",
-    category_name: "Home Care",
-    created_at: new Date(Date.now() - 259200000).toISOString(),
-    status: "published",
-  },
-  {
-    id: "dummy-5",
-    title: "What Does an Infection Control Nurse Do? Roles & Responsibilities Explained",
-    slug: "what-does-infection-control-nurse-do-roles-responsibilities",
-    excerpt:
-      "An Infection Control Nurse plays a vital role in healthcare settings by monitoring, preventing and managing infections. Learn about their key responsibilities, from implementing infection-prevention protocols to educating healthcare staff on proper hygiene and safety practices.",
-    featured_image: "/assets/services/infection-control.png",
-    category_name: "Infection Control",
-    created_at: new Date(Date.now() - 345600000).toISOString(),
-    status: "published",
-  },
-  {
-    id: "dummy-6",
-    title: "Infection Prevention & Control: Essential Practices for Healthcare Settings",
-    slug: "infection-prevention-control-essential-practices-healthcare",
-    excerpt:
-      "Infection prevention and control is a fundamental aspect of safe healthcare delivery. This blog covers essential IPC practices including hand hygiene, PPE usage, biomedical waste management and environmental hygiene that every healthcare professional should follow.",
-    featured_image: "/assets/services/infection-control.png",
-    category_name: "Infection Control",
-    created_at: new Date(Date.now() - 432000000).toISOString(),
-    status: "published",
-  },
-  {
-    id: "dummy-7",
-    title: "How to Become an Infection Control Nurse: Skills, Training & Career Guide",
-    slug: "how-to-become-infection-control-nurse-skills-training-career",
-    excerpt:
-      "Interested in a career in infection control nursing? This guide covers the educational qualifications, essential skills, training requirements and career opportunities available for aspiring Infection Control Nurses in the healthcare industry.",
-    featured_image: "/assets/services/infection-control.png",
-    category_name: "Infection Control",
-    created_at: new Date(Date.now() - 518400000).toISOString(),
-    status: "published",
-  },
-];
-
-const CATEGORIES = ["All Blogs", "Home Care", "Medical", "Nursing", "Infection Control"];
+/** Derived from whatever the admin panel has actually published. */
+const ALL = "All Blogs";
 
 function BlogsPage() {
   const { data } = useQuery(blogsQ({ limit: 50 }));
-  const [activeCategory, setActiveCategory] = useState("All Blogs");
+  const [activeCategory, setActiveCategory] = useState(ALL);
 
-  // Use real data if available, otherwise use dummy data
-  const blogs = data?.items && data.items.length > 0 ? data.items : DUMMY_BLOGS;
+  // Everything on this page is admin-published; there is no hardcoded content.
+  const blogs = data?.items ?? [];
+
+  // Category chips come from the published posts themselves, so the filter can
+  // never offer a category the admin panel has nothing under.
+  const CATEGORIES = [
+    ALL,
+    ...Array.from(
+      new Set(blogs.map((b) => b.category_name).filter(Boolean) as string[]),
+    ),
+  ];
 
   const filteredBlogs =
-    activeCategory === "All Blogs"
+    activeCategory === ALL
       ? blogs
       : blogs.filter((b) => b.category_name === activeCategory);
 

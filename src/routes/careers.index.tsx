@@ -152,7 +152,7 @@ function CareersPage() {
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-foreground">Qualification</label>
-                    <input name="qualification" value={formData.qualification} onChange={handleChange} className="w-full h-12 px-4 rounded-xl border border-input bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" placeholder="e.g. B.Sc Nursing, GNM, BPT" />
+                    <input name="qualification" value={formData.qualification} onChange={handleChange} className="w-full h-12 px-4 rounded-xl border border-input bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" placeholder="e.g. MPT, BPT, PT, DPT" />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-foreground">Total Experience</label>
@@ -208,8 +208,8 @@ function CareersPage() {
                 
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="md:col-span-2 space-y-2">
-                    <label className="text-sm font-semibold text-foreground">Nursing/Physiotherapy qualification</label>
-                    <input name="qualification" value={formData.qualification} onChange={handleChange} className="w-full h-12 px-4 rounded-xl border border-input bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" placeholder="e.g. B.Sc Nursing, GNM, BPT" />
+                    <label className="text-sm font-semibold text-foreground">Physiotherapy / therapy qualification</label>
+                    <input name="qualification" value={formData.qualification} onChange={handleChange} className="w-full h-12 px-4 rounded-xl border border-input bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" placeholder="e.g. MPT, BPT, PT, DPT" />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-foreground">Total Experience</label>
@@ -230,7 +230,7 @@ function CareersPage() {
                   </div>
                   <div className="md:col-span-2 space-y-2">
                     <label className="text-sm font-semibold text-foreground">Relevant Skills</label>
-                    <textarea name="relevant_skills" value={formData.relevant_skills} onChange={handleChange} rows={3} className="w-full p-4 rounded-xl border border-input bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all resize-none" placeholder="ICU Care, Post-operative care, etc." />
+                    <textarea name="relevant_skills" value={formData.relevant_skills} onChange={handleChange} rows={3} className="w-full p-4 rounded-xl border border-input bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all resize-none" placeholder="Neuro rehab, orthopaedic rehab, IFT/TENS, sports injury, etc." />
                   </div>
                   <div className="md:col-span-2 space-y-2">
                     <label className="text-sm font-semibold text-foreground">Certificates (If applicable)</label>
