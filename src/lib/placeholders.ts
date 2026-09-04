@@ -165,6 +165,17 @@ export function slugToEquipmentCode(slug: string): EquipmentCode {
   return SLUG_TO_CODE[slug] ?? (slug.replace(/-/g, "_") as EquipmentCode) ?? "ift";
 }
 
+/**
+ * Product photo for an equipment record coming from the API, or `null` when we
+ * have no picture of it. Therapists register their own kit under free-form
+ * slugs, and showing an unrelated machine's photo is worse than showing none —
+ * so this deliberately does not fall back the way `equipmentIcon` does.
+ */
+export function equipmentImageForSlug(slug: string): string | null {
+  const code = SLUG_TO_CODE[slug];
+  return code ? equipmentIcon(code) : null;
+}
+
 /** Neutral 16:9 card image, used for blog/testimonial cards with no upload. */
 export function cardPlaceholder(seed: string): string {
   const hue = 178 + (hash(seed) % 26);

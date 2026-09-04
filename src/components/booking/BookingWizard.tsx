@@ -16,13 +16,14 @@ import {
   Check,
   Loader2,
   LockKeyhole,
+  Package,
   Search,
   ShieldCheck,
 } from "lucide-react";
 
 import { useAuth } from "@/contexts/AuthContext";
 import { openAuthDialog } from "@/lib/auth-dialog";
-import { avatarPlaceholder, imageSrc } from "@/lib/placeholders";
+import { avatarPlaceholder, equipmentImageForSlug, imageSrc } from "@/lib/placeholders";
 import {
   DAILY_FREQUENCY,
   MASSAGE_OPTIONS,
@@ -42,7 +43,6 @@ import {
   type BookableTherapist,
   type TherapistSlot,
   verifyPayment,
-  type EquipmentCode,
   type FrequencyType,
   type Gender,
   type MassageType,
@@ -68,7 +68,6 @@ type Draft = {
   weekly_days_count?: number;
   package_duration?: PackageDuration;
   package_custom_months?: number;
-  equipment: EquipmentCode[];
   /** Therapist-first flow */
   therapist_id?: string;
   therapist_name?: string;
@@ -98,7 +97,6 @@ const emptyDraft = (category: ServiceCategory): Draft => ({
   service_category: category,
   frequency_type: category === "massage_therapy" ? undefined : "daily",
   daily_visits_per_day: category === "massage_therapy" ? undefined : 1,
-  equipment: [],
   equipment_ids: [],
   massage_type: category === "massage_therapy" ? "normal_oil" : undefined,
   massage_duration_minutes: category === "massage_therapy" ? 50 : undefined,
@@ -917,12 +915,27 @@ function EquipmentStep({
                     : "border-border/70 hover:bg-secondary/50")
                 }
               >
-                <span className="min-w-0">
-                  <span className="block text-sm font-semibold">{e.name}</span>
-                  <span className="mt-0.5 block text-xs text-muted-foreground">
-                    {e.owner_type === "therapist"
-                      ? `Brought by ${e.therapist_name ?? "your therapist"}`
-                      : "Platform equipment"}
+                <span className="flex min-w-0 items-start gap-3">
+                  {equipmentImageForSlug(e.slug) ? (
+                    <img
+                      src={equipmentImageForSlug(e.slug)!}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                      className="h-12 w-12 shrink-0 rounded-xl object-cover"
+                    />
+                  ) : (
+                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-secondary/70">
+                      <Package className="h-5 w-5 text-muted-foreground" />
+                    </span>
+                  )}
+                  <span className="min-w-0">
+                    <span className="block text-sm font-semibold">{e.name}</span>
+                    <span className="mt-0.5 block text-xs text-muted-foreground">
+                      {e.owner_type === "therapist"
+                        ? `Brought by ${e.therapist_name ?? "your therapist"}`
+                        : "Platform equipment"}
+                    </span>
                   </span>
                 </span>
                 <span className="shrink-0 text-sm font-semibold text-primary">

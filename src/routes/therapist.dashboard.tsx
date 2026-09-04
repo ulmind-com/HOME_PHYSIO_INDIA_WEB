@@ -624,12 +624,10 @@ function VisitActions({ booking }: { booking: TherapyBooking }) {
           onClick={() => move.mutate("in_progress")}
         />
       )}
-      {!terminal && ["approved", "in_progress"].includes(booking.status) && (
-        <ActionButton
-          label="Mark completed"
-          busy={busy === "completed"}
-          onClick={() => move.mutate("completed")}
-        />
+      {booking.status === "in_progress" && (
+        <span className="text-xs text-muted-foreground">
+          Our team closes the visit out once it's done — your payout is credited then.
+        </span>
       )}
       {!terminal && (
         <ActionButton

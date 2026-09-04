@@ -45,12 +45,6 @@ export type BookingStatus =
   | "cancelled";
 export type PaymentStatus = "pending" | "paid" | "failed" | "refunded";
 
-export type EquipmentOption = {
-  code: EquipmentCode;
-  name: string;
-  charge: number;
-};
-
 export type PricingQuote = {
   visit_fee: number;
   machine_charge: number;
@@ -172,24 +166,6 @@ export type PaymentVerifyRequest = {
 
 const FIVE_MIN = 5 * 60 * 1000;
 
-export const equipmentCatalogueQ = (enabled = true) =>
-  queryOptions({
-    queryKey: ["therapy", "equipment"],
-    queryFn: ({ signal }) =>
-      api.get<EquipmentOption[]>("/therapy-bookings/equipment", undefined, signal),
-    staleTime: FIVE_MIN,
-    enabled,
-  });
-
-export const timeSlotsQ = (shift: Shift | undefined) =>
-  queryOptions({
-    queryKey: ["therapy", "time-slots", shift],
-    queryFn: ({ signal }) =>
-      api.get<string[]>("/therapy-bookings/time-slots", { shift }, signal),
-    staleTime: FIVE_MIN,
-    enabled: Boolean(shift),
-  });
-
 export const myBookingsQ = (enabled = true) =>
   queryOptions({
     queryKey: ["therapy", "my-bookings"],
@@ -260,7 +236,6 @@ export const bookableEquipmentQ = (
 export type BookableTherapist = {
   id: string;
   name: string;
-  email: string;
   user_type?: string;
   gender?: string | null;
   specialization?: string | null;

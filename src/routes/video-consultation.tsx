@@ -5,7 +5,7 @@ import { CONSULTATION_FEE } from "@/lib/plan";
 import { useEffect, useRef, useState } from "react";
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 import { useAuth } from "@/contexts/AuthContext";
-import { API_BASE } from "@/lib/api/client";
+import { api } from "@/lib/api/client";
 import { Button } from "@/components/ui/button";
 import { Video, ShieldCheck, PhoneOff, ArrowLeft, Loader2, MessageSquare, AlertCircle } from "lucide-react";
 
@@ -27,8 +27,10 @@ function VideoConsultationPage() {
   // Read search parameters or generate defaults
   const searchParams = new URLSearchParams(window.location.search);
   const roomId = searchParams.get("roomId") || `session_${Math.floor(100000 + Math.random() * 900000)}`;
-  const userId = user?.id || searchParams.get("userId") || `user_${Math.floor(1000 + Math.random() * 9000)}`;
-  const userName = user?.name || searchParams.get("userName") || `Guest_${userId.slice(-4)}`;
+  // Identity is taken from the access token by the backend — these are only
+  // used for local display and as effect dependencies.
+  const userId = user?.id ?? "";
+  const userName = user?.name ?? "";
 
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -44,15 +46,15 @@ function VideoConsultationPage() {
         setLoading(true);
         setError(null);
 
-        // Fetch token from secure FastAPI Backend API
-        const tokenRes = await fetch(
-          `${API_BASE}/video/generate-token?roomId=${encodeURIComponent(roomId)}&userId=${encodeURIComponent(userId)}&userName=${encodeURIComponent(userName)}`
-        );
-
+        // The backend mints the token against the signed-in user and checks
+        // they're allowed in this room, so this call must carry the access token.
         let kitToken = "";
-        if (tokenRes.ok) {
-          const resData = await tokenRes.json();
-          kitToken = resData?.data?.token;
+        {
+          const tokenData = await api.get<{ token: string }>(
+            "/video/generate-token",
+            { roomId },
+          );
+          kitToken = tokenData?.token ?? "";
         }
 
         // The token is minted server-side only. A client-side fallback would
