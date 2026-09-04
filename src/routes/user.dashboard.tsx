@@ -125,8 +125,8 @@ function PatientDashboard() {
 
 const STATUS_TONE: Record<BookingStatus, string> = {
   pending: "bg-amber-100 text-amber-800",
-  confirmed: "bg-emerald-100 text-emerald-800",
-  assigned: "bg-sky-100 text-sky-800",
+  approved: "bg-emerald-100 text-emerald-800",
+  rejected: "bg-rose-100 text-rose-800",
   in_progress: "bg-indigo-100 text-indigo-800",
   completed: "bg-primary-soft text-primary",
   cancelled: "bg-muted text-muted-foreground",

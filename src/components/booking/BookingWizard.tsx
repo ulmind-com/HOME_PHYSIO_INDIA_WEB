@@ -16,16 +16,16 @@ import {
   Check,
   Loader2,
   LockKeyhole,
+  Search,
   ShieldCheck,
 } from "lucide-react";
 
 import { useAuth } from "@/contexts/AuthContext";
 import { openAuthDialog } from "@/lib/auth-dialog";
-import { equipmentIcon } from "@/lib/placeholders";
+import { avatarPlaceholder, imageSrc } from "@/lib/placeholders";
 import {
   DAILY_FREQUENCY,
   MASSAGE_OPTIONS,
-  MODALITIES,
   PACKAGES,
   SERVICES,
   SHIFTS,
@@ -35,7 +35,12 @@ import {
   createBooking,
   formatINR,
   getQuote,
-  timeSlotsQ,
+  SERVICE_LABELS,
+  bookableEquipmentQ,
+  bookableTherapistsQ,
+  therapistAvailabilityQ,
+  type BookableTherapist,
+  type TherapistSlot,
   verifyPayment,
   type EquipmentCode,
   type FrequencyType,
@@ -54,7 +59,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { loadRazorpay } from "@/lib/razorpay";
 
-const STEPS = ["Service", "Care plan", "Schedule", "Your details", "Review"] as const;
+const STEPS = ["Service", "Care plan", "Therapist & time", "Equipment", "Your details", "Review"] as const;
 
 type Draft = {
   service_category: ServiceCategory;
@@ -64,6 +69,12 @@ type Draft = {
   package_duration?: PackageDuration;
   package_custom_months?: number;
   equipment: EquipmentCode[];
+  /** Therapist-first flow */
+  therapist_id?: string;
+  therapist_name?: string;
+  slot_id?: string;
+  slot_label?: string;
+  equipment_ids: string[];
   massage_type?: MassageType;
   massage_duration_minutes?: number;
   preferred_date: string;
@@ -88,6 +99,7 @@ const emptyDraft = (category: ServiceCategory): Draft => ({
   frequency_type: category === "massage_therapy" ? undefined : "daily",
   daily_visits_per_day: category === "massage_therapy" ? undefined : 1,
   equipment: [],
+  equipment_ids: [],
   massage_type: category === "massage_therapy" ? "normal_oil" : undefined,
   massage_duration_minutes: category === "massage_therapy" ? 50 : undefined,
   preferred_date: todayISO(),
@@ -136,14 +148,13 @@ export function BookingWizard({
     }));
   }, [user]);
 
-  const slots = useQuery(timeSlotsQ(isAuthenticated ? draft.shift : undefined));
-
   // Live price preview — refetched whenever a priced field changes.
   const quoteKey = JSON.stringify({
     c: draft.service_category,
     f: draft.frequency_type,
     d: draft.daily_visits_per_day,
-    e: [...draft.equipment].sort(),
+    e: [...draft.equipment_ids].sort(),
+    t: draft.therapist_id,
     m: draft.massage_type,
     md: draft.massage_duration_minutes,
   });
@@ -159,7 +170,8 @@ export function BookingWizard({
         !isMassage && draft.frequency_type === "daily"
           ? draft.daily_visits_per_day
           : undefined,
-      equipment: isMassage ? [] : draft.equipment,
+      equipment_ids: draft.equipment_ids,
+      therapist_id: draft.therapist_id,
       massage_type: isMassage ? draft.massage_type : undefined,
       massage_duration_minutes: isMassage
         ? draft.massage_duration_minutes
@@ -179,7 +191,7 @@ export function BookingWizard({
   }, [quoteKey, isAuthenticated]);
 
   const payload = useMemo<TherapyBookingCreate | null>(() => {
-    if (!draft.shift || !draft.time_slot) return null;
+    if (!draft.therapist_id || !draft.slot_id) return null;
     const base: TherapyBookingCreate = {
       patient_name: draft.patient_name.trim(),
       patient_age: draft.patient_age ? Number(draft.patient_age) : undefined,
@@ -191,9 +203,9 @@ export function BookingWizard({
       pincode: draft.pincode.trim() || undefined,
       service_category: draft.service_category,
       condition_notes: draft.condition_notes.trim() || undefined,
-      preferred_date: draft.preferred_date,
-      shift: draft.shift,
-      time_slot: draft.time_slot,
+      therapist_id: draft.therapist_id,
+      slot_id: draft.slot_id,
+      equipment_ids: draft.equipment_ids,
       session_duration_minutes: draft.session_duration_minutes,
     };
     if (isMassage) {
@@ -216,7 +228,6 @@ export function BookingWizard({
         draft.frequency_type === "package" && draft.package_duration === "custom"
           ? draft.package_custom_months
           : undefined,
-      equipment: draft.equipment,
     };
   }, [draft, isMassage]);
 
@@ -293,8 +304,12 @@ export function BookingWizard({
           );
         return false;
       case 2:
-        return Boolean(draft.preferred_date && draft.shift && draft.time_slot);
+        // Therapist + one of their open slots
+        return Boolean(draft.therapist_id && draft.slot_id);
       case 3:
+        // Equipment is optional — nothing to enforce
+        return true;
+      case 4:
         return (
           draft.patient_name.trim().length >= 2 &&
           draft.contact_phone.trim().length >= 6 &&
@@ -331,16 +346,10 @@ export function BookingWizard({
             ) : (
               <CarePlanStep draft={draft} set={set} />
             ))}
-          {step === 2 && (
-            <ScheduleStep
-              draft={draft}
-              set={set}
-              slots={slots.data ?? []}
-              slotsLoading={slots.isLoading}
-            />
-          )}
-          {step === 3 && <DetailsStep draft={draft} set={set} isMassage={isMassage} />}
-          {step === 4 && <ReviewStep draft={draft} quote={quote} />}
+          {step === 2 && <TherapistStep draft={draft} setDraft={setDraft} />}
+          {step === 3 && <EquipmentStep draft={draft} setDraft={setDraft} />}
+          {step === 4 && <DetailsStep draft={draft} set={set} isMassage={isMassage} />}
+          {step === 5 && <ReviewStep draft={draft} quote={quote} />}
         </div>
 
         <div className="mt-10 flex items-center justify-between gap-4 border-t border-border/70 pt-6">
@@ -635,70 +644,7 @@ function CarePlanStep({
         </div>
       )}
 
-      <EquipmentPicker draft={draft} set={set} />
     </>
-  );
-}
-
-function EquipmentPicker({
-  draft,
-  set,
-}: {
-  draft: Draft;
-  set: <K extends keyof Draft>(k: K, v: Draft[K]) => void;
-}) {
-  const included = draft.frequency_type === "package";
-  const toggle = (code: EquipmentCode) =>
-    set(
-      "equipment",
-      draft.equipment.includes(code)
-        ? draft.equipment.filter((c) => c !== code)
-        : [...draft.equipment, code],
-    );
-
-  return (
-    <div className="mt-8 border-t border-border/70 pt-6">
-      <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
-        <Label className="text-xs uppercase tracking-wide text-muted-foreground">
-          Portable modalities (optional)
-        </Label>
-        <span className="text-xs text-muted-foreground">
-          {included
-            ? "Included in your package — no extra charge"
-            : "₹100 per machine, per visit"}
-        </span>
-      </div>
-      <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-        {MODALITIES.map((m) => {
-          const active = draft.equipment.includes(m.code);
-          return (
-            <button
-              key={m.code}
-              type="button"
-              onClick={() => toggle(m.code)}
-              className={cn(
-                "flex items-center gap-3 rounded-2xl border p-3 text-left transition",
-                active
-                  ? "border-primary bg-primary-soft/60"
-                  : "border-border hover:border-primary/40",
-              )}
-            >
-              <img src={equipmentIcon(m.code)} alt="" className="h-9 w-9 shrink-0" />
-              <span className="min-w-0">
-                <span className="block truncate text-sm font-semibold">{m.name}</span>
-                <span className="block truncate text-[11px] text-muted-foreground">
-                  {m.short}
-                </span>
-              </span>
-            </button>
-          );
-        })}
-      </div>
-      <p className="mt-3 text-xs text-muted-foreground">
-        Final machine selection is confirmed by your physiotherapist after assessment
-        and against any doctor's prescription you upload.
-      </p>
-    </div>
   );
 }
 
@@ -761,104 +707,243 @@ function MassageStep({
   );
 }
 
-function ScheduleStep({
+function TherapistStep({
   draft,
-  set,
-  slots,
-  slotsLoading,
+  setDraft,
 }: {
   draft: Draft;
-  set: <K extends keyof Draft>(k: K, v: Draft[K]) => void;
-  slots: string[];
-  slotsLoading: boolean;
+  setDraft: React.Dispatch<React.SetStateAction<Draft>>;
 }) {
+  const [search, setSearch] = useState("");
+  const [debounced, setDebounced] = useState("");
+
+  useEffect(() => {
+    const t = setTimeout(() => setDebounced(search), 300);
+    return () => clearTimeout(t);
+  }, [search]);
+
+  const therapists = useQuery(bookableTherapistsQ(draft.service_category, debounced));
+  const slots = useQuery(therapistAvailabilityQ(draft.therapist_id));
+
+  const isMassage = draft.service_category === "massage_therapy";
+  const list = therapists.data?.items ?? [];
+
+  const pick = (t: BookableTherapist) =>
+    setDraft((d) => ({
+      ...d,
+      therapist_id: t.id,
+      therapist_name: t.name,
+      // A different therapist means different slots and different personal kit.
+      slot_id: undefined,
+      slot_label: undefined,
+      equipment_ids: [],
+    }));
+
+  const pickSlot = (slot: TherapistSlot) =>
+    setDraft((d) => ({
+      ...d,
+      slot_id: slot.id,
+      slot_label: `${slot.date} · ${slot.start_time} – ${slot.end_time}`,
+      preferred_date: slot.date,
+    }));
+
   return (
     <>
       <StepHeading
-        title="When should we come?"
-        hint="Pick a date, a shift, and a slot inside that shift."
+        title="Choose your therapist"
+        hint={
+          isMassage
+            ? "For your safety, massage therapists are matched to your gender — you'll only see therapists you can book."
+            : "Search by name or speciality, then pick an open time from their calendar."
+        }
       />
 
-      <div className="max-w-xs">
-        <Label htmlFor="date">Preferred date</Label>
-        <Input
-          id="date"
-          type="date"
-          min={todayISO()}
-          value={draft.preferred_date}
-          onChange={(e) => set("preferred_date", e.target.value)}
+      <div className="relative mt-6">
+        <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search therapists by name or speciality…"
+          className="h-11 w-full rounded-2xl border border-input bg-transparent pl-10 pr-4 text-sm"
         />
       </div>
 
-      <div className="mt-6">
-        <Label className="mb-3 block text-xs uppercase tracking-wide text-muted-foreground">
-          Shift
-        </Label>
-        <div className="grid gap-3 sm:grid-cols-4">
-          {SHIFTS.map((s) => (
-            <OptionCard
-              key={s.value}
-              selected={draft.shift === s.value}
-              onClick={() => {
-                set("shift", s.value);
-                set("time_slot", undefined);
-              }}
-              title={s.label}
-              body={s.window}
-            />
-          ))}
+      {therapists.isLoading ? (
+        <p className="mt-6 text-sm text-muted-foreground">Finding therapists…</p>
+      ) : therapists.isError ? (
+        <p className="mt-6 text-sm text-destructive">
+          Couldn't load therapists. Please try again.
+        </p>
+      ) : list.length === 0 ? (
+        <div className="mt-6 rounded-2xl border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
+          {isMassage
+            ? "No matching therapists are available right now. Massage bookings need a therapist of the same gender as you — make sure your gender is set on your profile."
+            : "No therapists match that search yet."}
         </div>
-      </div>
-
-      {draft.shift && (
-        <div className="mt-6">
-          <Label className="mb-3 block text-xs uppercase tracking-wide text-muted-foreground">
-            Time slot
-          </Label>
-          {slotsLoading ? (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Loader2 className="h-4 w-4 animate-spin" /> Loading slots…
-            </div>
-          ) : (
-            <div className="flex flex-wrap gap-2">
-              {slots.map((slot) => (
-                <button
-                  key={slot}
-                  type="button"
-                  onClick={() => set("time_slot", slot)}
-                  className={cn(
-                    "rounded-full border px-4 py-2 text-sm font-medium transition",
-                    draft.time_slot === slot
-                      ? "border-primary bg-primary text-primary-foreground"
-                      : "border-border hover:border-primary/40",
-                  )}
-                >
-                  {slot}
-                </button>
-              ))}
-            </div>
-          )}
+      ) : (
+        <div className="mt-6 grid gap-3 sm:grid-cols-2">
+          {list.map((t) => {
+            const selected = draft.therapist_id === t.id;
+            return (
+              <button
+                key={t.id}
+                type="button"
+                onClick={() => pick(t)}
+                className={
+                  "flex items-center gap-3 rounded-2xl border p-4 text-left transition-colors " +
+                  (selected
+                    ? "border-primary bg-primary-soft/50"
+                    : "border-border/70 hover:bg-secondary/50")
+                }
+              >
+                <img
+                  src={imageSrc(t.avatar, avatarPlaceholder(t.name))}
+                  alt=""
+                  className="h-11 w-11 shrink-0 rounded-xl object-cover"
+                />
+                <span className="min-w-0">
+                  <span className="block truncate text-sm font-semibold">{t.name}</span>
+                  <span className="mt-0.5 block truncate text-xs text-muted-foreground">
+                    {[t.qualification, t.specialization, t.therapist_tier]
+                      .filter(Boolean)
+                      .join(" · ") || "Home visit therapist"}
+                  </span>
+                </span>
+                {selected && <Check className="ml-auto h-4 w-4 shrink-0 text-primary" />}
+              </button>
+            );
+          })}
         </div>
       )}
 
-      {draft.service_category !== "massage_therapy" && (
-        <div className="mt-6 max-w-xs">
-          <Label htmlFor="duration">Session length (40–60 min)</Label>
-          <Input
-            id="duration"
-            type="number"
-            min={40}
-            max={60}
-            value={draft.session_duration_minutes}
-            onChange={(e) =>
-              set("session_duration_minutes", Number(e.target.value) || 45)
-            }
-          />
+      {draft.therapist_id && (
+        <div className="mt-8 border-t border-border/70 pt-6">
+          <h4 className="text-sm font-semibold">
+            Open times for {draft.therapist_name}
+          </h4>
+
+          {slots.isLoading ? (
+            <p className="mt-3 text-sm text-muted-foreground">Loading their calendar…</p>
+          ) : (slots.data?.length ?? 0) === 0 ? (
+            <p className="mt-3 rounded-2xl border border-dashed border-border p-5 text-center text-sm text-muted-foreground">
+              {draft.therapist_name} hasn't published any open slots yet. Try another therapist.
+            </p>
+          ) : (
+            <div className="mt-3 flex flex-wrap gap-2">
+              {slots.data!.map((slot) => {
+                const selected = draft.slot_id === slot.id;
+                return (
+                  <button
+                    key={slot.id}
+                    type="button"
+                    onClick={() => pickSlot(slot)}
+                    className={
+                      "rounded-full border px-4 py-2 text-xs font-semibold transition-colors " +
+                      (selected
+                        ? "border-primary bg-primary text-primary-foreground"
+                        : "border-border/70 hover:bg-secondary")
+                    }
+                  >
+                    {slot.date} · {slot.start_time}–{slot.end_time}
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
       )}
     </>
   );
 }
+
+function EquipmentStep({
+  draft,
+  setDraft,
+}: {
+  draft: Draft;
+  setDraft: React.Dispatch<React.SetStateAction<Draft>>;
+}) {
+  const equipment = useQuery(
+    bookableEquipmentQ(draft.service_category, draft.therapist_id),
+  );
+
+  const toggle = (id: string) =>
+    setDraft((d) => ({
+      ...d,
+      equipment_ids: d.equipment_ids.includes(id)
+        ? d.equipment_ids.filter((x) => x !== id)
+        : [...d.equipment_ids, id],
+    }));
+
+  const items = equipment.data ?? [];
+  const isPackage = draft.frequency_type === "package";
+  const selectedTotal = items
+    .filter((e) => draft.equipment_ids.includes(e.id))
+    .reduce((sum, e) => sum + e.charge, 0);
+
+  return (
+    <>
+      <StepHeading
+        title="Add equipment (optional)"
+        hint={`Only ${SERVICE_LABELS[draft.service_category].toLowerCase()} equipment is shown, including anything ${draft.therapist_name ?? "your therapist"} brings themselves.`}
+      />
+
+      {isPackage && (
+        <p className="mt-5 rounded-2xl bg-primary-soft/50 p-4 text-sm text-primary">
+          Your package already includes equipment use — anything you pick here is added at no
+          extra charge.
+        </p>
+      )}
+
+      {equipment.isLoading ? (
+        <p className="mt-6 text-sm text-muted-foreground">Loading equipment…</p>
+      ) : items.length === 0 ? (
+        <div className="mt-6 rounded-2xl border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
+          No optional equipment for this service. You can continue.
+        </div>
+      ) : (
+        <div className="mt-6 grid gap-3 sm:grid-cols-2">
+          {items.map((e) => {
+            const selected = draft.equipment_ids.includes(e.id);
+            return (
+              <button
+                key={e.id}
+                type="button"
+                onClick={() => toggle(e.id)}
+                className={
+                  "flex items-start justify-between gap-3 rounded-2xl border p-4 text-left transition-colors " +
+                  (selected
+                    ? "border-primary bg-primary-soft/50"
+                    : "border-border/70 hover:bg-secondary/50")
+                }
+              >
+                <span className="min-w-0">
+                  <span className="block text-sm font-semibold">{e.name}</span>
+                  <span className="mt-0.5 block text-xs text-muted-foreground">
+                    {e.owner_type === "therapist"
+                      ? `Brought by ${e.therapist_name ?? "your therapist"}`
+                      : "Platform equipment"}
+                  </span>
+                </span>
+                <span className="shrink-0 text-sm font-semibold text-primary">
+                  {isPackage ? "Included" : `+${formatINR(e.charge)}`}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      )}
+
+      {!isPackage && draft.equipment_ids.length > 0 && (
+        <p className="mt-5 text-sm text-muted-foreground">
+          Equipment subtotal:{" "}
+          <span className="font-semibold text-foreground">{formatINR(selectedTotal)}</span>
+        </p>
+      )}
+    </>
+  );
+}
+
 
 function DetailsStep({
   draft,
@@ -1002,8 +1087,8 @@ function ReviewStep({ draft, quote }: { draft: Draft; quote: PricingQuote | null
   const service = SERVICES.find((s) => s.category === draft.service_category)!;
   const rows: [string, string][] = [
     ["Service", service.name],
-    ["Date", draft.preferred_date],
-    ["Shift & slot", `${draft.shift ?? "—"} · ${draft.time_slot ?? "—"}`],
+    ["Therapist", draft.therapist_name ?? "—"],
+    ["Appointment", draft.slot_label ?? "—"],
     ["Patient", draft.patient_name || "—"],
     ["Contact", draft.contact_phone || "—"],
     ["Address", draft.address || "—"],
@@ -1023,14 +1108,6 @@ function ReviewStep({ draft, quote }: { draft: Draft; quote: PricingQuote | null
           : `${draft.package_duration ?? "—"} package${
               draft.package_custom_months ? ` · ${draft.package_custom_months} months` : ""
             }`,
-    ]);
-    rows.splice(2, 0, [
-      "Modalities",
-      draft.equipment.length
-        ? draft.equipment
-            .map((c) => MODALITIES.find((m) => m.code === c)?.name ?? c)
-            .join(", ")
-        : "None",
     ]);
   }
 
@@ -1101,7 +1178,7 @@ function PriceSummary({
             value={quote ? formatINR(quote.visit_fee) : "—"}
           />
           <Row
-            label={`Machine charge${draft.equipment.length ? ` (${draft.equipment.length})` : ""}`}
+            label={`Equipment${draft.equipment_ids.length ? ` (${draft.equipment_ids.length})` : ""}`}
             value={quote ? formatINR(quote.machine_charge) : "—"}
           />
           <div className="border-t border-border/70 pt-3">

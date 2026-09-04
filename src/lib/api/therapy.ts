@@ -35,10 +35,11 @@ export type EquipmentCode =
   | "theraband";
 export type Gender = "male" | "female" | "other";
 
+/** Mirrors the backend `BookingStatus` enum exactly — do not invent values. */
 export type BookingStatus =
   | "pending"
-  | "confirmed"
-  | "assigned"
+  | "approved"
+  | "rejected"
   | "in_progress"
   | "completed"
   | "cancelled";
@@ -60,6 +61,8 @@ export type PricingQuote = {
 };
 
 export type QuoteRequest = {
+  therapist_id?: string;
+  equipment_ids?: string[];
   service_category: ServiceCategory;
   frequency_type?: FrequencyType;
   daily_visits_per_day?: number;
@@ -79,10 +82,16 @@ export type TherapyBookingCreate = {
   pincode?: string;
   service_category: ServiceCategory;
   condition_notes?: string;
-  preferred_date: string;
-  shift: Shift;
-  time_slot: string;
+  /** Therapist-first flow: pick a therapist + one of their published slots. */
+  therapist_id?: string;
+  slot_id?: string;
+  /** Derived from the slot when slot_id is sent; required otherwise. */
+  preferred_date?: string;
+  shift?: Shift;
+  time_slot?: string;
   session_duration_minutes: number;
+  /** Equipment chosen from the catalogue (platform + therapist's own). */
+  equipment_ids?: string[];
   frequency_type?: FrequencyType;
   daily_visits_per_day?: number;
   weekly_days_count?: number;
@@ -91,6 +100,13 @@ export type TherapyBookingCreate = {
   equipment?: EquipmentCode[];
   massage_type?: MassageType;
   massage_duration_minutes?: number;
+};
+
+export type BookedEquipment = {
+  equipment_id: string;
+  name: string;
+  charge: number;
+  owner_type: "platform" | "therapist";
 };
 
 export type TherapyBooking = {
@@ -198,6 +214,146 @@ export const assignedBookingsQ = (enabled = true) =>
     enabled,
   });
 
+/* ---- Therapist-first booking: equipment, slots ------------------- */
+
+export type TherapyEquipment = {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  category: ServiceCategory;
+  charge: number;
+  owner_type: "platform" | "therapist";
+  therapist_id?: string | null;
+  therapist_name?: string | null;
+  is_active: boolean;
+  sort_order: number;
+};
+
+export type TherapistSlot = {
+  id: string;
+  date: string;
+  start_time: string;
+  end_time: string;
+  is_booked: boolean;
+  booked_by_patient_name?: string | null;
+  booking_reference?: string | null;
+};
+
+/** Platform equipment for the category + that therapist's own kit. */
+export const bookableEquipmentQ = (
+  category: ServiceCategory | undefined,
+  therapistId: string | undefined,
+) =>
+  queryOptions({
+    queryKey: ["therapy", "equipment", "for-booking", category, therapistId],
+    queryFn: ({ signal }) =>
+      api.get<TherapyEquipment[]>(
+        "/therapy-equipment/for-booking",
+        { category, therapist_id: therapistId },
+        signal,
+      ),
+    staleTime: FIVE_MIN,
+    enabled: Boolean(category),
+  });
+
+export type BookableTherapist = {
+  id: string;
+  name: string;
+  email: string;
+  user_type?: string;
+  gender?: string | null;
+  specialization?: string | null;
+  qualification?: string | null;
+  therapist_tier?: string | null;
+  experience_years?: number | null;
+  avatar?: { url: string } | null;
+};
+
+/**
+ * Therapists a patient may book for this category.
+ *
+ * The backend applies the gender-matching safety rule for massage itself, so
+ * a massage search only ever returns therapists of the caller's own gender.
+ */
+export const bookableTherapistsQ = (
+  category: ServiceCategory | undefined,
+  search: string,
+  enabled = true,
+) => {
+  const userType =
+    category === "massage_therapy"
+      ? "massage_therapist"
+      : category === "yoga_therapy"
+        ? "yoga_therapist"
+        : "physiotherapist";
+  return queryOptions({
+    queryKey: ["therapy", "bookable-therapists", userType, search],
+    queryFn: ({ signal }) =>
+      api.get<Paginated<BookableTherapist>>(
+        "/therapists",
+        { user_type: userType, search: search || undefined, page_size: 24 },
+        signal,
+      ),
+    enabled: enabled && Boolean(category),
+  });
+};
+
+/** Free home-visit slots a patient can pick from. */
+export const therapistAvailabilityQ = (therapistId: string | undefined) =>
+  queryOptions({
+    queryKey: ["therapy", "availability", therapistId],
+    queryFn: ({ signal }) =>
+      api.get<TherapistSlot[]>(
+        "/therapy-bookings/therapist-availability",
+        { therapist_id: therapistId },
+        signal,
+      ),
+    enabled: Boolean(therapistId),
+  });
+
+/** The logged-in therapist's own published slots. */
+export const mySlotsQ = (enabled = true) =>
+  queryOptions({
+    queryKey: ["therapy", "my-slots"],
+    queryFn: ({ signal }) => api.get<TherapistSlot[]>("/therapy-bookings/my-slots", undefined, signal),
+    enabled,
+  });
+
+/** The logged-in therapist's own equipment. */
+export const myEquipmentQ = (enabled = true) =>
+  queryOptions({
+    queryKey: ["therapy", "my-equipment"],
+    queryFn: ({ signal }) => api.get<TherapyEquipment[]>("/therapy-equipment/mine", undefined, signal),
+    enabled,
+  });
+
+export const createMySlot = (payload: { date: string; start_time: string; end_time: string }) =>
+  api.post<{ id: string }>("/therapy-bookings/my-slots", payload);
+
+export const deleteMySlot = (slotId: string) =>
+  api.delete<null>(`/therapy-bookings/my-slots/${slotId}`);
+
+export const createMyEquipment = (payload: {
+  name: string;
+  description?: string;
+  category: ServiceCategory;
+  charge: number;
+}) => api.post<TherapyEquipment>("/therapy-equipment/mine", payload);
+
+export const deleteMyEquipment = (id: string) => api.delete<null>(`/therapy-equipment/${id}`);
+
+/** Therapist moves one of their own bookings along. */
+export const updateMyBookingStatus = (
+  bookingId: string,
+  status: BookingStatus,
+  reason?: string,
+) =>
+  api.patch<TherapyBooking>(
+    `/therapy-bookings/${bookingId}/my-status?status=${encodeURIComponent(status)}`,
+    { reason },
+  );
+
 /* ------------------------------------------------------------------ */
 /* Mutations                                                           */
 /* ------------------------------------------------------------------ */
@@ -268,8 +424,8 @@ export const PACKAGE_LABELS: Record<PackageDuration, string> = {
 
 export const STATUS_LABELS: Record<BookingStatus, string> = {
   pending: "Pending",
-  confirmed: "Confirmed",
-  assigned: "Therapist Assigned",
+  approved: "Confirmed",
+  rejected: "Rejected",
   in_progress: "In Progress",
   completed: "Completed",
   cancelled: "Cancelled",
