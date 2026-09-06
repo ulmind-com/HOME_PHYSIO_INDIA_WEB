@@ -243,18 +243,30 @@ export type BookableTherapist = {
   therapist_tier?: string | null;
   experience_years?: number | null;
   avatar?: { url: string } | null;
+  /** The therapist's own chosen place name (e.g. "Kolaghat") — never exact coordinates. */
+  location_label?: string | null;
+  /** Only present when the search carried the patient's lat/lng. */
+  distance_km?: number | null;
+  /** Whether this therapist has at least one open future home-visit slot right now. */
+  has_availability?: boolean | null;
 };
+
+/** The searcher's current position, used to rank nearby therapists first. */
+export type GeoCoords = { lat: number; lng: number };
 
 /**
  * Therapists a patient may book for this category.
  *
  * The backend applies the gender-matching safety rule for massage itself, so
  * a massage search only ever returns therapists of the caller's own gender.
+ * When `coords` is given, results are ranked nearest-and-available-first —
+ * the same way a ride-hailing app ranks drivers — instead of alphabetically.
  */
 export const bookableTherapistsQ = (
   category: ServiceCategory | undefined,
   search: string,
   enabled = true,
+  coords?: GeoCoords | null,
 ) => {
   const userType =
     category === "massage_therapy"
@@ -263,11 +275,17 @@ export const bookableTherapistsQ = (
         ? "yoga_therapist"
         : "physiotherapist";
   return queryOptions({
-    queryKey: ["therapy", "bookable-therapists", userType, search],
+    queryKey: ["therapy", "bookable-therapists", userType, search, coords?.lat, coords?.lng],
     queryFn: ({ signal }) =>
       api.get<Paginated<BookableTherapist>>(
         "/therapists",
-        { user_type: userType, search: search || undefined, page_size: 24 },
+        {
+          user_type: userType,
+          search: search || undefined,
+          page_size: 24,
+          lat: coords?.lat,
+          lng: coords?.lng,
+        },
         signal,
       ),
     enabled: enabled && Boolean(category),

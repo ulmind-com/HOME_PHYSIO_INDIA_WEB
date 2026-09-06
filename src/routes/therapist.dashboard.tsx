@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import {
   BadgeCheck,
   CalendarDays,
   Loader2,
+  MapPin,
   MessageSquare,
   Plus,
   ShieldAlert,
@@ -14,7 +15,9 @@ import {
 } from "lucide-react";
 
 import { useAuth } from "@/contexts/AuthContext";
+import { useGeolocation } from "@/hooks/use-geolocation";
 import { openAuthDialog } from "@/lib/auth-dialog";
+import { authService } from "@/services/api/auth.service";
 import {
   assignedBookingsQ,
   createMyEquipment,
@@ -38,6 +41,8 @@ import {
   myPayoutsQ,
 } from "@/lib/api/account";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { avatarPlaceholder, imageSrc } from "@/lib/placeholders";
 
@@ -165,6 +170,7 @@ function TherapistDashboard() {
         <TabsList>
           <TabsTrigger value="visits">Assigned visits</TabsTrigger>
           <TabsTrigger value="slots">My availability</TabsTrigger>
+          <TabsTrigger value="location">My location</TabsTrigger>
           <TabsTrigger value="equipment">My equipment</TabsTrigger>
           <TabsTrigger value="earnings">Earnings</TabsTrigger>
           <TabsTrigger value="payouts">Payouts</TabsTrigger>
@@ -172,6 +178,10 @@ function TherapistDashboard() {
 
         <TabsContent value="slots" className="mt-8">
           <SlotsPanel />
+        </TabsContent>
+
+        <TabsContent value="location" className="mt-8">
+          <LocationPanel />
         </TabsContent>
 
         <TabsContent value="equipment" className="mt-8">
@@ -286,6 +296,117 @@ function TherapistDashboard() {
 /* ------------------------------------------------------------------ */
 /* My availability                                                     */
 /* ------------------------------------------------------------------ */
+
+function LocationPanel() {
+  const { user, setUser } = useAuth();
+  const geo = useGeolocation();
+  const [label, setLabel] = useState(user?.location_label ?? "");
+  const [pendingCoords, setPendingCoords] = useState<{ lat: number; lng: number } | null>(
+    user?.lat != null && user?.lng != null ? { lat: user.lat, lng: user.lng } : null,
+  );
+
+  // A fresh GPS read replaces whatever was pending, ready to save.
+  useEffect(() => {
+    if (geo.coords) setPendingCoords(geo.coords);
+  }, [geo.coords]);
+
+  const save = useMutation({
+    mutationFn: () =>
+      authService.updateProfile({
+        lat: pendingCoords?.lat,
+        lng: pendingCoords?.lng,
+        location_label: label || undefined,
+      }),
+    onSuccess: (updated) => {
+      setUser(updated);
+      toast.success("Location saved — patients searching nearby can now find you");
+    },
+    onError: (err: unknown) =>
+      toast.error(err instanceof Error ? err.message : "Could not save your location"),
+  });
+
+  const hasSavedLocation = user?.lat != null && user?.lng != null;
+  const canSave = Boolean(pendingCoords) && !save.isPending;
+
+  return (
+    <div className="max-w-xl space-y-6">
+      <section className="rounded-3xl border border-border/70 bg-card p-5 sm:p-6">
+        <h3 className="font-display text-lg tracking-tight">My service location</h3>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Patients searching near your area see you before therapists further away — the
+          same way a ride-hailing app matches the nearest available driver first. Set this
+          once from wherever you usually take home visits from.
+        </p>
+
+        <div className="mt-5 flex flex-wrap items-center gap-3">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => {
+              geo.request();
+            }}
+            disabled={geo.status === "loading"}
+          >
+            {geo.status === "loading" ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <MapPin className="h-4 w-4" />
+            )}
+            Use my current location
+          </Button>
+          {hasSavedLocation && !pendingCoords && (
+            <span className="text-xs text-muted-foreground">
+              Currently set{user?.location_label ? ` to "${user.location_label}"` : ""}.
+            </span>
+          )}
+        </div>
+
+        {geo.status === "denied" && (
+          <p className="mt-3 text-xs text-destructive">
+            Location permission was denied. Enable it for this site in your browser settings,
+            then try again.
+          </p>
+        )}
+        {geo.status === "unavailable" && (
+          <p className="mt-3 text-xs text-destructive">
+            Your browser doesn't support location. You can still search for your area's
+            coordinates and enter them elsewhere, or contact support.
+          </p>
+        )}
+
+        {pendingCoords && (
+          <p className="mt-3 text-xs text-muted-foreground">
+            Captured: {pendingCoords.lat.toFixed(4)}, {pendingCoords.lng.toFixed(4)}
+          </p>
+        )}
+
+        <div className="mt-5 space-y-1.5">
+          <Label htmlFor="location-label">Area name shown to patients</Label>
+          <Input
+            id="location-label"
+            value={label}
+            onChange={(e) => setLabel(e.target.value)}
+            placeholder="e.g. Kolaghat, Purba Medinipur"
+            maxLength={160}
+          />
+          <p className="text-xs text-muted-foreground">
+            Only this label is shown to patients — never your exact coordinates.
+          </p>
+        </div>
+
+        <Button
+          type="button"
+          className="mt-5 rounded-full"
+          onClick={() => save.mutate()}
+          disabled={!canSave}
+        >
+          {save.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          Save location
+        </Button>
+      </section>
+    </div>
+  );
+}
 
 function SlotsPanel() {
   const queryClient = useQueryClient();

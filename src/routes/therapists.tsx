@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowRight, BadgeCheck, GraduationCap, Search, Sparkles } from "lucide-react";
+import { ArrowRight, BadgeCheck, GraduationCap, MapPin, Search, Sparkles } from "lucide-react";
 
 import { PageHero } from "@/components/site/PageHero";
 import { Section, SectionHeader } from "@/components/site/Section";
 import { OurStaffSection, FallbackStaffGrid } from "@/components/site/OurStaffSection";
 import { useAuth } from "@/contexts/AuthContext";
+import { useGeolocation } from "@/hooks/use-geolocation";
 import { staffQ } from "@/lib/api/queries";
 import {
   bookableTherapistsQ,
@@ -85,6 +86,25 @@ function TherapistCard({ therapist }: { therapist: BookableTherapist }) {
             <span>· {t.experience_years} yrs experience</span>
           )}
         </div>
+
+        {(t.distance_km != null || t.location_label || t.has_availability === false) && (
+          <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-medium">
+            {t.distance_km != null ? (
+              <span className="flex items-center gap-1 text-primary">
+                <MapPin className="h-3.5 w-3.5" />
+                {t.distance_km < 1 ? "<1 km away" : `${t.distance_km} km away`}
+              </span>
+            ) : t.location_label ? (
+              <span className="flex items-center gap-1 text-muted-foreground">
+                <MapPin className="h-3.5 w-3.5" />
+                {t.location_label}
+              </span>
+            ) : null}
+            {t.has_availability === false && (
+              <span className="text-amber-600">Fully booked right now</span>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -95,13 +115,21 @@ function LiveTherapistDirectory() {
   const [category, setCategory] = useState<ServiceCategory>("physiotherapy");
   const [search, setSearch] = useState("");
   const [debounced, setDebounced] = useState("");
+  const geo = useGeolocation();
 
   useEffect(() => {
     const timer = setTimeout(() => setDebounced(search), 300);
     return () => clearTimeout(timer);
   }, [search]);
 
-  const therapists = useQuery(bookableTherapistsQ(category, debounced, isAuthenticated));
+  useEffect(() => {
+    if (isAuthenticated) geo.request();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated]);
+
+  const therapists = useQuery(
+    bookableTherapistsQ(category, debounced, isAuthenticated, geo.coords),
+  );
   const list = therapists.data?.items ?? [];
   const isMassage = category === "massage_therapy";
 
@@ -167,6 +195,25 @@ function LiveTherapistDirectory() {
               />
             </div>
           </div>
+
+          {geo.status === "granted" ? (
+            <p className="mt-4 flex items-center gap-1.5 text-xs font-medium text-primary">
+              <MapPin className="h-3.5 w-3.5" />
+              Showing therapists near you first
+            </p>
+          ) : geo.status === "denied" || geo.status === "unavailable" ? (
+            <p className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">
+              <MapPin className="h-3.5 w-3.5 shrink-0" />
+              Enable location to see the nearest therapists first.
+              <button
+                type="button"
+                onClick={geo.request}
+                className="font-semibold text-primary underline underline-offset-2"
+              >
+                Try again
+              </button>
+            </p>
+          ) : null}
 
           {isMassage && (
             <p className="mt-5 rounded-2xl bg-primary-soft/50 p-4 text-sm text-primary">

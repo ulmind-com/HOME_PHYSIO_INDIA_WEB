@@ -34,6 +34,10 @@ export type User = {
   therapist_tier?: string | null;
   verification_status?: "pending" | "approved" | "rejected";
   is_email_verified: boolean;
+  /** For a therapist: their fixed service base. For a patient: last known search location. */
+  lat?: number | null;
+  lng?: number | null;
+  location_label?: string | null;
   avatar?: { url: string; public_id?: string; [key: string]: any };
   documents?: TherapistDocument[];
 };
@@ -100,6 +104,9 @@ export const authService = {
     gender?: string;
     pincode?: string;
     medical_condition?: string;
+    lat?: number;
+    lng?: number;
+    location_label?: string;
   }): Promise<User> => {
     return api.put<User>("/auth/me", payload);
   },

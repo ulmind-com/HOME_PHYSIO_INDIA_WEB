@@ -16,12 +16,14 @@ import {
   Check,
   Loader2,
   LockKeyhole,
+  MapPin,
   Package,
   Search,
   ShieldCheck,
 } from "lucide-react";
 
 import { useAuth } from "@/contexts/AuthContext";
+import { useGeolocation } from "@/hooks/use-geolocation";
 import { openAuthDialog } from "@/lib/auth-dialog";
 import { avatarPlaceholder, equipmentImageForSlug, imageSrc } from "@/lib/placeholders";
 import {
@@ -714,13 +716,23 @@ function TherapistStep({
 }) {
   const [search, setSearch] = useState("");
   const [debounced, setDebounced] = useState("");
+  const geo = useGeolocation();
 
   useEffect(() => {
     const t = setTimeout(() => setDebounced(search), 300);
     return () => clearTimeout(t);
   }, [search]);
 
-  const therapists = useQuery(bookableTherapistsQ(draft.service_category, debounced));
+  // Ask once, the moment this step opens — mirrors how delivery/ride apps
+  // prompt for location as soon as you start searching, not before.
+  useEffect(() => {
+    geo.request();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const therapists = useQuery(
+    bookableTherapistsQ(draft.service_category, debounced, true, geo.coords),
+  );
   const slots = useQuery(therapistAvailabilityQ(draft.therapist_id));
 
   const isMassage = draft.service_category === "massage_therapy";
@@ -766,6 +778,23 @@ function TherapistStep({
         />
       </div>
 
+      {geo.status === "granted" ? (
+        <p className="mt-3 flex items-center gap-1.5 text-xs font-medium text-primary">
+          <MapPin className="h-3.5 w-3.5" />
+          Showing therapists near you first
+        </p>
+      ) : geo.status === "loading" ? (
+        <p className="mt-3 text-xs text-muted-foreground">Finding therapists near you…</p>
+      ) : (geo.status === "denied" || geo.status === "unavailable") ? (
+        <p className="mt-3 flex items-center gap-2 text-xs text-muted-foreground">
+          <MapPin className="h-3.5 w-3.5 shrink-0" />
+          Enable location to see the nearest therapists first.
+          <button type="button" onClick={geo.request} className="font-semibold text-primary underline underline-offset-2">
+            Try again
+          </button>
+        </p>
+      ) : null}
+
       {therapists.isLoading ? (
         <p className="mt-6 text-sm text-muted-foreground">Finding therapists…</p>
       ) : therapists.isError ? (
@@ -806,6 +835,22 @@ function TherapistStep({
                       .filter(Boolean)
                       .join(" · ") || "Home visit therapist"}
                   </span>
+                  {(t.distance_km != null || t.location_label || t.has_availability === false) && (
+                    <span className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] font-medium">
+                      {t.distance_km != null && (
+                        <span className="flex items-center gap-1 text-primary">
+                          <MapPin className="h-3 w-3" />
+                          {t.distance_km < 1 ? "<1 km away" : `${t.distance_km} km away`}
+                        </span>
+                      )}
+                      {!t.distance_km && t.location_label && (
+                        <span className="text-muted-foreground">{t.location_label}</span>
+                      )}
+                      {t.has_availability === false && (
+                        <span className="text-amber-600">Fully booked — try another</span>
+                      )}
+                    </span>
+                  )}
                 </span>
                 {selected && <Check className="ml-auto h-4 w-4 shrink-0 text-primary" />}
               </button>
