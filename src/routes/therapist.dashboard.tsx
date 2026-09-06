@@ -304,11 +304,30 @@ function LocationPanel() {
   const [pendingCoords, setPendingCoords] = useState<{ lat: number; lng: number } | null>(
     user?.lat != null && user?.lng != null ? { lat: user.lat, lng: user.lng } : null,
   );
+  const [showManual, setShowManual] = useState(false);
+  const [manualLat, setManualLat] = useState("");
+  const [manualLng, setManualLng] = useState("");
+  const [manualError, setManualError] = useState<string | null>(null);
 
   // A fresh GPS read replaces whatever was pending, ready to save.
   useEffect(() => {
     if (geo.coords) setPendingCoords(geo.coords);
   }, [geo.coords]);
+
+  const applyManualCoords = () => {
+    const lat = Number(manualLat);
+    const lng = Number(manualLng);
+    if (!manualLat.trim() || !manualLng.trim() || Number.isNaN(lat) || Number.isNaN(lng)) {
+      setManualError("Enter both latitude and longitude as numbers");
+      return;
+    }
+    if (lat < -90 || lat > 90 || lng < -180 || lng > 180) {
+      setManualError("Latitude must be -90 to 90 and longitude -180 to 180");
+      return;
+    }
+    setManualError(null);
+    setPendingCoords({ lat, lng });
+  };
 
   const save = useMutation({
     mutationFn: () =>
@@ -363,14 +382,13 @@ function LocationPanel() {
 
         {geo.status === "denied" && (
           <p className="mt-3 text-xs text-destructive">
-            Location permission was denied. Enable it for this site in your browser settings,
-            then try again.
+            Location permission was denied. Enable it for this site in your browser settings
+            and try again, or enter coordinates manually below.
           </p>
         )}
         {geo.status === "unavailable" && (
           <p className="mt-3 text-xs text-destructive">
-            Your browser doesn't support location. You can still search for your area's
-            coordinates and enter them elsewhere, or contact support.
+            Your browser doesn't support location. Enter coordinates manually below instead.
           </p>
         )}
 
@@ -378,6 +396,46 @@ function LocationPanel() {
           <p className="mt-3 text-xs text-muted-foreground">
             Captured: {pendingCoords.lat.toFixed(4)}, {pendingCoords.lng.toFixed(4)}
           </p>
+        )}
+
+        <button
+          type="button"
+          onClick={() => setShowManual((v) => !v)}
+          className="mt-3 text-xs font-semibold text-primary underline underline-offset-2"
+        >
+          {showManual ? "Hide manual entry" : "Enter coordinates manually instead"}
+        </button>
+
+        {showManual && (
+          <div className="mt-3 rounded-2xl border border-dashed border-border p-4">
+            <p className="text-xs text-muted-foreground">
+              Open Google Maps, long-press your location, and copy the two numbers it shows.
+            </p>
+            <div className="mt-3 grid grid-cols-2 gap-3">
+              <Input
+                type="number"
+                step="any"
+                min={-90}
+                max={90}
+                placeholder="Latitude"
+                value={manualLat}
+                onChange={(e) => setManualLat(e.target.value)}
+              />
+              <Input
+                type="number"
+                step="any"
+                min={-180}
+                max={180}
+                placeholder="Longitude"
+                value={manualLng}
+                onChange={(e) => setManualLng(e.target.value)}
+              />
+            </div>
+            {manualError && <p className="mt-2 text-xs text-destructive">{manualError}</p>}
+            <Button type="button" variant="outline" size="sm" className="mt-3" onClick={applyManualCoords}>
+              Use these coordinates
+            </Button>
+          </div>
         )}
 
         <div className="mt-5 space-y-1.5">
