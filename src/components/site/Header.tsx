@@ -194,22 +194,26 @@ export function Header() {
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator className="bg-border/50" />
-                  <DropdownMenuItem className="p-2 cursor-pointer focus:bg-primary-soft rounded-lg" asChild>
+                  <DropdownMenuItem className="p-2 cursor-pointer focus:bg-primary-soft focus:text-primary rounded-lg" asChild>
                     <Link to={user?.role === "therapist" ? "/therapist/dashboard" : "/user/dashboard"} className="flex items-center">
                       <LayoutDashboard className="mr-2 h-4 w-4" />
                       <span>Dashboard</span>
                     </Link>
                   </DropdownMenuItem>
                   {user?.role !== "therapist" && (
-                    <DropdownMenuItem className="p-2 cursor-pointer focus:bg-primary-soft rounded-lg" asChild>
+                    <DropdownMenuItem className="p-2 cursor-pointer focus:bg-primary-soft focus:text-primary rounded-lg" asChild>
                       <Link to="/booking" className="flex items-center">
                         <ArrowRight className="mr-2 h-4 w-4" />
                         <span>Book a Session</span>
                       </Link>
                     </DropdownMenuItem>
                   )}
-                  <DropdownMenuItem className="p-2 cursor-pointer focus:bg-primary-soft rounded-lg" asChild>
-                    <Link to={user?.role === "therapist" ? "/therapist/dashboard" : "/user/dashboard"} className="flex items-center">
+                  <DropdownMenuItem className="p-2 cursor-pointer focus:bg-primary-soft focus:text-primary rounded-lg" asChild>
+                    <Link
+                      to={user?.role === "therapist" ? "/therapist/dashboard" : "/user/dashboard"}
+                      search={user?.role === "therapist" ? undefined : { tab: "profile" }}
+                      className="flex items-center"
+                    >
                       <User className="mr-2 h-4 w-4" />
                       <span>Profile Settings</span>
                     </Link>
