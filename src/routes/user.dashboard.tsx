@@ -1,8 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import {
+  Camera,
   CalendarDays,
   Download,
   FileUp,
@@ -10,8 +11,12 @@ import {
   Plus,
   Trash2,
   Upload,
+  UserRound,
 } from "lucide-react";
 
+import { authService } from "@/services/api/auth.service";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/contexts/AuthContext";
 import { openAuthDialog } from "@/lib/auth-dialog";
 import {
@@ -46,19 +51,46 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 
+type DashboardTab = "bookings" | "reports" | "profile";
+
 export const Route = createFileRoute("/user/dashboard")({
   head: () => ({
     meta: [{ title: "My dashboard — Home Physio India" }],
   }),
+  validateSearch: (search: Record<string, unknown>): { tab?: DashboardTab } => {
+    const tab = search.tab;
+    return tab === "bookings" || tab === "reports" || tab === "profile"
+      ? { tab }
+      : {};
+  },
   component: PatientDashboard,
 });
 
+const HERO_BG =
+  "radial-gradient(55% 55% at 15% 10%, color-mix(in oklab, var(--primary) 42%, transparent), transparent 70%), radial-gradient(50% 50% at 90% 15%, color-mix(in oklab, var(--accent) 32%, transparent), transparent 70%), linear-gradient(135deg, var(--accent), color-mix(in oklab, var(--primary) 80%, black 14%))";
+
 function PatientDashboard() {
   const { user, isAuthenticated, isLoading } = useAuth();
+  const search = Route.useSearch();
+  const navigate = Route.useNavigate();
+  const bookings = useQuery({ ...myBookingsQ(), enabled: isAuthenticated });
+  const reports = useQuery({ ...myReportsQ(), enabled: isAuthenticated });
+
+  const [tab, setTab] = useState<DashboardTab>(search.tab ?? "bookings");
+  useEffect(() => {
+    if (search.tab && search.tab !== tab) setTab(search.tab);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search.tab]);
+
+  const changeTab = (next: string) => {
+    const t = next as DashboardTab;
+    setTab(t);
+    navigate({ search: t === "bookings" ? {} : { tab: t }, replace: true });
+  };
 
   if (isLoading) {
     return (
-      <div className="flex min-h-[60vh] items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center">
         <Loader2 className="h-6 w-6 animate-spin text-primary" />
       </div>
     );
@@ -66,9 +98,12 @@ function PatientDashboard() {
 
   if (!isAuthenticated) {
     return (
-      <div className="container-x flex min-h-[60vh] items-center justify-center">
-        <div className="max-w-sm rounded-3xl border border-border/70 bg-card p-8 text-center">
-          <h1 className="font-display text-2xl">Sign in to continue</h1>
+      <div className="container-x flex min-h-screen items-center justify-center pt-28">
+        <div className="w-full max-w-sm rounded-3xl border border-border/60 bg-card p-8 text-center shadow-elegant">
+          <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-primary-soft">
+            <CalendarDays className="h-6 w-6 text-primary" />
+          </div>
+          <h1 className="mt-5 font-display text-2xl tracking-tight">Sign in to continue</h1>
           <p className="mt-2 text-sm text-muted-foreground">
             Your bookings, reports and visit history live behind your account.
           </p>
@@ -80,41 +115,89 @@ function PatientDashboard() {
     );
   }
 
+  const items = bookings.data?.items ?? [];
+  const activeCount = items.filter((b) =>
+    ["pending", "approved", "confirmed", "assigned", "in_progress"].includes(b.status),
+  ).length;
+  const reportCount = reports.data?.items?.length ?? 0;
+
+  const stats = [
+    { label: "Total bookings", value: items.length },
+    { label: "Active visits", value: activeCount },
+    { label: "Reports on file", value: reportCount },
+  ];
+
   return (
-    <div className="container-x py-12 lg:py-16">
-      <header className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-primary">Your account</p>
-          <h1 className="mt-1.5 font-display text-3xl tracking-tight md:text-4xl">
-            Hello, {user?.name?.split(" ")[0] ?? "there"}
-          </h1>
-          <p className="mt-1.5 text-sm text-muted-foreground">
-            Track your visits, upload prescriptions and follow their review status.
-          </p>
+    <div className="min-h-screen bg-secondary/20">
+      {/* ── Premium account hero ─────────────────────────────── */}
+      <section className="relative isolate overflow-hidden" style={{ background: HERO_BG }}>
+        <div className="pointer-events-none absolute inset-0 -z-10 opacity-40 mix-blend-overlay bg-[radial-gradient(circle_at_20%_15%,white,transparent_45%)]" />
+        <div className="container-x relative pt-32 pb-24 text-white lg:pt-40">
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <div className="min-w-0">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/90 backdrop-blur">
+                <span className="h-1.5 w-1.5 rounded-full bg-white" />
+                Your account
+              </div>
+              <h1 className="mt-4 font-display text-4xl font-bold leading-[1.05] tracking-tight md:text-5xl">
+                Hello, {user?.name?.split(" ")[0] ?? "there"}
+              </h1>
+              <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-white/85">
+                Track your visits, upload prescriptions and follow their review status —
+                all in one place.
+              </p>
+            </div>
+            <Link
+              to="/booking"
+              className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-primary shadow-lg transition hover:scale-[1.03] hover:bg-white/95"
+            >
+              <Plus className="h-4 w-4" />
+              New booking
+            </Link>
+          </div>
+
+          <dl className="mt-9 grid grid-cols-3 gap-3 sm:max-w-xl">
+            {stats.map((s) => (
+              <div
+                key={s.label}
+                className="rounded-2xl border border-white/15 bg-white/10 px-4 py-3.5 backdrop-blur-md"
+              >
+                <dt className="text-[11px] font-medium uppercase tracking-wide text-white/70">
+                  {s.label}
+                </dt>
+                <dd className="mt-1 font-display text-2xl font-semibold sm:text-3xl">
+                  {s.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </div>
-        <Link
-          to="/booking"
-          className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
-        >
-          <Plus className="h-4 w-4" />
-          New booking
-        </Link>
-      </header>
+      </section>
 
-      <Tabs defaultValue="bookings" className="mt-10">
-        <TabsList>
-          <TabsTrigger value="bookings">Bookings</TabsTrigger>
-          <TabsTrigger value="reports">Reports & prescriptions</TabsTrigger>
-        </TabsList>
+      {/* ── Content lifts over the hero ──────────────────────── */}
+      <div className="container-x relative -mt-8 pb-20">
+        <Tabs value={tab} onValueChange={changeTab}>
+          <div className="inline-flex max-w-full overflow-x-auto rounded-full border border-border/60 bg-card p-1 shadow-elegant">
+            <TabsList className="bg-transparent">
+              <TabsTrigger value="bookings">Bookings</TabsTrigger>
+              <TabsTrigger value="reports">Reports &amp; prescriptions</TabsTrigger>
+              <TabsTrigger value="profile">Profile</TabsTrigger>
+            </TabsList>
+          </div>
 
-        <TabsContent value="bookings" className="mt-8">
-          <BookingsPanel />
-        </TabsContent>
+          <TabsContent value="bookings" className="mt-8">
+            <BookingsPanel />
+          </TabsContent>
 
-        <TabsContent value="reports" className="mt-8">
-          <ReportsPanel />
-        </TabsContent>
-      </Tabs>
+          <TabsContent value="reports" className="mt-8">
+            <ReportsPanel />
+          </TabsContent>
+
+          <TabsContent value="profile" className="mt-8">
+            <ProfilePanel />
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   );
 }
@@ -184,7 +267,7 @@ function BookingCard({
 }) {
   const cancellable = ["pending", "confirmed", "assigned"].includes(booking.status);
   return (
-    <article className="rounded-3xl border border-border/70 bg-card p-5 sm:p-6">
+    <article className="group rounded-3xl border border-border/60 bg-card p-5 shadow-sm transition duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-elegant sm:p-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
@@ -392,7 +475,7 @@ function ReportCard({
 }) {
   const stageIndex = REPORT_STAGES.indexOf(report.status);
   return (
-    <article className="rounded-3xl border border-border/70 bg-card p-5 sm:p-6">
+    <article className="group rounded-3xl border border-border/60 bg-card p-5 shadow-sm transition duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-elegant sm:p-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <h3 className="font-display text-lg tracking-tight">{report.title}</h3>
@@ -462,6 +545,159 @@ function ReportCard({
         </div>
       )}
     </article>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Profile                                                             */
+/* ------------------------------------------------------------------ */
+
+const GENDERS = ["male", "female", "other"] as const;
+
+function ProfilePanel() {
+  const { user, setUser } = useAuth();
+  const avatarRef = useRef<HTMLInputElement>(null);
+
+  const [form, setForm] = useState({
+    name: user?.name ?? "",
+    phone: user?.phone ?? "",
+    age: user?.age != null ? String(user.age) : "",
+    gender: user?.gender ?? "",
+    pincode: user?.pincode ?? "",
+    address: user?.address ?? "",
+    medical_condition: user?.medical_condition ?? "",
+  });
+
+  const set = (k: keyof typeof form, v: string) =>
+    setForm((f) => ({ ...f, [k]: v }));
+
+  const save = useMutation({
+    mutationFn: () =>
+      authService.updateProfile({
+        name: form.name.trim() || undefined,
+        phone: form.phone.trim() || undefined,
+        age: form.age.trim() ? Number(form.age) : undefined,
+        gender: form.gender || undefined,
+        pincode: form.pincode.trim() || undefined,
+        address: form.address.trim() || undefined,
+        medical_condition: form.medical_condition.trim() || undefined,
+      }),
+    onSuccess: (updated) => {
+      setUser(updated);
+      toast.success("Profile updated");
+    },
+    onError: (e: Error) => toast.error(e.message || "Could not save profile"),
+  });
+
+  const avatar = useMutation({
+    mutationFn: (file: File) => authService.uploadAvatar(file),
+    onSuccess: (updated) => {
+      setUser(updated);
+      toast.success("Photo updated");
+    },
+    onError: (e: Error) => toast.error(e.message || "Upload failed"),
+  });
+
+  return (
+    <div className="grid gap-8 lg:grid-cols-[320px_1fr] lg:items-start">
+      {/* Avatar + identity card */}
+      <div className="rounded-3xl border border-border/60 bg-card p-6 text-center shadow-sm">
+        <div className="relative mx-auto w-fit">
+          <Avatar className="h-28 w-28 border-4 border-primary-soft shadow-sm">
+            <AvatarImage src={user?.avatar?.url} alt={user?.name || "You"} className="object-cover" />
+            <AvatarFallback className="bg-primary/10 text-2xl font-semibold text-primary">
+              {user?.name?.charAt(0).toUpperCase() || "U"}
+            </AvatarFallback>
+          </Avatar>
+          <button
+            type="button"
+            onClick={() => avatarRef.current?.click()}
+            disabled={avatar.isPending}
+            className="absolute -bottom-1 -right-1 grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground shadow-md transition hover:opacity-90 disabled:opacity-60"
+            aria-label="Change photo"
+          >
+            {avatar.isPending ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Camera className="h-4 w-4" />
+            )}
+          </button>
+          <input
+            ref={avatarRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => {
+              const f = e.target.files?.[0];
+              if (f) avatar.mutate(f);
+              if (avatarRef.current) avatarRef.current.value = "";
+            }}
+          />
+        </div>
+        <h3 className="mt-4 font-display text-xl tracking-tight">{user?.name}</h3>
+        <p className="mt-0.5 text-sm text-muted-foreground">{user?.email}</p>
+        <p className="mt-4 rounded-xl bg-secondary/40 p-3 text-xs text-muted-foreground">
+          A clear photo and up-to-date details help your therapist prepare for the visit.
+        </p>
+      </div>
+
+      {/* Editable fields */}
+      <div className="rounded-3xl border border-border/60 bg-card p-6 shadow-sm sm:p-8">
+        <div className="flex items-center gap-2.5">
+          <UserRound className="h-5 w-5 text-primary" />
+          <h2 className="font-display text-xl tracking-tight">Personal details</h2>
+        </div>
+
+        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+          <div className="space-y-1.5">
+            <Label htmlFor="p-name">Full name</Label>
+            <Input id="p-name" value={form.name} onChange={(e) => set("name", e.target.value)} />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="p-phone">Phone</Label>
+            <Input id="p-phone" value={form.phone} onChange={(e) => set("phone", e.target.value)} placeholder="10-digit mobile" />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="p-age">Age</Label>
+            <Input id="p-age" type="number" min={0} max={120} value={form.age} onChange={(e) => set("age", e.target.value)} />
+          </div>
+          <div className="space-y-1.5">
+            <Label>Gender</Label>
+            <Select value={form.gender} onValueChange={(v) => set("gender", v)}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select" />
+              </SelectTrigger>
+              <SelectContent>
+                {GENDERS.map((g) => (
+                  <SelectItem key={g} value={g} className="capitalize">
+                    {g}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="p-pin">Pincode</Label>
+            <Input id="p-pin" value={form.pincode} onChange={(e) => set("pincode", e.target.value)} />
+          </div>
+          <div className="space-y-1.5 sm:col-span-2">
+            <Label htmlFor="p-addr">Address</Label>
+            <Textarea id="p-addr" rows={2} value={form.address} onChange={(e) => set("address", e.target.value)} placeholder="Where should the therapist visit?" />
+          </div>
+          <div className="space-y-1.5 sm:col-span-2">
+            <Label htmlFor="p-cond">Medical condition / notes</Label>
+            <Textarea id="p-cond" rows={3} value={form.medical_condition} onChange={(e) => set("medical_condition", e.target.value)} placeholder="Anything your therapist should know before the visit." />
+          </div>
+        </div>
+
+        <div className="mt-6 flex justify-end">
+          <Button className="rounded-full px-6" disabled={save.isPending} onClick={() => save.mutate()}>
+            {save.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            Save changes
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 }
 
